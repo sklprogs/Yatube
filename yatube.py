@@ -106,7 +106,7 @@ class Videos:
 
 class Channel:
        
-    def __init__(self,user,download_dir='./downloads'):
+    def __init__(self,user,download_dir='./downloads/Youtube'):
         self.values()
         self._user = user
         self._dir  = download_dir
@@ -205,7 +205,9 @@ class Channel:
         if self.Success:
             sh.log.append ('Channel.download'
                           ,_('INFO')
-                          ,_('User "%s": %d recent videos') % self._user
+                          ,_('User "%s": %d recent videos') % (self._user
+                                                              ,len(self._links)
+                                                              )
                           )
             for i in range(len(self._links)):
                 # todo: implement
