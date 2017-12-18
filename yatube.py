@@ -1,13 +1,14 @@
 #!/usr/bin/python3
-
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('yatube','./locale')
+# -*- coding: UTF-8 -*-
 
 import os
 import pafy      as pf
 import shared    as sh
 import sharedGUI as sg
+import gettext, gettext_windows
+
+gettext_windows.setup_env()
+gettext.install('yatube','./locale')
 
 
 AllOS = False
@@ -106,7 +107,7 @@ class Videos:
 
 class Channel:
        
-    def __init__(self,user,download_dir='./downloads/Youtube'):
+    def __init__(self,user,download_dir='./Youtube'):
         self.values()
         self._user = user
         self._dir  = download_dir
