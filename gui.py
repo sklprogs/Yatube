@@ -4,6 +4,10 @@ from PIL import Image as ig
 from PIL import ImageTk as it
 import shared as sh
 import sharedGUI as sg
+import gettext, gettext_windows
+
+gettext_windows.setup_env()
+gettext.install('yatube','./locale')
 
 
 class Video:
