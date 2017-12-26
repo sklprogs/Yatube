@@ -75,7 +75,6 @@ class Videos:
                              )
                 self._videos.append(vid)
             except:
-                url = 'https://www.youtube.com/watch?v=' + str(url)
                 sh.log.append ('Videos.videos'
                               ,_('WARNING')
                               ,_('Error adding "%s"!') % url
