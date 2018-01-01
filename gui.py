@@ -12,7 +12,8 @@ gettext.install('yatube','./locale')
 
 class Video:
     
-    def __init__(self,parent_obj):
+    def __init__(self,parent_obj,no_pic_image=None):
+        self._np_image = no_pic_image
         self.parent_obj = parent_obj
         self.values()
         self.gui()
@@ -46,7 +47,7 @@ class Video:
         if self._picture and sh.File(file=self._picture).Success:
             image = it.PhotoImage(ig.open(self._picture))
             self.label2.widget.config(image=image)
-            # This prevents the garbage collector from deleting the image
+            #This prevents the garbage collector from deleting the image
             self.label2.widget.image = image
     
     def labels(self):
@@ -58,6 +59,7 @@ class Video:
         self.label2 = sg.Label (parent_obj = self.frame2
                                ,text       = _('Image')
                                ,side       = 'right'
+                               ,image      = self._np_image
                                )
         self.label3 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Author:')
@@ -107,6 +109,11 @@ class Channel:
     def __init__(self,name=_('Channel')):
         self._videos = []
         self._name   = name
+        _np_path = './nopic.png'
+        if sh.File(file=_np_path,Silent=True).Success:
+            self._np_image = it.PhotoImage(ig.open(_np_path))
+        else:
+            self._np_image = None
         self.gui()
         
     def title(self,text=None):
@@ -172,7 +179,10 @@ class Channel:
         self.yscroll.config(command=self.canvas.widget.yview)
                           
     def add(self):
-        self._videos.append(Video(parent_obj=self.canvas))
+        self._videos.append (Video (parent_obj   = self.canvas
+                                   ,no_pic_image = self._np_image
+                                   )
+                            )
         
     def show(self,Lock=True,*args):
         self.obj.show(Lock=Lock)
