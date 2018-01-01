@@ -120,7 +120,7 @@ class Channel:
         if text:
             self.obj.title(text)
         else:
-            self.obj.title()
+            self.obj.title(self._name)
         
     def scrollbars(self):
         self.yscroll = tk.Scrollbar(master=self.frame_y.widget)
@@ -130,20 +130,32 @@ class Channel:
     
     def frames(self):
         self.frame   = sg.Frame (parent_obj = self.obj)
-        self.frame_x = sg.Frame (parent_obj = self.frame
-                                ,expand     = False
-                                ,fill       = 'x'
-                                ,side       = 'bottom'
-                                )
         self.frame_y = sg.Frame (parent_obj = self.frame
                                 ,expand     = False
                                 ,fill       = 'y'
                                 ,side       = 'right'
                                 )
-        # This frame must be created after the bottom frame
-        self.frame1  = sg.Frame (parent_obj = self.frame)
+        self.frame_x = sg.Frame (parent_obj = self.frame
+                                ,expand     = False
+                                ,fill       = 'x'
+                                ,side       = 'bottom'
+                                )
+        # A frame that contains all contents except for scrollbars
+        self.frame1  = sg.Frame (parent_obj = self.frame
+                                ,side       = 'left'
+                                )
+        ''' Create a canvas before an object being embedded, otherwise,
+            the canvas will overlap this object.
+        '''
+        self.canvas = sg.Canvas(parent_obj=self.frame1)
+        # Frames embedded into a canvas are not scrollable
+        self.label  = sg.Label (parent_obj = self.frame1
+                               ,expand     = True
+                               )
+        self.canvas.embed(self.label)
     
     def gui(self):
+        # cur
         '''
         self.obj = sg.Top (parent_obj = sg.objs.root()
                           ,Maximize   = False
@@ -154,8 +166,6 @@ class Channel:
         self.widget = self.obj.widget
         self.title(text=self._name)
         self.frames()
-        self.canvas = sg.Canvas(parent_obj=self.frame)
-        self.canvas.embed(self.frame1)
         self.scroll_x()
         self.scroll_y()
         self.canvas.focus()
@@ -179,7 +189,7 @@ class Channel:
         self.yscroll.config(command=self.canvas.widget.yview)
                           
     def add(self):
-        self._videos.append (Video (parent_obj   = self.canvas
+        self._videos.append (Video (parent_obj   = self.label
                                    ,no_pic_image = self._np_image
                                    )
                             )
