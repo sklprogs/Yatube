@@ -107,14 +107,21 @@ class Video:
 class Channel:
     
     def __init__(self,name=_('Channel')):
+        self.values()
+        self._name = name
+        self.gui()
+        self.scrollregion()
+        self.scroll2start()
+        
+    def values(self):
         self._videos = []
-        self._name   = name
-        _np_path = './nopic.png'
+        _np_path     = './nopic.png'
         if sh.File(file=_np_path,Silent=True).Success:
             self._np_image = it.PhotoImage(ig.open(_np_path))
         else:
             self._np_image = None
-        self.gui()
+        self._max_x = 1024
+        self._max_y = 768
         
     def title(self,text=None):
         if text:
@@ -143,6 +150,8 @@ class Channel:
         # A frame that contains all contents except for scrollbars
         self.frame1  = sg.Frame (parent_obj = self.frame
                                 ,side       = 'left'
+                                ,width      = self._max_x
+                                ,height     = self._max_y
                                 )
         ''' Create a canvas before an object being embedded, otherwise,
             the canvas will overlap this object.
@@ -151,6 +160,7 @@ class Channel:
         # Frames embedded into a canvas are not scrollable
         self.label  = sg.Label (parent_obj = self.frame1
                                ,expand     = True
+                               ,fill       = 'both'
                                )
         self.canvas.embed(self.label)
     
@@ -193,6 +203,23 @@ class Channel:
                                    ,no_pic_image = self._np_image
                                    )
                             )
+                            
+    def scrollregion(self):
+        if self._max_x and self._max_y:
+            self.canvas.widget.configure \
+                (scrollregion = (-self._max_x/2,-self._max_y/2
+                                , self._max_x/2, self._max_y/2
+                                )
+                )
+        else:
+            sh.log.append ('Channel.scrollregion'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    def scroll2start(self,*args):
+        self.canvas.widget.xview_moveto(0)
+        self.canvas.widget.yview_moveto(0)
         
     def show(self,Lock=True,*args):
         self.obj.show(Lock=Lock)
