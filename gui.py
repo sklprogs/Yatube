@@ -59,47 +59,47 @@ class Video:
                                ,side       = 'right'
                                ,anchor     = 'w'
                                ,Close      = False
-                               ,width      = 3
+                               ,width      = 4
                                )
         self.label2 = sg.Label (parent_obj = self.frame2
                                ,text       = _('Image')
                                ,side       = 'right'
                                ,image      = self._np_image
                                ,Close      = False
-                               ,width     = 196
+                               ,width      = 196
                                )
         self.label3 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Author:')
                                ,Close      = False
-                               ,width     = 20
+                               ,width      = 20
                                )
         self.label4 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
                                ,Close      = False
-                               ,width     = 60
+                               ,width      = 60
                                )
         self.label5 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Title:')
                                ,Close      = False
-                               ,width     = 20
+                               ,width      = 20
                                )
         self.label6 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
                                ,Close      = False
-                               ,width     = 60
+                               ,width      = 60
                                )
         self.label7 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Duration:')
                                ,Close      = False
-                               ,width     = 20
+                               ,width      = 20
                                )
         self.label8 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
                                ,Close      = False
-                               ,width     = 60
+                               ,width      = 60
                                )
     
     def gui(self):
@@ -116,10 +116,18 @@ class Video:
         self._title    = title
         self._duration = duration
         self._picture  = picture
-        self.label1.text(_('#%d') % self._no)
-        self.label4.text(self._author)
-        self.label6.text(self._title)
-        self.label8.text(self._duration)
+        '''
+        # note # todo For some reason, using 'widget.config' or 
+        'Label.text' resets config options here.
+        '''
+        self.label1._text = _('#%d') % self._no
+        self.label1.reset()
+        self.label4._text = self._author
+        self.label4.reset()
+        self.label6._text = self._title
+        self.label6.reset()
+        self.label8._text = self._duration
+        self.label8.reset()
         self.pic()
 
 
@@ -340,11 +348,10 @@ class Channel:
 
 
 if __name__ == '__main__':
-    import tkinter as tk
     sg.objs.start()
     channel = Channel(name='Максим Шелков')
     sg.Geometry(parent_obj=channel.obj).set('985x500')
-    channel.center(max_x=985,max_y=500)
+    channel.center(max_x=986,max_y=500)
     for i in range(10):
         channel.add(no=i)
         # Show default picture & video information
