@@ -1287,7 +1287,7 @@ msgstr "Автор:"
 #: /usr/local/bin/yatube/gui.py:88
 #: /usr/local/bin/yatube/gui.py:99
 msgid "Not Available"
-msgstr "Не доступно"
+msgstr "Недоступно"
 
 #: /usr/local/bin/yatube/gui.py:94
 msgid "Duration:"
