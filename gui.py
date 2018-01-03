@@ -51,44 +51,55 @@ class Video:
             self.label2.widget.image = image
     
     def labels(self):
+        ''' Fixed width is set to ensure that sizes of a default and
+            current video labels are the same.
+        '''
         self.label1 = sg.Label (parent_obj = self.frame1
                                ,text       = _('#%d') % self._no
                                ,side       = 'right'
                                ,anchor     = 'w'
                                ,Close      = False
+                               ,width      = 3
                                )
         self.label2 = sg.Label (parent_obj = self.frame2
                                ,text       = _('Image')
                                ,side       = 'right'
                                ,image      = self._np_image
                                ,Close      = False
+                               ,width     = 196
                                )
         self.label3 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Author:')
                                ,Close      = False
+                               ,width     = 20
                                )
         self.label4 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
                                ,Close      = False
+                               ,width     = 60
                                )
         self.label5 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Title:')
                                ,Close      = False
+                               ,width     = 20
                                )
         self.label6 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
                                ,Close      = False
+                               ,width     = 60
                                )
         self.label7 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Duration:')
                                ,Close      = False
+                               ,width     = 20
                                )
         self.label8 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
                                ,Close      = False
+                               ,width     = 60
                                )
     
     def gui(self):
@@ -125,9 +136,12 @@ class Channel:
                 ,action   = self.close
                 )
     
-    def center(self):
-        max_x = self.widget.winfo_width()
-        max_y = self.widget.winfo_height()
+    def center(self,max_x=0,max_y=0):
+        if max_x and max_y:
+            pass
+        else:
+            max_x = self.widget.winfo_reqwidth()
+            max_y = self.widget.winfo_reqheight()
         sh.log.append ('Channel.center'
                       ,_('DEBUG')
                       ,_('Widget sizes: %dx%d') % (max_x,max_y)
@@ -288,33 +302,31 @@ if __name__ == '__main__':
     import tkinter as tk
     sg.objs.start()
     channel = Channel(name='Максим Шелков')
+    sg.Geometry(parent_obj=channel.obj).set('985x500')
+    channel.center(max_x=985,max_y=500)
     for i in range(10):
         channel.add(no=i)
         # Show default picture & video information
         sg.objs.root().widget.update_idletasks()
         # Simulate long loading
-        '''
+
         count = 0
         for k in range(500000):
             count += k
-        '''
+
         video = channel._videos[i]
-        video.reset (no       = i
+        video.reset (no       = i + 1
                     ,author   = 'Максим Шелков'
                     ,title    = 'НАГЛЫЙ ОБМАН от ПЕРЕКУПА! Автомобиль - Ford АВТОХЛАМ!'
                     ,duration = '14:16'
                     ,picture  = 
                     '/home/pete/downloads/hqdefault.jpg'
                     )
-        sg.objs.root().widget.update_idletasks()
         ''' This does not work in 'Channel.__init__' for some reason, 
         calling this externally
         ''' 
         channel.update_scroll()
-    channel.center()
     # Move back to video #0
     channel.canvas.widget.yview_moveto(0)
-    #sg.Geometry(parent_obj=channel.obj).set('800x500')
     channel.show()
-    #sg.objs.root().kill()
     sg.objs.end()
