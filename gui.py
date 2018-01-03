@@ -235,35 +235,26 @@ class Channel:
         self.labels()
         self.canvas.embed(self.label)
     
+    def scrollbars(self):
+        sg.Scrollbar (parent_obj = self.frame_x
+                     ,scroll_obj = self.canvas
+                     ,Horizontal = True
+                     )
+        sg.Scrollbar (parent_obj = self.frame_y
+                     ,scroll_obj = self.canvas
+                     ,Horizontal = False
+                     )
+    
     def gui(self):
         self.obj = sg.SimpleTop(parent_obj=sg.objs.root())
         self.widget = self.obj.widget
         self.title(text=self._name)
         self.frames()
         self.canvases()
-        self.scroll_x()
-        self.scroll_y()
+        self.scrollbars()
         self.canvas.focus()
         self.bindings()
         
-    def scroll_x(self):
-        self.xscroll = tk.Scrollbar (master = self.frame_x.widget
-                                    ,orient = tk.HORIZONTAL
-                                    )
-        self.xscroll.pack (expand = True
-                          ,fill   = 'x'
-                          )
-        self.canvas.widget.config(xscrollcommand=self.xscroll.set)
-        self.xscroll.config(command=self.canvas.widget.xview)
-    
-    def scroll_y(self):
-        self.yscroll = tk.Scrollbar(master=self.frame_y.widget)
-        self.yscroll.pack (expand = True
-                          ,fill   = 'y'
-                          )
-        self.canvas.widget.config(yscrollcommand=self.yscroll.set)
-        self.yscroll.config(command=self.canvas.widget.yview)
-                          
     def add(self,no=0):
         self._no = no
         self._videos.append (Video (parent_obj   = self.label
