@@ -135,6 +135,62 @@ class Channel:
                 ,bindings = ['<Control-q>','<Control-w>','<Escape>']
                 ,action   = self.close
                 )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Down>'
+                ,action   = self.scroll_down
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Up>'
+                ,action   = self.scroll_up
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Left>'
+                ,action   = self.scroll_left
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Right>'
+                ,action   = self.scroll_right
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Next>'
+                ,action   = self.scroll_page_down
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Prior>'
+                ,action   = self.scroll_page_up
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<End>'
+                ,action   = self.scroll_end
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Home>'
+                ,action   = self.scroll_start
+                )
+                
+    def scroll_left(self,*args):
+        self.canvas.widget.xview_scroll(-1,'units')
+        
+    def scroll_right(self,*args):
+        self.canvas.widget.xview_scroll(1,'units')
+        
+    def scroll_up(self,*args):
+        self.canvas.widget.yview_scroll(-1,'units')
+        
+    def scroll_down(self,*args):
+        self.canvas.widget.yview_scroll(1,'units')
+        
+    def scroll_page_down(self,*args):
+        self.canvas.widget.yview_scroll(1,'pages')
+        
+    def scroll_page_up(self,*args):
+        self.canvas.widget.yview_scroll(-1,'pages')
+        
+    def scroll_start(self,*args):
+        self.canvas.widget.yview_moveto(0)
+        
+    def scroll_end(self,*args):
+        self.canvas.widget.yview_moveto(len(self._videos)*self._def_height)
     
     def center(self,max_x=0,max_y=0):
         if max_x and max_y:
