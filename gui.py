@@ -55,32 +55,40 @@ class Video:
                                ,text       = _('#%d') % self._no
                                ,side       = 'right'
                                ,anchor     = 'w'
+                               ,Close      = False
                                )
         self.label2 = sg.Label (parent_obj = self.frame2
                                ,text       = _('Image')
                                ,side       = 'right'
                                ,image      = self._np_image
+                               ,Close      = False
                                )
         self.label3 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Author:')
+                               ,Close      = False
                                )
         self.label4 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
+                               ,Close      = False
                                )
         self.label5 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Title:')
+                               ,Close      = False
                                )
         self.label6 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
+                               ,Close      = False
                                )
         self.label7 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Duration:')
+                               ,Close      = False
                                )
         self.label8 = sg.Label (parent_obj = self.frame5
                                ,text       = _('Not Available')
                                ,anchor     = 'w'
+                               ,Close      = False
                                )
     
     def gui(self):
@@ -111,6 +119,12 @@ class Channel:
         self._name = name
         self.gui()
         
+    def bindings(self):
+        sg.bind (obj      = self.obj
+                ,bindings = ['<Control-q>','<Control-w>','<Escape>']
+                ,action   = self.close
+                )
+    
     def center(self):
         max_x = self.widget.winfo_width()
         max_y = self.widget.winfo_height()
@@ -142,9 +156,10 @@ class Channel:
         self.scroll2start()
         
     def values(self):
-        self._no     = 0
-        self._videos = []
-        _np_path     = './nopic.png'
+        self._no         = 0
+        self._videos     = []
+        self._def_height = 110 # A default picture height
+        _np_path         = './nopic.png'
         if sh.File(file=_np_path,Silent=True).Success:
             self._np_image = it.PhotoImage(ig.open(_np_path))
         else:
@@ -188,15 +203,22 @@ class Channel:
                                 ,width      = self._max_x
                                 ,height     = self._max_y
                                 )
-        ''' Create a canvas before an object being embedded, otherwise,
-            the canvas will overlap this object.
-        '''
-        self.canvas = sg.Canvas(parent_obj=self.frame1)
+    
+    # Called in 'canvases'
+    def labels(self):
         # Frames embedded into a canvas are not scrollable
         self.label  = sg.Label (parent_obj = self.frame1
                                ,expand     = True
                                ,fill       = 'both'
+                               ,Close      = False
                                )
+    
+    def canvases(self):
+        ''' Create a canvas before an object being embedded, otherwise,
+            the canvas will overlap this object.
+        '''
+        self.canvas = sg.Canvas(parent_obj=self.frame1)
+        self.labels()
         self.canvas.embed(self.label)
     
     def gui(self):
@@ -204,9 +226,11 @@ class Channel:
         self.widget = self.obj.widget
         self.title(text=self._name)
         self.frames()
+        self.canvases()
         self.scroll_x()
         self.scroll_y()
         self.canvas.focus()
+        self.bindings()
         
     def scroll_x(self):
         self.xscroll = tk.Scrollbar (master = self.frame_x.widget
@@ -249,15 +273,14 @@ class Channel:
                           
     def scroll2start(self,*args):
         self.canvas.widget.xview_moveto(0)
-        # cur
-        #self.canvas.widget.yview_moveto(0)
-        self.canvas.widget.yview_moveto(110*self._no)
+        # Scroll canvas to the current video as the channel is loading
+        self.canvas.widget.yview_moveto(self._no*self._def_height)
         
     def show(self,Lock=True,*args):
         self.obj.show(Lock=Lock)
         
     def close(self,*args):
-        self.obj.close()
+        self.widget.destroy()
 
 
 
@@ -266,23 +289,15 @@ if __name__ == '__main__':
     sg.objs.start()
     channel = Channel(name='Максим Шелков')
     for i in range(10):
-        count = 0
-        for k in range(500000):
-            count += k
         channel.add(no=i)
-        ''' This does not work in 'Channel.__init__' for some reason, 
-        calling this externally
-        ''' 
-        channel.update_scroll()
-    channel.center()
-    sg.objs.root().widget.update_idletasks()
-    '''
-    for i in range(len(channel._videos)):
-        
+        # Show default picture & video information
+        sg.objs.root().widget.update_idletasks()
+        # Simulate long loading
+        '''
         count = 0
         for k in range(500000):
             count += k
-        
+        '''
         video = channel._videos[i]
         video.reset (no       = i
                     ,author   = 'Максим Шелков'
@@ -292,9 +307,14 @@ if __name__ == '__main__':
                     '/home/pete/downloads/hqdefault.jpg'
                     )
         sg.objs.root().widget.update_idletasks()
-    '''
-    # cur
+        ''' This does not work in 'Channel.__init__' for some reason, 
+        calling this externally
+        ''' 
+        channel.update_scroll()
+    channel.center()
+    # Move back to video #0
+    channel.canvas.widget.yview_moveto(0)
     #sg.Geometry(parent_obj=channel.obj).set('800x500')
-    #channel.update_scroll()
     channel.show()
+    #sg.objs.root().kill()
     sg.objs.end()
