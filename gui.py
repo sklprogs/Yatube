@@ -193,12 +193,6 @@ class Channel:
         else:
             self.obj.title(self._name)
         
-    def scrollbars(self):
-        self.yscroll = tk.Scrollbar(master=self.frame_y.widget)
-        self.canvas.widget.config(yscrollcommand=self.yscroll.set)
-        self.yscroll.config(command=self.canvas.widget.yview)
-        self.yscroll.pack(side='right',fill='y')
-    
     def frames(self):
         self.frame   = sg.Frame (parent_obj = self.obj)
         self.frame_y = sg.Frame (parent_obj = self.frame
