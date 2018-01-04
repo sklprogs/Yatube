@@ -5,6 +5,7 @@ import os
 import pafy      as pf
 import shared    as sh
 import sharedGUI as sg
+import gui       as gi
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
@@ -60,47 +61,71 @@ class Links:
 
 
 
-class Videos:
+class Video:
     
-    def __init__(self,urls):
-        self._videos = []
-        self._urls   = urls
+    def __init__(self,url):
+        self.values()
+        self._url = url
         
-    def videos(self):
-        for url in self._urls:
-            try:
-                vid = pf.new (url   = url
-                             ,basic = False
-                             ,gdata = False
-                             )
-                self._videos.append(vid)
-            except:
-                sh.log.append ('Videos.videos'
-                              ,_('WARNING')
-                              ,_('Error adding "%s"!') % url
-                              )
+    def values(self):
+        self._video    = None
+        self._no       = 0
+        self._author   = ''
+        self._title    = ''
+        self._duration = ''
+        
+    def supported_names(self):
+        # todo: Delete unsupported chars from other attributes
+        self._author   = sh.Text(text=self._author).delete_unsupported()
+        self._title    = sh.Text(text=self._title).delete_unsupported()
+        self._duration = sh.Text(text=self._duration).delete_unsupported()
+    
+    def video(self):
+        try:
+            self._video = pf.new (url   = self._url
+                                 ,basic = True
+                                 ,gdata = False
+                                 )
+        except:
+            sh.log.append ('Videos.video'
+                          ,_('WARNING')
+                          ,_('Error adding "%s"!') % self._url
+                          )
             
-    def summary(self):
+    def debug(self):
         message = ''
-        for i in range(len(self._videos)):
-            try:
-                message += 'Video #%d\n' % i
-                message += 'Author: %s\n' % self._videos[i].author
-                message += 'Title: %s\n' % self._videos[i].title
-                message += 'Date: %s\n' % self._videos[i].published
-                message += 'Duration: %s\n' % str(self._videos[i].duration)
-                message += 'Views: %s\n' % str(self._videos[i].viewcount)
-                message += 'Likes/dislikes: %s/%s\n' % (str(self._videos[i].likes)
-                                                       ,str(self._videos[i].dislikes)
-                                                       )
-                message += 'Small video picture URL: %s\n' % self._videos[i].thumb
-                message += '\n'
-            except:
-                sh.log.append ('Videos.summary'
-                              ,_('WARNING')
-                              ,_('Error getting info for video #%d!') % i
-                              )
+        try:
+            message += 'Author: %s\n' % self._video.author
+            message += 'Title: %s\n' % self._video.title
+            message += 'Date: %s\n' % self._video.published
+            message += 'Duration: %s\n' % str(self._video.duration)
+            message += 'Views: %s\n' % str(self._video.viewcount)
+            message += 'Likes/dislikes: %s/%s\n' \
+                       % (str(self._video.likes)
+                         ,str(self._video.dislikes)
+                         )
+            message += 'Small video picture URL: %s\n' \
+                       % self._video.thumb
+            message += '\n'
+        except:
+            sh.log.append ('Video.debug'
+                          ,_('WARNING')
+                          ,_('Error getting info for video #%d!') \
+                          % self._no
+                          )
         return message
+        
+    def summary(self):
+        try:
+            self._author   = self._video.author
+            self._title    = self._video.title
+            self._duration = self._video.duration
+        except:
+            sh.log.append ('Video.summary'
+                          ,_('WARNING')
+                          ,_('Error getting info for video #%d!') \
+                          % self._no
+                          )
 
 
 
@@ -133,7 +158,8 @@ class Channel:
             
     def channel(self):
         if self.Success:
-            self._channel = self._link_start + self._user + self._link_end
+            self._channel = self._link_start + self._user \
+                                             + self._link_end
             self._escaped = sh.FixBaseName (basename = self._user
                                            ,AllOS    = AllOS
                                            ,max_len  = 100
@@ -229,13 +255,40 @@ class Channel:
 
 
 if __name__ == '__main__':
-    url = 'https://www.youtube.com/user/Centerstrain01/videos'
+    #url = 'https://www.youtube.com/user/Centerstrain01/videos'
+    #Channel(user='Centerstrain01').run()
+    user = 'AvtoKriminalist'
+    sg.objs.start()
+    channel_gui = gi.Channel(name=user)
+    sg.Geometry(parent_obj=channel_gui.obj).set('985x500')
+    channel_gui.center(max_x=986,max_y=500)
     
-    Channel(user='Centerstrain01').run()
-
-
-    '''
-    videos = Videos(urls=links._links)
-    videos.videos()
-    print(videos.summary())
-    '''
+    channel = Channel(user=user)
+    channel.channel()
+    channel.page()
+    channel.links()
+    
+    for i in range(len(channel._links)):
+        channel_gui.add(no=i)
+        # Show default picture & video information
+        sg.objs.root().widget.update_idletasks()
+        video = Video(url=channel._links[i])
+        video.video()
+        video.summary()
+        video.supported_names()
+        video_gui = channel_gui._videos[i]
+        video_gui.reset (no       = i + 1
+                        ,author   = video._author
+                        ,title    = video._title
+                        ,duration = video._duration
+                        # todo: implement (video.thumb)
+                        ,picture  = None
+                        )
+        ''' This does not work in 'Channel.__init__' for some reason, 
+        calling this externally
+        ''' 
+        channel_gui.update_scroll()
+    # Move back to video #0
+    channel_gui.canvas.widget.yview_moveto(0)
+    channel_gui.show()
+    sg.objs.end()
