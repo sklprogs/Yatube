@@ -102,13 +102,51 @@ class Video:
                                ,width      = 60
                                )
     
-    def gui(self):
-        self.frames()
+    def checkboxes(self):
         self.cbox = sg.CheckBox (parent_obj = self.frame1
-                                ,Active     = True
+                                ,Active     = False
                                 ,side       = 'left'
                                 )
+                                
+    def bindings(self):
+        sg.bind (obj      = self.label1
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label2
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label3
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label4
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label5
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label6
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label7
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        sg.bind (obj      = self.label8
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+    
+    def gui(self):
+        self.frames()
+        self.checkboxes()
         self.labels()
+        self.bindings()
         
     def reset(self,author,title,duration,picture=None,no=0):
         self._no       = no
@@ -357,11 +395,11 @@ if __name__ == '__main__':
         # Show default picture & video information
         sg.objs.root().widget.update_idletasks()
         # Simulate long loading
-
+        """
         count = 0
         for k in range(500000):
             count += k
-
+        """
         video = channel._videos[i]
         video.reset (no       = i + 1
                     ,author   = 'Максим Шелков'
