@@ -255,9 +255,9 @@ class Channel:
 
 
 if __name__ == '__main__':
-    #url = 'https://www.youtube.com/user/Centerstrain01/videos'
-    #Channel(user='Centerstrain01').run()
-    user = 'AvtoKriminalist'
+    #user = 'AvtoKriminalist'
+    #user = 'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
+    user = 'Centerstrain01'
     sg.objs.start()
     channel_gui = gi.Channel(name=user)
     sg.Geometry(parent_obj=channel_gui.obj).set('985x500')
