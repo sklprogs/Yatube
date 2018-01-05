@@ -117,23 +117,4 @@ class DB:
 
 
 if __name__ == '__main__':
-    db = DB()
-    '''
-    ROOTURL   text    \
-                    ,AUTHOR    text    \
-                    ,TITLE     text    \
-                    ,DATE      text    \
-                    ,CATEGORY  text    \
-                    ,DESC      text    \
-                    ,DURATION  text    \
-                    ,VIEWS     integer \
-                    ,LIKES     integer \
-                    ,DISLIKES  integer \
-                    ,RATING    float   \
-                    ,BLOCK     boolean \
-                    ,IGNORE    boolean \
-    '''
-    rooturl = 
-    user = ''
-    db.add_video(data)
-    db.close()
+    pass

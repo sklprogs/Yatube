@@ -1,10 +1,53 @@
 #!/usr/bin/python3
 
 import sharedGUI as sg
-import gui as gi
+import yatube    as ya
+import gui       as gi
+import db
 
-sg.objs.start()
-menu = gi.Menu()
-menu.show()
-print(menu.choice)
-sg.objs.end()
+
+class Tests:
+    
+    def menu(self):
+        menu = gi.Menu()
+        menu.show()
+        print(menu.choice)
+        
+    def video_summary(self):
+        video = ya.Video(url='9r0Eeo5_L8k')
+        video.video()
+        summary = video.summary()
+        if summary:
+            sg.objs.txt().reset_data()
+            sg.objs._txt.insert(text=summary)
+            sg.Clipboard().copy(text=summary)
+            sg.objs._txt.show()
+            
+    def add_video(self):
+        dbi = db.DB()
+        url         = '9r0Eeo5_L8k'
+        author      = 'Максим Шелков'
+        title       = 'АВТОХЛАМ от ОФИЦИАЛОВ - ВСЁ ПРОВЕРЕНО! Но это НЕ ТОЧНО'
+        date        = '2017-12-24 16:01:31'
+        category    = 'Autos & Vehicles'
+        description = 'Официальный дилер продает только проверенные автомобили?! Смотрите, как бывает!'
+        duration    = '00:13:43'
+        length      = 823
+        views       = 601388
+        likes       = 34835
+        dislikes    = 570
+        rating      = 4.93560218811
+        Block       = False
+        Ignore      = False
+        thumb       = 'http://i.ytimg.com/vi/9r0Eeo5_L8k/default.jpg'
+        data = (url,author,title,date,category,description,duration
+               ,length,views,likes,dislikes,rating,Block,Ignore
+               )
+        dbi.add_video(data)
+        dbi.close()
+
+
+if __name__ == '__main__':
+    sg.objs.start()
+    Tests().add_video()
+    sg.objs.end()
