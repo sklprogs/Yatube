@@ -9,6 +9,9 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','./locale')
 
+product = 'Yatube'
+version = '(alpha)'
+
 
 class Video:
     
@@ -382,6 +385,95 @@ class Channel:
         
     def close(self,*args):
         self.widget.destroy()
+
+
+
+class Menu:
+    
+    def __init__(self):
+        self.parent_obj = sg.objs.root()
+        self.choice     = 0
+        self.gui()
+        
+    def title(self,text=None):
+        if text:
+            self.parent_obj.title(text)
+        else:
+            text = sh.List(lst1=[product,version]).space_items()
+            self.obj.title(text)
+    
+    def show(self,*args):
+        self.obj.show()
+    
+    def close(self,*args):
+        self.obj.close()
+    
+    def action(self,choice,*args):
+        self.choice = choice
+        self.obj.close()
+    
+    def buttons(self):
+        #[cbox] Ignore videos older than ...
+        button = sg.Button (parent_obj = self.obj
+                           ,text       = _('Update subscriptions')
+                           ,action     = lambda x:self.action(choice=1)
+                           ,side       = 'top'
+                           )
+        button.focus()
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Update trending')
+                  ,action     = lambda x:self.action(choice=2)
+                  ,side       = 'top'
+                  )
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Manage subscriptions')
+                  ,action     = lambda x:self.action(choice=3)
+                  ,side       = 'top'
+                  )
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Manage blocklist')
+                  ,action     = lambda x:self.action(choice=4)
+                  ,side       = 'top'
+                  )
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Quit')
+                  ,action     = self.quit
+                  ,side       = 'top'
+                  )
+    
+    def quit(self,*args):
+        self.action(choice=0)
+    
+    def bindings(self):
+        sg.bind (obj      = self.obj
+                ,bindings = ['<Control-q>','<Control-w>','<Escape>']
+                ,action   = self.close
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Down>'
+                ,action   = self.focus_next
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Up>'
+                ,action   = self.focus_prev
+                )
+        # Trying to pass lambda will result in an error
+        self.widget.protocol("WM_DELETE_WINDOW",self.quit)
+        
+    def focus_next(self,event,*args):
+        event.widget.tk_focusNext().focus()
+        return 'break'
+        
+    def focus_prev(self,event,*args):
+        event.widget.tk_focusPrev().focus()
+        return 'break'
+    
+    def gui(self):
+        self.obj = sg.objs.new_top(Maximize=False)
+        self.widget = self.obj.widget
+        self.buttons()
+        self.title()
+        self.bindings()
 
 
 

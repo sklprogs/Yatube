@@ -257,7 +257,8 @@ class Channel:
 if __name__ == '__main__':
     #user = 'AvtoKriminalist'
     #user = 'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
-    user = 'Centerstrain01'
+    #user = 'Centerstrain01'
+    user = 'NEMAGIA'
     sg.objs.start()
     channel_gui = gi.Channel(name=user)
     sg.Geometry(parent_obj=channel_gui.obj).set('985x500')
