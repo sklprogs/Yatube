@@ -24,12 +24,13 @@ class DB:
     def create_channels(self):
         if self.Success:
             try:
-                # 3 columns by now
+                # 4 columns by now
                 self.dbc.execute (
                     'create table if not exists CHANNELS (\
                      USER      text    \
                     ,AUTHOR    text    \
                     ,BLOCK     boolean \
+                    ,IMAGE     binary  \
                                                          )'
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
@@ -47,7 +48,7 @@ class DB:
     def create_videos(self):
         if self.Success:
             try:
-                # 14 columns by now
+                # 15 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
                      ROOTURL   text    \
@@ -62,6 +63,7 @@ class DB:
                     ,LIKES     integer \
                     ,DISLIKES  integer \
                     ,RATING    float   \
+                    ,IMAGE     binary  \
                     ,BLOCK     boolean \
                     ,IGNORE    boolean \
                                                        )'
@@ -116,7 +118,7 @@ class DB:
         if self.Success:
             self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
                                     ,DURATION,LENGTH,VIEWS,LIKES \
-                                    ,DISLIKES,RATING from VIDEOS \
+                                    ,DISLIKES,RATING,IMAGE from VIDEOS \
                               where ROOTURL = ?',(url,))
             return self.dbc.fetchone()
         else:

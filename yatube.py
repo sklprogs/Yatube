@@ -71,7 +71,7 @@ class Video:
         
     def values(self):
         self.Success = True
-        self._video  = None
+        self._video  = self._image = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = ''
         self._len    = self._views = self._likes = self._dislikes = 0
@@ -105,7 +105,8 @@ class Video:
                 data = (self._url,self._author,self._title,self._date
                        ,self._cat,self._desc,self._dur,self._len
                        ,self._views,self._likes,self._dislikes
-                       ,self._rating,False,False
+                       ,self._rating,sqlite3.Binary(self._image),False
+                       ,False
                        )
                 objs.db().add_video(data)
             else:
@@ -121,7 +122,7 @@ class Video:
         
     def assign_offline(self,data):
         if data:
-            data_len = 11
+            data_len = 12
             if len(data) >= data_len:
                 self._author   = data[0]
                 self._title    = data[1]
@@ -134,6 +135,7 @@ class Video:
                 self._likes    = data[8]
                 self._dislikes = data[9]
                 self._rating   = data[10]
+                self._image    = data[11]
             else:
                 sg.Message ('Video.assign_offline'
                            ,_('ERROR')
@@ -166,6 +168,23 @@ class Video:
                           ,_('Operation has been canceled.')
                           )
     
+    def image(self):
+        if self.Success:
+            if self._video:
+                self._image = sh.Get (url      = self._video.thumb
+                                     ,encoding = None
+                                     ).run()
+            else:
+                sh.log.append ('Video.image'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.image'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def get(self):
         if self.Success:
             result = objs.db().get_video(url=self._url)
@@ -174,6 +193,7 @@ class Video:
             else:
                 self.video()
                 self.assign_online()
+                self.image()
                 self.dump()
         else:
             sh.log.append ('Video.get'

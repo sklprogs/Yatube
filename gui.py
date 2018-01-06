@@ -12,12 +12,13 @@ gettext.install('yatube','./locale')
 product = 'Yatube'
 version = '(alpha)'
 
+def_height = 110 # A default picture height
+
 
 class Video:
     
-    def __init__(self,parent_obj,no=0,no_pic_image=None):
+    def __init__(self,parent_obj,no=0):
         self._no        = no
-        self._np_image  = no_pic_image
         self.parent_obj = parent_obj
         self.values()
         self.gui()
@@ -26,7 +27,7 @@ class Video:
         self._author   = _('Author')
         self._title    = _('Title')
         self._duration = _('Duration')
-        self._picture  = None
+        self._image    = objs.def_image()
     
     def frames(self):
         self.frame  = sg.Frame (parent_obj = self.parent_obj)
@@ -46,9 +47,10 @@ class Video:
                                ,side       = 'right'
                                )
                                  
-    def pic(self):
-        if self._picture and sh.File(file=self._picture).Success:
-            image = it.PhotoImage(ig.open(self._picture))
+    def pic(self,image=None):
+        if not image:
+            image = objs.def_image()
+        if image:
             self.label2.widget.config(image=image)
             #This prevents the garbage collector from deleting the image
             self.label2.widget.image = image
@@ -64,12 +66,17 @@ class Video:
                                ,Close      = False
                                ,width      = 4
                                )
+        ''' 'image' argument must be specified even when the label
+            is further configured with such image, otherwise, frames
+            will be further extended to encompass the image
+            thereby distorting the GUI structure.
+        '''
         self.label2 = sg.Label (parent_obj = self.frame2
                                ,text       = _('Image')
                                ,side       = 'right'
-                               ,image      = self._np_image
                                ,Close      = False
                                ,width      = 196
+                               ,image      = objs.def_image()
                                )
         self.label3 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Author:')
@@ -151,12 +158,12 @@ class Video:
         self.labels()
         self.bindings()
         
-    def reset(self,author,title,duration,picture=None,no=0):
+    def reset(self,author,title,duration,image=None,no=0):
         self._no       = no
         self._author   = author
         self._title    = title
         self._duration = duration
-        self._picture  = picture
+        self._image    = image
         '''
         # note # todo For some reason, using 'widget.config' or 
         'Label.text' resets config options here.
@@ -239,7 +246,7 @@ class Channel:
         self.canvas.widget.yview_moveto(0)
         
     def scroll_end(self,*args):
-        self.canvas.widget.yview_moveto(len(self._videos)*self._def_height)
+        self.canvas.widget.yview_moveto(len(self._videos)*def_height)
     
     def center(self,max_x=0,max_y=0):
         if max_x and max_y:
@@ -275,14 +282,8 @@ class Channel:
         self.scroll2start()
         
     def values(self):
-        self._no         = 0
-        self._videos     = []
-        self._def_height = 110 # A default picture height
-        _np_path         = './nopic.png'
-        if sh.File(file=_np_path,Silent=True).Success:
-            self._np_image = it.PhotoImage(ig.open(_np_path))
-        else:
-            self._np_image = None
+        self._no     = 0
+        self._videos = []
         ''' These values set the width and height of the frame that 
             contains videos and therefore the scrolling region.
             The default Youtube video picture has the dimensions of
@@ -356,9 +357,8 @@ class Channel:
         
     def add(self,no=0):
         self._no = no
-        self._videos.append (Video (parent_obj   = self.label
-                                   ,no_pic_image = self._np_image
-                                   ,no           = self._no
+        self._videos.append (Video (parent_obj = self.label
+                                   ,no         = self._no
                                    )
                             )
                             
@@ -378,7 +378,7 @@ class Channel:
     def scroll2start(self,*args):
         self.canvas.widget.xview_moveto(0)
         # Scroll canvas to the current video as the channel is loading
-        self.canvas.widget.yview_moveto(self._no*self._def_height)
+        self.canvas.widget.yview_moveto(self._no*def_height)
         
     def show(self,Lock=True,*args):
         self.obj.show(Lock=Lock)
@@ -476,29 +476,54 @@ class Menu:
         self.bindings()
 
 
+class Objects:
+    
+    def __init__(self):
+        self._def_image = None
+        
+    def def_image(self):
+        if not self._def_image:
+            def_image_path = sh.objs.pdir().add('nopic.png')
+            if sh.File(def_image_path).Success:
+                # This can be called only after 'sg.objs.start()'
+                self._def_image = it.PhotoImage(ig.open(def_image_path))
+            else:
+                self._def_image = None
+        return self._def_image
+
+
+objs = Objects()
+
 
 if __name__ == '__main__':
     sg.objs.start()
     channel = Channel(name='Максим Шелков')
     sg.Geometry(parent_obj=channel.obj).set('985x500')
     channel.center(max_x=986,max_y=500)
+    
+    image_path = '/tmp/image.jpg'
+    if sh.File(image_path).Success:
+        image = it.PhotoImage(ig.open(image_path))
+    else:
+        image = None
+    
     for i in range(10):
         channel.add(no=i)
         # Show default picture & video information
         sg.objs.root().widget.update_idletasks()
         # Simulate long loading
-        """
+        
+        # cur
         count = 0
         for k in range(500000):
             count += k
-        """
+        
         video = channel._videos[i]
         video.reset (no       = i + 1
                     ,author   = 'Максим Шелков'
                     ,title    = 'НАГЛЫЙ ОБМАН от ПЕРЕКУПА! Автомобиль - Ford АВТОХЛАМ!'
                     ,duration = '14:16'
-                    ,picture  = 
-                    '/home/pete/downloads/hqdefault.jpg'
+                    ,image    = image
                     )
         ''' This does not work in 'Channel.__init__' for some reason, 
         calling this externally
