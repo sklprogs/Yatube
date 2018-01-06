@@ -7,6 +7,7 @@ import pafy      as pf
 import shared    as sh
 import sharedGUI as sg
 import gui       as gi
+import db
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
@@ -71,18 +72,113 @@ class Video:
     def values(self):
         self.Success = True
         self._video  = None
+        self._author = self._title = self._date = self._cat \
+                     = self._desc = self._dur = ''
+        self._len    = self._views = self._likes = self._dislikes = 0
+        self._rating = 0.0
+        
+    def assign_online(self):
+        if self._video:
+            self._author   = self._video.author
+            self._title    = self._video.title
+            self._date     = self._video.published
+            self._cat      = self._video.category
+            self._desc     = self._video.description
+            self._dur      = self._video.duration
+            self._len      = self._video.length
+            self._views    = self._video.viewcount
+            self._likes    = self._video.likes
+            self._dislikes = self._video.dislikes
+            self._rating   = self._video.rating
+        else:
+            sh.log.append ('Video.assign_online'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    def dump(self):
+        if self.Success:
+            ''' Do no write default data.
+                Do not forget to commit where necessary.
+            '''
+            if self._video:
+                data = (self._url,self._author,self._title,self._date
+                       ,self._cat,self._desc,self._dur,self._len
+                       ,self._views,self._likes,self._dislikes
+                       ,self._rating,False,False
+                       )
+                objs.db().add_video(data)
+            else:
+                sh.log.append ('Video.dump'
+                              ,_('INFO')
+                              ,_('Nothing to do.')
+                              )
+        else:
+            sh.log.append ('Video.dump'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def assign_offline(self,data):
+        if data:
+            data_len = 11
+            if len(data) >= data_len:
+                self._author   = data[0]
+                self._title    = data[1]
+                self._date     = data[2]
+                self._cat      = data[3]
+                self._desc     = data[4]
+                self._dur      = data[5]
+                self._len      = data[6]
+                self._views    = data[7]
+                self._likes    = data[8]
+                self._dislikes = data[9]
+                self._rating   = data[10]
+            else:
+                sg.Message ('Video.assign_offline'
+                           ,_('ERROR')
+                           ,_('The condition "%s" is not observed!') \
+                            % '%d >= %d' % (len(data),data_len)
+                           )
+        else:
+            sh.log.append ('Video.assign_offline'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def video(self):
-        try:
-            self._video = pf.new (url   = self._url
-                                 ,basic = True
-                                 ,gdata = False
-                                 )
-        except:
-            self.Success = False
-            sh.log.append ('Videos.video'
+        if self.Success:
+            if not self._video:
+                try:
+                    self._video = pf.new (url   = self._url
+                                         ,basic = True
+                                         ,gdata = False
+                                         )
+                except:
+                    self.Success = False
+                    sh.log.append ('Videos.video'
+                                  ,_('WARNING')
+                                  ,_('Error adding "%s"!') % self._url
+                                  )
+        else:
+            sh.log.append ('Video.video'
                           ,_('WARNING')
-                          ,_('Error adding "%s"!') % self._url
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def get(self):
+        if self.Success:
+            result = objs.db().get_video(url=self._url)
+            if result:
+                self.assign_offline(result)
+            else:
+                self.video()
+                self.assign_online()
+                self.dump()
+        else:
+            sh.log.append ('Video.get'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
                           )
     
     def summary(self):
@@ -90,52 +186,54 @@ class Video:
             tmp = io.StringIO()
             tmp.write(_('Author'))
             tmp.write(': ')
-            tmp.write(self._video.author)
+            tmp.write(self._author)
             tmp.write('\n')
             tmp.write(_('Title'))
             tmp.write(': ')
-            tmp.write(self._video.title)
+            tmp.write(self._title)
             tmp.write('\n')
             tmp.write(_('Date'))
             tmp.write(': ')
-            tmp.write(self._video.published)
+            tmp.write(self._date)
             tmp.write('\n')
             tmp.write(_('Category'))
             tmp.write(': ')
-            tmp.write(self._video.category)
+            tmp.write(self._category)
             tmp.write('\n')
             tmp.write(_('Description'))
             tmp.write(': ')
-            tmp.write(self._video.description)
+            tmp.write(self._desc)
             tmp.write('\n')
             tmp.write(_('Duration'))
             tmp.write(': ')
-            tmp.write(self._video.duration)
+            tmp.write(self._dur)
             tmp.write('\n')
             tmp.write(_('Length'))
             tmp.write(': ')
-            tmp.write(str(self._video.length))
+            tmp.write(str(self._len))
             tmp.write('\n')
             tmp.write(_('Views'))
             tmp.write(': ')
-            tmp.write(str(self._video.viewcount))
+            tmp.write(str(self._views))
             tmp.write('\n')
             tmp.write(_('Likes'))
             tmp.write(': ')
-            tmp.write(str(self._video.likes))
+            tmp.write(str(self._likes))
             tmp.write('\n')
             tmp.write(_('Dislikes'))
             tmp.write(': ')
-            tmp.write(str(self._video.dislikes))
+            tmp.write(str(self._dislikes))
             tmp.write('\n')
             tmp.write(_('Rating'))
             tmp.write(': ')
-            tmp.write(str(self._video.rating))
+            tmp.write(str(self._rating))
             tmp.write('\n')
-            tmp.write(_('Small video picture URL'))
-            tmp.write(': ')
-            tmp.write(str(self._video.thumb))
-            tmp.write('\n')
+            # todo: elaborate
+            if self._video:
+                tmp.write(_('Small video picture URL'))
+                tmp.write(': ')
+                tmp.write(str(self._video.thumb))
+                tmp.write('\n')
             result = tmp.getvalue()
             result = sh.Text(text=result).delete_unsupported()
             tmp.close()
@@ -269,8 +367,22 @@ class Channel:
         self.create()
         self.links()
         self.download()
-            
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self._db = ''
         
+    def db(self):
+        if not self._db:
+            self._db = db.DB()
+        return self._db
+
+
+objs = Objects()
+
 
 
 if __name__ == '__main__':
@@ -278,7 +390,9 @@ if __name__ == '__main__':
     #user = 'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
     #user = 'Centerstrain01'
     user = 'NEMAGIA'
+    
     sg.objs.start()
+    
     channel_gui = gi.Channel(name=user)
     sg.Geometry(parent_obj=channel_gui.obj).set('985x500')
     channel_gui.center(max_x=986,max_y=500)
@@ -293,12 +407,11 @@ if __name__ == '__main__':
         # Show default picture & video information
         sg.objs.root().widget.update_idletasks()
         video = Video(url=channel._links[i])
-        video.video()
+        video.get()
         if video.Success:
-            vid       = video._video
-            author    = sh.Text(text=vid.author).delete_unsupported()
-            title     = sh.Text(text=vid.title).delete_unsupported()
-            duration  = sh.Text(text=vid.duration).delete_unsupported()
+            author    = sh.Text(text=video._author).delete_unsupported()
+            title     = sh.Text(text=video._title).delete_unsupported()
+            duration  = sh.Text(text=video._dur).delete_unsupported()
             video_gui = channel_gui._videos[i]
             video_gui.reset (no       = i + 1
                             ,author   = author
@@ -311,7 +424,13 @@ if __name__ == '__main__':
             calling this externally
             ''' 
             channel_gui.update_scroll()
+    
+    objs.db().save()
+    
     # Move back to video #0
     channel_gui.canvas.widget.yview_moveto(0)
     channel_gui.show()
+    
+    objs._db.close()
+    
     sg.objs.end()
