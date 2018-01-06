@@ -78,16 +78,13 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
                           
-    def reset(self,user):
-        self._user = user
-    
     def add_video(self,data):
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data
                                  )
-            except sqlite3.OperationalError:
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
                 sg.Message ('DB.add_video'
                            ,_('WARNING')
@@ -99,18 +96,78 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
                           
+    def save(self):
+        if self.Success:
+            try:
+                self.db.commit()
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sg.Message ('DB.save'
+                           ,_('WARNING')
+                           ,_('Database "%s" has failed!') % self._path
+                           )
+        else:
+            sh.log.append ('DB.save'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def get_video(self,url):
+        if self.Success:
+            self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
+                                    ,DURATION,LENGTH,VIEWS,LIKES \
+                                    ,DISLIKES,RATING from VIDEOS \
+                              where ROOTURL = ?',(url,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('DB.get_video'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
     def close(self):
         if self.Success:
             try:
                 self.dbc.close()
-            except sqlite3.OperationalError:
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.create_videos'
+                sg.Message ('DB.close'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
         else:
             sh.log.append ('DB.close'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def print (self,Selected=False,Shorten=False
+              ,MaxRow=20,MaxRows=20,mode='VIDEOS'
+              ):
+        if self.Success:
+            ''' 'self.dbc.description' is 'None' without performing 
+                'select' first
+             '''
+            if not Selected:
+                if mode == 'VIDEOS':
+                    self.dbc.execute('select * from VIDEOS')
+                elif mode == 'CHANNELS':
+                    self.dbc.execute('select * from CHANNELS')
+                else:
+                    sg.Message (func    = 'DB.print'
+                               ,level   = _('ERROR')
+                               ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(mode),'VIDEOS, CHANNELS')
+                               )
+            headers = [cn[0] for cn in self.dbc.description]
+            rows    = self.dbc.fetchall()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = Shorten
+                     ,MaxRow  = MaxRow
+                     ,MaxRows = MaxRows
+                     ).print()
+        else:
+            sh.log.append ('DB.print'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )

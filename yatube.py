@@ -71,7 +71,6 @@ class Video:
     def values(self):
         self.Success = True
         self._video  = None
-        self._no     = 0
         
     def video(self):
         try:

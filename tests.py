@@ -44,10 +44,24 @@ class Tests:
                ,length,views,likes,dislikes,rating,Block,Ignore
                )
         dbi.add_video(data)
+        dbi.save()
+        dbi.close()
+        
+    def get_video(self):
+        dbi = db.DB()
+        print(dbi.get_video('9r0Eeo5_L8k'))
+        dbi.close()
+        
+    def print(self):
+        dbi = db.DB()
+        dbi.dbc.execute ('select AUTHOR,TITLE,DATE,DURATION,LIKES \
+                                ,DISLIKES from VIDEOS'
+                        )
+        dbi.print(Selected=1,Shorten=1)
         dbi.close()
 
 
 if __name__ == '__main__':
     sg.objs.start()
-    Tests().add_video()
+    Tests().get_video()
     sg.objs.end()
