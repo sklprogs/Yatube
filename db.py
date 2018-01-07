@@ -84,7 +84,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data
+                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False

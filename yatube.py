@@ -71,7 +71,7 @@ class Video:
         
     def values(self):
         self.Success = True
-        self._video  = self._image = None
+        self._video  = self._image = self._bytes = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = ''
         self._len    = self._views = self._likes = self._dislikes = 0
@@ -105,8 +105,7 @@ class Video:
                 data = (self._url,self._author,self._title,self._date
                        ,self._cat,self._desc,self._dur,self._len
                        ,self._views,self._likes,self._dislikes
-                       ,self._rating,sqlite3.Binary(self._image),False
-                       ,False
+                       ,self._rating,self._bytes,False,False
                        )
                 objs.db().add_video(data)
             else:
@@ -135,7 +134,11 @@ class Video:
                 self._likes    = data[8]
                 self._dislikes = data[9]
                 self._rating   = data[10]
-                self._image    = data[11]
+                self._bytes    = data[11]
+                img = sg.Image()
+                img._bytes = self._bytes
+                img.loader()
+                self._image = img.image()
             else:
                 sg.Message ('Video.assign_offline'
                            ,_('ERROR')
@@ -171,9 +174,19 @@ class Video:
     def image(self):
         if self.Success:
             if self._video:
-                self._image = sh.Get (url      = self._video.thumb
-                                     ,encoding = None
-                                     ).run()
+                image = sh.Get (url      = self._video.thumb
+                               ,encoding = None
+                               ).run()
+                if image:
+                    img = sg.Image()
+                    self._bytes = img._bytes = image
+                    img.loader()
+                    self._image = img.image()
+                else:
+                    sh.log.append ('Video.image'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
             else:
                 sh.log.append ('Video.image'
                               ,_('WARNING')
@@ -368,9 +381,8 @@ class Channel:
         if self.Success:
             sh.log.append ('Channel.download'
                           ,_('INFO')
-                          ,_('User "%s": %d recent videos') % (self._user
-                                                              ,len(self._links)
-                                                              )
+                          ,_('User "%s": %d recent videos') \
+                          % (self._user,len(self._links))
                           )
             for i in range(len(self._links)):
                 # todo: implement
@@ -408,8 +420,8 @@ objs = Objects()
 if __name__ == '__main__':
     #user = 'AvtoKriminalist'
     #user = 'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
-    #user = 'Centerstrain01'
-    user = 'NEMAGIA'
+    user = 'Centerstrain01'
+    #user = 'NEMAGIA'
     
     sg.objs.start()
     
@@ -437,8 +449,7 @@ if __name__ == '__main__':
                             ,author   = author
                             ,title    = title
                             ,duration = duration
-                            # todo: implement (video.thumb)
-                            ,picture  = None
+                            ,image    = video._image
                             )
             ''' This does not work in 'Channel.__init__' for some reason, 
             calling this externally

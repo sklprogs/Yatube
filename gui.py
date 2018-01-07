@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-from PIL import Image as ig
-from PIL import ImageTk as it
 import shared as sh
 import sharedGUI as sg
 import gettext, gettext_windows
@@ -47,13 +45,12 @@ class Video:
                                ,side       = 'right'
                                )
                                  
-    def pic(self,image=None):
-        if not image:
-            image = objs.def_image()
-        if image:
-            self.label2.widget.config(image=image)
-            #This prevents the garbage collector from deleting the image
-            self.label2.widget.image = image
+    def pic(self):
+        if not self._image:
+            self._image = objs.def_image()
+        self.label2.widget.config(image=self._image)
+        #This prevents the garbage collector from deleting the image
+        self.label2.widget.image = self._image
     
     def labels(self):
         ''' Fixed width is set to ensure that sizes of a default and
@@ -76,7 +73,7 @@ class Video:
                                ,side       = 'right'
                                ,Close      = False
                                ,width      = 196
-                               ,image      = objs.def_image()
+                               ,image      = self._image
                                )
         self.label3 = sg.Label (parent_obj = self.frame4
                                ,text       = _('Author:')
@@ -483,13 +480,10 @@ class Objects:
         
     def def_image(self):
         if not self._def_image:
-            def_image_path = sh.objs.pdir().add('nopic.png')
-            if sh.File(def_image_path).Success:
-                # This can be called only after 'sg.objs.start()'
-                self._def_image = it.PhotoImage(ig.open(def_image_path))
-            else:
-                self._def_image = None
+            path = sh.objs.pdir().add('nopic.png')
+            self._def_image = sg.Image().open(path=path)
         return self._def_image
+
 
 
 objs = Objects()
@@ -501,19 +495,20 @@ if __name__ == '__main__':
     sg.Geometry(parent_obj=channel.obj).set('985x500')
     channel.center(max_x=986,max_y=500)
     
-    image_path = '/tmp/image.jpg'
-    if sh.File(image_path).Success:
-        image = it.PhotoImage(ig.open(image_path))
-    else:
-        image = None
+    image = sh.Get (url      = 'http://i.ytimg.com/vi/9r0Eeo5_L8k/default.jpg'
+                   ,encoding = None
+                   ).run()
+    img = sg.Image()
+    img._bytes = image
+    img.loader()
+    image = img.image()
     
     for i in range(10):
         channel.add(no=i)
         # Show default picture & video information
         sg.objs.root().widget.update_idletasks()
+
         # Simulate long loading
-        
-        # cur
         count = 0
         for k in range(500000):
             count += k
