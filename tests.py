@@ -14,7 +14,7 @@ class Tests:
         print(menu.choice)
         
     def video_summary(self):
-        video = ya.Video(url='9r0Eeo5_L8k')
+        video = ya.Video(url='Gasrlh1MD74')
         video.video()
         summary = video.summary()
         if summary:
@@ -49,8 +49,9 @@ class Tests:
         
     def get_video(self):
         dbi = db.DB()
-        print(dbi.get_video('9r0Eeo5_L8k'))
+        result = dbi.get_video('9r0Eeo5_L8k')
         dbi.close()
+        return result
         
     def print(self):
         dbi = db.DB()
@@ -63,5 +64,5 @@ class Tests:
 
 if __name__ == '__main__':
     sg.objs.start()
-    Tests().get_video()
+    Tests().video_summary()
     sg.objs.end()

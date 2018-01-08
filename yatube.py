@@ -231,7 +231,7 @@ class Video:
             tmp.write('\n')
             tmp.write(_('Category'))
             tmp.write(': ')
-            tmp.write(self._category)
+            tmp.write(self._cat)
             tmp.write('\n')
             tmp.write(_('Description'))
             tmp.write(': ')
@@ -418,10 +418,12 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    #user = 'AvtoKriminalist'
+    user = 'AvtoKriminalist'
     #user = 'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
+    #user = 'SuperSharij'
     user = 'Centerstrain01'
     #user = 'NEMAGIA'
+    #user = 'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
     
     sg.objs.start()
     
