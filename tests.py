@@ -60,9 +60,21 @@ class Tests:
                         )
         dbi.print(Selected=1,Shorten=1)
         dbi.close()
+        
+    def search(self):
+        dbi = db.DB()
+        dbi.dbc.execute ('select TITLE from VIDEOS where AUTHOR = ? \
+                          order by DATE desc',('Анатолий Шарий',))
+        result = dbi.dbc.fetchall()
+        result = [item[0] for item in result if item]
+        result = '\n'.join(list(result))
+        sg.objs.txt().reset_data()
+        sg.objs._txt.insert(result)
+        sg.objs._txt.show()
+        dbi.close()
 
 
 if __name__ == '__main__':
     sg.objs.start()
-    Tests().video_summary()
+    Tests().search()
     sg.objs.end()

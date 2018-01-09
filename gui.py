@@ -351,6 +351,8 @@ class Channel:
         self.scrollbars()
         self.canvas.focus()
         self.bindings()
+        # This will allow to show the 1st video
+        self.scrollregion()
         
     def add(self,no=0):
         self._no = no
