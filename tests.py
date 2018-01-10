@@ -72,9 +72,38 @@ class Tests:
         sg.objs._txt.insert(result)
         sg.objs._txt.show()
         dbi.close()
+        
+    def get_channels(self):
+        dbi = db.DB()
+        print(dbi.get_channels())
+        dbi.close()
+        
+    def add_channel(self):
+        dbi = db.DB()
+        channels = dbi.get_channels()
+        if not channels:
+            channels = []
+        print('Original list of channels:',dbi.get_channels())
+        # Анатолий Шарий
+        Shariy = ('SuperSharij',False,)
+        # Максим Шелков
+        Shelkov = ('AvtoKriminalist',False,)
+        starred = [Shariy,Shelkov]
+        for channel in starred:
+            if not channel[0] in channels:
+                dbi.add_channel(data=channel)
+        dbi.save()
+        print('Final list of channels:',dbi.get_channels())
+        dbi.close()
+        
+    def drop_channels(self):
+        dbi = db.DB()
+        dbi.dbc.execute('drop table CHANNELS')
+        dbi.save()
+        dbi.close()
 
 
 if __name__ == '__main__':
     sg.objs.start()
-    Tests().search()
+    Tests().add_channel()
     sg.objs.end()

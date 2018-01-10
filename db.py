@@ -24,13 +24,15 @@ class DB:
     def create_channels(self):
         if self.Success:
             try:
-                # 4 columns by now
+                ''' 2 columns by now
+                    Other potentially needed columns:
+                    AUTHOR, text
+                    IMAGE, binary: channel's image
+                '''
                 self.dbc.execute (
                     'create table if not exists CHANNELS (\
                      USER      text    \
-                    ,AUTHOR    text    \
                     ,BLOCK     boolean \
-                    ,IMAGE     binary  \
                                                          )'
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
@@ -126,7 +128,7 @@ class DB:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
-                          
+
     def close(self):
         if self.Success:
             try:
@@ -170,6 +172,45 @@ class DB:
                      ).print()
         else:
             sh.log.append ('DB.print'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def get_channels(self):
+        if self.Success:
+            try:
+                self.dbc.execute ('select USER from CHANNELS \
+                                   where BLOCK = 0'
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result if item]
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sg.Message ('DB.get_channels'
+                           ,_('WARNING')
+                           ,_('Database "%s" has failed!') % self._path
+                           )
+        else:
+            sh.log.append ('DB.get_channels'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def add_channel(self,data):
+        if self.Success:
+            try:
+                self.dbc.execute ('insert into CHANNELS values (?,?)'
+                                 ,data
+                                 )
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sg.Message ('DB.add_channel'
+                           ,_('WARNING')
+                           ,_('Database "%s" has failed!') % self._path
+                           )
+        else:
+            sh.log.append ('DB.add_channel'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
