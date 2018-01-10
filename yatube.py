@@ -413,28 +413,15 @@ class Objects:
         return self._db
 
 
-objs = Objects()
-
-
-
-if __name__ == '__main__':
-    #user = 'AvtoKriminalist'
-    #user = 'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
-    user = 'SuperSharij'
-    #user = 'Centerstrain01'
-    #user = 'NEMAGIA'
-    #user = 'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
-    
-    sg.objs.start()
-    
-    channel_gui = gi.Channel(name=user)
-    sg.Geometry(parent_obj=channel_gui.obj).set('985x500')
-    channel_gui.center(max_x=986,max_y=500)
-    
+def update_channel(user='Centerstrain01'):
     channel = Channel(user=user)
     channel.channel()
     channel.page()
     channel.links()
+    
+    channel_gui = gi.Channel(name=user)
+    sg.Geometry(parent_obj=channel_gui).set('985x500')
+    channel_gui.center(max_x=986,max_y=500)
     
     for i in range(len(channel._links)):
         channel_gui.add(no=i)
@@ -457,13 +444,51 @@ if __name__ == '__main__':
             calling this externally
             ''' 
             channel_gui.update_scroll()
-    
     objs.db().save()
-    
     # Move back to video #0
     channel_gui.canvas.widget.yview_moveto(0)
     channel_gui.show()
-    
-    objs._db.close()
-    
+
+def update_channels(*args):
+    channels = objs.db().get_channels()
+    for channel in channels:
+        update_channel(user=channel)
+
+def update_trending(*args):
+    sg.Message ('update_trending'
+               ,_('INFO')
+               ,_('Not implemented yet!')
+               )
+
+def manage_sub(*args):
+    sg.Message ('manage_sub'
+               ,_('INFO')
+               ,_('Not implemented yet!')
+               )
+               
+def manage_block(*args):
+    sg.Message ('manage_block'
+               ,_('INFO')
+               ,_('Not implemented yet!')
+               )
+
+
+objs = Objects()
+
+
+
+if __name__ == '__main__':
+    sg.objs.start()
+    menu = gi.Menu()
+    menu.show()
+    if menu.choice == _('Update subscriptions'):
+        update_channels()
+    elif menu.choice == _('Update trending'):
+        update_trending()
+    elif menu.choice == _('Manage subscriptions'):
+        manage_sub()
+    elif menu.choice == _('Manage blocklist'):
+        manage_block()
+    else:
+        print('"' + str(menu.choice) + '"')
     sg.objs.end()

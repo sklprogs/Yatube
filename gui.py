@@ -391,7 +391,7 @@ class Menu:
     
     def __init__(self):
         self.parent_obj = sg.objs.root()
-        self.choice     = 0
+        self.choice     = _('Quit')
         self.gui()
         
     def title(self,text=None):
@@ -412,36 +412,40 @@ class Menu:
         self.obj.close()
     
     def buttons(self):
-        #[cbox] Ignore videos older than ...
+        #todo: [cbox] Ignore videos older than ...
+        ''' For some reason, separating the button text to a variable
+            does not work correctly (the last action defined in such a
+            way is selected).
+        '''
         button = sg.Button (parent_obj = self.obj
                            ,text       = _('Update subscriptions')
-                           ,action     = lambda x:self.action(choice=1)
+                           ,action     = lambda x:self.action(_('Update subscriptions'))
                            ,side       = 'top'
                            )
         button.focus()
         sg.Button (parent_obj = self.obj
                   ,text       = _('Update trending')
-                  ,action     = lambda x:self.action(choice=2)
+                  ,action     = lambda x:self.action(_('Update trending'))
                   ,side       = 'top'
                   )
         sg.Button (parent_obj = self.obj
                   ,text       = _('Manage subscriptions')
-                  ,action     = lambda x:self.action(choice=3)
+                  ,action     = lambda x:self.action(_('Manage subscriptions'))
                   ,side       = 'top'
                   )
         sg.Button (parent_obj = self.obj
                   ,text       = _('Manage blocklist')
-                  ,action     = lambda x:self.action(choice=4)
+                  ,action     = lambda x:self.action(_('Manage blocklist'))
                   ,side       = 'top'
                   )
         sg.Button (parent_obj = self.obj
                   ,text       = _('Quit')
-                  ,action     = self.quit
+                  ,action     = lambda x:self.action(_('Quit'))
                   ,side       = 'top'
                   )
     
     def quit(self,*args):
-        self.action(choice=0)
+        self.action(_('Quit'))
     
     def bindings(self):
         sg.bind (obj      = self.obj
@@ -478,7 +482,7 @@ class Menu:
 class Objects:
     
     def __init__(self):
-        self._def_image = None
+        self._def_image = self._channel_gui = None
         
     def def_image(self):
         if not self._def_image:
@@ -486,47 +490,16 @@ class Objects:
             self._def_image = sg.Image().open(path=path)
         return self._def_image
 
+    def channel_gui(self):
+        if not self._channel_gui:
+            self._channel_gui = Channel(name=_('Channels'))
+            sg.Geometry(parent_obj=self._channel_gui.obj).set('985x500')
+            self._channel_gui.center(max_x=986,max_y=500)
+        return self._channel_gui
 
 
 objs = Objects()
 
 
 if __name__ == '__main__':
-    sg.objs.start()
-    channel = Channel(name='Максим Шелков')
-    sg.Geometry(parent_obj=channel.obj).set('985x500')
-    channel.center(max_x=986,max_y=500)
-    
-    image = sh.Get (url      = 'http://i.ytimg.com/vi/9r0Eeo5_L8k/default.jpg'
-                   ,encoding = None
-                   ).run()
-    img = sg.Image()
-    img._bytes = image
-    img.loader()
-    image = img.image()
-    
-    for i in range(10):
-        channel.add(no=i)
-        # Show default picture & video information
-        sg.objs.root().widget.update_idletasks()
-
-        # Simulate long loading
-        count = 0
-        for k in range(500000):
-            count += k
-        
-        video = channel._videos[i]
-        video.reset (no       = i + 1
-                    ,author   = 'Максим Шелков'
-                    ,title    = 'НАГЛЫЙ ОБМАН от ПЕРЕКУПА! Автомобиль - Ford АВТОХЛАМ!'
-                    ,duration = '14:16'
-                    ,image    = image
-                    )
-        ''' This does not work in 'Channel.__init__' for some reason, 
-        calling this externally
-        ''' 
-        channel.update_scroll()
-    # Move back to video #0
-    channel.canvas.widget.yview_moveto(0)
-    channel.show()
-    sg.objs.end()
+    pass

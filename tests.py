@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
+import shared    as sh
 import sharedGUI as sg
-import yatube    as ya
 import gui       as gi
+import yatube    as ya
 import db
 
 
@@ -78,7 +79,7 @@ class Tests:
         print(dbi.get_channels())
         dbi.close()
         
-    def add_channel(self):
+    def add_channels(self):
         dbi = db.DB()
         channels = dbi.get_channels()
         if not channels:
@@ -88,7 +89,9 @@ class Tests:
         Shariy = ('SuperSharij',False,)
         # Максим Шелков
         Shelkov = ('AvtoKriminalist',False,)
-        starred = [Shariy,Shelkov]
+        Centestrain01 = ('Centerstrain01',False,)
+        Nemagia = ('NEMAGIA',False,)
+        starred = [Shariy,Shelkov,Centestrain01,Nemagia]
         for channel in starred:
             if not channel[0] in channels:
                 dbi.add_channel(data=channel)
@@ -101,9 +104,90 @@ class Tests:
         dbi.dbc.execute('drop table CHANNELS')
         dbi.save()
         dbi.close()
+        
+    def fill_channel(self):
+        channel = gi.Channel(name='Максим Шелков')
+        sg.Geometry(parent_obj=channel.obj).set('985x500')
+        channel.center(max_x=986,max_y=500)
+        
+        image = sh.Get (url      = 'http://i.ytimg.com/vi/9r0Eeo5_L8k/default.jpg'
+                       ,encoding = None
+                       ).run()
+        img = sg.Image()
+        img._bytes = image
+        img.loader()
+        image = img.image()
+        
+        for i in range(10):
+            channel.add(no=i)
+            # Show default picture & video information
+            sg.objs.root().widget.update_idletasks()
+
+            # Simulate long loading
+            count = 0
+            for k in range(500000):
+                count += k
+            
+            video = channel._videos[i]
+            video.reset (no       = i + 1
+                        ,author   = 'Максим Шелков'
+                        ,title    = 'НАГЛЫЙ ОБМАН от ПЕРЕКУПА! Автомобиль - Ford АВТОХЛАМ!'
+                        ,duration = '14:16'
+                        ,image    = image
+                        )
+            ''' This does not work in 'Channel.__init__' for some reason, 
+            calling this externally
+            ''' 
+            channel.update_scroll()
+        # Move back to video #0
+        channel.canvas.widget.yview_moveto(0)
+        channel.show()
+        
+    def update_channel(self,user):
+        ''' 'AvtoKriminalist'
+            'UCIpvyH9GKI54X1Ww2BDnEgg' # Not supported
+            'SuperSharij'
+            'Centerstrain01'
+            'NEMAGIA'
+            'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
+        '''
+        channel = ya.Channel(user=user)
+        channel.channel()
+        channel.page()
+        channel.links()
+        
+        for i in range(len(channel._links)):
+            gi.objs.channel_gui().add(no=i)
+            # Show default picture & video information
+            sg.objs.root().widget.update_idletasks()
+            video = ya.Video(url=channel._links[i])
+            video.get()
+            if video.Success:
+                author    = sh.Text(text=video._author).delete_unsupported()
+                title     = sh.Text(text=video._title).delete_unsupported()
+                duration  = sh.Text(text=video._dur).delete_unsupported()
+                video_gui = gi.objs._channel_gui._videos[i]
+                video_gui.reset (no       = i + 1
+                                ,author   = author
+                                ,title    = title
+                                ,duration = duration
+                                ,image    = video._image
+                                )
+                ''' This does not work in 'Channel.__init__' for some reason, 
+                calling this externally
+                ''' 
+                gi.objs._channel_gui.update_scroll()
+        
+        ya.objs.db().save()
+        
+        # Move back to video #0
+        gi.objs._channel_gui.canvas.widget.yview_moveto(0)
+        gi.objs._channel_gui.show()
+        
+        ya.objs._db.close()
 
 
 if __name__ == '__main__':
     sg.objs.start()
-    Tests().add_channel()
+    Tests().print()
     sg.objs.end()

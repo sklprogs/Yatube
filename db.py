@@ -176,12 +176,15 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
     
-    def get_channels(self):
+    def get_channels(self,Block=True):
         if self.Success:
             try:
-                self.dbc.execute ('select USER from CHANNELS \
-                                   where BLOCK = 0'
-                                 )
+                if Block:
+                    self.dbc.execute ('select USER from CHANNELS \
+                                       where BLOCK = 0'
+                                     )
+                else:
+                    self.dbc.execute ('select USER from CHANNELS')
                 result = self.dbc.fetchall()
                 if result:
                     return [item[0] for item in result if item]
@@ -214,6 +217,13 @@ class DB:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+    
+    def block_channels(self):
+        # cur
+        pass
+    
+    def zzz(self):
+        pass
 
 
 if __name__ == '__main__':
