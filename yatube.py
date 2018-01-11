@@ -14,6 +14,8 @@ gettext_windows.setup_env()
 gettext.install('yatube','./locale')
 
 
+product = 'Yatube'
+version = '(alpha)'
 AllOS = False
 
 
@@ -402,10 +404,95 @@ class Channel:
 
 
 
+class Menu:
+    
+    def __init__(self):
+        self.parent_obj = sg.objs.root()
+        self.gui()
+        
+    def title(self,text=None):
+        if text:
+            self.parent_obj.title(text)
+        else:
+            text = sh.List(lst1=[product,version]).space_items()
+            self.obj.title(text)
+    
+    def show(self,*args):
+        self.obj.show()
+    
+    def close(self,*args):
+        self.obj.close()
+    
+    def buttons(self):
+        #todo: [cbox] Ignore videos older than ...
+        ''' For some reason, separating the button text to a variable
+            does not work correctly (the last action defined in such a
+            way is selected).
+        '''
+        button = sg.Button (parent_obj = self.obj
+                           ,text       = _('Update subscriptions')
+                           ,action     = update_channels
+                           ,side       = 'top'
+                           )
+        button.focus()
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Update trending')
+                  ,action     = update_trending
+                  ,side       = 'top'
+                  )
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Manage subscriptions')
+                  ,action     = manage_sub
+                  ,side       = 'top'
+                  )
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Manage blocklist')
+                  ,action     = manage_block
+                  ,side       = 'top'
+                  )
+        sg.Button (parent_obj = self.obj
+                  ,text       = _('Quit')
+                  ,action     = self.close
+                  ,side       = 'top'
+                  )
+    
+    def bindings(self):
+        sg.bind (obj      = self.obj
+                ,bindings = ['<Control-q>','<Control-w>','<Escape>']
+                ,action   = self.close
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Down>'
+                ,action   = self.focus_next
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Up>'
+                ,action   = self.focus_prev
+                )
+        # Trying to pass lambda will result in an error
+        self.widget.protocol("WM_DELETE_WINDOW",self.close)
+        
+    def focus_next(self,event,*args):
+        event.widget.tk_focusNext().focus()
+        return 'break'
+        
+    def focus_prev(self,event,*args):
+        event.widget.tk_focusPrev().focus()
+        return 'break'
+    
+    def gui(self):
+        self.obj = sg.objs.new_top(Maximize=False)
+        self.widget = self.obj.widget
+        self.buttons()
+        self.title()
+        self.bindings()
+
+
+
 class Objects:
     
     def __init__(self):
-        self._db = ''
+        self._db = None
         
     def db(self):
         if not self._db:
@@ -461,16 +548,25 @@ def update_trending(*args):
                )
 
 def manage_sub(*args):
-    sg.Message ('manage_sub'
-               ,_('INFO')
-               ,_('Not implemented yet!')
-               )
+    old_channels = objs.db().get_channels()
+    gi.objs.sub().fill(lst=old_channels)
+    gi.objs._sub.show()
+    channels = gi.objs._sub.get()
+    if not channels:
+        channels = []
+    for channel in channels:
+        if not channel in old_channels:
+            objs._db.add_channel(data=(channel,False,))
+    objs._db.save()
                
 def manage_block(*args):
-    sg.Message ('manage_block'
-               ,_('INFO')
-               ,_('Not implemented yet!')
-               )
+    channels = objs.db().get_channels(block=1)
+    gi.objs.block().fill(lst=channels)
+    gi.objs._block.show()
+    channels = gi.objs._block.get()
+    objs._db.block_channels(channels,block=0)
+    objs._db.block_channels(channels)
+    objs._db.save()
 
 
 objs = Objects()
@@ -479,16 +575,6 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    menu = gi.Menu()
+    menu = Menu()
     menu.show()
-    if menu.choice == _('Update subscriptions'):
-        update_channels()
-    elif menu.choice == _('Update trending'):
-        update_trending()
-    elif menu.choice == _('Manage subscriptions'):
-        manage_sub()
-    elif menu.choice == _('Manage blocklist'):
-        manage_block()
-    else:
-        print('"' + str(menu.choice) + '"')
     sg.objs.end()

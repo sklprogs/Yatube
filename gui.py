@@ -7,9 +7,6 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','./locale')
 
-product = 'Yatube'
-version = '(alpha)'
-
 def_height = 110 # A default picture height
 
 
@@ -387,102 +384,33 @@ class Channel:
 
 
 
-class Menu:
-    
-    def __init__(self):
-        self.parent_obj = sg.objs.root()
-        self.choice     = _('Quit')
-        self.gui()
-        
-    def title(self,text=None):
-        if text:
-            self.parent_obj.title(text)
-        else:
-            text = sh.List(lst1=[product,version]).space_items()
-            self.obj.title(text)
-    
-    def show(self,*args):
-        self.obj.show()
-    
-    def close(self,*args):
-        self.obj.close()
-    
-    def action(self,choice,*args):
-        self.choice = choice
-        self.obj.close()
-    
-    def buttons(self):
-        #todo: [cbox] Ignore videos older than ...
-        ''' For some reason, separating the button text to a variable
-            does not work correctly (the last action defined in such a
-            way is selected).
-        '''
-        button = sg.Button (parent_obj = self.obj
-                           ,text       = _('Update subscriptions')
-                           ,action     = lambda x:self.action(_('Update subscriptions'))
-                           ,side       = 'top'
-                           )
-        button.focus()
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Update trending')
-                  ,action     = lambda x:self.action(_('Update trending'))
-                  ,side       = 'top'
-                  )
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Manage subscriptions')
-                  ,action     = lambda x:self.action(_('Manage subscriptions'))
-                  ,side       = 'top'
-                  )
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Manage blocklist')
-                  ,action     = lambda x:self.action(_('Manage blocklist'))
-                  ,side       = 'top'
-                  )
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Quit')
-                  ,action     = lambda x:self.action(_('Quit'))
-                  ,side       = 'top'
-                  )
-    
-    def quit(self,*args):
-        self.action(_('Quit'))
-    
-    def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = ['<Control-q>','<Control-w>','<Escape>']
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Down>'
-                ,action   = self.focus_next
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Up>'
-                ,action   = self.focus_prev
-                )
-        # Trying to pass lambda will result in an error
-        self.widget.protocol("WM_DELETE_WINDOW",self.quit)
-        
-    def focus_next(self,event,*args):
-        event.widget.tk_focusNext().focus()
-        return 'break'
-        
-    def focus_prev(self,event,*args):
-        event.widget.tk_focusPrev().focus()
-        return 'break'
-    
-    def gui(self):
-        self.obj = sg.objs.new_top(Maximize=False)
-        self.widget = self.obj.widget
-        self.buttons()
-        self.title()
-        self.bindings()
-
-
 class Objects:
     
     def __init__(self):
-        self._def_image = self._channel_gui = None
+        self._def_image = self._channel_gui = self._sub = self._block \
+                        = None
+        patterns = ('https://www.youtube.com/user/AvtoKriminalist/videos'
+                   ,'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
+                   ,'AvtoKriminalist'
+                   ,'UCIpvyH9GKI54X1Ww2BDnEgg'
+                   )
+        self._notes = _('Enter a channel URL, one URL per a line:')
+        self._notes += '\n'
+        self._notes += _('Patterns: %s') % '\n'.join(patterns)
+        
+    def sub(self):
+        if not self._sub:
+            self._sub = sg.Manage (title = _('Manage subscriptions')
+                                  ,notes = self._notes
+                                  )
+        return self._sub
+        
+    def block(self):
+        if not self._block:
+            self._block = sg.Manage (title = _('Manage blacklist')
+                                    ,notes = self._notes
+                                    )
+        return self._block
         
     def def_image(self):
         if not self._def_image:

@@ -176,18 +176,26 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
     
-    def get_channels(self,Block=True):
+    def get_channels(self,block=0):
         if self.Success:
             try:
-                if Block:
+                if block == -1:
+                    self.dbc.execute ('select USER from CHANNELS')
+                elif block == 0 or block == 1:
                     self.dbc.execute ('select USER from CHANNELS \
-                                       where BLOCK = 0'
+                                       where BLOCK = ?',(block,)
                                      )
                 else:
-                    self.dbc.execute ('select USER from CHANNELS')
-                result = self.dbc.fetchall()
-                if result:
-                    return [item[0] for item in result if item]
+                    self.Success = False
+                    sg.Message ('DB.get_channels'
+                               ,_('ERROR')
+                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                               % (str(block),'-1, 0, 1')
+                               )
+                if self.Success:
+                    result = self.dbc.fetchall()
+                    if result:
+                        return [item[0] for item in result if item]
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
                 sg.Message ('DB.get_channels'
@@ -218,10 +226,24 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
     
-    def block_channels(self):
-        # cur
-        pass
-    
+    def block_channels(self,channels,block=1):
+        if self.Success:
+            try:
+                self.dbc.execute ('update CHANNELS set BLOCK = ? \
+                                   where USER in ?',(block,channels,)
+                                 )
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sg.Message ('DB.block_channels'
+                           ,_('WARNING')
+                           ,_('Database "%s" has failed!') % self._path
+                           )
+        else:
+            sh.log.append ('DB.block_channels'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
     def zzz(self):
         pass
 
