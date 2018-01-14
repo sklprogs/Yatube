@@ -478,7 +478,11 @@ class Menu:
         self.frame3 = sg.Frame (parent_obj = self.parent_obj
                                ,expand     = False
                                )
-        self.framev = sg.Frame (parent_obj = self.parent_obj)
+        ''' We can create an additional frame here for gi.Channel, but
+            gi.Channel.bindings needs to have Toplevel as a parent.
+        '''
+        #todo: do we need this?
+        #self.framev = sg.Frame (parent_obj = self.parent_obj)
     
     def clear_filter(self,*args):
         self.clear_search()
@@ -533,7 +537,7 @@ class Menu:
                                  ,action     = self.filter
                                  )
         self.cb_date = sg.CheckBox (parent_obj = self.frame2
-                                   ,Active     = True
+                                   ,Active     = False
                                    ,side       = 'left'
                                    )
         self.om_date = sg.OptionMenu (parent_obj = self.frame2
@@ -567,8 +571,9 @@ class Menu:
                                  ,action     = self.clear_filter
                                  )
         self.cb_slct = sg.CheckBox (parent_obj = self.frame3
-                                   ,Active     = True
+                                   ,Active     = False
                                    ,side       = 'left'
+                                   ,action     = self.toggle_select
                                    )
         self.btn_dld = sg.Button (parent_obj = self.frame3
                                  ,text       = _('Download selected')
@@ -626,6 +631,14 @@ class Menu:
         self.init_config()
         self.title()
         self.bindings()
+        
+    def toggle_select(self):
+        if self.cb_slct.get():
+            for video in gi.objs.channel()._videos:
+                video.cbox.enable()
+        else:
+            for video in gi.objs.channel()._videos:
+                video.cbox.disable()
 
 
 
@@ -724,6 +737,6 @@ objs = Objects()
 if __name__ == '__main__':
     sg.objs.start()
     menu = objs.menu()
-    gi.objs.channel(parent_obj=objs._menu.framev)
+    gi.objs.channel(parent_obj=objs._menu.parent_obj)
     menu.show()
     sg.objs.end()

@@ -189,39 +189,35 @@ class Channel:
             self.obj = sg.SimpleTop(parent_obj=self.parent_obj)
         
     def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = ['<Control-q>','<Control-w>','<Escape>']
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Down>'
                 ,action   = self.scroll_down
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Up>'
                 ,action   = self.scroll_up
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Left>'
                 ,action   = self.scroll_left
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Right>'
                 ,action   = self.scroll_right
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Next>'
                 ,action   = self.scroll_page_down
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Prior>'
                 ,action   = self.scroll_page_up
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<End>'
                 ,action   = self.scroll_end
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self.parent_obj
                 ,bindings = '<Home>'
                 ,action   = self.scroll_start
                 )
