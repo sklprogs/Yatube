@@ -441,6 +441,12 @@ class Menu:
                   ,side       = 'top'
                   )
         sg.Button (parent_obj = self.obj
+                  ,text       = _('Manage videos')
+                  ,action     = manage_vid
+                  ,side       = 'top'
+                  )
+                  
+        sg.Button (parent_obj = self.obj
                   ,text       = _('Manage subscriptions')
                   ,action     = manage_sub
                   ,side       = 'top'
@@ -489,15 +495,213 @@ class Menu:
 
 
 
+class Top:
+    
+    def __init__(self,parent_obj=None):
+        self.values()
+        self.set_date()
+        self.parent_obj = parent_obj
+        self.set_parent()
+        self.gui()
+        
+    def values(self):
+        self._days   = [str(day+1) for day in range(31)]
+        # sh.Time outputs a day number preceded by 0
+        self._days   = tuple ('0' + day if len(day) == 1 else day \
+                              for day in self._days
+                             )
+        self._months = (_('Jan'),_('Feb'),_('Mar'),_('Apr'),_('May')
+                       ,_('Jun'),_('Jul'),_('Aug'),_('Sep'),_('Oct')
+                       ,_('Nov'),_('Dec')
+                       )
+        self.time_i = sh.Time(pattern='%d',MondayWarning=False)
+        # Year of Youtube birth
+        first_year = 2005
+        last_year  = self.time_i.year()
+        last_year  = sh.Input (func_title = 'Top.values'
+                              ,val        = last_year
+                              ).integer()
+        if not last_year > first_year:
+            sh.log.append ('Top.values'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
+            last_year = 2018
+        self._years = tuple (str(year) for year in range (first_year
+                                                         ,last_year + 1
+                                                         )
+                            )
+        #todo: implement
+        self._channels = ['Анатолий Шарий','Быть Или'
+                         ,'Максим Шелков'
+                         ]
+        self._channels.append(_('All'))
+    
+    def set_date(self,DaysDelta=7):
+        self.time_i.add_days(days_delta=-DaysDelta)
+        self._year = str(self.time_i.year())
+        self._day = self.time_i.date()
+        self.time_i.month_abbr()
+        self._month = self.time_i.localize_month_abbr()
+    
+    def set_parent(self):
+        if not self.parent_obj:
+            self.parent_obj = sg.objs.new_top(Maximize=False)
+            #sg.Geometry(parent_obj=self.parent_obj).set('985x600')
+            sg.Geometry(parent_obj=self.parent_obj).set('985x100')
+            
+    def show(self,*args):
+        self.parent_obj.show()
+        
+    def close(self,*args):
+        self.parent_obj.close()
+    
+    def frames(self):
+        self.frame1 = sg.Frame (parent_obj = self.parent_obj
+                               ,expand     = False
+                               )
+        self.frame2 = sg.Frame (parent_obj = self.parent_obj
+                               ,expand     = False
+                               )
+    
+    def clear_filter(self,*args):
+        self.clear_search()
+        #todo: Restore filtered videos here
+                   
+    def clear_search(self,*args):
+        self.en_srch.clear_text()
+    
+    def download(self,*args):
+        sg.Message ('Top.download'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+                   
+    def play(self,*args):
+        sg.Message ('Top.play'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def select_new(self,*args):
+        sg.Message ('Top.select_new'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def filter(self,*args):
+        sg.Message ('Top.filter'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def widgets(self):
+        self.btn_all = sg.Button (parent_obj = self.frame1
+                                 ,text       = _('Select all new videos')
+                                 ,action     = self.select_new
+                                 )
+        self.btn_flt = sg.Button (parent_obj = self.frame1
+                                 ,text       = _('Select by filter')
+                                 ,action     = self.filter
+                                 )
+        self.cb_date = sg.CheckBox (parent_obj = self.frame1
+                                   ,Active     = True
+                                   ,side       = 'left'
+                                   )
+        self.om_date = sg.OptionMenu (parent_obj = self.frame1
+                                     ,items      = (_('Newer than')
+                                                   ,_('Older than')
+                                                   )
+                                     ,default    = _('Newer than')
+                                     )
+        self.om_wday = sg.OptionMenu (parent_obj = self.frame1
+                                     ,items      = self._days
+                                     ,default    = self._day
+                                     )
+        self.om_mnth = sg.OptionMenu (parent_obj = self.frame1
+                                     ,items      = self._months
+                                     ,default    = self._month
+                                     )
+        self.om_yers = sg.OptionMenu (parent_obj = self.frame1
+                                     ,items      = self._years
+                                     ,default    = self._year
+                                     )
+        self.cb_srch = sg.CheckBox (parent_obj = self.frame1
+                                   ,Active     = False
+                                   ,side       = 'left'
+                                   )
+        self.en_srch = sg.Entry (parent_obj = self.frame1
+                                ,Composite  = True
+                                ,side       = 'left'
+                                )
+        self.en_srch.insert(_('Search in channels'))
+        self.en_srch.widget.config (font = 'Serif 10 italic'
+                                   ,fg   = 'grey'
+                                   )
+        self.cb_slct = sg.CheckBox (parent_obj = self.frame2
+                                   ,Active     = True
+                                   ,side       = 'left'
+                                   )
+        self.btn_dld = sg.Button (parent_obj = self.frame2
+                                 ,text       = _('Download selected')
+                                 ,action     = self.download
+                                 )
+        self.btn_ply = sg.Button (parent_obj = self.frame2
+                                 ,text       = _('Play')
+                                 ,action     = self.play
+                                 )
+        self.om_chnl = sg.OptionMenu (parent_obj = self.frame2
+                                     ,items      = self._channels
+                                     ,side       = 'right'
+                                     ,default    = _('All')
+                                     )
+    
+    def init_config(self):
+        self.btn_clr = sg.Button (parent_obj = self.frame1
+                                 ,text       = _('Clear')
+                                 ,action     = self.clear_filter
+                                 )
+        self.btn_dld.widget.config(state='disabled')
+        self.btn_ply.widget.config(state='disabled')
+                  
+    def bindings(self):
+        sg.bind (obj      = self.parent_obj
+                ,bindings = ['<Escape>','<Control-w>','<Control-q>']
+                ,action   = self.close
+                )
+        sg.bind (obj      = self.en_srch
+                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
+                ,action   = self.clear_search
+                )
+    
+    def title(self,text=None):
+        if not text:
+            text = _('Manage videos')
+        self.parent_obj.title(text)
+    
+    def gui(self):
+        self.frames()
+        self.widgets()
+        self.init_config()
+        self.title()
+        self.bindings()
+
+
+
 class Objects:
     
     def __init__(self):
-        self._db = None
+        self._db = self._top = None
         
     def db(self):
         if not self._db:
             self._db = db.DB()
         return self._db
+        
+    def top(self,parent_obj=None):
+        if not self._top:
+            self._top = Top(parent_obj=parent_obj)
+        return self._top
 
 
 def update_channel(user='Centerstrain01'):
@@ -527,8 +731,8 @@ def update_channel(user='Centerstrain01'):
                             ,duration = duration
                             ,image    = video._image
                             )
-            ''' This does not work in 'Channel.__init__' for some reason, 
-            calling this externally
+            ''' This does not work in 'Channel.__init__' for some
+                reason, calling this externally.
             ''' 
             channel_gui.update_scroll()
     objs.db().save()
@@ -567,6 +771,9 @@ def manage_block(*args):
     objs._db.block_channels(channels,block=0)
     objs._db.block_channels(channels)
     objs._db.save()
+    
+def manage_vid(self):
+    objs.top().show()
 
 
 objs = Objects()

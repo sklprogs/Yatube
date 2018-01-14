@@ -189,5 +189,5 @@ class Tests:
 
 if __name__ == '__main__':
     sg.objs.start()
-    Tests().print()
+    Tests().fill_channel()
     sg.objs.end()
