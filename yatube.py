@@ -546,9 +546,10 @@ class Top:
     
     def set_parent(self):
         if not self.parent_obj:
-            self.parent_obj = sg.objs.new_top(Maximize=False)
-            #sg.Geometry(parent_obj=self.parent_obj).set('985x600')
-            sg.Geometry(parent_obj=self.parent_obj).set('985x100')
+            #self.parent_obj = sg.objs.new_top(Maximize=False)
+            #sg.Geometry(parent_obj=self.parent_obj).set('985x100')
+            self.parent_obj = sg.SimpleTop(parent_obj=sg.objs.root())
+            sg.Geometry(parent_obj=self.parent_obj).set('985x600')
             
     def show(self,*args):
         self.parent_obj.show()
@@ -654,7 +655,17 @@ class Top:
                                      ,items      = self._channels
                                      ,side       = 'right'
                                      ,default    = _('All')
+                                     ,command    = self.set_channel
                                      )
+    
+    def set_channel(self,*args):
+        sh.log.append ('Top.set_channel'
+                      ,_('INFO')
+                      ,_('Switch to channel "%s"') \
+                      % str(self.om_chnl.choice)
+                      )
+        #todo: set user
+        update_channel()
     
     def init_config(self):
         self.btn_clr = sg.Button (parent_obj = self.frame1
@@ -680,6 +691,7 @@ class Top:
         self.parent_obj.title(text)
     
     def gui(self):
+        self.widget = self.parent_obj.widget
         self.frames()
         self.widgets()
         self.init_config()
@@ -691,16 +703,23 @@ class Top:
 class Objects:
     
     def __init__(self):
-        self._db = self._top = None
+        self._db = self._top = self._parent = None
         
     def db(self):
         if not self._db:
             self._db = db.DB()
         return self._db
         
-    def top(self,parent_obj=None):
+    def parent(self):
+        if not self._parent:
+            self._parent = sg.SimpleTop(parent_obj=sg.objs.root())
+            #sg.Geometry(parent_obj=self._parent).set('985x600')
+            sg.Geometry(parent_obj=self._parent).maximize()
+        return self._parent
+    
+    def top(self):
         if not self._top:
-            self._top = Top(parent_obj=parent_obj)
+            self._top = Top(parent_obj=self.parent())
         return self._top
 
 
@@ -710,7 +729,7 @@ def update_channel(user='Centerstrain01'):
     channel.page()
     channel.links()
     
-    channel_gui = gi.Channel(name=user)
+    channel_gui = gi.Channel(parent_obj=objs.top(),name=user)
     sg.Geometry(parent_obj=channel_gui).set('985x500')
     channel_gui.center(max_x=986,max_y=500)
     

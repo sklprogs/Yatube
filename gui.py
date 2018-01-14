@@ -175,10 +175,19 @@ class Video:
 
 class Channel:
     
-    def __init__(self,name=_('Channel')):
+    def __init__(self,parent_obj=None,name=_('Channel')):
         self.values()
+        self.parent_obj = parent_obj
         self._name = name
+        self.set_parent()
         self.gui()
+        
+    def set_parent(self):
+        if self.parent_obj:
+            self.obj = self.parent_obj
+        else:
+            self.parent_obj = sg.objs.root()
+            self.obj = sg.SimpleTop(parent_obj=self.parent_obj)
         
     def bindings(self):
         sg.bind (obj      = self.obj
@@ -340,7 +349,6 @@ class Channel:
                      )
     
     def gui(self):
-        self.obj = sg.SimpleTop(parent_obj=sg.objs.root())
         self.widget = self.obj.widget
         self.title(text=self._name)
         self.frames()
@@ -376,8 +384,8 @@ class Channel:
         # Scroll canvas to the current video as the channel is loading
         self.canvas.widget.yview_moveto(self._no*def_height)
         
-    def show(self,Lock=True,*args):
-        self.obj.show(Lock=Lock)
+    def show(self,*args):
+        self.obj.show()
         
     def close(self,*args):
         self.widget.destroy()
