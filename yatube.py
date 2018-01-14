@@ -406,97 +406,6 @@ class Channel:
 
 class Menu:
     
-    def __init__(self):
-        self.parent_obj = sg.objs.root()
-        self.gui()
-        
-    def title(self,text=None):
-        if text:
-            self.parent_obj.title(text)
-        else:
-            text = sh.List(lst1=[product,version]).space_items()
-            self.obj.title(text)
-    
-    def show(self,*args):
-        self.obj.show()
-    
-    def close(self,*args):
-        self.obj.close()
-    
-    def buttons(self):
-        #todo: [cbox] Ignore videos older than ...
-        ''' For some reason, separating the button text to a variable
-            does not work correctly (the last action defined in such a
-            way is selected).
-        '''
-        button = sg.Button (parent_obj = self.obj
-                           ,text       = _('Update subscriptions')
-                           ,action     = update_channels
-                           ,side       = 'top'
-                           )
-        button.focus()
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Update trending')
-                  ,action     = update_trending
-                  ,side       = 'top'
-                  )
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Manage videos')
-                  ,action     = manage_vid
-                  ,side       = 'top'
-                  )
-                  
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Manage subscriptions')
-                  ,action     = manage_sub
-                  ,side       = 'top'
-                  )
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Manage blocklist')
-                  ,action     = manage_block
-                  ,side       = 'top'
-                  )
-        sg.Button (parent_obj = self.obj
-                  ,text       = _('Quit')
-                  ,action     = self.close
-                  ,side       = 'top'
-                  )
-    
-    def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = ['<Control-q>','<Control-w>','<Escape>']
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Down>'
-                ,action   = self.focus_next
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Up>'
-                ,action   = self.focus_prev
-                )
-        # Trying to pass lambda will result in an error
-        self.widget.protocol("WM_DELETE_WINDOW",self.close)
-        
-    def focus_next(self,event,*args):
-        event.widget.tk_focusNext().focus()
-        return 'break'
-        
-    def focus_prev(self,event,*args):
-        event.widget.tk_focusPrev().focus()
-        return 'break'
-    
-    def gui(self):
-        self.obj = sg.objs.new_top(Maximize=False)
-        self.widget = self.obj.widget
-        self.buttons()
-        self.title()
-        self.bindings()
-
-
-
-class Top:
-    
     def __init__(self,parent_obj=None):
         self.values()
         self.set_date()
@@ -518,11 +427,11 @@ class Top:
         # Year of Youtube birth
         first_year = 2005
         last_year  = self.time_i.year()
-        last_year  = sh.Input (func_title = 'Top.values'
+        last_year  = sh.Input (func_title = 'Menu.values'
                               ,val        = last_year
                               ).integer()
         if not last_year > first_year:
-            sh.log.append ('Top.values'
+            sh.log.append ('Menu.values'
                           ,_('WARNING')
                           ,_('Wrong input data!')
                           )
@@ -555,7 +464,9 @@ class Top:
         self.parent_obj.show()
         
     def close(self,*args):
-        self.parent_obj.close()
+        objs.db().save()
+        objs._db.close()
+        self.widget.destroy()
     
     def frames(self):
         self.frame1 = sg.Frame (parent_obj = self.parent_obj
@@ -564,6 +475,10 @@ class Top:
         self.frame2 = sg.Frame (parent_obj = self.parent_obj
                                ,expand     = False
                                )
+        self.frame3 = sg.Frame (parent_obj = self.parent_obj
+                               ,expand     = False
+                               )
+        self.framev = sg.Frame (parent_obj = self.parent_obj)
     
     def clear_filter(self,*args):
         self.clear_search()
@@ -573,85 +488,97 @@ class Top:
         self.en_srch.clear_text()
     
     def download(self,*args):
-        sg.Message ('Top.download'
+        sg.Message ('Menu.download'
                    ,_('INFO')
                    ,_('Not implemented yet!')
                    )
                    
     def play(self,*args):
-        sg.Message ('Top.play'
+        sg.Message ('Menu.play'
                    ,_('INFO')
                    ,_('Not implemented yet!')
                    )
     
     def select_new(self,*args):
-        sg.Message ('Top.select_new'
+        sg.Message ('Menu.select_new'
                    ,_('INFO')
                    ,_('Not implemented yet!')
                    )
     
     def filter(self,*args):
-        sg.Message ('Top.filter'
+        sg.Message ('Menu.filter'
                    ,_('INFO')
                    ,_('Not implemented yet!')
                    )
     
     def widgets(self):
-        self.btn_all = sg.Button (parent_obj = self.frame1
+        self.btn_sub = sg.Button (parent_obj = self.frame1
+                                 ,text       = _('Manage subscriptions')
+                                 ,action     = manage_sub
+                                 )
+        self.btn_blk = sg.Button (parent_obj = self.frame1
+                                 ,text       = _('Manage blocklist')
+                                 ,action     = manage_block
+                                 )
+        self.btn_upd = sg.Button (parent_obj = self.frame1
+                                 ,text       = _('Update subscriptions')
+                                 ,action     = update_channels
+                                 )
+        self.btn_all = sg.Button (parent_obj = self.frame2
                                  ,text       = _('Select all new videos')
                                  ,action     = self.select_new
                                  )
-        self.btn_flt = sg.Button (parent_obj = self.frame1
+        self.btn_flt = sg.Button (parent_obj = self.frame2
                                  ,text       = _('Select by filter')
                                  ,action     = self.filter
                                  )
-        self.cb_date = sg.CheckBox (parent_obj = self.frame1
+        self.cb_date = sg.CheckBox (parent_obj = self.frame2
                                    ,Active     = True
                                    ,side       = 'left'
                                    )
-        self.om_date = sg.OptionMenu (parent_obj = self.frame1
+        self.om_date = sg.OptionMenu (parent_obj = self.frame2
                                      ,items      = (_('Newer than')
                                                    ,_('Older than')
                                                    )
                                      ,default    = _('Newer than')
                                      )
-        self.om_wday = sg.OptionMenu (parent_obj = self.frame1
+        self.om_wday = sg.OptionMenu (parent_obj = self.frame2
                                      ,items      = self._days
                                      ,default    = self._day
                                      )
-        self.om_mnth = sg.OptionMenu (parent_obj = self.frame1
+        self.om_mnth = sg.OptionMenu (parent_obj = self.frame2
                                      ,items      = self._months
                                      ,default    = self._month
                                      )
-        self.om_yers = sg.OptionMenu (parent_obj = self.frame1
+        self.om_yers = sg.OptionMenu (parent_obj = self.frame2
                                      ,items      = self._years
                                      ,default    = self._year
                                      )
-        self.cb_srch = sg.CheckBox (parent_obj = self.frame1
+        self.cb_srch = sg.CheckBox (parent_obj = self.frame2
                                    ,Active     = False
                                    ,side       = 'left'
                                    )
-        self.en_srch = sg.Entry (parent_obj = self.frame1
+        self.en_srch = sg.Entry (parent_obj = self.frame2
                                 ,Composite  = True
                                 ,side       = 'left'
                                 )
-        self.en_srch.insert(_('Search in channels'))
-        self.en_srch.widget.config (font = 'Serif 10 italic'
-                                   ,fg   = 'grey'
-                                   )
-        self.cb_slct = sg.CheckBox (parent_obj = self.frame2
+        self.btn_clr = sg.Button (parent_obj = self.frame2
+                                 ,text       = _('Clear')
+                                 ,action     = self.clear_filter
+                                 )
+        self.cb_slct = sg.CheckBox (parent_obj = self.frame3
                                    ,Active     = True
                                    ,side       = 'left'
                                    )
-        self.btn_dld = sg.Button (parent_obj = self.frame2
+        self.btn_dld = sg.Button (parent_obj = self.frame3
                                  ,text       = _('Download selected')
                                  ,action     = self.download
                                  )
-        self.btn_ply = sg.Button (parent_obj = self.frame2
+        self.btn_ply = sg.Button (parent_obj = self.frame3
                                  ,text       = _('Play')
                                  ,action     = self.play
                                  )
-        self.om_chnl = sg.OptionMenu (parent_obj = self.frame2
+        self.om_chnl = sg.OptionMenu (parent_obj = self.frame3
                                      ,items      = self._channels
                                      ,side       = 'right'
                                      ,default    = _('All')
@@ -659,7 +586,7 @@ class Top:
                                      )
     
     def set_channel(self,*args):
-        sh.log.append ('Top.set_channel'
+        sh.log.append ('Menu.set_channel'
                       ,_('INFO')
                       ,_('Switch to channel "%s"') \
                       % str(self.om_chnl.choice)
@@ -668,10 +595,11 @@ class Top:
         update_channel()
     
     def init_config(self):
-        self.btn_clr = sg.Button (parent_obj = self.frame1
-                                 ,text       = _('Clear')
-                                 ,action     = self.clear_filter
-                                 )
+        self.btn_upd.focus()
+        self.en_srch.insert(_('Search in channels'))
+        self.en_srch.widget.config (font = 'Serif 10 italic'
+                                   ,fg   = 'grey'
+                                   )
         self.btn_dld.widget.config(state='disabled')
         self.btn_ply.widget.config(state='disabled')
                   
@@ -684,10 +612,11 @@ class Top:
                 ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
                 ,action   = self.clear_search
                 )
+        self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
     def title(self,text=None):
         if not text:
-            text = _('Manage videos')
+            text = sh.List(lst1=[product,version]).space_items()
         self.parent_obj.title(text)
     
     def gui(self):
@@ -703,7 +632,7 @@ class Top:
 class Objects:
     
     def __init__(self):
-        self._db = self._top = self._parent = None
+        self._db = self._menu = self._parent = None
         
     def db(self):
         if not self._db:
@@ -717,10 +646,10 @@ class Objects:
             sg.Geometry(parent_obj=self._parent).maximize()
         return self._parent
     
-    def top(self):
-        if not self._top:
-            self._top = Top(parent_obj=self.parent())
-        return self._top
+    def menu(self):
+        if not self._menu:
+            self._menu = Menu(parent_obj=self.parent())
+        return self._menu
 
 
 def update_channel(user='Centerstrain01'):
@@ -729,9 +658,10 @@ def update_channel(user='Centerstrain01'):
     channel.page()
     channel.links()
     
-    channel_gui = gi.Channel(parent_obj=objs.top(),name=user)
-    sg.Geometry(parent_obj=channel_gui).set('985x500')
-    channel_gui.center(max_x=986,max_y=500)
+    #channel_gui = gi.Channel(parent_obj=objs.menu(),name=user)
+    channel_gui = gi.Channel(parent_obj=objs.menu().framev,name=user)
+    #sg.Geometry(parent_obj=channel_gui).set('985x500')
+    #channel_gui.center(max_x=986,max_y=500)
     
     for i in range(len(channel._links)):
         channel_gui.add(no=i)
@@ -790,9 +720,6 @@ def manage_block(*args):
     objs._db.block_channels(channels,block=0)
     objs._db.block_channels(channels)
     objs._db.save()
-    
-def manage_vid(self):
-    objs.top().show()
 
 
 objs = Objects()
@@ -801,6 +728,6 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    menu = Menu()
+    menu = objs.menu()
     menu.show()
     sg.objs.end()
