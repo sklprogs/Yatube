@@ -175,10 +175,9 @@ class Video:
 
 class Channel:
     
-    def __init__(self,parent_obj=None,name=_('Channel')):
+    def __init__(self,parent_obj=None):
         self.values()
         self.parent_obj = parent_obj
-        self._name = name
         self.set_parent()
         self.gui()
         
@@ -251,6 +250,7 @@ class Channel:
     def scroll_end(self,*args):
         self.canvas.widget.yview_moveto(len(self._videos)*def_height)
     
+    # orphan
     def center(self,max_x=0,max_y=0):
         if max_x and max_y:
             pass
@@ -295,12 +295,6 @@ class Channel:
         '''
         self._max_x = 1024
         self._max_y = 1120
-        
-    def title(self,text=None):
-        if text:
-            self.obj.title(text)
-        else:
-            self.obj.title(self._name)
         
     def frames(self):
         self.frame   = sg.Frame (parent_obj = self.obj)
@@ -350,7 +344,6 @@ class Channel:
     
     def gui(self):
         self.widget = self.obj.widget
-        self.title(text=self._name)
         self.frames()
         self.canvases()
         self.scrollbars()
@@ -395,8 +388,7 @@ class Channel:
 class Objects:
     
     def __init__(self):
-        self._def_image = self._channel_gui = self._sub = self._block \
-                        = None
+        self._def_image = self._channel = self._sub = self._block = None
         patterns = ('https://www.youtube.com/user/AvtoKriminalist/videos'
                    ,'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
                    ,'AvtoKriminalist'
@@ -426,12 +418,10 @@ class Objects:
             self._def_image = sg.Image().open(path=path)
         return self._def_image
 
-    def channel_gui(self):
-        if not self._channel_gui:
-            self._channel_gui = Channel(name=_('Channels'))
-            sg.Geometry(parent_obj=self._channel_gui.obj).set('985x500')
-            self._channel_gui.center(max_x=986,max_y=500)
-        return self._channel_gui
+    def channel(self,parent_obj=None):
+        if not self._channel:
+            self._channel = Channel(parent_obj=parent_obj)
+        return self._channel
 
 
 objs = Objects()

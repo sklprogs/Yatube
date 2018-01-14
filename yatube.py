@@ -658,13 +658,8 @@ def update_channel(user='Centerstrain01'):
     channel.page()
     channel.links()
     
-    #channel_gui = gi.Channel(parent_obj=objs.menu(),name=user)
-    channel_gui = gi.Channel(parent_obj=objs.menu().framev,name=user)
-    #sg.Geometry(parent_obj=channel_gui).set('985x500')
-    #channel_gui.center(max_x=986,max_y=500)
-    
     for i in range(len(channel._links)):
-        channel_gui.add(no=i)
+        gi.objs.channel().add(no=i)
         # Show default picture & video information
         sg.objs.root().widget.update_idletasks()
         video = Video(url=channel._links[i])
@@ -673,7 +668,7 @@ def update_channel(user='Centerstrain01'):
             author    = sh.Text(text=video._author).delete_unsupported()
             title     = sh.Text(text=video._title).delete_unsupported()
             duration  = sh.Text(text=video._dur).delete_unsupported()
-            video_gui = channel_gui._videos[i]
+            video_gui = gi.objs._channel._videos[i]
             video_gui.reset (no       = i + 1
                             ,author   = author
                             ,title    = title
@@ -683,11 +678,11 @@ def update_channel(user='Centerstrain01'):
             ''' This does not work in 'Channel.__init__' for some
                 reason, calling this externally.
             ''' 
-            channel_gui.update_scroll()
+            gi.objs._channel.update_scroll()
     objs.db().save()
     # Move back to video #0
-    channel_gui.canvas.widget.yview_moveto(0)
-    channel_gui.show()
+    gi.objs._channel.canvas.widget.yview_moveto(0)
+    gi.objs._channel.show()
 
 def update_channels(*args):
     channels = objs.db().get_channels()
@@ -729,5 +724,6 @@ objs = Objects()
 if __name__ == '__main__':
     sg.objs.start()
     menu = objs.menu()
+    gi.objs.channel(parent_obj=objs._menu.framev)
     menu.show()
     sg.objs.end()
