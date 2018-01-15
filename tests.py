@@ -107,7 +107,7 @@ class Tests:
         
     def fill_channel(self):
         channel = gi.Channel(name='Максим Шелков')
-        sg.Geometry(parent_obj=channel.obj).set('985x500')
+        sg.Geometry(parent=channel.obj).set('985x500')
         channel.center(max_x=986,max_y=500)
         
         image = sh.Get (url      = 'http://i.ytimg.com/vi/9r0Eeo5_L8k/default.jpg'
@@ -173,8 +173,8 @@ class Tests:
                                 ,duration = duration
                                 ,image    = video._image
                                 )
-                ''' This does not work in 'Channel.__init__' for some reason, 
-                calling this externally
+                ''' This does not work in 'Channel.__init__' for some
+                    reason, calling this externally
                 ''' 
                 gi.objs._channel_gui.update_scroll()
         

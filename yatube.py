@@ -263,7 +263,7 @@ class Video:
             tmp.write(': ')
             tmp.write(str(self._rating))
             tmp.write('\n')
-            # todo: elaborate
+            #todo: elaborate
             if self._video:
                 tmp.write(_('Small video picture URL'))
                 tmp.write(': ')
@@ -299,7 +299,7 @@ class Channel:
             
     def values(self):
         self.Success     = True
-        # todo: localize
+        #todo: localize
         self._not_found  = 'Такой канал не существует.'
         self._link_start = 'https://www.youtube.com/user/'
         self._link_end   = '/videos'
@@ -387,7 +387,7 @@ class Channel:
                           % (self._user,len(self._links))
                           )
             for i in range(len(self._links)):
-                # todo: implement
+                #todo: implement
                 print('#',i,':','Download ',self._links[i])
         else:
             sh.log.append ('Channel.download'
@@ -406,10 +406,10 @@ class Channel:
 
 class Menu:
     
-    def __init__(self,parent_obj=None):
+    def __init__(self,parent=None):
         self.values()
         self.set_date()
-        self.parent_obj = parent_obj
+        self.parent = parent
         self.set_parent()
         self.gui()
         
@@ -454,14 +454,14 @@ class Menu:
         self._month = self.time_i.localize_month_abbr()
     
     def set_parent(self):
-        if not self.parent_obj:
-            #self.parent_obj = sg.objs.new_top(Maximize=False)
-            #sg.Geometry(parent_obj=self.parent_obj).set('985x100')
-            self.parent_obj = sg.SimpleTop(parent_obj=sg.objs.root())
-            sg.Geometry(parent_obj=self.parent_obj).set('985x600')
+        if not self.parent:
+            #self.parent = sg.objs.new_top(Maximize=False)
+            #sg.Geometry(parent=self.parent).set('985x100')
+            self.parent = sg.SimpleTop(parent=sg.objs.root())
+            sg.Geometry(parent=self.parent).set('985x600')
             
     def show(self,*args):
-        self.parent_obj.show()
+        self.parent.show()
         
     def close(self,*args):
         objs.db().save()
@@ -469,20 +469,20 @@ class Menu:
         self.widget.destroy()
     
     def frames(self):
-        self.frame1 = sg.Frame (parent_obj = self.parent_obj
-                               ,expand     = False
+        self.frame1 = sg.Frame (parent = self.parent
+                               ,expand = False
                                )
-        self.frame2 = sg.Frame (parent_obj = self.parent_obj
-                               ,expand     = False
+        self.frame2 = sg.Frame (parent = self.parent
+                               ,expand = False
                                )
-        self.frame3 = sg.Frame (parent_obj = self.parent_obj
-                               ,expand     = False
+        self.frame3 = sg.Frame (parent = self.parent
+                               ,expand = False
                                )
         ''' We can create an additional frame here for gi.Channel, but
             gi.Channel.bindings needs to have Toplevel as a parent.
         '''
         #todo: do we need this?
-        #self.framev = sg.Frame (parent_obj = self.parent_obj)
+        #self.framev = sg.Frame (parent = self.parent)
     
     def clear_filter(self,*args):
         self.clear_search()
@@ -516,78 +516,78 @@ class Menu:
                    )
     
     def widgets(self):
-        self.btn_sub = sg.Button (parent_obj = self.frame1
-                                 ,text       = _('Manage subscriptions')
-                                 ,action     = manage_sub
+        self.btn_sub = sg.Button (parent = self.frame1
+                                 ,text   = _('Manage subscriptions')
+                                 ,action = manage_sub
                                  )
-        self.btn_blk = sg.Button (parent_obj = self.frame1
-                                 ,text       = _('Manage blocklist')
-                                 ,action     = manage_block
+        self.btn_blk = sg.Button (parent = self.frame1
+                                 ,text   = _('Manage blocklist')
+                                 ,action = manage_block
                                  )
-        self.btn_upd = sg.Button (parent_obj = self.frame1
-                                 ,text       = _('Update subscriptions')
-                                 ,action     = update_channels
+        self.btn_upd = sg.Button (parent = self.frame1
+                                 ,text   = _('Update subscriptions')
+                                 ,action = update_channels
                                  )
-        self.btn_all = sg.Button (parent_obj = self.frame2
-                                 ,text       = _('Select all new videos')
-                                 ,action     = self.select_new
+        self.btn_all = sg.Button (parent = self.frame2
+                                 ,text   = _('Select all new videos')
+                                 ,action = self.select_new
                                  )
-        self.btn_flt = sg.Button (parent_obj = self.frame2
-                                 ,text       = _('Select by filter')
-                                 ,action     = self.filter
+        self.btn_flt = sg.Button (parent = self.frame2
+                                 ,text   = _('Select by filter')
+                                 ,action = self.filter
                                  )
-        self.cb_date = sg.CheckBox (parent_obj = self.frame2
-                                   ,Active     = False
-                                   ,side       = 'left'
+        self.cb_date = sg.CheckBox (parent = self.frame2
+                                   ,Active = False
+                                   ,side   = 'left'
                                    )
-        self.om_date = sg.OptionMenu (parent_obj = self.frame2
-                                     ,items      = (_('Newer than')
-                                                   ,_('Older than')
-                                                   )
-                                     ,default    = _('Newer than')
+        self.om_date = sg.OptionMenu (parent  = self.frame2
+                                     ,items   = (_('Newer than')
+                                                ,_('Older than')
+                                                )
+                                     ,default = _('Newer than')
                                      )
-        self.om_wday = sg.OptionMenu (parent_obj = self.frame2
-                                     ,items      = self._days
-                                     ,default    = self._day
+        self.om_wday = sg.OptionMenu (parent  = self.frame2
+                                     ,items   = self._days
+                                     ,default = self._day
                                      )
-        self.om_mnth = sg.OptionMenu (parent_obj = self.frame2
-                                     ,items      = self._months
-                                     ,default    = self._month
+        self.om_mnth = sg.OptionMenu (parent  = self.frame2
+                                     ,items   = self._months
+                                     ,default = self._month
                                      )
-        self.om_yers = sg.OptionMenu (parent_obj = self.frame2
-                                     ,items      = self._years
-                                     ,default    = self._year
+        self.om_yers = sg.OptionMenu (parent  = self.frame2
+                                     ,items   = self._years
+                                     ,default = self._year
                                      )
-        self.cb_srch = sg.CheckBox (parent_obj = self.frame2
-                                   ,Active     = False
-                                   ,side       = 'left'
+        self.cb_srch = sg.CheckBox (parent = self.frame2
+                                   ,Active = False
+                                   ,side   = 'left'
                                    )
-        self.en_srch = sg.Entry (parent_obj = self.frame2
-                                ,Composite  = True
-                                ,side       = 'left'
+        self.en_srch = sg.Entry (parent    = self.frame2
+                                ,Composite = True
+                                ,side      = 'left'
                                 )
-        self.btn_clr = sg.Button (parent_obj = self.frame2
-                                 ,text       = _('Clear')
-                                 ,action     = self.clear_filter
+        self.btn_clr = sg.Button (parent = self.frame2
+                                 ,text   = _('Clear')
+                                 ,action = self.clear_filter
                                  )
-        self.cb_slct = sg.CheckBox (parent_obj = self.frame3
-                                   ,Active     = False
-                                   ,side       = 'left'
-                                   ,action     = self.toggle_select
+        self.cb_slct = sg.CheckBox (parent = self.frame3
+                                   ,Active = False
+                                   ,side   = 'left'
+                                   ,action = self.toggle_select
                                    )
-        self.btn_dld = sg.Button (parent_obj = self.frame3
-                                 ,text       = _('Download selected')
-                                 ,action     = self.download
+        self.btn_dld = sg.Button (parent = self.frame3
+                                 ,text   = _('Download selected')
+                                 ,action = self.download
                                  )
-        self.btn_ply = sg.Button (parent_obj = self.frame3
-                                 ,text       = _('Play')
-                                 ,action     = self.play
+        self.btn_ply = sg.Button (parent = self.frame3
+                                 ,text   = _('Play')
+                                 ,action = self.play
                                  )
-        self.om_chnl = sg.OptionMenu (parent_obj = self.frame3
-                                     ,items      = self._channels
-                                     ,side       = 'right'
-                                     ,default    = _('All')
-                                     ,command    = self.set_channel
+        self.om_chnl = sg.OptionMenu (parent  = self.frame3
+                                     ,items   = self._channels
+                                     ,side    = 'right'
+                                     ,default = _('All')
+                                     ,command = self.set_channel
                                      )
     
     def set_channel(self,*args):
@@ -609,7 +609,7 @@ class Menu:
         self.btn_ply.widget.config(state='disabled')
                   
     def bindings(self):
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = ['<Escape>','<Control-w>','<Control-q>']
                 ,action   = self.close
                 )
@@ -622,10 +622,10 @@ class Menu:
     def title(self,text=None):
         if not text:
             text = sh.List(lst1=[product,version]).space_items()
-        self.parent_obj.title(text)
+        self.parent.title(text)
     
     def gui(self):
-        self.widget = self.parent_obj.widget
+        self.widget = self.parent.widget
         self.frames()
         self.widgets()
         self.init_config()
@@ -654,14 +654,14 @@ class Objects:
         
     def parent(self):
         if not self._parent:
-            self._parent = sg.SimpleTop(parent_obj=sg.objs.root())
-            #sg.Geometry(parent_obj=self._parent).set('985x600')
-            sg.Geometry(parent_obj=self._parent).maximize()
+            self._parent = sg.SimpleTop(parent=sg.objs.root())
+            #sg.Geometry(parent=self._parent).set('985x600')
+            sg.Geometry(parent=self._parent).maximize()
         return self._parent
     
     def menu(self):
         if not self._menu:
-            self._menu = Menu(parent_obj=self.parent())
+            self._menu = Menu(parent=self.parent())
         return self._menu
 
 
@@ -737,6 +737,6 @@ objs = Objects()
 if __name__ == '__main__':
     sg.objs.start()
     menu = objs.menu()
-    gi.objs.channel(parent_obj=objs._menu.parent_obj)
+    gi.objs.channel(parent=objs._menu.parent)
     menu.show()
     sg.objs.end()

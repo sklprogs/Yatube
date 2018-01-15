@@ -160,7 +160,10 @@ class DB:
                 else:
                     sg.Message (func    = 'DB.print'
                                ,level   = _('ERROR')
-                               ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(mode),'VIDEOS, CHANNELS')
+                               ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                          % (str(mode)
+                                            ,'VIDEOS, CHANNELS'
+                                            )
                                )
             headers = [cn[0] for cn in self.dbc.description]
             rows    = self.dbc.fetchall()

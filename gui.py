@@ -7,14 +7,15 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','./locale')
 
-def_height = 110 # A default picture height
+# A default picture height
+def_height = 110
 
 
 class Video:
     
-    def __init__(self,parent_obj,no=0):
-        self._no        = no
-        self.parent_obj = parent_obj
+    def __init__(self,parent,no=0):
+        self._no    = no
+        self.parent = parent
         self.values()
         self.gui()
     
@@ -25,21 +26,21 @@ class Video:
         self._image    = objs.def_image()
     
     def frames(self):
-        self.frame  = sg.Frame (parent_obj = self.parent_obj)
-        self.frame1 = sg.Frame (parent_obj = self.frame
-                               ,side       = 'left'
+        self.frame  = sg.Frame (parent = self.parent)
+        self.frame1 = sg.Frame (parent = self.frame
+                               ,side   = 'left'
                                )
-        self.frame2 = sg.Frame (parent_obj = self.frame
-                               ,side       = 'left'
+        self.frame2 = sg.Frame (parent = self.frame
+                               ,side   = 'left'
                                )
-        self.frame3 = sg.Frame (parent_obj = self.frame
-                               ,side       = 'right'
+        self.frame3 = sg.Frame (parent = self.frame
+                               ,side   = 'right'
                                )
-        self.frame4 = sg.Frame (parent_obj = self.frame3
-                               ,side       = 'left'
+        self.frame4 = sg.Frame (parent = self.frame3
+                               ,side   = 'left'
                                )
-        self.frame5 = sg.Frame (parent_obj = self.frame3
-                               ,side       = 'right'
+        self.frame5 = sg.Frame (parent = self.frame3
+                               ,side   = 'right'
                                )
                                  
     def pic(self):
@@ -53,63 +54,63 @@ class Video:
         ''' Fixed width is set to ensure that sizes of a default and
             current video labels are the same.
         '''
-        self.label1 = sg.Label (parent_obj = self.frame1
-                               ,text       = _('#%d') % self._no
-                               ,side       = 'right'
-                               ,anchor     = 'w'
-                               ,Close      = False
-                               ,width      = 4
+        self.label1 = sg.Label (parent = self.frame1
+                               ,text   = _('#%d') % self._no
+                               ,side   = 'right'
+                               ,anchor = 'w'
+                               ,Close  = False
+                               ,width  = 4
                                )
         ''' 'image' argument must be specified even when the label
             is further configured with such image, otherwise, frames
             will be further extended to encompass the image
             thereby distorting the GUI structure.
         '''
-        self.label2 = sg.Label (parent_obj = self.frame2
-                               ,text       = _('Image')
-                               ,side       = 'right'
-                               ,Close      = False
-                               ,width      = 196
-                               ,image      = self._image
+        self.label2 = sg.Label (parent = self.frame2
+                               ,text   = _('Image')
+                               ,side   = 'right'
+                               ,Close  = False
+                               ,width  = 196
+                               ,image  = self._image
                                )
-        self.label3 = sg.Label (parent_obj = self.frame4
-                               ,text       = _('Author:')
-                               ,Close      = False
-                               ,width      = 20
+        self.label3 = sg.Label (parent = self.frame4
+                               ,text   = _('Author:')
+                               ,Close  = False
+                               ,width  = 20
                                )
-        self.label4 = sg.Label (parent_obj = self.frame5
-                               ,text       = _('Not Available')
-                               ,anchor     = 'w'
-                               ,Close      = False
-                               ,width      = 60
+        self.label4 = sg.Label (parent = self.frame5
+                               ,text   = _('Not Available')
+                               ,anchor = 'w'
+                               ,Close  = False
+                               ,width  = 60
                                )
-        self.label5 = sg.Label (parent_obj = self.frame4
-                               ,text       = _('Title:')
-                               ,Close      = False
-                               ,width      = 20
+        self.label5 = sg.Label (parent = self.frame4
+                               ,text   = _('Title:')
+                               ,Close  = False
+                               ,width  = 20
                                )
-        self.label6 = sg.Label (parent_obj = self.frame5
-                               ,text       = _('Not Available')
-                               ,anchor     = 'w'
-                               ,Close      = False
-                               ,width      = 60
+        self.label6 = sg.Label (parent = self.frame5
+                               ,text   = _('Not Available')
+                               ,anchor = 'w'
+                               ,Close  = False
+                               ,width  = 60
                                )
-        self.label7 = sg.Label (parent_obj = self.frame4
-                               ,text       = _('Duration:')
-                               ,Close      = False
-                               ,width      = 20
+        self.label7 = sg.Label (parent = self.frame4
+                               ,text   = _('Duration:')
+                               ,Close  = False
+                               ,width  = 20
                                )
-        self.label8 = sg.Label (parent_obj = self.frame5
-                               ,text       = _('Not Available')
-                               ,anchor     = 'w'
-                               ,Close      = False
-                               ,width      = 60
+        self.label8 = sg.Label (parent = self.frame5
+                               ,text   = _('Not Available')
+                               ,anchor = 'w'
+                               ,Close  = False
+                               ,width  = 60
                                )
     
     def checkboxes(self):
-        self.cbox = sg.CheckBox (parent_obj = self.frame1
-                                ,Active     = False
-                                ,side       = 'left'
+        self.cbox = sg.CheckBox (parent = self.frame1
+                                ,Active = False
+                                ,side   = 'left'
                                 )
                                 
     def bindings(self):
@@ -159,7 +160,7 @@ class Video:
         self._duration = duration
         self._image    = image
         '''
-        # note # todo For some reason, using 'widget.config' or 
+        #note #todo For some reason, using 'widget.config' or 
         'Label.text' resets config options here.
         '''
         self.label1._text = _('#%d') % self._no
@@ -175,49 +176,49 @@ class Video:
 
 class Channel:
     
-    def __init__(self,parent_obj=None):
+    def __init__(self,parent=None):
         self.values()
-        self.parent_obj = parent_obj
+        self.parent = parent
         self.set_parent()
         self.gui()
         
     def set_parent(self):
-        if self.parent_obj:
-            self.obj = self.parent_obj
+        if self.parent:
+            self.obj = self.parent
         else:
-            self.parent_obj = sg.objs.root()
-            self.obj = sg.SimpleTop(parent_obj=self.parent_obj)
+            self.parent = sg.objs.root()
+            self.obj    = sg.SimpleTop(parent=self.parent)
         
     def bindings(self):
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Down>'
                 ,action   = self.scroll_down
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Up>'
                 ,action   = self.scroll_up
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Left>'
                 ,action   = self.scroll_left
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Right>'
                 ,action   = self.scroll_right
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Next>'
                 ,action   = self.scroll_page_down
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Prior>'
                 ,action   = self.scroll_page_up
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<End>'
                 ,action   = self.scroll_end
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<Home>'
                 ,action   = self.scroll_start
                 )
@@ -293,47 +294,47 @@ class Channel:
         self._max_y = 1120
         
     def frames(self):
-        self.frame   = sg.Frame (parent_obj = self.obj)
-        self.frame_y = sg.Frame (parent_obj = self.frame
-                                ,expand     = False
-                                ,fill       = 'y'
-                                ,side       = 'right'
+        self.frame   = sg.Frame (parent = self.obj)
+        self.frame_y = sg.Frame (parent = self.frame
+                                ,expand = False
+                                ,fill   = 'y'
+                                ,side   = 'right'
                                 )
-        self.frame_x = sg.Frame (parent_obj = self.frame
-                                ,expand     = False
-                                ,fill       = 'x'
-                                ,side       = 'bottom'
+        self.frame_x = sg.Frame (parent = self.frame
+                                ,expand = False
+                                ,fill   = 'x'
+                                ,side   = 'bottom'
                                 )
         # A frame that contains all contents except for scrollbars
-        self.frame1  = sg.Frame (parent_obj = self.frame
-                                ,side       = 'left'
-                                ,width      = self._max_x
-                                ,height     = self._max_y
+        self.frame1  = sg.Frame (parent = self.frame
+                                ,side   = 'left'
+                                ,width  = self._max_x
+                                ,height = self._max_y
                                 )
     
     # Called in 'canvases'
     def labels(self):
         # Frames embedded into a canvas are not scrollable
-        self.label  = sg.Label (parent_obj = self.frame1
-                               ,expand     = True
-                               ,fill       = 'both'
-                               ,Close      = False
+        self.label  = sg.Label (parent = self.frame1
+                               ,expand = True
+                               ,fill   = 'both'
+                               ,Close  = False
                                )
     
     def canvases(self):
         ''' Create a canvas before an object being embedded, otherwise,
             the canvas will overlap this object.
         '''
-        self.canvas = sg.Canvas(parent_obj=self.frame1)
+        self.canvas = sg.Canvas(parent=self.frame1)
         self.labels()
         self.canvas.embed(self.label)
     
     def scrollbars(self):
-        sg.Scrollbar (parent_obj = self.frame_x
+        sg.Scrollbar (parent     = self.frame_x
                      ,scroll_obj = self.canvas
                      ,Horizontal = True
                      )
-        sg.Scrollbar (parent_obj = self.frame_y
+        sg.Scrollbar (parent     = self.frame_y
                      ,scroll_obj = self.canvas
                      ,Horizontal = False
                      )
@@ -350,8 +351,8 @@ class Channel:
         
     def add(self,no=0):
         self._no = no
-        self._videos.append (Video (parent_obj = self.label
-                                   ,no         = self._no
+        self._videos.append (Video (parent = self.label
+                                   ,no     = self._no
                                    )
                             )
                             
@@ -414,9 +415,9 @@ class Objects:
             self._def_image = sg.Image().open(path=path)
         return self._def_image
 
-    def channel(self,parent_obj=None):
+    def channel(self,parent=None):
         if not self._channel:
-            self._channel = Channel(parent_obj=parent_obj)
+            self._channel = Channel(parent=parent)
         return self._channel
 
 
