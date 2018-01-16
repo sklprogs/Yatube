@@ -73,7 +73,7 @@ class Video:
         
     def values(self):
         self.Success = True
-        self._video  = self._image = self._bytes = None
+        self._video  = self._image = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = ''
         self._len    = self._views = self._likes = self._dislikes = 0
@@ -202,9 +202,9 @@ class Video:
     
     def get(self):
         if self.Success:
-            result = objs.db().get_video(url=self._url)
-            if result:
-                self.assign_offline(result)
+            self.Saved = objs.db().get_video(url=self._url)
+            if self.Saved:
+                self.assign_offline(self.Saved)
             else:
                 self.video()
                 self.assign_online()
@@ -275,6 +275,31 @@ class Video:
             return result
         else:
             sh.log.append ('Video.summary'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def download(self,path):
+        if self.Success:
+            if self._video and path:
+                sh.log.append ('Video.download'
+                              ,_('INFO')
+                              ,_('Download "%s"') % path
+                              )
+                # cur
+                '''
+                stream = self._video.getbest()
+                stream.download (file  = path
+                                ,quiet = True
+                                )
+                '''
+            else:
+                sh.log.append ('Video.download'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.download'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
@@ -379,28 +404,11 @@ class Channel:
                           ,_('Operation has been canceled.')
                           )
     
-    def download(self):
-        if self.Success:
-            sh.log.append ('Channel.download'
-                          ,_('INFO')
-                          ,_('User "%s": %d recent videos') \
-                          % (self._user,len(self._links))
-                          )
-            for i in range(len(self._links)):
-                #todo: implement
-                print('#',i,':','Download ',self._links[i])
-        else:
-            sh.log.append ('Channel.download'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
     def run(self):
         self.channel()
         self.page()
         self.create()
         self.links()
-        self.download()
 
 
 
@@ -491,50 +499,26 @@ class Menu:
     def clear_search(self,*args):
         self.en_srch.clear_text()
     
-    def download(self,*args):
-        sg.Message ('Menu.download'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
-                   
-    def play(self,*args):
-        sg.Message ('Menu.play'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
-    
-    def select_new(self,*args):
-        sg.Message ('Menu.select_new'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
-    
-    def filter(self,*args):
-        sg.Message ('Menu.filter'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
-    
     def widgets(self):
         self.btn_sub = sg.Button (parent = self.frame1
                                  ,text   = _('Manage subscriptions')
-                                 ,action = manage_sub
+                                 ,action = commands.manage_sub
                                  )
         self.btn_blk = sg.Button (parent = self.frame1
                                  ,text   = _('Manage blocklist')
-                                 ,action = manage_block
+                                 ,action = commands.manage_block
                                  )
         self.btn_upd = sg.Button (parent = self.frame1
                                  ,text   = _('Update subscriptions')
-                                 ,action = update_channels
+                                 ,action = commands.update_channels
                                  )
         self.btn_all = sg.Button (parent = self.frame2
                                  ,text   = _('Select all new videos')
-                                 ,action = self.select_new
+                                 ,action = commands.select_new
                                  )
         self.btn_flt = sg.Button (parent = self.frame2
                                  ,text   = _('Select by filter')
-                                 ,action = self.filter
+                                 ,action = commands.filter
                                  )
         self.cb_date = sg.CheckBox (parent = self.frame2
                                    ,Active = False
@@ -577,11 +561,11 @@ class Menu:
                                    )
         self.btn_dld = sg.Button (parent = self.frame3
                                  ,text   = _('Download selected')
-                                 ,action = self.download
+                                 ,action = commands.download
                                  )
         self.btn_ply = sg.Button (parent = self.frame3
                                  ,text   = _('Play')
-                                 ,action = self.play
+                                 ,action = commands.play
                                  )
         self.om_chnl = sg.OptionMenu (parent  = self.frame3
                                      ,items   = self._channels
@@ -597,7 +581,7 @@ class Menu:
                       % str(self.om_chnl.choice)
                       )
         #todo: set user
-        update_channel()
+        commands.update_channel()
     
     def init_config(self):
         self.btn_upd.focus()
@@ -605,8 +589,9 @@ class Menu:
         self.en_srch.widget.config (font = 'Serif 10 italic'
                                    ,fg   = 'grey'
                                    )
-        self.btn_dld.widget.config(state='disabled')
-        self.btn_ply.widget.config(state='disabled')
+        # cur
+        #self.btn_dld.widget.config(state='disabled')
+        #self.btn_ply.widget.config(state='disabled')
                   
     def bindings(self):
         sg.bind (obj      = self.parent
@@ -665,72 +650,136 @@ class Objects:
         return self._menu
 
 
-def update_channel(user='Centerstrain01'):
-    channel = Channel(user=user)
-    channel.channel()
-    channel.page()
-    channel.links()
+
+class Commands:
     
-    for i in range(len(channel._links)):
-        gi.objs.channel().add(no=i)
-        # Show default picture & video information
-        sg.objs.root().widget.update_idletasks()
-        video = Video(url=channel._links[i])
-        video.get()
-        if video.Success:
-            author    = sh.Text(text=video._author).delete_unsupported()
-            title     = sh.Text(text=video._title).delete_unsupported()
-            duration  = sh.Text(text=video._dur).delete_unsupported()
-            video_gui = gi.objs._channel._videos[i]
-            video_gui.reset (no       = i + 1
-                            ,author   = author
-                            ,title    = title
-                            ,duration = duration
-                            ,image    = video._image
-                            )
-            ''' This does not work in 'Channel.__init__' for some
-                reason, calling this externally.
-            ''' 
-            gi.objs._channel.update_scroll()
-    objs.db().save()
-    # Move back to video #0
-    gi.objs._channel.canvas.widget.yview_moveto(0)
-    gi.objs._channel.show()
+    def __init__(self):
+        self._channel = None
+        self._videos  = []
+        
+    def play(self,*args):
+        sg.Message ('Commands.play'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def select_new(self,*args):
+        sg.Message ('Commands.select_new'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def filter(self,*args):
+        sg.Message ('Commands.filter'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+        
+    def download(self,*args):
+        if self._channel:
+            for video_gui in gi.objs.channel()._videos:
+                if video_gui.cbox.get():
+                    if len(self._videos) > video_gui._no:
+                        video = self._videos[video_gui._no]
+                        #todo: sanitize video._title (FS)
+                        path = os.path.join (self._channel._dir
+                                            ,video._title
+                                            )
+                        #todo: autodetect extension
+                        path += '.mp4'
+                        video.video()
+                        video.download(path)
+                    else:
+                        sg.Message ('Commands.download'
+                                   ,_('ERROR')
+                                   ,_('The condition "%s" is not observed!') \
+                                   % ('%d > %d') % (len(self._videos)
+                                                   ,video_gui._no
+                                                   )
+                                   )
+        else:
+            sh.log.append ('Commands.download'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
 
-def update_channels(*args):
-    channels = objs.db().get_channels()
-    for channel in channels:
-        update_channel(user=channel)
+    def update_channel(self,user='Centerstrain01'):
+        self._channel = Channel(user=user)
+        self._channel.channel()
+        self._channel.page()
+        self._channel.links()
+        
+        # Clears the old Channel widget
+        gi.objs.channel().frame.widget.destroy()
+        gi.objs._channel = None
+        gi.objs.channel(parent=objs._menu.parent)
+        
+        for i in range(len(self._channel._links)):
+            gi.objs.channel().add(no=i)
+            # Show default picture & video information
+            sg.objs.root().widget.update_idletasks()
+            video = Video(url=self._channel._links[i])
+            video.get()
+            if video.Success:
+                self._videos.append(video)
+                author    = sh.Text(text=video._author).delete_unsupported()
+                title     = sh.Text(text=video._title).delete_unsupported()
+                duration  = sh.Text(text=video._dur).delete_unsupported()
+                video_gui = gi.objs._channel._videos[i]
+                video_gui.reset (no       = i + 1
+                                ,author   = author
+                                ,title    = title
+                                ,duration = duration
+                                ,image    = video._image
+                                )
+                ''' This does not work in 'Channel.__init__' for some
+                    reason, calling this externally.
+                '''
+                ''' #fix showing only videos No. 10-21 with 'update_scroll'
+                    disabled
+                '''
+                #if not video.Saved:
+                gi.objs._channel.update_scroll()
+        objs.db().save()
+        # Move back to video #0
+        gi.objs._channel.canvas.widget.yview_moveto(0)
+        gi.objs._channel.show()
 
-def update_trending(*args):
-    sg.Message ('update_trending'
-               ,_('INFO')
-               ,_('Not implemented yet!')
-               )
+    def update_channels(self,*args):
+        channels = objs.db().get_channels()
+        for channel in channels:
+            update_channel(user=channel)
 
-def manage_sub(*args):
-    old_channels = objs.db().get_channels()
-    gi.objs.sub().fill(lst=old_channels)
-    gi.objs._sub.show()
-    channels = gi.objs._sub.get()
-    if not channels:
-        channels = []
-    for channel in channels:
-        if not channel in old_channels:
-            objs._db.add_channel(data=(channel,False,))
-    objs._db.save()
-               
-def manage_block(*args):
-    channels = objs.db().get_channels(block=1)
-    gi.objs.block().fill(lst=channels)
-    gi.objs._block.show()
-    channels = gi.objs._block.get()
-    objs._db.block_channels(channels,block=0)
-    objs._db.block_channels(channels)
-    objs._db.save()
+    def update_trending(self,*args):
+        sg.Message ('Commands.update_trending'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+
+    def manage_sub(self,*args):
+        old_channels = objs.db().get_channels()
+        gi.objs.sub().fill(lst=old_channels)
+        gi.objs._sub.show()
+        channels = gi.objs._sub.get()
+        if not channels:
+            channels = []
+        for channel in channels:
+            if not channel in old_channels:
+                objs._db.add_channel(data=(channel,False,))
+        objs._db.save()
+                   
+    def manage_block(self,*args):
+        channels = objs.db().get_channels(block=1)
+        gi.objs.block().fill(lst=channels)
+        gi.objs._block.show()
+        channels = gi.objs._block.get()
+        objs._db.block_channels(channels,block=0)
+        objs._db.block_channels(channels)
+        objs._db.save()
 
 
 objs = Objects()
+commands = Commands()
 
 
 

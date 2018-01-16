@@ -153,7 +153,9 @@ class Video:
         self.labels()
         self.bindings()
         
-    def reset(self,author,title,duration,image=None,no=0):
+    def reset (self,author,title,duration
+              ,image=None,no=0
+              ):
         self._no       = no
         self._author   = author
         self._title    = title
