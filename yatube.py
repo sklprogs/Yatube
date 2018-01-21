@@ -308,35 +308,119 @@ class Video:
 
 class Channel:
        
+    ''' 'user' must represent one of the following patterns:
+        - 'https://www.youtube.com/channel/USER'
+        - 'https://www.youtube.com/channel/USER/videos'
+        - 'https://www.youtube.com/user/USER'
+        - 'https://www.youtube.com/user/USER/videos'
+        - 'USER'
+    '''
     def __init__(self,user,download_dir='./Youtube'):
         self.values()
         self._user = user
         self._dir  = download_dir
-        self.check()
+        self.check_dir()
+        self.user()
         
-    def check(self):
-        if self._user and isinstance(self._user,str) and \
-           self._dir and isinstance(self._dir,str) and \
-           sh.Directory(path=self._dir,Silent=True).Success:
-               self.Success = True
-        else:
+    def warn(self):
+        if not self._html:
             self.Success = False
+            sg.Message (func    = 'Channel.page'
+                       ,level   = _('WARNING')
+                       ,message = _('Channel "%s" does not exist!') \
+                                  % self._channel
+                       )
+    
+    def user(self):
+        if self.Success:
+            if self._user:
+                if isinstance(self._user,str):
+                    if self._user.endswith('/'):
+                        self._user = self._user[:-1]
+                    ''' 'https://www.youtube.com/user/AvtoKriminalist/videos?disable_polymer=1'
+                        или
+                        'https://www.youtube.com/user/AvtoKriminalist/videos'
+                    '''
+                    if self._link_p1 and self._link_p3 in self._user:
+                        self._channel = self._user
+                        self._user    = self._user.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'').replace(self._link_p3,'')
+                        self.page()
+                        self.warn()
+                    # 'https://www.youtube.com/user/AvtoKriminalist'
+                    elif self._link_p1 in self._user:
+                        self._channel = self._user + self._link_p3
+                        self._user    = self._user.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'')
+                        self.page()
+                    # 'AvtoKriminalist'
+                    else:
+                        # 'https://www.youtube.com/channel/AvtoKriminalist/videos'
+                        self._channel = self._link_p1 + self._link_p2a \
+                                                      + self._user \
+                                                      + self._link_p3
+                        self.page()
+                        if not self._html:
+                            # 'https://www.youtube.com/user/AvtoKriminalist/videos'
+                            self._channel = self._link_p1 \
+                                            + self._link_p2b \
+                                            + self._user \
+                                            + self._link_p3
+                            self.page()
+                    sh.log.append ('Channel.user'
+                                  ,_('DEBUG')
+                                  ,_('User:') + ' ' + self._user
+                                  )
+                    sh.log.append ('Channel.user'
+                                  ,_('DEBUG')
+                                  ,_('URL:') + ' ' + self._channel
+                                  )
+                    self.warn()
+                else:
+                    self.Success = False
+                    sh.log.append ('Channel.user'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data!')
+                                  )
+            else:
+                self.Success = False
+                sh.log.append ('Channel.user'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Channel.user'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def check_dir(self):
+        if self.Success:
+            if self._dir and isinstance(self._dir,str) and \
+               sh.Directory(path=self._dir,Silent=True).Success:
+                   self.Success = True
+            else:
+                self.Success = False
+        else:
+            sh.log.append ('Channel.check_dir'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
             
     def values(self):
         self.Success     = True
         #todo: localize
         self._not_found  = 'Такой канал не существует.'
-        self._link_start = 'https://www.youtube.com/user/'
-        self._link_end   = '/videos'
+        self._link_p1    = 'https://www.youtube.com/'
+        self._link_p2a   = 'channel/'
+        self._link_p2b   = 'user/'
+        self._link_p3    = '/videos'
         self._channel    = ''
         self._html       = ''
+        self._user       = ''
         self._escaped    = ''
         self._links      = []
             
-    def channel(self):
+    def escape(self):
         if self.Success:
-            self._channel = self._link_start + self._user \
-                                             + self._link_end
             self._escaped = sh.FixBaseName (basename = self._user
                                            ,AllOS    = AllOS
                                            ,max_len  = 100
@@ -345,12 +429,12 @@ class Channel:
                 self._dir = os.path.join(self._dir,self._escaped)
             else:
                 self.Success = False
-                sh.log.append ('Channel.channel'
+                sh.log.append ('Channel.escape'
                               ,_('WARNING')
                               ,_('Empty output is not allowed!')
                               )
         else:
-            sh.log.append ('Channel.channel'
+            sh.log.append ('Channel.escape'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
@@ -367,20 +451,7 @@ class Channel:
     def page(self):
         if self.Success:
             response = sh.Get(url=self._channel).run()
-            if not response:
-                self.Success = False
-                sh.log.append ('Channel.page'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-            elif self._not_found in response:
-                self.Success = False
-                sg.Message (func_title = 'Channel.page'
-                           ,level      = _('WARNING')
-                           ,message    = _('Channel "%s" does not exist!') \
-                                         % self._channel
-                           )
-            else:
+            if response and not self._not_found in response:
                 self._html = response
         else:
             sh.log.append ('Channel.page'
@@ -405,8 +476,8 @@ class Channel:
                           )
     
     def run(self):
-        self.channel()
-        self.page()
+        self.user()
+        self.escape()
         self.create()
         self.links()
 
@@ -448,11 +519,12 @@ class Menu:
                                                          ,last_year + 1
                                                          )
                             )
-        #todo: implement
-        self._channels = ['Анатолий Шарий','Быть Или'
-                         ,'Максим Шелков'
-                         ]
-        self._channels.append(_('All'))
+        default_channels = [_('All'),_('Trending')]
+        channels = objs.db().get_channels()
+        if channels:
+            self._channels = default_channels + channels
+        else:
+            self._channels = default_channels
     
     def set_date(self,DaysDelta=7):
         self.time_i.add_days(days_delta=-DaysDelta)
@@ -463,10 +535,7 @@ class Menu:
     
     def set_parent(self):
         if not self.parent:
-            #self.parent = sg.objs.new_top(Maximize=False)
-            #sg.Geometry(parent=self.parent).set('985x100')
             self.parent = sg.SimpleTop(parent=sg.objs.root())
-            sg.Geometry(parent=self.parent).set('985x600')
             
     def show(self,*args):
         self.parent.show()
@@ -490,7 +559,7 @@ class Menu:
             gi.Channel.bindings needs to have Toplevel as a parent.
         '''
         #todo: do we need this?
-        #self.framev = sg.Frame (parent = self.parent)
+        self.framev = sg.Frame (parent = self.parent)
     
     def clear_filter(self,*args):
         self.clear_search()
@@ -580,8 +649,7 @@ class Menu:
                       ,_('Switch to channel "%s"') \
                       % str(self.om_chnl.choice)
                       )
-        #todo: set user
-        commands.update_channel()
+        commands.update_channel(user=self.om_chnl.choice)
     
     def init_config(self):
         self.btn_upd.focus()
@@ -704,15 +772,27 @@ class Commands:
                           )
 
     def update_channel(self,user='Centerstrain01'):
+        objs.menu().om_chnl.set(user)
         self._channel = Channel(user=user)
-        self._channel.channel()
-        self._channel.page()
+        self._channel.user()
+        self._channel.escape()
         self._channel.links()
         
         # Clears the old Channel widget
-        gi.objs.channel().frame.widget.destroy()
+        #objs._menu.framev.widget.pack_forget()
+        objs._menu.framev.widget.destroy()
+        objs._menu.framev = sg.Frame (parent = objs._menu.parent)
         gi.objs._channel = None
-        gi.objs.channel(parent=objs._menu.parent)
+        gi.objs.channel(parent=objs._menu.framev)
+        
+        #gi.objs.channel().frame.widget.pack_forget()
+        # cur
+        #gi.objs.channel().close()
+        #gi.objs._channel = None
+        #gi.objs.channel(parent=objs._menu.parent)
+        #parent = sg.SimpleTop(parent=sg.objs.root())
+        #parent = sg.SimpleTop(parent=objs._menu.parent)
+        #gi.objs.channel(parent=parent)
         
         for i in range(len(self._channel._links)):
             gi.objs.channel().add(no=i)
@@ -748,7 +828,7 @@ class Commands:
     def update_channels(self,*args):
         channels = objs.db().get_channels()
         for channel in channels:
-            update_channel(user=channel)
+            self.update_channel(user=channel)
 
     def update_trending(self,*args):
         sg.Message ('Commands.update_trending'
@@ -773,9 +853,10 @@ class Commands:
         gi.objs.block().fill(lst=channels)
         gi.objs._block.show()
         channels = gi.objs._block.get()
-        objs._db.block_channels(channels,block=0)
-        objs._db.block_channels(channels)
-        objs._db.save()
+        if channels:
+            objs._db.block_channels(channels,block=0)
+            objs._db.block_channels(channels)
+            objs._db.save()
 
 
 objs = Objects()
@@ -786,6 +867,6 @@ commands = Commands()
 if __name__ == '__main__':
     sg.objs.start()
     menu = objs.menu()
-    gi.objs.channel(parent=objs._menu.parent)
+    gi.objs.channel(parent=objs._menu.framev)
     menu.show()
     sg.objs.end()
