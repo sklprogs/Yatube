@@ -19,6 +19,22 @@ version = '(alpha)'
 AllOS = False
 
 
+class Memory:
+    
+    def __init__(self):
+        self._urls     = []
+        self._channels = []
+        self._videos   = []
+        
+    def get(self,url):
+        if url in self._urls:
+            ind = self._urls.index(url)
+            channel = self._channels[ind]
+        else:
+            channel = Channel(user=url)
+        return channel
+
+
 class Links:
     
     def __init__(self,text):
@@ -286,13 +302,17 @@ class Video:
                               ,_('INFO')
                               ,_('Download "%s"') % path
                               )
-                # cur
-                '''
+                sg.objs.waitbox().reset (func_title = 'Video.download'
+                                        ,message    = _('Download %s') \
+                                                      % path
+                                        )
+                sg.objs._waitbox.show()
+                #todo: select format & quality
                 stream = self._video.getbest()
-                stream.download (file  = path
-                                ,quiet = True
+                stream.download (filepath = path
+                                #,quiet    = True
                                 )
-                '''
+                sg.objs._waitbox.close()
             else:
                 sh.log.append ('Video.download'
                               ,_('WARNING')
@@ -559,7 +579,7 @@ class Menu:
             gi.Channel.bindings needs to have Toplevel as a parent.
         '''
         #todo: do we need this?
-        self.framev = sg.Frame (parent = self.parent)
+        #self.framev = sg.Frame (parent = self.parent)
     
     def clear_filter(self,*args):
         self.clear_search()
@@ -748,8 +768,10 @@ class Commands:
             for video_gui in gi.objs.channel()._videos:
                 if video_gui.cbox.get():
                     if len(self._videos) > video_gui._no:
-                        video = self._videos[video_gui._no]
+                        #video = self._videos[video_gui._no]
+                        video = video_gui.logic
                         #todo: sanitize video._title (FS)
+                        video._title = video._title.replace('"','').replace('/','')
                         path = os.path.join (self._channel._dir
                                             ,video._title
                                             )
@@ -774,16 +796,15 @@ class Commands:
     def update_channel(self,user='Centerstrain01'):
         objs.menu().om_chnl.set(user)
         self._channel = Channel(user=user)
-        self._channel.user()
-        self._channel.escape()
-        self._channel.links()
+        self._channel.run()
         
         # Clears the old Channel widget
         #objs._menu.framev.widget.pack_forget()
-        objs._menu.framev.widget.destroy()
-        objs._menu.framev = sg.Frame (parent = objs._menu.parent)
+        #objs._menu.framev.widget.destroy()
+        #objs._menu.framev = sg.Frame (parent = objs._menu.parent)
         gi.objs._channel = None
-        gi.objs.channel(parent=objs._menu.framev)
+        #gi.objs.channel(parent=objs._menu.framev)
+        gi.objs.channel(parent=objs._menu.parent)
         
         #gi.objs.channel().frame.widget.pack_forget()
         # cur
@@ -811,6 +832,7 @@ class Commands:
                                 ,title    = title
                                 ,duration = duration
                                 ,image    = video._image
+                                ,logic    = video
                                 )
                 ''' This does not work in 'Channel.__init__' for some
                     reason, calling this externally.
@@ -867,6 +889,7 @@ commands = Commands()
 if __name__ == '__main__':
     sg.objs.start()
     menu = objs.menu()
-    gi.objs.channel(parent=objs._menu.framev)
+    #gi.objs.channel(parent=objs._menu.framev)
+    #gi.objs.channel(parent=objs._menu.parent)
     menu.show()
     sg.objs.end()
