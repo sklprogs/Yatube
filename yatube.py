@@ -746,10 +746,42 @@ class Commands:
         self._videos  = []
         
     def play(self,*args):
-        sg.Message ('Commands.play'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        #todo: refacture
+        if self._channel:
+            for video_gui in gi.objs.channel()._videos:
+                if video_gui.cbox.get():
+                    if len(self._videos) > video_gui._no:
+                        #video = self._videos[video_gui._no]
+                        video = video_gui.logic
+                        #todo: sanitize video._title (FS)
+                        video._title = video._title.replace('"','').replace('/','')
+                        path = os.path.join (self._channel._dir
+                                            ,video._title
+                                            )
+                        #todo: autodetect extension
+                        path += '.mp4'
+                        video._path = path
+                        video.video()
+                        video.download(path)
+                        sh.Launch (target=path).app \
+                                  (custom_app  = '/usr/bin/mplayer'
+                                  ,custom_args = ['-fs','-framedrop'
+                                                 ,'-nocorrect-pts'
+                                                 ]
+                                  )
+                    else:
+                        sg.Message ('Commands.play'
+                                   ,_('ERROR')
+                                   ,_('The condition "%s" is not observed!') \
+                                   % ('%d > %d') % (len(self._videos)
+                                                   ,video_gui._no
+                                                   )
+                                   )
+        else:
+            sh.log.append ('Commands.play'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def select_new(self,*args):
         sg.Message ('Commands.select_new'
@@ -777,6 +809,7 @@ class Commands:
                                             )
                         #todo: autodetect extension
                         path += '.mp4'
+                        video._path = path
                         video.video()
                         video.download(path)
                     else:
