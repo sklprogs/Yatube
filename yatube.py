@@ -555,7 +555,7 @@ class Menu:
     
     def set_parent(self):
         if not self.parent:
-            self.parent = sg.SimpleTop(parent=sg.objs.root())
+            self.parent = objs.parent()
             
     def show(self,*args):
         self.parent.show()
@@ -578,8 +578,7 @@ class Menu:
         ''' We can create an additional frame here for gi.Channel, but
             gi.Channel.bindings needs to have Toplevel as a parent.
         '''
-        #todo: do we need this?
-        #self.framev = sg.Frame (parent = self.parent)
+        self.framev = sg.Frame (parent = self.parent)
     
     def clear_filter(self,*args):
         self.clear_search()
@@ -750,25 +749,32 @@ class Commands:
         if self._channel:
             for video_gui in gi.objs.channel()._videos:
                 if video_gui.cbox.get():
-                    if len(self._videos) > video_gui._no:
-                        #video = self._videos[video_gui._no]
-                        video = video_gui.logic
-                        #todo: sanitize video._title (FS)
-                        video._title = video._title.replace('"','').replace('/','')
-                        path = os.path.join (self._channel._dir
-                                            ,video._title
-                                            )
-                        #todo: autodetect extension
-                        path += '.mp4'
-                        video._path = path
-                        video.video()
-                        video.download(path)
-                        sh.Launch (target=path).app \
-                                  (custom_app  = '/usr/bin/mplayer'
-                                  ,custom_args = ['-fs','-framedrop'
-                                                 ,'-nocorrect-pts'
-                                                 ]
-                                  )
+                    # Video numbering starts with 1
+                    ''' #note: This condition may actually not be
+                        observed because 'self._videos' are videos that
+                        we successfuly got. If there are random
+                        connection problems, the condition may fail.
+                        #if len(self._videos) >= video_gui._no:
+                    '''
+                    #video = self._videos[video_gui._no]
+                    video = video_gui.logic
+                    #todo: sanitize video._title (FS)
+                    video._title = video._title.replace('"','').replace('/','')
+                    path = os.path.join (self._channel._dir
+                                        ,video._title
+                                        )
+                    #todo: autodetect extension
+                    path += '.mp4'
+                    video._path = path
+                    video.video()
+                    video.download(path)
+                    sh.Launch (target=path).app \
+                              (custom_app  = '/usr/bin/mplayer'
+                              ,custom_args = ['-fs','-framedrop'
+                                             ,'-nocorrect-pts'
+                                             ]
+                              )
+                    '''
                     else:
                         sg.Message ('Commands.play'
                                    ,_('ERROR')
@@ -777,6 +783,7 @@ class Commands:
                                                    ,video_gui._no
                                                    )
                                    )
+                    '''
         else:
             sh.log.append ('Commands.play'
                           ,_('WARNING')
@@ -832,12 +839,12 @@ class Commands:
         self._channel.run()
         
         # Clears the old Channel widget
-        #objs._menu.framev.widget.pack_forget()
+        objs._menu.framev.widget.pack_forget()
         #objs._menu.framev.widget.destroy()
-        #objs._menu.framev = sg.Frame (parent = objs._menu.parent)
+        objs._menu.framev = sg.Frame (parent = objs._menu.parent)
         gi.objs._channel = None
         #gi.objs.channel(parent=objs._menu.framev)
-        gi.objs.channel(parent=objs._menu.parent)
+        gi.objs.channel(parent=objs._menu.framev)
         
         #gi.objs.channel().frame.widget.pack_forget()
         # cur
@@ -922,7 +929,7 @@ commands = Commands()
 if __name__ == '__main__':
     sg.objs.start()
     menu = objs.menu()
-    #gi.objs.channel(parent=objs._menu.framev)
+    gi.objs.channel(parent=objs._menu.framev)
     #gi.objs.channel(parent=objs._menu.parent)
     menu.show()
     sg.objs.end()
