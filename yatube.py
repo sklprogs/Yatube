@@ -786,12 +786,20 @@ class Menu:
                   
     def bindings(self):
         sg.bind (obj      = self.parent
-                ,bindings = ['<Escape>','<Control-w>','<Control-q>']
+                ,bindings = ['<Control-w>','<Control-q>']
                 ,action   = self.close
+                )
+        sg.bind (obj      = self.parent
+                ,bindings = '<Escape>'
+                ,action   = self.minimize
                 )
         sg.bind (obj      = self.en_srch
                 ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
                 ,action   = self.clear_search
+                )
+        sg.bind (obj      = self.parent
+                ,bindings = '<Key-p>'
+                ,action   = commands.play
                 )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
@@ -842,6 +850,9 @@ class Menu:
                       ,url
                       )
         commands.update_trending(user=user,url=url)
+    
+    def minimize(self,event=None):
+        self.widget.iconify()
     
     def zzz(self):
         pass

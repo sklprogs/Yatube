@@ -1,2 +1,3 @@
+- Disable checkboxes for the videos that failed to load
 - Store a full URL in DB
 - Toggle a video checkbox by clicking on an empty bottom space
