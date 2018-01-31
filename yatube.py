@@ -813,6 +813,7 @@ class Menu:
         self.frames()
         self.widgets()
         self.init_config()
+        self.icon()
         self.title()
         self.bindings()
         
@@ -853,6 +854,13 @@ class Menu:
     
     def minimize(self,event=None):
         self.widget.iconify()
+    
+    def icon(self,path=None):
+        if not path:
+            path = sh.objs.pdir().add ('resources'
+                                      ,'icon_64x64_yatube.gif'
+                                      )
+        sg.WidgetShared.icon(self.parent,path)
     
     def zzz(self):
         pass
