@@ -339,8 +339,6 @@ class Channel:
         self.values()
         self._user = user
         self._dir  = download_dir
-        self.check_dir()
-        self.user()
         
     def warn(self):
         if not self._html:
@@ -437,6 +435,7 @@ class Channel:
         self._html       = ''
         self._user       = ''
         self._escaped    = ''
+        self._text       = ''
         self._links      = []
             
     def escape(self):
@@ -496,6 +495,7 @@ class Channel:
                           )
     
     def run(self):
+        self.check_dir()
         self.user()
         self.escape()
         self.create()
@@ -539,12 +539,106 @@ class Menu:
                                                          ,last_year + 1
                                                          )
                             )
-        default_channels = [_('All'),_('Trending')]
+        default_channels = [_('Channels'),_('All')]
         channels = objs.db().get_channels()
         if channels:
             self._channels = default_channels + channels
         else:
             self._channels = default_channels
+        self._countries = {_('Algeria')                : 'DZ'
+                          ,_('Argentina')              : 'AR'
+                          ,_('Australia')              : 'AU'
+                          ,_('Austria')                : 'AT'
+                          ,_('Azerbaijan')             : 'AZ'
+                          ,_('Bahrain')                : 'BH'
+                          ,_('Belarus')                : 'BY'
+                          ,_('Belgium')                : 'BE'
+                          ,_('Bosnia and Herzegovina') : 'BA'
+                          ,_('Brazil')                 : 'BR'
+                          ,_('Bulgaria')               : 'BG'
+                          ,_('Canada')                 : 'CA'
+                          ,_('Chile')                  : 'CL'
+                          ,_('Colombia')               : 'CO'
+                          ,_('Croatia')                : 'HR'
+                          ,_('Czechia')                : 'CZ'
+                          ,_('Denmark')                : 'DK'
+                          ,_('Egypt')                  : 'EG'
+                          ,_('Estonia')                : 'EE'
+                          ,_('Finland')                : 'FI'
+                          ,_('France')                 : 'FR'
+                          ,_('Georgia')                : 'GE'
+                          ,_('Germany')                : 'DE'
+                          ,_('Ghana')                  : 'GH'
+                          ,_('Greece')                 : 'GR'
+                          ,_('Hong Kong')              : 'HK'
+                          ,_('Hungary')                : 'HU'
+                          ,_('Iceland')                : 'IS'
+                          ,_('India')                  : 'IN'
+                          ,_('Indonesia')              : 'ID'
+                          ,_('Iraq')                   : 'IQ'
+                          ,_('Ireland')                : 'IE'
+                          ,_('Israel')                 : 'IL'
+                          ,_('Itality')                : 'IT'
+                          ,_('Jamaica')                : 'JM'
+                          ,_('Japan')                  : 'JP'
+                          ,_('Jordan')                 : 'JO'
+                          ,_('Kazakhstan')             : 'KZ'
+                          ,_('Kenya')                  : 'KE'
+                          ,_('Kuwait')                 : 'KW'
+                          ,_('Latvia')                 : 'LV'
+                          ,_('Lebanon')                : 'LB'
+                          ,_('Libya')                  : 'LY'
+                          ,_('Lithuania')              : 'LT'
+                          ,_('Luxembourg')             : 'LU'
+                          ,_('Macedonia')              : 'MK'
+                          ,_('Malaysia')               : 'MY'
+                          ,_('Mexico')                 : 'MX'
+                          ,_('Montenegro')             : 'ME'
+                          ,_('Morocco')                : 'MA'
+                          ,_('Nepal')                  : 'NP'
+                          ,_('Netherlands')            : 'NL'
+                          ,_('New Zealand')            : 'NZ'
+                          ,_('Nigeria')                : 'NG'
+                          ,_('Norway')                 : 'NO'
+                          ,_('Oman')                   : 'OM'
+                          ,_('Pakistan')               : 'PK'
+                          ,_('Peru')                   : 'PE'
+                          ,_('Philippines')            : 'PH'
+                          ,_('Poland')                 : 'PL'
+                          ,_('Portugal')               : 'PT'
+                          ,_('Puerto Rico')            : 'PR'
+                          ,_('Qatar')                  : 'QA'
+                          ,_('Romania')                : 'RO'
+                          ,_('Russia')                 : 'RU'
+                          ,_('Saudi Arabia')           : 'SA'
+                          ,_('Senegal')                : 'SN'
+                          ,_('Serbia')                 : 'RS'
+                          ,_('Singapore')              : 'SG'
+                          ,_('Slovakia')               : 'SK'
+                          ,_('Slovenia')               : 'SL'
+                          ,_('South Africa')           : 'ZA'
+                          ,_('South Korea')            : 'KR'
+                          ,_('Spain')                  : 'ES'
+                          ,_('Sri Lanka')              : 'LK'
+                          ,_('Sweden')                 : 'SE'
+                          ,_('Switzerland')            : 'CH'
+                          ,_('Taiwan')                 : 'TW'
+                          ,_('Tanzania')               : 'TZ'
+                          ,_('Thailand')               : 'TH'
+                          ,_('Tunisia')                : 'TN'
+                          ,_('Turkey')                 : 'TR'
+                          ,_('Uganda')                 : 'UG'
+                          ,_('Ukraine')                : 'UA'
+                          ,_('United Arab Emirates')   : 'AE'
+                          ,_('United Kingdom')         : 'GB'
+                          ,_('United States')          : 'US'
+                          ,_('Vietnam')                : 'VN'
+                          ,_('Yemen')                  : 'YE'
+                          ,_('Zimbabwe')               : 'ZW'
+                          }  
+        trending = self._countries.keys()
+        trending = sorted(trending)
+        self._trending = [_('Trending')] + trending
     
     def set_date(self,DaysDelta=7):
         self.time_i.add_days(days_delta=-DaysDelta)
@@ -574,6 +668,10 @@ class Menu:
                                )
         self.frame3 = sg.Frame (parent = self.parent
                                ,expand = False
+                               )
+        self.frame4 = sg.Frame (parent = self.frame3
+                               ,expand = False
+                               ,side   = 'right'
                                )
         ''' We can create an additional frame here for gi.Channel, but
             gi.Channel.bindings needs to have Toplevel as a parent.
@@ -655,10 +753,16 @@ class Menu:
                                  ,text   = _('Play')
                                  ,action = commands.play
                                  )
-        self.om_chnl = sg.OptionMenu (parent  = self.frame3
+        self.om_trnd = sg.OptionMenu (parent  = self.frame4
+                                     ,items   = self._trending
+                                     ,side    = 'left'
+                                     ,default = _('Trending')
+                                     ,command = self.set_trending
+                                     )
+        self.om_chnl = sg.OptionMenu (parent  = self.frame4
                                      ,items   = self._channels
-                                     ,side    = 'right'
-                                     ,default = _('All')
+                                     ,side    = 'left'
+                                     ,default = _('Channels')
                                      ,command = self.set_channel
                                      )
     
@@ -711,6 +815,36 @@ class Menu:
         else:
             for video in gi.objs.channel()._videos:
                 video.cbox.disable()
+                
+    def set_trending(self):
+        sh.log.append ('Menu.set_trending'
+                      ,_('INFO')
+                      ,_('Switch to channel "%s"') \
+                      % str(self.om_trnd.choice)
+                      )
+        country = 'RU'
+        if self.om_trnd.choice == _('Trending'):
+            user = _('Trending') + ' - ' + _('Russia')
+        else:
+            user = _('Trending') + ' - ' + self.om_trnd.choice
+            country = self._countries[self.om_trnd.choice]
+        url = 'https://www.youtube.com/feed/trending?gl=%s' % country
+        sh.log.append ('Menu.set_trending'
+                      ,_('DEBUG')
+                      ,user
+                      )
+        sh.log.append ('Menu.set_trending'
+                      ,_('DEBUG')
+                      ,country
+                      )
+        sh.log.append ('Menu.set_trending'
+                      ,_('DEBUG')
+                      ,url
+                      )
+        commands.update_trending(user=user,url=url)
+    
+    def zzz(self):
+        pass
 
 
 
@@ -837,24 +971,22 @@ class Commands:
         objs.menu().om_chnl.set(user)
         self._channel = Channel(user=user)
         self._channel.run()
-        
+        self.reset_channel_gui()
+        self.channel_gui()
+
+    def update_channels(self,*args):
+        channels = objs.db().get_channels()
+        for channel in channels:
+            self.update_channel(user=channel)
+
+    def reset_channel_gui(self):
         # Clears the old Channel widget
         objs._menu.framev.widget.pack_forget()
-        #objs._menu.framev.widget.destroy()
         objs._menu.framev = sg.Frame (parent = objs._menu.parent)
         gi.objs._channel = None
-        #gi.objs.channel(parent=objs._menu.framev)
         gi.objs.channel(parent=objs._menu.framev)
         
-        #gi.objs.channel().frame.widget.pack_forget()
-        # cur
-        #gi.objs.channel().close()
-        #gi.objs._channel = None
-        #gi.objs.channel(parent=objs._menu.parent)
-        #parent = sg.SimpleTop(parent=sg.objs.root())
-        #parent = sg.SimpleTop(parent=objs._menu.parent)
-        #gi.objs.channel(parent=parent)
-        
+    def channel_gui(self):
         for i in range(len(self._channel._links)):
             gi.objs.channel().add(no=i)
             # Show default picture & video information
@@ -886,17 +1018,28 @@ class Commands:
         # Move back to video #0
         gi.objs._channel.canvas.widget.yview_moveto(0)
         gi.objs._channel.show()
-
-    def update_channels(self,*args):
-        channels = objs.db().get_channels()
-        for channel in channels:
-            self.update_channel(user=channel)
-
-    def update_trending(self,*args):
-        sg.Message ('Commands.update_trending'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+    
+    def update_trending (self,event=None,user=None
+                        ,url=None
+                        ):
+        if not user:
+            user = _('Trending') + ' - ' + _('Russia')
+        if not url:
+            url = 'https://www.youtube.com/feed/trending?gl=RU'
+        self._channel = Channel(user=user)
+        self._channel._channel = url
+        ''' We assume that there is no need to delete unsupported
+            characters in countries.
+        '''
+        #todo: set home dir automatically
+        download_dir = '/home/pete/downloads/Youtube/' + user
+        self._channel._dir = download_dir
+        self._channel.create()
+        self._channel.check_dir()
+        self._channel.page()
+        self._channel.links()
+        self.reset_channel_gui()
+        self.channel_gui()
 
     def manage_sub(self,*args):
         old_channels = objs.db().get_channels()
