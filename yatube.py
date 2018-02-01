@@ -651,10 +651,10 @@ class Menu:
         if not self.parent:
             self.parent = objs.parent()
             
-    def show(self,*args):
+    def show(self,event=None):
         self.parent.show()
         
-    def close(self,*args):
+    def close(self,event=None):
         objs.db().save()
         objs._db.close()
         self.widget.destroy()
@@ -678,12 +678,18 @@ class Menu:
         '''
         self.framev = sg.Frame (parent = self.parent)
     
-    def clear_filter(self,*args):
-        self.clear_search()
+    def clear_filter(self,event=None,Force=False):
+        if Force or self.en_fltr.get() == _('Filter this view'):
+            self.en_fltr.clear_text()
+        self.en_fltr.widget.config(fg='black',font='Serif 10')
+        self.en_fltr.focus()
         #todo: Restore filtered videos here
                    
-    def clear_search(self,*args):
-        self.en_srch.clear_text()
+    def clear_search(self,event=None,Force=False):
+        if Force or self.en_srch.get() == _('Search Youtube'):
+            self.en_srch.clear_text()
+        self.en_srch.widget.config(fg='black',font='Serif 10')
+        self.en_srch.focus()
     
     def widgets(self):
         self.btn_sub = sg.Button (parent = self.frame1
@@ -698,47 +704,68 @@ class Menu:
                                  ,text   = _('Update subscriptions')
                                  ,action = commands.update_channels
                                  )
-        self.btn_all = sg.Button (parent = self.frame2
+        self.btn_upd.focus()
+        self.btn_all = sg.Button (parent = self.frame1
                                  ,text   = _('Select all new videos')
                                  ,action = commands.select_new
                                  )
-        self.btn_flt = sg.Button (parent = self.frame2
-                                 ,text   = _('Select by filter')
-                                 ,action = commands.filter
-                                 )
-        self.cb_date = sg.CheckBox (parent = self.frame2
+        self.cb_date = sg.CheckBox (parent = self.frame1
                                    ,Active = False
                                    ,side   = 'left'
                                    )
-        self.om_date = sg.OptionMenu (parent  = self.frame2
+        self.om_date = sg.OptionMenu (parent  = self.frame1
                                      ,items   = (_('Newer than')
                                                 ,_('Older than')
                                                 )
                                      ,default = _('Newer than')
                                      )
-        self.om_wday = sg.OptionMenu (parent  = self.frame2
+        self.om_wday = sg.OptionMenu (parent  = self.frame1
                                      ,items   = self._days
                                      ,default = self._day
                                      )
-        self.om_mnth = sg.OptionMenu (parent  = self.frame2
+        self.om_mnth = sg.OptionMenu (parent  = self.frame1
                                      ,items   = self._months
                                      ,default = self._month
                                      )
-        self.om_yers = sg.OptionMenu (parent  = self.frame2
+        self.om_yers = sg.OptionMenu (parent  = self.frame1
                                      ,items   = self._years
                                      ,default = self._year
                                      )
-        self.cb_srch = sg.CheckBox (parent = self.frame2
-                                   ,Active = False
-                                   ,side   = 'left'
-                                   )
+        # Search Youtube
         self.en_srch = sg.Entry (parent    = self.frame2
                                 ,Composite = True
+                                ,font      = 'Serif 10 italic'
+                                ,fg        = 'grey'
                                 ,side      = 'left'
                                 )
-        self.btn_clr = sg.Button (parent = self.frame2
-                                 ,text   = _('Clear')
-                                 ,action = self.clear_filter
+        self.en_srch.insert(_('Search Youtube'))
+        self.btn_ytb = sg.Button (parent = self.frame2
+                                 ,text   = _('Search')
+                                 ,action = self.search_youtube
+                                 )
+        # Get URL
+        self.en_gurl = sg.Entry (parent    = self.frame2
+                                ,Composite = True
+                                ,font      = 'Serif 10 italic'
+                                ,fg        = 'grey'
+                                ,side      = 'left'
+                                )
+        self.en_gurl.insert(_('Get URL'))
+        self.btn_url = sg.Button (parent = self.frame2
+                                 ,text   = _('Download')
+                                 ,action = self.get_url
+                                 )
+        # Filter this view
+        self.en_fltr = sg.Entry (parent    = self.frame2
+                                ,Composite = True
+                                ,font      = 'Serif 10 italic'
+                                ,fg        = 'grey'
+                                ,side      = 'left'
+                                )
+        self.en_fltr.insert(_('Filter this view'))
+        self.btn_flt = sg.Button (parent = self.frame2
+                                 ,text   = _('Filter')
+                                 ,action = self.filter_view
                                  )
         self.cb_slct = sg.CheckBox (parent = self.frame3
                                    ,Active = False
@@ -766,7 +793,7 @@ class Menu:
                                      ,command = self.set_channel
                                      )
     
-    def set_channel(self,*args):
+    def set_channel(self,event=None):
         sh.log.append ('Menu.set_channel'
                       ,_('INFO')
                       ,_('Switch to channel "%s"') \
@@ -774,17 +801,14 @@ class Menu:
                       )
         commands.update_channel(user=self.om_chnl.choice)
     
-    def init_config(self):
-        self.btn_upd.focus()
-        self.en_srch.insert(_('Search in channels'))
-        self.en_srch.widget.config (font = 'Serif 10 italic'
-                                   ,fg   = 'grey'
-                                   )
-        # cur
+    def update(self,event=None):
+        pass
+        #cur
         #self.btn_dld.widget.config(state='disabled')
         #self.btn_ply.widget.config(state='disabled')
                   
     def bindings(self):
+        # Main window
         sg.bind (obj      = self.parent
                 ,bindings = ['<Control-w>','<Control-q>']
                 ,action   = self.close
@@ -793,16 +817,48 @@ class Menu:
                 ,bindings = '<Escape>'
                 ,action   = self.minimize
                 )
+        # Search Youtube
         sg.bind (obj      = self.en_srch
-                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
+                ,bindings = '<ButtonRelease-1>'
                 ,action   = self.clear_search
                 )
+        sg.bind (obj      = self.en_srch
+                ,bindings = '<ButtonRelease-2>'
+                ,action   = self.paste_search
+                )
+        sg.bind (obj      = self.en_srch
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = lambda x:self.clear_search(Force=True)
+                )
+        # Get URL
+        sg.bind (obj      = self.en_gurl
+                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
+                ,action   = self.paste_url
+                )
+        sg.bind (obj      = self.en_gurl
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = self.clear_url
+                )
+        # Filter this view
+        sg.bind (obj      = self.en_fltr
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.clear_filter
+                )
+        sg.bind (obj      = self.en_fltr
+                ,bindings = '<ButtonRelease-2>'
+                ,action   = self.paste_filter
+                )
+        sg.bind (obj      = self.en_fltr
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = lambda x:self.clear_filter(Force=True)
+                )
+        # Download & Play
         sg.bind (obj      = self.parent
-                ,bindings = '<Key-p>'
+                ,bindings = '<Control-p>'
                 ,action   = commands.play
                 )
         sg.bind (obj      = self.parent
-                ,bindings = '<Key-d>'
+                ,bindings = '<Control-d>'
                 ,action   = commands.download
                 )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
@@ -816,10 +872,10 @@ class Menu:
         self.widget = self.parent.widget
         self.frames()
         self.widgets()
-        self.init_config()
         self.icon()
         self.title()
         self.bindings()
+        self.update()
         
     def toggle_select(self):
         if self.cb_slct.get():
@@ -866,6 +922,76 @@ class Menu:
                                       )
         sg.WidgetShared.icon(self.parent,path)
     
+    def search_youtube(self,event=None):
+        result = self.en_srch.get()
+        if result:
+            sh.log.append ('Menu.search_youtube'
+                          ,_('INFO')
+                          ,_('Search for "%s"') % result
+                          )
+            sg.Message ('Menu.search_youtube'
+                       ,_('INFO')
+                       ,_('Not implemented yet!')
+                       )
+            #todo: implement
+        else:
+            sh.log.append ('Menu.search_youtube'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def filter_view(self,event=None):
+        result = self.en_fltr.get()
+        if result:
+            sh.log.append ('Menu.filter_view'
+                          ,_('INFO')
+                          ,_('Filter by "%s"') % result
+                          )
+            sg.Message ('Menu.filter_view'
+                       ,_('INFO')
+                       ,_('Not implemented yet!')
+                       )
+            #todo: implement
+        else:
+            sh.log.append ('Menu.filter_view'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def clear_url(self,event=None):
+        self.en_gurl.clear_text()
+        self.en_gurl.widget.config(fg='black',font='Serif 10')
+        self.en_gurl.focus()
+        
+    def paste_url(self,event=None):
+        self.clear_url()
+        self.en_gurl.insert(text=sg.Clipboard().paste())
+        
+    def paste_search(self,event=None):
+        self.clear_search(Force=True)
+        self.en_srch.insert(text=sg.Clipboard().paste())
+        
+    def paste_filter(self,event=None):
+        self.clear_filter()
+        self.en_fltr.insert(text=sg.Clipboard().paste())
+        
+    def get_url(self,event=None):
+        result = self.en_gurl.get()
+        if result:
+            sh.log.append ('Menu.get_url'
+                          ,_('INFO')
+                          ,_('Download "%s"') % result
+                          )
+            sg.Message ('Menu.get_url'
+                       ,_('INFO')
+                       ,_('Not implemented yet!')
+                       )
+        else:
+            sh.log.append ('Menu.get_url'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def zzz(self):
         pass
 
@@ -901,7 +1027,7 @@ class Commands:
         self._channel = None
         self._videos  = []
         
-    def play(self,*args):
+    def play(self,event=None):
         #todo: refacture
         if self._channel:
             for video_gui in gi.objs.channel()._videos:
@@ -947,19 +1073,19 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
     
-    def select_new(self,*args):
+    def select_new(self,event=None):
         sg.Message ('Commands.select_new'
                    ,_('INFO')
                    ,_('Not implemented yet!')
                    )
     
-    def filter(self,*args):
+    def filter(self,event=None):
         sg.Message ('Commands.filter'
                    ,_('INFO')
                    ,_('Not implemented yet!')
                    )
         
-    def download(self,*args):
+    def download(self,event=None):
         if self._channel:
             for video_gui in gi.objs.channel()._videos:
                 if video_gui.cbox.get():
@@ -999,7 +1125,7 @@ class Commands:
         if Show:
             gi.objs._channel.show()
 
-    def update_channels(self,*args):
+    def update_channels(self,event=None):
         channels = objs.db().get_channels()
         for channel in channels:
             self.update_channel(user=channel,Show=0)
@@ -1066,7 +1192,7 @@ class Commands:
         self.reset_channel_gui()
         self.channel_gui()
 
-    def manage_sub(self,*args):
+    def manage_sub(self,event=None):
         old_channels = objs.db().get_channels()
         gi.objs.sub().fill(lst=old_channels)
         gi.objs._sub.show()
@@ -1078,7 +1204,7 @@ class Commands:
                 objs._db.add_channel(data=(channel,False,))
         objs._db.save()
                    
-    def manage_block(self,*args):
+    def manage_block(self,event=None):
         channels = objs.db().get_channels(block=1)
         gi.objs.block().fill(lst=channels)
         gi.objs._block.show()
