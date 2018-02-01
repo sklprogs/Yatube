@@ -982,10 +982,29 @@ class Menu:
                           ,_('INFO')
                           ,_('Download "%s"') % result
                           )
-            sg.Message ('Menu.get_url'
-                       ,_('INFO')
-                       ,_('Not implemented yet!')
-                       )
+            #todo: check URL
+            video = Video(url=result)
+            video.video()
+            video.assign_online()
+            #todo: create './Youtube/_(Search)' path automatically
+            
+            path = sh.objs.pdir().add('Youtube',_('Search'))
+            if sh.Path(path=path).create():
+                #todo: sanitize
+                title = video._title.replace('/','').replace('"','')
+                if not title:
+                    title = 'video'
+                path = os.path.join(path,title)
+                #todo: set extension automatically
+                path += '.mp4'
+                video.download(path=path)
+                #todo: if downloaded successfully:
+                self.clear_url()
+            else:
+                sh.log.append ('Menu.get_url'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
         else:
             sh.log.append ('Menu.get_url'
                           ,_('WARNING')
