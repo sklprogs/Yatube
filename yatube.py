@@ -801,6 +801,10 @@ class Menu:
                 ,bindings = '<Key-p>'
                 ,action   = commands.play
                 )
+        sg.bind (obj      = self.parent
+                ,bindings = '<Key-d>'
+                ,action   = commands.download
+                )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
     def title(self,text=None):
