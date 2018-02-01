@@ -986,17 +986,20 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
 
-    def update_channel(self,user='Centerstrain01'):
+    def update_channel(self,user='Centerstrain01',Show=True):
         objs.menu().om_chnl.set(user)
         self._channel = Channel(user=user)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
+        if Show:
+            gi.objs._channel.show()
 
     def update_channels(self,*args):
         channels = objs.db().get_channels()
         for channel in channels:
-            self.update_channel(user=channel)
+            self.update_channel(user=channel,Show=0)
+        gi.objs._channel.show()
 
     def reset_channel_gui(self):
         # Clears the old Channel widget
@@ -1036,7 +1039,6 @@ class Commands:
         objs.db().save()
         # Move back to video #0
         gi.objs._channel.canvas.widget.yview_moveto(0)
-        gi.objs._channel.show()
     
     def update_trending (self,event=None,user=None
                         ,url=None
