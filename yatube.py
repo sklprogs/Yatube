@@ -851,6 +851,10 @@ class Menu:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = lambda x:self.clear_search(Force=True)
                 )
+        sg.bind (obj      = self.en_srch
+                ,bindings = ['<Return>','<KP_Enter>']
+                ,action   = self.search_youtube
+                )
         # Get video from URL
         sg.bind (obj      = self.en_gurl
                 ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
@@ -860,6 +864,10 @@ class Menu:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.clear_url
                 )
+        sg.bind (obj      = self.en_gurl
+                ,bindings = ['<Return>','<KP_Enter>']
+                ,action   = self.get_url
+                )
         # Get links from URL
         sg.bind (obj      = self.en_lnks
                 ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
@@ -868,6 +876,10 @@ class Menu:
         sg.bind (obj      = self.en_lnks
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.clear_links
+                )
+        sg.bind (obj      = self.en_lnks
+                ,bindings = ['<Return>','<KP_Enter>']
+                ,action   = self.get_links
                 )
         # Filter this view
         sg.bind (obj      = self.en_fltr
@@ -881,6 +893,10 @@ class Menu:
         sg.bind (obj      = self.en_fltr
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = lambda x:self.clear_filter(Force=True)
+                )
+        sg.bind (obj      = self.en_fltr
+                ,bindings = ['<Return>','<KP_Enter>']
+                ,action   = self.filter_view
                 )
         # Download & Play
         sg.bind (obj      = self.parent
@@ -955,15 +971,16 @@ class Menu:
     def search_youtube(self,event=None):
         result = self.en_srch.get()
         if result and result != _('Search Youtube'):
+            root_url = 'https://www.youtube.com/results?search_query=%s'
+            result = sh.Online (base_str   = root_url
+                               ,search_str = result
+                               ,MTSpecific = False
+                               ).url()
             sh.log.append ('Menu.search_youtube'
-                          ,_('INFO')
-                          ,_('Search for "%s"') % result
+                          ,_('DEBUG')
+                          ,result
                           )
-            sg.Message ('Menu.search_youtube'
-                       ,_('INFO')
-                       ,_('Not implemented yet!')
-                       )
-            #todo: implement
+            self._get_links(url=result)
         else:
             sh.log.append ('Menu.search_youtube'
                           ,_('WARNING')
@@ -1048,26 +1065,7 @@ class Menu:
                           ,_('DEBUG')
                           ,_('Get links from "%s"') % result
                           )
-            path = sh.objs.pdir().add('Youtube',_('Search'))
-            if sh.Path(path=path).create():
-                channel = commands._channel \
-                        = Channel(user=result,download_dir=path)
-                channel._channel = result
-                ''' We assume that there is no need to delete
-                    unsupported characters in countries.
-                '''
-                channel.create()
-                channel.check_dir()
-                channel.page()
-                channel.links()
-                commands.reset_channel_gui()
-                commands.channel_gui()
-                gi.objs._channel.show()
-            else:
-                sh.log.append ('Menu.get_links'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+            self._get_links(url=result)
         else:
             sh.log.append ('Menu.get_links'
                           ,_('WARNING')
@@ -1082,6 +1080,29 @@ class Menu:
         self.en_lnks.clear_text()
         self.en_lnks.widget.config(fg='black',font='Serif 10')
         self.en_lnks.focus()
+        
+    def _get_links(self,url):
+        path = sh.objs.pdir().add('Youtube',_('Search'))
+        if sh.Path(path=path).create():
+            channel = commands._channel = Channel (user         = url
+                                                  ,download_dir = path
+                                                  )
+            channel._channel = url
+            ''' We assume that there is no need to delete
+                unsupported characters in countries.
+            '''
+            channel.create()
+            channel.check_dir()
+            channel.page()
+            channel.links()
+            commands.reset_channel_gui()
+            commands.channel_gui()
+            gi.objs._channel.show()
+        else:
+            sh.log.append ('Menu._get_links'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
     
     def zzz(self):
         pass
