@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import re
 import os
 import io
 import pafy      as pf
@@ -70,9 +71,17 @@ class Links:
                               ,_('Wrong input data!')
                               )
                               
+    def delete_suffixes(self):
+        for i in range(len(self._links)):
+            self._links[i] = re.sub ('&amp;index=\d+&amp;list=.*'
+                                    ,''
+                                    ,self._links[i]
+                                    )
+    
     def run(self):
         if self._text:
             self.poses()
+            self.delete_suffixes()
         else:
             sh.log.append ('Links.run'
                           ,_('WARNING')
@@ -743,17 +752,29 @@ class Menu:
                                  ,text   = _('Search')
                                  ,action = self.search_youtube
                                  )
-        # Get URL
+        # Get video from URL
         self.en_gurl = sg.Entry (parent    = self.frame2
                                 ,Composite = True
                                 ,font      = 'Serif 10 italic'
                                 ,fg        = 'grey'
                                 ,side      = 'left'
                                 )
-        self.en_gurl.insert(_('Get URL'))
+        self.en_gurl.insert(_('Get video from URL'))
         self.btn_url = sg.Button (parent = self.frame2
                                  ,text   = _('Download')
                                  ,action = self.get_url
+                                 )
+        # Get links from URL
+        self.en_lnks = sg.Entry (parent    = self.frame2
+                                ,Composite = True
+                                ,font      = 'Serif 10 italic'
+                                ,fg        = 'grey'
+                                ,side      = 'left'
+                                )
+        self.en_lnks.insert(_('Get links from URL'))
+        self.btn_lnk = sg.Button (parent = self.frame2
+                                 ,text   = _('Get')
+                                 ,action = self.get_links
                                  )
         # Filter this view
         self.en_fltr = sg.Entry (parent    = self.frame2
@@ -830,7 +851,7 @@ class Menu:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = lambda x:self.clear_search(Force=True)
                 )
-        # Get URL
+        # Get video from URL
         sg.bind (obj      = self.en_gurl
                 ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
                 ,action   = self.paste_url
@@ -838,6 +859,15 @@ class Menu:
         sg.bind (obj      = self.en_gurl
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.clear_url
+                )
+        # Get links from URL
+        sg.bind (obj      = self.en_lnks
+                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
+                ,action   = self.paste_links
+                )
+        sg.bind (obj      = self.en_lnks
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = self.clear_links
                 )
         # Filter this view
         sg.bind (obj      = self.en_fltr
@@ -924,7 +954,7 @@ class Menu:
     
     def search_youtube(self,event=None):
         result = self.en_srch.get()
-        if result:
+        if result and result != _('Search Youtube'):
             sh.log.append ('Menu.search_youtube'
                           ,_('INFO')
                           ,_('Search for "%s"') % result
@@ -942,7 +972,7 @@ class Menu:
     
     def filter_view(self,event=None):
         result = self.en_fltr.get()
-        if result:
+        if result and result != _('Filter this view'):
             sh.log.append ('Menu.filter_view'
                           ,_('INFO')
                           ,_('Filter by "%s"') % result
@@ -977,7 +1007,7 @@ class Menu:
         
     def get_url(self,event=None):
         result = self.en_gurl.get()
-        if result:
+        if result and result != _('Get video from URL'):
             sh.log.append ('Menu.get_url'
                           ,_('INFO')
                           ,_('Download "%s"') % result
@@ -1010,6 +1040,48 @@ class Menu:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
+    
+    def get_links(self,event=None):
+        result = self.en_lnks.get()
+        if result and result != _('Get links from URL'):
+            sh.log.append ('Menu.get_links'
+                          ,_('DEBUG')
+                          ,_('Get links from "%s"') % result
+                          )
+            path = sh.objs.pdir().add('Youtube',_('Search'))
+            if sh.Path(path=path).create():
+                channel = commands._channel \
+                        = Channel(user=result,download_dir=path)
+                channel._channel = result
+                ''' We assume that there is no need to delete
+                    unsupported characters in countries.
+                '''
+                channel.create()
+                channel.check_dir()
+                channel.page()
+                channel.links()
+                commands.reset_channel_gui()
+                commands.channel_gui()
+                gi.objs._channel.show()
+            else:
+                sh.log.append ('Menu.get_links'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
+        else:
+            sh.log.append ('Menu.get_links'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def paste_links(self,event=None):
+        self.clear_links()
+        self.en_lnks.insert(text=sg.Clipboard().paste())
+    
+    def clear_links(self,event=None):
+        self.en_lnks.clear_text()
+        self.en_lnks.widget.config(fg='black',font='Serif 10')
+        self.en_lnks.focus()
     
     def zzz(self):
         pass
