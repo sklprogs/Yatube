@@ -2,8 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import sqlite3
-import shared    as sh
-import sharedGUI as sg
+import shared as sh
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
@@ -12,7 +11,12 @@ gettext.install('yatube','./locale')
 
 class DB:
     
-    def __init__(self):
+    def __init__(self,Silent=False):
+        if Silent:
+            self.mesfc = sh.Log().append
+        else:
+            import sharedGUI as sg
+            self.mesfc = sg.Message
         self.Success = True
         self._user   = ''
         self._path   = sh.objs.pdir().add('yatube.db')
@@ -37,7 +41,7 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.create_channels'
+                self.mesfc ('DB.create_channels'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -72,7 +76,7 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.create_videos'
+                self.mesfc ('DB.create_videos'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -90,7 +94,7 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.add_video'
+                self.mesfc ('DB.add_video'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -106,7 +110,7 @@ class DB:
                 self.db.commit()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.save'
+                self.mesfc ('DB.save'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -135,7 +139,7 @@ class DB:
                 self.dbc.close()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.close'
+                self.mesfc ('DB.close'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -158,7 +162,7 @@ class DB:
                 elif mode == 'CHANNELS':
                     self.dbc.execute('select * from CHANNELS')
                 else:
-                    sg.Message (func    = 'DB.print'
+                    self.mesfc (func    = 'DB.print'
                                ,level   = _('ERROR')
                                ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                                           % (str(mode)
@@ -190,7 +194,7 @@ class DB:
                                      )
                 else:
                     self.Success = False
-                    sg.Message ('DB.get_channels'
+                    self.mesfc ('DB.get_channels'
                                ,_('ERROR')
                                ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                                % (str(block),'-1, 0, 1')
@@ -201,7 +205,7 @@ class DB:
                         return [item[0] for item in result if item]
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.get_channels'
+                self.mesfc ('DB.get_channels'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -219,7 +223,7 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.add_channel'
+                self.mesfc ('DB.add_channel'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
@@ -237,7 +241,7 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sg.Message ('DB.block_channels'
+                self.mesfc ('DB.block_channels'
                            ,_('WARNING')
                            ,_('Database "%s" has failed!') % self._path
                            )
