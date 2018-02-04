@@ -456,11 +456,11 @@ class UI:
             #todo: implement
             self._menu = None
         else:
-            parent = sg.SimpleTop(parent=sg.objs.root())
+            parent = gi.objs.parent()
             #cur
             sg.Geometry(parent=parent).set('985x600')
             #sg.Geometry(parent=parent).maximize()
-            self._menu = gi.Menu(parent=parent)
+            self._menu = gi.objs.menu()
         commands._menu = self._menu
             
     def close(self):

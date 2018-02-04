@@ -41,8 +41,8 @@ class Menu:
                                ,expand = False
                                ,side   = 'right'
                                )
-        ''' We can create an additional frame here for gi.Channel, but
-            gi.Channel.bindings needs to have Toplevel as a parent.
+        ''' We can create an additional frame here for Channel, but
+            Channel.bindings needs to have Toplevel as a parent.
         '''
         self.framev = sg.Frame (parent = self.parent)
     
@@ -445,35 +445,35 @@ class Channel:
             self.obj    = sg.SimpleTop(parent=self.parent)
         
     def bindings(self):
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs.parent()
                 ,bindings = '<Down>'
                 ,action   = self.scroll_down
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<Up>'
                 ,action   = self.scroll_up
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<Left>'
                 ,action   = self.scroll_left
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<Right>'
                 ,action   = self.scroll_right
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<Next>'
                 ,action   = self.scroll_page_down
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<Prior>'
                 ,action   = self.scroll_page_up
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<End>'
                 ,action   = self.scroll_end
                 )
-        sg.bind (obj      = self.parent
+        sg.bind (obj      = objs._parent
                 ,bindings = '<Home>'
                 ,action   = self.scroll_start
                 )
@@ -640,7 +640,8 @@ class Channel:
 class Objects:
     
     def __init__(self):
-        self._def_image = self._channel = self._sub = self._block = None
+        self._def_image = self._channel = self._sub = self._block \
+                        = self._menu = self._parent = None
         patterns = ('https://www.youtube.com/user/AvtoKriminalist/videos'
                    ,'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
                    ,'AvtoKriminalist'
@@ -674,6 +675,16 @@ class Objects:
         if not self._channel:
             self._channel = Channel(parent=parent)
         return self._channel
+        
+    def parent(self):
+        if not self._parent:
+            self._parent = sg.SimpleTop(parent=sg.objs.root())
+        return self._parent
+    
+    def menu(self):
+        if not self._menu:
+            self._menu = Menu(parent=self.parent())
+        return self._menu
 
 
 objs = Objects()
