@@ -419,6 +419,7 @@ class Lists:
         self.Silent  = Silent
         self._fblock = sh.objs.pdir().add('block.txt')
         self._fsubsc = sh.objs.pdir().add('subscribe.txt')
+        self._fsubs2 = sh.objs.pdir().add('subscribe2.txt')
         
     def values(self):
         self._block_auth = []
@@ -442,6 +443,15 @@ class Lists:
         if dic.Success:
             self._subsc_auth = dic.orig
             self._subsc_urls = dic.transl
+        dic = sh.Dic (file     = self._fsubs2
+                     ,Silent   = True
+                     ,Sortable = False
+                     )
+        if dic.Success:
+            self._subsc_auth += dic.orig
+            self._subsc_urls += dic.transl
+        self._subsc_auth, self._subsc_urls = (list(x) for x \
+        in zip(*sorted(zip(self._subsc_auth, self._subsc_urls))))
 
 
 if __name__ == '__main__':
