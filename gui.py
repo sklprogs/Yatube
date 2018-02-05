@@ -10,7 +10,7 @@ gettext_windows.setup_env()
 gettext.install('yatube','./locale')
 
 product = 'Yatube'
-version = '(alpha)'
+version = '(beta)'
 # A default picture height
 def_height = 110
 
@@ -446,6 +446,10 @@ class Channel:
             self.obj    = sg.SimpleTop(parent=self.parent)
         
     def bindings(self):
+        ''' If possible, most actions should be bound here, not in
+            the controller (otherwise, we will have to rebind those
+            actions each time the parent is destroyed).
+        '''
         sg.bind (obj      = objs.parent()
                 ,bindings = '<Down>'
                 ,action   = self.scroll_down
@@ -477,6 +481,10 @@ class Channel:
         sg.bind (obj      = objs._parent
                 ,bindings = '<Home>'
                 ,action   = self.scroll_start
+                )
+        sg.bind (obj      = objs._parent
+                ,bindings = ['<MouseWheel>','<Button 4>','<Button 5>']
+                ,action   = self.mouse_wheel
                 )
                 
     def scroll_left(self,*args):
@@ -575,6 +583,7 @@ class Channel:
                                ,expand = True
                                ,fill   = 'both'
                                ,Close  = False
+                               ,text   = _('Videos are placed here')
                                )
     
     def canvases(self):
@@ -635,6 +644,20 @@ class Channel:
         
     def close(self,*args):
         self.widget.destroy()
+        
+    def mouse_wheel(self,event=None):
+        ''' #todo: fix: too small delta in Windows
+            В Windows XP delta == -120, однако, в других версиях оно
+            другое
+        '''
+        if event.num == 5 or event.delta < 0:
+            self.scroll_down()
+        if event.num == 4 or event.delta > 0:
+            self.scroll_up()
+        return 'break'
+    
+    def zzz(self):
+        pass
 
 
 
@@ -671,5 +694,6 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    objs.menu().show()
+    objs.channel(parent=objs.menu().parent)
+    objs._menu.show()
     sg.objs.end()
