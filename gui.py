@@ -429,6 +429,7 @@ class Video:
         self.pic()
 
 
+
 class Channel:
     
     def __init__(self,parent=None):
@@ -640,30 +641,8 @@ class Channel:
 class Objects:
     
     def __init__(self):
-        self._def_image = self._channel = self._sub = self._block \
-                        = self._menu = self._parent = None
-        patterns = ('https://www.youtube.com/user/AvtoKriminalist/videos'
-                   ,'https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos'
-                   ,'AvtoKriminalist'
-                   ,'UCIpvyH9GKI54X1Ww2BDnEgg'
-                   )
-        self._notes = _('Enter a channel URL, one URL per a line:')
-        self._notes += '\n'
-        self._notes += _('Patterns: %s') % '\n'.join(patterns)
-        
-    def sub(self):
-        if not self._sub:
-            self._sub = sg.Manage (title = _('Manage subscriptions')
-                                  ,notes = self._notes
-                                  )
-        return self._sub
-        
-    def block(self):
-        if not self._block:
-            self._block = sg.Manage (title = _('Manage blacklist')
-                                    ,notes = self._notes
-                                    )
-        return self._block
+        self._def_image = self._channel = self._menu = self._parent \
+                        = None
         
     def def_image(self):
         if not self._def_image:
@@ -692,5 +671,5 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    objs.sub().show()
+    objs.menu().show()
     sg.objs.end()

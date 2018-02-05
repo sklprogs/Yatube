@@ -18,10 +18,11 @@ import db
 
 class Commands:
     
-    def __init__(self):
+    def __init__(self,Silent=False):
         self._menu    = None
         self._channel = None
         self._videos  = []
+        self.Silent = Silent
         itime = md.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
@@ -36,17 +37,24 @@ class Commands:
         const = md.Constants()
         self._countries = const.countries()
         self._trending  = const.trending()
+        lists = md.Lists(Silent=Silent)
+        lists.load()
+        self._fblock     = lists._fblock
+        self._fsubsc     = lists._fsubsc
+        self._block_auth = lists._block_auth
+        self._block_urls = lists._block_urls
+        self._subsc_auth = lists._subsc_auth
+        self._subsc_urls = lists._subsc_urls
         #todo: implement
-        default_channels = [_('Channels'),_('All')]
-        channels = dbi.get_channels()
-        if channels:
-            self._channels = default_channels + channels
+        default_channels = [_('Channels')] #,_('All')
+        if self._subsc_auth:
+            self._channels = default_channels + self._subsc_auth
         else:
             self._channels = default_channels
     
-    def update_channel(self,user='Centerstrain01',Show=True):
-        self._menu.om_chnl.set(user)
-        self._channel = md.Channel(user=user)
+    def update_channel(self,author,url,Show=True):
+        self._menu.om_chnl.set(author)
+        self._channel = md.Channel(user=url)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
@@ -77,12 +85,28 @@ class Commands:
                           )
                           
     def set_channel(self,event=None):
-        sh.log.append ('Commands.set_channel'
-                      ,_('INFO')
-                      ,_('Switch to channel "%s"') \
-                      % str(self._menu.om_chnl.choice)
-                      )
-        self.update_channel(user=self._menu.om_chnl.choice)
+        if self._menu.om_chnl.choice == _('Channels'):
+            sh.log.append ('Commands.set_channel'
+                          ,_('INFO')
+                          ,_('Nothing to do.')
+                          )
+        else:
+            sh.log.append ('Commands.set_channel'
+                          ,_('INFO')
+                          ,_('Switch to channel "%s"') \
+                          % str(self._menu.om_chnl.choice)
+                          )
+            if self._menu.om_chnl.choice in self._subsc_auth:
+                author = self._menu.om_chnl.choice
+                no     = self._subsc_auth.index(author)
+                url    = self._subsc_urls[no]
+                self.update_channel(author=author,url=url)
+            else:
+                #todo: console + GUI
+                sh.log.append ('Commands.set_channel'
+                              ,_('ERROR')
+                              ,_('Wrong input data!')
+                              )
         
     def get_links(self,event=None):
         result = self._menu.en_lnks.get()
@@ -265,28 +289,6 @@ class Commands:
                                  ,command = self.set_channel
                                  )
         
-    def manage_sub(self,event=None):
-        old_channels = dbi.get_channels()
-        gi.objs.sub().fill(lst=old_channels)
-        gi.objs._sub.show()
-        channels = gi.objs._sub.get()
-        if not channels:
-            channels = []
-        for channel in channels:
-            if not channel in old_channels:
-                dbi.add_channel(data=(channel,False,))
-        dbi.save()
-        
-    def manage_block(self,event=None):
-        channels = dbi.get_channels(block=1)
-        gi.objs.block().fill(lst=channels)
-        gi.objs._block.show()
-        channels = gi.objs._block.get()
-        if channels:
-            objs._db.block_channels(channels,block=0)
-            objs._db.block_channels(channels)
-            dbi.save()
-        
     def select_new(self,event=None):
         sg.Message ('Commands.select_new'
                    ,_('INFO')
@@ -371,11 +373,12 @@ class Commands:
                           )
         
     def update_channels(self,event=None):
-        channels = dbi.get_channels()
-        if channels:
-            for channel in channels:
-                self.update_channel(user=channel,Show=0)
-        gi.objs._channel.show()
+        for i in range(len(self._subsc_auth)):
+            self.update_channel (author = self._subsc_auth[i]
+                                ,url    = self._subsc_urls[i]
+                                ,Show   = False
+                                )
+        gi.objs.channel().show()
         
     def update_trending (self,event=None,user=None
                         ,url=None
@@ -437,6 +440,16 @@ class Commands:
         dbi.save()
         # Move back to video #0
         gi.objs._channel.canvas.widget.yview_moveto(0)
+    
+    #todo: elaborate
+    def manage_sub(self,event=None):
+        sh.Launch(self._fsubsc).default()
+        #todo: reload
+        
+    #todo: elaborate
+    def manage_block(self,event=None):
+        sh.Launch(self._fblock).default()
+        #todo: reload
     
     def zzz(self):
         pass
@@ -512,7 +525,7 @@ class Video:
                 data = (self._url,self._author,self._title,self._date
                        ,self._cat,self._desc,self._dur,self._len
                        ,self._views,self._likes,self._dislikes
-                       ,self._rating,self._bytes,False,False
+                       ,self._rating,self._bytes,False,False,False
                        )
                 dbi.add_video(data)
             else:
@@ -699,7 +712,6 @@ class Video:
                 #todo: select format & quality
                 stream = self._video.getbest()
                 stream.download (filepath = path
-                                #,quiet    = True
                                 )
                 sg.objs._waitbox.close()
             else:
@@ -726,7 +738,7 @@ if __name__ == '__main__':
     ui = UI(Silent=Silent)
     ui.show()
     dbi = db.DB(Silent=Silent)
-    commands = Commands()
+    commands = Commands(Silent=Silent)
     ui.menu()
     if not Silent:
         commands.bindings()

@@ -411,6 +411,38 @@ class Links:
                           )
 
 
+
+class Lists:
+    
+    def __init__(self,Silent=False):
+        self.values()
+        self.Silent  = Silent
+        self._fblock = sh.objs.pdir().add('block.txt')
+        self._fsubsc = sh.objs.pdir().add('subscribe.txt')
+        
+    def values(self):
+        self._block_auth = []
+        self._block_urls = []
+        self._subsc_auth = []
+        self._subsc_urls = []
+    
+    def load(self):
+        #note: 'sh.Dic' still uses GUI for critical errors
+        dic = sh.Dic (file     = self._fblock
+                     ,Silent   = self.Silent
+                     ,Sortable = False
+                     )
+        if dic.Success:
+            self._block_auth = dic.orig
+            self._block_urls = dic.transl
+        dic = sh.Dic (file     = self._fsubsc
+                     ,Silent   = self.Silent
+                     ,Sortable = False
+                     )
+        if dic.Success:
+            self._subsc_auth = dic.orig
+            self._subsc_urls = dic.transl
+
+
 if __name__ == '__main__':
-    const = Constants()
-    print(const.trending())
+    pass

@@ -22,42 +22,15 @@ class DB:
         self._path   = sh.objs.pdir().add('yatube.db')
         self.db      = sqlite3.connect(self._path)
         self.dbc     = self.db.cursor()
-        self.create_channels()
         self.create_videos()
-    
-    def create_channels(self):
-        if self.Success:
-            try:
-                ''' 2 columns by now
-                    Other potentially needed columns:
-                    AUTHOR, text
-                    IMAGE, binary: channel's image
-                '''
-                self.dbc.execute (
-                    'create table if not exists CHANNELS (\
-                     USER      text    \
-                    ,BLOCK     boolean \
-                                                         )'
-                                 )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
-                self.Success = False
-                self.mesfc ('DB.create_channels'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
-        else:
-            sh.log.append ('DB.create_channels'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
     
     def create_videos(self):
         if self.Success:
             try:
-                # 15 columns by now
+                # 16 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
-                     ROOTURL   text    \
+                     URL       text    \
                     ,AUTHOR    text    \
                     ,TITLE     text    \
                     ,DATE      text    \
@@ -72,6 +45,7 @@ class DB:
                     ,IMAGE     binary  \
                     ,BLOCK     boolean \
                     ,IGNORE    boolean \
+                    ,READY     boolean \
                                                        )'
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
@@ -90,7 +64,8 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data
+                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                 ,data
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
@@ -124,8 +99,9 @@ class DB:
         if self.Success:
             self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
                                     ,DURATION,LENGTH,VIEWS,LIKES \
-                                    ,DISLIKES,RATING,IMAGE from VIDEOS \
-                              where ROOTURL = ?',(url,))
+                                    ,DISLIKES,RATING,IMAGE,READY \
+                              from   VIDEOS \
+                              where  URL = ?',(url,))
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.get_video'
@@ -150,25 +126,14 @@ class DB:
                           )
                           
     def print (self,Selected=False,Shorten=False
-              ,MaxRow=20,MaxRows=20,mode='VIDEOS'
+              ,MaxRow=20,MaxRows=20
               ):
         if self.Success:
             ''' 'self.dbc.description' is 'None' without performing 
                 'select' first
              '''
             if not Selected:
-                if mode == 'VIDEOS':
-                    self.dbc.execute('select * from VIDEOS')
-                elif mode == 'CHANNELS':
-                    self.dbc.execute('select * from CHANNELS')
-                else:
-                    self.mesfc (func    = 'DB.print'
-                               ,level   = _('ERROR')
-                               ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                          % (str(mode)
-                                            ,'VIDEOS, CHANNELS'
-                                            )
-                               )
+                self.dbc.execute('select * from VIDEOS')
             headers = [cn[0] for cn in self.dbc.description]
             rows    = self.dbc.fetchall()
             sh.Table (headers = headers
@@ -179,74 +144,6 @@ class DB:
                      ).print()
         else:
             sh.log.append ('DB.print'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
-    def get_channels(self,block=0):
-        if self.Success:
-            try:
-                if block == -1:
-                    self.dbc.execute ('select USER from CHANNELS')
-                elif block == 0 or block == 1:
-                    self.dbc.execute ('select USER from CHANNELS \
-                                       where BLOCK = ?',(block,)
-                                     )
-                else:
-                    self.Success = False
-                    self.mesfc ('DB.get_channels'
-                               ,_('ERROR')
-                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                               % (str(block),'-1, 0, 1')
-                               )
-                if self.Success:
-                    result = self.dbc.fetchall()
-                    if result:
-                        return [item[0] for item in result if item]
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
-                self.Success = False
-                self.mesfc ('DB.get_channels'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
-        else:
-            sh.log.append ('DB.get_channels'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-                          
-    def add_channel(self,data):
-        if self.Success:
-            try:
-                self.dbc.execute ('insert into CHANNELS values (?,?)'
-                                 ,data
-                                 )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
-                self.Success = False
-                self.mesfc ('DB.add_channel'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
-        else:
-            sh.log.append ('DB.add_channel'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
-    def block_channels(self,channels,block=1):
-        if self.Success:
-            try:
-                self.dbc.execute ('update CHANNELS set BLOCK = ? \
-                                   where USER in ?',(block,channels,)
-                                 )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
-                self.Success = False
-                self.mesfc ('DB.block_channels'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
-        else:
-            sh.log.append ('DB.block_channels'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )

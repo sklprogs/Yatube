@@ -29,11 +29,26 @@ def constants():
 def delimiter():
     input('Press Return')
     print('--------------------------------------------')
-
-
-if __name__ == '__main__':
+    
+def lists():
+    lists = md.Lists()
+    lists.load()
+    print('Subscribe to authors:')
+    print(lists._subsc_auth)
+    print('URLs:')
+    print(lists._subsc_urls)
+    print('Block authors:')
+    print(lists._block_auth)
+    print('URLs:')
+    print(lists._block_urls)
+    
+def all():
     print('Run all tests')
     time()
     delimiter()
     constants()
     delimiter()
+
+
+if __name__ == '__main__':
+    lists()
