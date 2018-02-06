@@ -42,7 +42,6 @@ class Commands:
         self._fblock     = lists._fblock
         self._fsubsc     = lists._fsubsc
         self._block_auth = lists._block_auth
-        self._block_urls = lists._block_urls
         self._subsc_auth = lists._subsc_auth
         self._subsc_urls = lists._subsc_urls
         #todo: implement
@@ -378,7 +377,6 @@ class Commands:
                                 ,url    = self._subsc_urls[i]
                                 ,Show   = False
                                 )
-        gi.objs.channel().show()
         
     def update_trending (self,event=None,user=None
                         ,url=None
@@ -421,6 +419,10 @@ class Commands:
                 author    = sh.Text(text=video._author).delete_unsupported()
                 title     = sh.Text(text=video._title).delete_unsupported()
                 duration  = sh.Text(text=video._dur).delete_unsupported()
+                if author in self._block_auth \
+                or video._author in self._block_auth:
+                    author = title = _('BLOCKED')
+                    video._image = None
                 video_gui = gi.objs._channel._videos[i]
                 video_gui.reset (no       = i + 1
                                 ,author   = author

@@ -423,19 +423,16 @@ class Lists:
         
     def values(self):
         self._block_auth = []
-        self._block_urls = []
         self._subsc_auth = []
         self._subsc_urls = []
     
     def load(self):
+        text = sh.ReadTextFile (file   = self._fblock
+                               ,Silent = self.Silent
+                               ).get()
+        if text:
+            self._block_auth = text.splitlines()
         #note: 'sh.Dic' still uses GUI for critical errors
-        dic = sh.Dic (file     = self._fblock
-                     ,Silent   = self.Silent
-                     ,Sortable = False
-                     )
-        if dic.Success:
-            self._block_auth = dic.orig
-            self._block_urls = dic.transl
         dic = sh.Dic (file     = self._fsubsc
                      ,Silent   = self.Silent
                      ,Sortable = False
