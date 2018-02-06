@@ -1,11 +1,11 @@
 #!/usr/local/bin/python3
 # -*- coding: UTF-8 -*-
 
-import model as md
+import logic as lg
 
 
 def time():
-    itime = md.Time()
+    itime = lg.Time()
     itime.set_date(DaysDelta=0)
     print('Current time:')
     print('Year:',itime._year)
@@ -19,7 +19,7 @@ def time():
     print('Day:',itime._day)
     
 def constants():
-    cs = md.Constants()
+    cs = lg.Constants()
     print('Countries:')
     print(cs.countries())
     print()
@@ -31,7 +31,7 @@ def delimiter():
     print('--------------------------------------------')
     
 def lists():
-    lists = md.Lists()
+    lists = lg.Lists()
     lists.load()
     print('Subscribe to authors:')
     print(lists._subsc_auth)
