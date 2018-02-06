@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 import logic as lg
@@ -39,8 +39,6 @@ def lists():
     print(lists._subsc_urls)
     print('Block authors:')
     print(lists._block_auth)
-    print('URLs:')
-    print(lists._block_urls)
     
 def all():
     print('Run all tests')
