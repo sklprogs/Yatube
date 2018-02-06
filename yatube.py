@@ -11,7 +11,7 @@ import os
 import io
 import pafy   as pf
 import shared as sh
-import model  as md
+import logic  as lg
 import db
 
 
@@ -23,7 +23,7 @@ class Commands:
         self._channel = None
         self._videos  = []
         self.Silent = Silent
-        itime = md.Time()
+        itime = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
         itime.months()
@@ -34,10 +34,10 @@ class Commands:
         self._month  = itime._month
         self._days   = itime._days
         self._day    = itime._day
-        const = md.Constants()
+        const = lg.Constants()
         self._countries = const.countries()
         self._trending  = const.trending()
-        lists = md.Lists(Silent=Silent)
+        lists = lg.Lists(Silent=Silent)
         lists.load()
         self._fblock     = lists._fblock
         self._fsubsc     = lists._fsubsc
@@ -53,7 +53,7 @@ class Commands:
     
     def update_channel(self,author,url,Show=True):
         self._menu.om_chnl.set(author)
-        self._channel = md.Channel(user=url)
+        self._channel = lg.Channel(user=url)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
@@ -63,7 +63,7 @@ class Commands:
     def _get_links(self,url):
         path = sh.objs.pdir().add('Youtube',_('Search'))
         if sh.Path(path=path).create():
-            channel = self._channel = md.Channel (user         = url
+            channel = self._channel = lg.Channel (user         = url
                                                  ,download_dir = path
                                                  )
             channel._channel = url
@@ -385,7 +385,7 @@ class Commands:
             user = _('Trending') + ' - ' + _('Russia')
         if not url:
             url = 'https://www.youtube.com/feed/trending?gl=RU'
-        self._channel = md.Channel(user=user)
+        self._channel = lg.Channel(user=user)
         self._channel._channel = url
         ''' We assume that there is no need to delete unsupported
             characters in countries.
