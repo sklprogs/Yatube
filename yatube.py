@@ -320,7 +320,8 @@ class Commands:
                     video.download(path)
                     sh.Launch (target=path).app \
                               (custom_app  = '/usr/bin/mplayer'
-                              ,custom_args = ['-fs','-framedrop'
+                              ,custom_args = ['-ao','sdl','-fs'
+                                             ,'-framedrop'
                                              ,'-nocorrect-pts'
                                              ]
                               )
@@ -344,7 +345,7 @@ class Commands:
         if self._channel:
             for video_gui in gi.objs.channel()._videos:
                 if video_gui.cbox.get():
-                    if len(self._videos) > video_gui._no:
+                    if len(self._videos) >= video_gui._no:
                         #video = self._videos[video_gui._no]
                         video = video_gui.logic
                         #todo: sanitize video._title (FS)

@@ -448,7 +448,11 @@ class Lists:
             self._subsc_auth += dic.orig
             self._subsc_urls += dic.transl
         self._subsc_auth, self._subsc_urls = (list(x) for x \
-        in zip(*sorted(zip(self._subsc_auth, self._subsc_urls))))
+        in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)
+                        ,key = lambda x:x[0].lower()
+                        )
+               )
+                                             )
 
 
 if __name__ == '__main__':
