@@ -140,11 +140,13 @@ class Menu:
         self.btn_ply = sg.Button (parent = self.frame3
                                  ,text   = _('Play')
                                  )
-        self.om_trnd = sg.OptionMenu (parent  = self.frame4
-                                     ,side    = 'left'
+        self.om_trnd = sg.OptionMenu (parent = self.frame4
+                                     ,side   = 'left'
+                                     ,Combo  = True
                                      )
-        self.om_chnl = sg.OptionMenu (parent  = self.frame4
-                                     ,side    = 'left'
+        self.om_chnl = sg.OptionMenu (parent = self.frame4
+                                     ,side   = 'left'
+                                     ,Combo  = True
                                      )
     
     def update(self,event=None):
