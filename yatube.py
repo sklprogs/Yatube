@@ -22,8 +22,8 @@ class Commands:
         self._menu    = None
         self._channel = None
         self._videos  = []
-        self.Silent = Silent
-        itime = lg.Time()
+        self.Silent   = Silent
+        itime         = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
         itime.months()
@@ -34,10 +34,10 @@ class Commands:
         self._month  = itime._month
         self._days   = itime._days
         self._day    = itime._day
-        const = lg.Constants()
+        const        = lg.Constants()
         self._countries = const.countries()
         self._trending  = const.trending()
-        lists = lg.Lists(Silent=Silent)
+        lists           = lg.Lists(Silent=Silent)
         lists.load()
         self._fblock     = lists._fblock
         self._fsubsc     = lists._fsubsc
@@ -281,11 +281,11 @@ class Commands:
                                  )
         self._menu.om_trnd.reset (items   = self._trending
                                  ,default = _('Trending')
-                                 ,command = self.set_trending
+                                 ,action  = self.set_trending
                                  )
-        self._menu.om_chnl.reset (items = self._channels
+        self._menu.om_chnl.reset (items   = self._channels
                                  ,default = _('Channels')
-                                 ,command = self.set_channel
+                                 ,action  = self.set_channel
                                  )
         
     def select_new(self,event=None):

@@ -1,1 +1,2 @@
 - 'Update channels' hangs up at the end
+- Condition len(videos) == video_id fails if there are videos that failed to download
