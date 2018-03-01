@@ -489,28 +489,28 @@ class Channel:
                 ,action   = self.mouse_wheel
                 )
                 
-    def scroll_left(self,*args):
+    def scroll_left(self,event=None):
         self.canvas.widget.xview_scroll(-1,'units')
         
-    def scroll_right(self,*args):
+    def scroll_right(self,event=None):
         self.canvas.widget.xview_scroll(1,'units')
         
-    def scroll_up(self,*args):
+    def scroll_up(self,event=None):
         self.canvas.widget.yview_scroll(-1,'units')
         
-    def scroll_down(self,*args):
+    def scroll_down(self,event=None):
         self.canvas.widget.yview_scroll(1,'units')
         
-    def scroll_page_down(self,*args):
+    def scroll_page_down(self,event=None):
         self.canvas.widget.yview_scroll(1,'pages')
         
-    def scroll_page_up(self,*args):
+    def scroll_page_up(self,event=None):
         self.canvas.widget.yview_scroll(-1,'pages')
         
-    def scroll_start(self,*args):
+    def scroll_start(self,event=None):
         self.canvas.widget.yview_moveto(0)
         
-    def scroll_end(self,*args):
+    def scroll_end(self,event=None):
         self.canvas.widget.yview_moveto(len(self._videos)*def_height)
     
     # orphan
@@ -636,15 +636,15 @@ class Channel:
                           ,_('Empty input is not allowed!')
                           )
                           
-    def scroll2start(self,*args):
+    def scroll2start(self,event=None):
         self.canvas.widget.xview_moveto(0)
         # Scroll canvas to the current video as the channel is loading
         self.canvas.widget.yview_moveto(self._no*def_height)
         
-    def show(self,*args):
+    def show(self,event=None):
         self.obj.show()
         
-    def close(self,*args):
+    def close(self,event=None):
         self.widget.destroy()
         
     def mouse_wheel(self,event=None):
