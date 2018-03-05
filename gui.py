@@ -260,9 +260,7 @@ class Menu:
         self.en_lnks.clear_text()
         self.en_lnks.widget.config(fg='black',font='Serif 10')
         self.en_lnks.focus()
-    
-    def zzz(self):
-        pass
+
 
 
 class Video:
@@ -598,11 +596,11 @@ class Channel:
     
     def scrollbars(self):
         sg.Scrollbar (parent     = self.frame_x
-                     ,scroll_obj = self.canvas
+                     ,scroll     = self.canvas
                      ,Horizontal = True
                      )
         sg.Scrollbar (parent     = self.frame_y
-                     ,scroll_obj = self.canvas
+                     ,scroll     = self.canvas
                      ,Horizontal = False
                      )
     
@@ -657,9 +655,6 @@ class Channel:
         if event.num == 4 or event.delta > 0:
             self.scroll_up()
         return 'break'
-    
-    def zzz(self):
-        pass
 
 
 

@@ -147,9 +147,6 @@ class DB:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
-                          
-    def zzz(self):
-        pass
 
 
 if __name__ == '__main__':

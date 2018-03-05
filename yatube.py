@@ -453,9 +453,7 @@ class Commands:
     def manage_block(self,event=None):
         sh.Launch(self._fblock).default()
         #todo: reload
-    
-    def zzz(self):
-        pass
+
 
 
 class UI:

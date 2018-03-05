@@ -10,6 +10,7 @@ ExplosmEntertainment	https://www.youtube.com/user/ExplosmEntertainment/videos
 itpedia	https://www.youtube.com/user/itpediachannel/videos
 kamikadzedead	https://www.youtube.com/user/kamikadzedead/videos
 Kurzgesagt	https://www.youtube.com/user/Kurzgesagt/videos
+maxman.tv	https://www.youtube.com/user/mxmantv/videos
 NEMAGIA	https://www.youtube.com/user/NEMAGIA/videos
 NEMAGIA-LifE	https://www.youtube.com/user/BrizgliviI1/videos
 Parfenon	https://www.youtube.com/channel/UCbhMGG0ZievPtK8mzLH5jhQ/videos
