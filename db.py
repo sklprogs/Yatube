@@ -6,7 +6,7 @@ import shared as sh
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
-gettext.install('yatube','./locale')
+gettext.install('yatube','./resources/locale')
 
 
 class DB:
@@ -19,7 +19,7 @@ class DB:
             self.mesfc = sg.Message
         self.Success = True
         self._user   = ''
-        self._path   = sh.objs.pdir().add('yatube.db')
+        self._path   = sh.objs.pdir().add('resources','yatube.db')
         self.db      = sqlite3.connect(self._path)
         self.dbc     = self.db.cursor()
         self.create_videos()

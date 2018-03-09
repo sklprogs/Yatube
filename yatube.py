@@ -4,7 +4,7 @@
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
-gettext.install('yatube','./locale')
+gettext.install('yatube','./resources/locale')
 
 import sys
 import os
@@ -132,8 +132,8 @@ class Commands:
             video = Video(url=result)
             video.video()
             video.assign_online()
-            #todo: create './Youtube/_(Search)' path automatically
-            path = sh.objs.pdir().add('Youtube',_('Search'))
+            #todo: create './resources/Youtube/_(Search)' path automatically
+            path = sh.objs.pdir().add('resources','Youtube',_('Search'))
             if sh.Path(path=path).create():
                 #todo: sanitize
                 title = video._title.replace('/','').replace('"','')
@@ -392,7 +392,7 @@ class Commands:
             characters in countries.
         '''
         #todo: set home dir automatically
-        download_dir = '/home/pete/downloads/Youtube/' + user
+        download_dir = sh.objs.pdir().add('resources','Youtube',user)
         self._channel._dir = download_dir
         self._channel.create()
         self._channel.check_dir()

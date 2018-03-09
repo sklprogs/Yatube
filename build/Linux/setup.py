@@ -1,0 +1,22 @@
+from cx_Freeze import setup, Executable
+
+# Dependencies are automatically detected, but it might need
+# fine tuning.
+buildOptions = dict (packages = []
+                    ,includes = ['re','PIL._tkinter_finder']
+                    ,excludes = []
+                    )
+
+executables = [Executable ('yatube.py'
+                          ,base       = 'Console'
+                          ,icon       = 'resources/icon_64x64_yatube.gif'
+                          ,targetName = 'Yatube'
+                          )
+              ]
+
+setup (name        = 'Yatube'
+      ,version     = '1'
+      ,description = 'Youtube Client'
+      ,options     = dict(build_exe=buildOptions)
+      ,executables = executables
+      )

@@ -1,13 +1,17 @@
 #!/usr/local/bin/python3
 # -*- coding: UTF-8 -*-
 
+''' We need to explicitly import PIL, otherwise, cx_freeze will fail
+    to build the program properly
+'''
+import PIL
 import shared    as sh
 import sharedGUI as sg
 
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
-gettext.install('yatube','./locale')
+gettext.install('yatube','./resources/locale')
 
 product = 'Yatube'
 version = '(beta)'
@@ -666,7 +670,7 @@ class Objects:
         
     def def_image(self):
         if not self._def_image:
-            path = sh.objs.pdir().add('nopic.png')
+            path = sh.objs.pdir().add('resources','nopic.png')
             self._def_image = sg.Image().open(path=path)
         return self._def_image
 

@@ -3,7 +3,7 @@
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('yatube','./locale')
+gettext.install('yatube','./resources/locale')
 
 import re
 import os
@@ -185,7 +185,9 @@ class Channel:
         - 'https://www.youtube.com/user/USER/videos'
         - 'USER'
     '''
-    def __init__(self,user,download_dir='./Youtube',Silent=False):
+    def __init__ (self,user,download_dir='./resources/Youtube'
+                 ,Silent=False
+                 ):
         self.values()
         self._user = user
         self._dir  = download_dir
@@ -417,9 +419,9 @@ class Lists:
     def __init__(self,Silent=False):
         self.values()
         self.Silent  = Silent
-        self._fblock = sh.objs.pdir().add('block.txt')
-        self._fsubsc = sh.objs.pdir().add('subscribe.txt')
-        self._fsubs2 = sh.objs.pdir().add('subscribe2.txt')
+        self._fblock = sh.objs.pdir().add('resources','block.txt')
+        self._fsubsc = sh.objs.pdir().add('resources','subscribe.txt')
+        self._fsubs2 = sh.objs.pdir().add('resources','subscribe2.txt')
         
     def values(self):
         self._block_auth = []
