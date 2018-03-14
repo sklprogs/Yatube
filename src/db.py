@@ -6,20 +6,15 @@ import shared as sh
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
-gettext.install('yatube','./resources/locale')
+gettext.install('yatube','../resources/locale')
 
 
 class DB:
     
-    def __init__(self,Silent=False):
-        if Silent:
-            self.mesfc = sh.Log().append
-        else:
-            import sharedGUI as sg
-            self.mesfc = sg.Message
+    def __init__(self):
         self.Success = True
         self._user   = ''
-        self._path   = sh.objs.pdir().add('resources','yatube.db')
+        self._path   = sh.objs.pdir().add('..','user','yatube.db')
         self.db      = sqlite3.connect(self._path)
         self.dbc     = self.db.cursor()
         self.create_videos()
@@ -50,10 +45,10 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                self.mesfc ('DB.create_videos'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
+                sh.objs.mes ('DB.create_videos'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
         else:
             sh.log.append ('DB.create_videos'
                           ,_('WARNING')
@@ -69,10 +64,10 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                self.mesfc ('DB.add_video'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
+                sh.objs.mes ('DB.add_video'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
         else:
             sh.log.append ('DB.add_video'
                           ,_('WARNING')
@@ -85,10 +80,10 @@ class DB:
                 self.db.commit()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                self.mesfc ('DB.save'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
+                sh.objs.mes ('DB.save'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
         else:
             sh.log.append ('DB.save'
                           ,_('WARNING')
@@ -115,10 +110,10 @@ class DB:
                 self.dbc.close()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                self.mesfc ('DB.close'
-                           ,_('WARNING')
-                           ,_('Database "%s" has failed!') % self._path
-                           )
+                sh.objs.mes ('DB.close'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
         else:
             sh.log.append ('DB.close'
                           ,_('WARNING')

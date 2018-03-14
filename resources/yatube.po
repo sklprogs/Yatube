@@ -12,8 +12,8 @@ msgstr ""
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: /usr/local/bin/Yatube\n"
+"X-Poedit-Basepath: /usr/local/bin/Yatube/src\n"
+"X-Poedit-SearchPath-0: /usr/local/bin/Yatube/src\n"
 
 #: /usr/local/bin/Yatube/db.py:54
 #: /usr/local/bin/Yatube/db.py:59

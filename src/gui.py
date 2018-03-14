@@ -11,7 +11,7 @@ import sharedGUI as sg
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
-gettext.install('yatube','./resources/locale')
+gettext.install('yatube','../resources/locale')
 
 product = 'Yatube'
 version = '(beta)'
@@ -234,7 +234,8 @@ class Menu:
     
     def icon(self,path=None):
         if not path:
-            path = sh.objs.pdir().add ('resources'
+            path = sh.objs.pdir().add ('..'
+                                      ,'resources'
                                       ,'icon_64x64_yatube.gif'
                                       )
         sg.WidgetShared.icon(self.parent,path)
@@ -670,7 +671,7 @@ class Objects:
         
     def def_image(self):
         if not self._def_image:
-            path = sh.objs.pdir().add('resources','nopic.png')
+            path = sh.objs.pdir().add('..','resources','nopic.png')
             self._def_image = sg.Image().open(path=path)
         return self._def_image
 

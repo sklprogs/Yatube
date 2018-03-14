@@ -1,28 +1,32 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import gettext, gettext_windows
-
-gettext_windows.setup_env()
-gettext.install('yatube','./resources/locale')
-
 import sys
 import os
 import io
-import pafy   as pf
-import shared as sh
-import logic  as lg
+import pafy      as pf
+import shared    as sh
+import sharedGUI as sg
+import logic     as lg
+import gui       as gi
 import db
+
+import gettext, gettext_windows
+
+gettext_windows.setup_env()
+gettext.install('yatube','../resources/locale')
+
+
+AllOS = False
 
 
 
 class Commands:
     
-    def __init__(self,Silent=False):
-        self._menu    = None
+    def __init__(self):
+        self._menu    = gi.objs.menu()
         self._channel = None
         self._videos  = []
-        self.Silent   = Silent
         itime         = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
@@ -37,7 +41,7 @@ class Commands:
         const        = lg.Constants()
         self._countries = const.countries()
         self._trending  = const.trending()
-        lists           = lg.Lists(Silent=Silent)
+        lists           = lg.Lists()
         lists.load()
         self._fblock     = lists._fblock
         self._fsubsc     = lists._fsubsc
@@ -53,7 +57,7 @@ class Commands:
     
     def update_channel(self,author,url,Show=True):
         self._menu.om_chnl.set(author)
-        self._channel = lg.Channel(user=url)
+        self._channel = lg.Channel(url=url)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
@@ -61,27 +65,16 @@ class Commands:
             gi.objs._channel.show()
         
     def _get_links(self,url):
-        path = sh.objs.pdir().add('Youtube',_('Search'))
-        if sh.Path(path=path).create():
-            channel = self._channel = lg.Channel (user         = url
-                                                 ,download_dir = path
-                                                 )
-            channel._channel = url
-            ''' We assume that there is no need to delete
-                unsupported characters in countries.
-            '''
-            channel.create()
-            channel.check_dir()
-            channel.page()
-            channel.links()
-            self.reset_channel_gui()
-            self.channel_gui()
-            gi.objs._channel.show()
-        else:
-            sh.log.append ('Menu._get_links'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+        channel = self._channel = lg.Channel(url=url)
+        channel._channel = url
+        ''' We assume that there is no need to delete
+            unsupported characters in countries.
+        '''
+        channel.page()
+        channel.links()
+        self.reset_channel_gui()
+        self.channel_gui()
+        gi.objs._channel.show()
                           
     def set_channel(self,event=None):
         if self._menu.om_chnl.choice == _('Channels'):
@@ -99,6 +92,9 @@ class Commands:
                 author = self._menu.om_chnl.choice
                 no     = self._subsc_auth.index(author)
                 url    = self._subsc_urls[no]
+                #cur
+                print('author:',author) #todo: del
+                print('url:',url) #todo: del
                 self.update_channel(author=author,url=url)
             else:
                 #todo: console + GUI
@@ -132,8 +128,10 @@ class Commands:
             video = Video(url=result)
             video.video()
             video.assign_online()
-            #todo: create './resources/Youtube/_(Search)' path automatically
-            path = sh.objs.pdir().add('resources','Youtube',_('Search'))
+            ''' #todo (?): create '../user/Youtube/_(Search)' path
+                automatically
+            '''
+            path = sh.objs.pdir().add('..','user','Youtube',_('Search'))
             if sh.Path(path=path).create():
                 #todo: sanitize
                 title = video._title.replace('/','').replace('"','')
@@ -295,82 +293,55 @@ class Commands:
                    )
         
     def play(self,event=None):
-        #todo: refacture
-        if self._channel:
-            for video_gui in gi.objs.channel()._videos:
-                if video_gui.cbox.get():
-                    # Video numbering starts with 1
-                    ''' #note: This condition may actually not be
-                        observed because 'self._videos' are videos that
-                        we successfuly got. If there are random
-                        connection problems, the condition may fail.
-                        #if len(self._videos) >= video_gui._no:
-                    '''
-                    #video = self._videos[video_gui._no]
-                    video = video_gui.logic
-                    #todo: sanitize video._title (FS)
-                    video._title = video._title.replace('"','').replace('/','')
-                    path = os.path.join (self._channel._dir
-                                        ,video._title
-                                        )
-                    #todo: autodetect extension
-                    path += '.mp4'
-                    video._path = path
-                    video.video()
-                    video.download(path)
-                    sh.Launch (target=path).app \
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui.cbox.get():
+                # Video numbering starts with 1
+                ''' #note: This condition may actually not be
+                    observed because 'self._videos' are videos that
+                    we successfuly got. If there are random
+                    connection problems, the condition may fail.
+                    #if len(self._videos) >= video_gui._no:
+                '''
+                #video = self._videos[video_gui._no]
+                video = video_gui.logic
+                video.video()
+                video.path()
+                video.download()
+                sh.Launch (target=video._path).app \
                               (custom_app  = '/usr/bin/mplayer'
                               ,custom_args = ['-ao','sdl','-fs'
                                              ,'-framedrop'
                                              ,'-nocorrect-pts'
                                              ]
                               )
-                    '''
-                    else:
-                        sg.Message ('Commands.play'
-                                   ,_('ERROR')
-                                   ,_('The condition "%s" is not observed!') \
-                                   % ('%d > %d') % (len(self._videos)
-                                                   ,video_gui._no
-                                                   )
-                                   )
-                    '''
-        else:
-            sh.log.append ('Commands.play'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+                '''
+                else:
+                    sg.Message ('Commands.play'
+                               ,_('ERROR')
+                               ,_('The condition "%s" is not observed!') \
+                               % ('%d > %d') % (len(self._videos)
+                                               ,video_gui._no
+                                               )
+                                 )
+                '''
         
     def download(self,event=None):
-        if self._channel:
-            for video_gui in gi.objs.channel()._videos:
-                if video_gui.cbox.get():
-                    if len(self._videos) >= video_gui._no:
-                        #video = self._videos[video_gui._no]
-                        video = video_gui.logic
-                        #todo: sanitize video._title (FS)
-                        video._title = video._title.replace('"','').replace('/','')
-                        path = os.path.join (self._channel._dir
-                                            ,video._title
-                                            )
-                        #todo: autodetect extension
-                        path += '.mp4'
-                        video._path = path
-                        video.video()
-                        video.download(path)
-                    else:
-                        sg.Message ('Commands.download'
-                                   ,_('ERROR')
-                                   ,_('The condition "%s" is not observed!') \
-                                   % ('%d > %d') % (len(self._videos)
-                                                   ,video_gui._no
-                                                   )
-                                   )
-        else:
-            sh.log.append ('Commands.download'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui.cbox.get():
+                if len(self._videos) >= video_gui._no:
+                    #video = self._videos[video_gui._no]
+                    video = video_gui.logic
+                    video.video()
+                    video.path()
+                    video.download()
+                else:
+                    sg.Message ('Commands.download'
+                               ,_('ERROR')
+                               ,_('The condition "%s" is not observed!') \
+                                % ('%d > %d') % (len(self._videos)
+                                                ,video_gui._no
+                                                )
+                               )
         
     def update_channels(self,event=None):
         for i in range(len(self._subsc_auth)):
@@ -386,16 +357,11 @@ class Commands:
             user = _('Trending') + ' - ' + _('Russia')
         if not url:
             url = 'https://www.youtube.com/feed/trending?gl=RU'
-        self._channel = lg.Channel(user=user)
+        self._channel = lg.Channel(url=user)
         self._channel._channel = url
         ''' We assume that there is no need to delete unsupported
             characters in countries.
         '''
-        #todo: set home dir automatically
-        download_dir = sh.objs.pdir().add('resources','Youtube',user)
-        self._channel._dir = download_dir
-        self._channel.create()
-        self._channel.check_dir()
         self._channel.page()
         self._channel.links()
         self.reset_channel_gui()
@@ -456,33 +422,6 @@ class Commands:
 
 
 
-class UI:
-    
-    def __init__(self,Silent=False):
-        self.Silent = Silent
-        
-    def show(self):
-        if not self.Silent:
-            sg.objs.start()
-            
-    def menu(self):
-        if self.Silent:
-            #todo: implement
-            self._menu = None
-        else:
-            parent = gi.objs.parent()
-            #cur
-            sg.Geometry(parent=parent).set('985x600')
-            #sg.Geometry(parent=parent).maximize()
-            self._menu = gi.objs.menu()
-        commands._menu = self._menu
-            
-    def close(self):
-        if not self.Silent:
-            sg.objs.end()
-
-
-
 # Requires dbi
 class Video:
     
@@ -494,7 +433,7 @@ class Video:
         self.Success = True
         self._video  = self._image = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
-                     = self._desc = self._dur = ''
+                     = self._desc = self._dur = self._path = ''
         self._len    = self._views = self._likes = self._dislikes = 0
         self._rating = 0.0
         
@@ -698,22 +637,46 @@ class Video:
                           ,_('Operation has been canceled.')
                           )
         
-    def download(self,path):
+    def path(self):
         if self.Success:
-            if self._video and path:
+            author = sh.FixBaseName (basename = self._author
+                                    ,AllOS    = AllOS
+                                    ,max_len  = 100
+                                    ).run()
+            title  = sh.FixBaseName (basename = self._title
+                                    ,AllOS    = AllOS
+                                    ,max_len  = 100
+                                    ).run()
+            author = sh.Text(text=author).delete_unsupported()
+            title  = sh.Text(text=title).delete_unsupported()
+            folder = sh.objs.pdir().add('..','user','Youtube',author)
+            self.Success = sh.Path(path=folder).create()
+            self._path = sh.objs.pdir().add ('..','user','Youtube'
+                                            ,author,title
+                                            )
+            self._path += '.mp4'
+        else:
+            sh.log.append ('Video.path'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def download(self):
+        if self.Success:
+            if self._video:
                 sh.log.append ('Video.download'
                               ,_('INFO')
-                              ,_('Download "%s"') % path
+                              ,_('Download "%s"') % self._path
                               )
                 sg.objs.waitbox().reset (func_title = 'Video.download'
                                         ,message    = _('Download %s') \
-                                                      % path
+                                                      % self._path
                                         )
                 sg.objs._waitbox.show()
                 #todo: select format & quality
+                #cur
                 stream = self._video.getbest()
-                stream.download (filepath = path
-                                )
+                stream.download(filepath=self._path)
                 sg.objs._waitbox.close()
             else:
                 sh.log.append ('Video.download'
@@ -729,21 +692,13 @@ class Video:
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        Silent = True
-        print(_('Sorry! Command-line interface is not implemented yet.'))
-    else:
-        Silent = False
-        import sharedGUI as sg
-        import gui       as gi
-    ui = UI(Silent=Silent)
-    ui.show()
-    dbi = db.DB(Silent=Silent)
-    commands = Commands(Silent=Silent)
-    ui.menu()
-    if not Silent:
-        commands.bindings()
-        ui._menu.show()
+    sg.objs.start()
+    parent = gi.objs.parent()
+    sg.Geometry(parent=parent).set('985x600')
+    dbi = db.DB()
+    commands = Commands()
+    commands.bindings()
+    gi.objs.menu().show()
     dbi.save()
     dbi.close()
-    ui.close()
+    sg.objs.end()

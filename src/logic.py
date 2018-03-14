@@ -1,14 +1,13 @@
 #!/usr/local/bin/python3
 # -*- coding: UTF-8 -*-
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('yatube','./resources/locale')
-
 import re
 import os
 import shared as sh
 
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('yatube','../resources/locale')
 
 AllOS = False
 
@@ -24,7 +23,6 @@ class Time:
         self._month  = ''
         self.itime = sh.Time (pattern       = '%d'
                              ,MondayWarning = False
-                             ,Silent        = True
                              )
     
     def days(self):
@@ -185,68 +183,59 @@ class Channel:
         - 'https://www.youtube.com/user/USER/videos'
         - 'USER'
     '''
-    def __init__ (self,user,download_dir='./resources/Youtube'
-                 ,Silent=False
-                 ):
+    def __init__(self,url):
         self.values()
-        self._user = user
-        self._dir  = download_dir
-        if Silent:
-            self.mesfc = sh.Log().append
-        else:
-            import sharedGUI as sg
-            self.mesfc = sg.Message
+        self._url = url
         
     def warn(self):
         if not self._html:
             self.Success = False
-            self.mesfc (func    = 'Channel.page'
-                       ,level   = _('WARNING')
-                       ,message = _('Channel "%s" does not exist!') \
-                                  % self._channel
-                       )
+            sh.objs.mes (func    = 'Channel.page'
+                        ,level   = _('WARNING')
+                        ,message = _('Channel "%s" does not exist!') \
+                                   % self._channel
+                        )
     
-    def user(self):
+    def url(self):
         if self.Success:
-            if self._user:
-                if isinstance(self._user,str):
-                    if self._user.endswith('/'):
-                        self._user = self._user[:-1]
+            if self._url:
+                if isinstance(self._url,str):
+                    if self._url.endswith('/'):
+                        self._url = self._url[:-1]
                     ''' 'https://www.youtube.com/user/AvtoKriminalist/videos?disable_polymer=1'
                         или
                         'https://www.youtube.com/user/AvtoKriminalist/videos'
                     '''
-                    if self._link_p1 and self._link_p3 in self._user:
-                        self._channel = self._user
-                        self._user    = self._user.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'').replace(self._link_p3,'')
+                    if self._link_p1 and self._link_p3 in self._url:
+                        self._channel = self._url.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'').replace(self._link_p3,'')
                         self.page()
                         self.warn()
                     # 'https://www.youtube.com/user/AvtoKriminalist'
-                    elif self._link_p1 in self._user:
-                        self._channel = self._user + self._link_p3
-                        self._user    = self._user.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'')
+                    elif self._link_p1 in self._url:
+                        self._url += self._link_p3
+                        self._channel = self._url.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'')
                         self.page()
                     # 'AvtoKriminalist'
                     else:
                         # 'https://www.youtube.com/channel/AvtoKriminalist/videos'
-                        self._channel = self._link_p1 + self._link_p2a \
-                                                      + self._user \
-                                                      + self._link_p3
+                        self._channel = self._url
+                        self._url = self._link_p1 + self._link_p2a \
+                                                  + self._url \
+                                                  + self._link_p3
                         self.page()
                         if not self._html:
                             # 'https://www.youtube.com/user/AvtoKriminalist/videos'
-                            self._channel = self._link_p1 \
-                                            + self._link_p2b \
-                                            + self._user \
-                                            + self._link_p3
+                            self._url = self._link_p1 + self._link_p2b \
+                                                      + self._channel \
+                                                      + self._link_p3
                             self.page()
-                    sh.log.append ('Channel.user'
+                    sh.log.append ('Channel.url'
                                   ,_('DEBUG')
-                                  ,_('User:') + ' ' + self._user
+                                  ,_('User:') + ' ' + self._channel
                                   )
-                    sh.log.append ('Channel.user'
+                    sh.log.append ('Channel.url'
                                   ,_('DEBUG')
-                                  ,_('URL:') + ' ' + self._channel
+                                  ,_('URL:') + ' ' + self._url
                                   )
                     self.warn()
                 else:
@@ -266,19 +255,6 @@ class Channel:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
-        
-    def check_dir(self):
-        if self.Success:
-            if self._dir and isinstance(self._dir,str) and \
-               sh.Directory(path=self._dir,Silent=True).Success:
-                   self.Success = True
-            else:
-                self.Success = False
-        else:
-            sh.log.append ('Channel.check_dir'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
             
     def values(self):
         self.Success    = True
@@ -290,43 +266,12 @@ class Channel:
         self._link_p3   = '/videos'
         self._channel   = ''
         self._html      = ''
-        self._user      = ''
-        self._escaped   = ''
         self._text      = ''
         self._links     = []
-            
-    def escape(self):
-        if self.Success:
-            self._escaped = sh.FixBaseName (basename = self._user
-                                           ,AllOS    = AllOS
-                                           ,max_len  = 100
-                                           ).run()
-            if self._escaped:
-                self._dir = os.path.join(self._dir,self._escaped)
-            else:
-                self.Success = False
-                sh.log.append ('Channel.escape'
-                              ,_('WARNING')
-                              ,_('Empty output is not allowed!')
-                              )
-        else:
-            sh.log.append ('Channel.escape'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
-    def create(self):
-        if self.Success:
-            self.Success = sh.Path(path=self._dir).create()
-        else:
-            sh.log.append ('Channel.create'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
     
     def page(self):
         if self.Success:
-            response = sh.Get(url=self._channel).run()
+            response = sh.Get(url=self._url).run()
             if response and not self._not_found in response:
                 self._html = response
         else:
@@ -343,7 +288,7 @@ class Channel:
             sh.log.append ('Channel.links'
                           ,_('INFO')
                           ,_('Fetched %d links for the user "%s"') \
-                          % (len(self._links),self._user)
+                          % (len(self._links),self._channel)
                           )
         else:
             sh.log.append ('Channel.links'
@@ -352,10 +297,7 @@ class Channel:
                           )
     
     def run(self):
-        self.check_dir()
-        self.user()
-        self.escape()
-        self.create()
+        self.url()
         self.links()
         
 
@@ -416,12 +358,11 @@ class Links:
 
 class Lists:
     
-    def __init__(self,Silent=False):
+    def __init__(self):
         self.values()
-        self.Silent  = Silent
-        self._fblock = sh.objs.pdir().add('resources','block.txt')
-        self._fsubsc = sh.objs.pdir().add('resources','subscribe.txt')
-        self._fsubs2 = sh.objs.pdir().add('resources','subscribe2.txt')
+        self._fblock = sh.objs.pdir().add('..','user','block.txt')
+        self._fsubsc = sh.objs.pdir().add('..','user','subscribe.txt')
+        self._fsubs2 = sh.objs.pdir().add('..','user','subscribe2.txt')
         
     def values(self):
         self._block_auth = []
@@ -429,32 +370,29 @@ class Lists:
         self._subsc_urls = []
     
     def load(self):
-        text = sh.ReadTextFile (file   = self._fblock
-                               ,Silent = self.Silent
-                               ).get()
+        text = sh.ReadTextFile(file=self._fblock).get()
         if text:
             self._block_auth = text.splitlines()
         #note: 'sh.Dic' still uses GUI for critical errors
         dic = sh.Dic (file     = self._fsubsc
-                     ,Silent   = self.Silent
                      ,Sortable = False
                      )
         if dic.Success:
             self._subsc_auth = dic.orig
             self._subsc_urls = dic.transl
         dic = sh.Dic (file     = self._fsubs2
-                     ,Silent   = True
                      ,Sortable = False
                      )
         if dic.Success:
             self._subsc_auth += dic.orig
             self._subsc_urls += dic.transl
-        self._subsc_auth, self._subsc_urls = (list(x) for x \
-        in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)
-                        ,key = lambda x:x[0].lower()
-                        )
-               )
-                                             )
+        if self._subsc_auth:
+            self._subsc_auth, self._subsc_urls = (list(x) for x \
+            in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)
+                            ,key = lambda x:x[0].lower()
+                            )
+                   )
+                                                 )
 
 
 if __name__ == '__main__':
