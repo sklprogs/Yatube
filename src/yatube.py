@@ -338,8 +338,8 @@ class Commands:
             user = _('Trending') + ' - ' + _('Russia')
         if not url:
             url = 'https://www.youtube.com/feed/trending?gl=RU'
-        self._channel = lg.Channel(url=user)
-        self._channel._channel = url
+        self._channel = lg.Channel(url=url)
+        self._channel._channel = user
         ''' We assume that there is no need to delete unsupported
             characters in countries.
         '''
