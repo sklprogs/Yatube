@@ -92,9 +92,6 @@ class Commands:
                 author = self._menu.om_chnl.choice
                 no     = self._subsc_auth.index(author)
                 url    = self._subsc_urls[no]
-                #cur
-                print('author:',author) #todo: del
-                print('url:',url) #todo: del
                 self.update_channel(author=author,url=url)
             else:
                 #todo: console + GUI
@@ -128,26 +125,10 @@ class Commands:
             video = Video(url=result)
             video.video()
             video.assign_online()
-            ''' #todo (?): create '../user/Youtube/_(Search)' path
-                automatically
-            '''
-            path = sh.objs.pdir().add('..','user','Youtube',_('Search'))
-            if sh.Path(path=path).create():
-                #todo: sanitize
-                title = video._title.replace('/','').replace('"','')
-                if not title:
-                    title = 'video'
-                path = os.path.join(path,title)
-                #todo: set extension automatically
-                path += '.mp4'
-                video.download(path=path)
-                #todo: if downloaded successfully:
-                self._menu.clear_url()
-            else:
-                sh.log.append ('Commands.get_url'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+            video.path()
+            video.download()
+            #todo: if downloaded successfully:
+            self._menu.clear_url()
         else:
             sh.log.append ('Commands.get_url'
                           ,_('WARNING')
@@ -674,8 +655,9 @@ class Video:
                                         )
                 sg.objs._waitbox.show()
                 #todo: select format & quality
-                #cur
-                stream = self._video.getbest()
+                stream = self._video.getbest (preftype    = 'mp4'
+                                             ,ftypestrict = True
+                                             )
                 stream.download(filepath=self._path)
                 sg.objs._waitbox.close()
             else:
