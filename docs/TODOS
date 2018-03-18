@@ -1,3 +1,4 @@
+- Allow URLs like https://www.youtube.com/embed/R0CUk9O8Ers
 - Do not overwrite downloaded files (e.g., in Search)
 - Disable checkboxes for the videos that failed to load
 - Store a full URL in DB

@@ -667,7 +667,7 @@ class Objects:
     
     def __init__(self):
         self._def_image = self._channel = self._menu = self._parent \
-                        = None
+                        = self._context_menu = None
         
     def def_image(self):
         if not self._def_image:
@@ -689,6 +689,29 @@ class Objects:
         if not self._menu:
             self._menu = Menu(parent=self.parent())
         return self._menu
+        
+    def context_menu(self):
+        if not self._context_menu:
+            actions = (_('Full video summary')
+                      ,_('Open URL in a default browser')
+                      ,_('Copy URL')
+                      )
+            icon = sh.objs.pdir().add ('..','resources'
+                                      ,'icon_64x64_yatube.gif'
+                                      )
+            ''' #fix: Modifying 'SingleClick' and 'SelectionCloses' is
+                needed here only not to toggle the checkbox of
+                the parent (this is a bug and should be fixed).
+            '''
+            self._context_menu = sg.ListBox (parent          = sg.objs.new_top()
+                                            ,lst             = actions
+                                            ,title           = _('Select an action:')
+                                            ,icon            = icon
+                                            ,SingleClick     = False
+                                            ,SelectionCloses = False
+                                            )
+            self._context_menu.close()
+        return self._context_menu
 
 
 objs = Objects()
@@ -696,6 +719,9 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    objs.channel(parent=objs.menu().parent)
-    objs._menu.show()
+    #objs.channel(parent=objs.menu().parent)
+    #objs._menu.show()
+    parent = sg.objs.new_top()
+    video = Video(parent=parent)
+    parent.show()
     sg.objs.end()
