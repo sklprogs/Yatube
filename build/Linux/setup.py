@@ -10,7 +10,7 @@ buildOptions = dict (packages = []
 executables = [Executable ('yatube.py'
                           ,base       = 'Console'
                           ,icon       = 'resources/icon_64x64_yatube.gif'
-                          ,targetName = 'Yatube'
+                          ,targetName = 'yatube'
                           )
               ]
 

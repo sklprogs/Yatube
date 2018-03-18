@@ -3,30 +3,29 @@
 # Do not use "verbose" in order to spot errors easily
 
 # Remove shared resources
-rm -f ./resources/{error.gif,info.gif,question.gif,warning.gif}
+rm ./resources/{error,info,question,warning}.gif
 
 # Remove Yatube resources
-rm -f ./resources/{nopic.png,block.txt,subscribe.txt}
+rm ./resources/nopic.png
+rm ./resources/locale/ru/LC_MESSAGES/yatube.mo
+rm ./user/{block.txt,subscribe.txt}
 
 # Remove optional Yatube resources
-rm -f ./resources/{subscribe2.txt,yatube.db}
-
-# Remove other Yatube resources
-rm -f ./resources/locale/ru/LC_MESSAGES/yatube.mo
+rm ./user/{subscribe2.txt,yatube.db}
 
 # Remove Yatube Python files
-rm -f ./{db,gui,logic,tests,yatube}\.py
+rm ./{db,gui,logic,tests,yatube}.py
 
 # Remove shared Python files
-rm -f ./{gettext_windows.py,shared.py,sharedGUI.py}
+rm ./{gettext_windows,shared,sharedGUI}.py
 
-# (Linux-only) Remove Yatube icon
-rm -f ./resources/icon_64x64_yatube.gif
+# Remove Yatube icon
+rm ./resources/icon_64x64_yatube.gif
 
 # (Linux-only) Remove build scripts
-rm -f {build.sh,clean_up.sh,setup.py}
+rm {build.sh,clean_up.sh,setup.py}
 
 # Do not use dots in case of '-p' key
-rmdir -p resources/locale/ru/LC_MESSAGES/
+rmdir -p resources/locale/ru/LC_MESSAGES/ user/Youtube
 
 ls .
