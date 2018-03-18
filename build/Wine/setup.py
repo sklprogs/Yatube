@@ -10,7 +10,7 @@ buildOptions = dict (packages = []
 executables = [Executable ('Yatube.py'
                           ,base       = 'Win32GUI'
                           ,icon       = 'resources\icon_64x64_yatube.ico'
-                          ,targetName = 'Yatube.exe'
+                          ,targetName = 'yatube.exe'
                           )
               ]
 
