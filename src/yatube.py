@@ -60,9 +60,7 @@ class Commands:
         for video_gui in gi.objs.channel()._videos:
             choice = video_gui.opt_act.choice
             if choice != _('Select an action'):
-                if choice == _('Select an action'):
-                    print(_('Select an action'))
-                elif choice == _('Show the full summary'):
+                if choice == _('Show the full summary'):
                     print(_('Show the full summary'))
                 elif choice == _('Download'):
                     print(_('Download'))
@@ -385,14 +383,7 @@ class Commands:
                                 ,duration = duration
                                 ,image    = video._image
                                 )
-                #cur
                 video_gui.opt_act.action = self.context
-                '''
-                video_gui.opt_act.reset (items   = gi.context_items
-                                        ,default = _('Select an action')
-                                        ,action  = self.context(video_gui)
-                                        )
-                '''
                 ''' This does not work in 'Channel.__init__' for some
                     reason, calling this externally.
                 '''
