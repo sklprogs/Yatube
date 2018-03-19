@@ -25,8 +25,9 @@ class Commands:
     
     def __init__(self):
         self._menu    = gi.objs.menu()
+        # Get a logic object by a GUI object
+        self._videos  = {}
         self._channel = None
-        self._videos  = []
         itime         = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
@@ -293,7 +294,7 @@ class Commands:
                     #if len(self._videos) >= video_gui._no:
                 '''
                 #video = self._videos[video_gui._no]
-                video = video_gui.logic
+                video = self._videos[video_gui]
                 video.video()
                 video.path()
                 video.download()
@@ -319,8 +320,7 @@ class Commands:
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
                 if len(self._videos) >= video_gui._no:
-                    #video = self._videos[video_gui._no]
-                    video = video_gui.logic
+                    video = self._videos[video_gui]
                     video.video()
                     video.path()
                     video.download()
@@ -379,7 +379,6 @@ class Commands:
             video = Video(url=self._channel._links[i])
             video.get()
             if video.Success:
-                self._videos.append(video)
                 author    = sh.Text(text=video._author).delete_unsupported()
                 title     = sh.Text(text=video._title).delete_unsupported()
                 duration  = sh.Text(text=video._dur).delete_unsupported()
@@ -393,7 +392,6 @@ class Commands:
                                 ,title    = title
                                 ,duration = duration
                                 ,image    = video._image
-                                ,logic    = video
                                 )
                 ''' This does not work in 'Channel.__init__' for some
                     reason, calling this externally.
@@ -401,6 +399,7 @@ class Commands:
                 ''' #fix showing only videos No. 10-21 with 'update_scroll'
                     disabled
                 '''
+                self._videos[video_gui] = video
                 #if not video.Saved:
                 gi.objs._channel.update_scroll()
         dbi.save()

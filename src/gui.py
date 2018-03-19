@@ -19,6 +19,7 @@ version = '(beta)'
 def_height = 110
 
 
+
 class Menu:
     
     def __init__(self,parent):
@@ -411,14 +412,13 @@ class Video:
         self.bindings()
         
     def reset (self,author,title,duration
-              ,logic,image=None,no=0
+              ,image=None,no=0
               ):
         self._no       = no
         self._author   = author
         self._title    = title
         self._duration = duration
         self._image    = image
-        self.logic     = logic
         '''
         #note #todo For some reason, using 'widget.config' or 
         'Label.text' resets config options here.

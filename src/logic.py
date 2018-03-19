@@ -9,7 +9,6 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-AllOS = False
 
 
 class Time:
