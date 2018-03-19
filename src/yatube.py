@@ -57,7 +57,7 @@ class Commands:
             self._channels = default_channels
     
     def update_channel(self,author,url,Show=True):
-        self._menu.om_chnl.set(author)
+        self._menu.opt_chl.set(author)
         self._channel = lg.Channel(url=url)
         self._channel.run()
         self.reset_channel_gui()
@@ -78,7 +78,7 @@ class Commands:
         gi.objs._channel.show()
                           
     def set_channel(self,event=None):
-        if self._menu.om_chnl.choice == _('Channels'):
+        if self._menu.opt_chl.choice == _('Channels'):
             sh.log.append ('Commands.set_channel'
                           ,_('INFO')
                           ,_('Nothing to do.')
@@ -87,10 +87,10 @@ class Commands:
             sh.log.append ('Commands.set_channel'
                           ,_('INFO')
                           ,_('Switch to channel "%s"') \
-                          % str(self._menu.om_chnl.choice)
+                          % str(self._menu.opt_chl.choice)
                           )
-            if self._menu.om_chnl.choice in self._subsc_auth:
-                author = self._menu.om_chnl.choice
+            if self._menu.opt_chl.choice in self._subsc_auth:
+                author = self._menu.opt_chl.choice
                 no     = self._subsc_auth.index(author)
                 url    = self._subsc_urls[no]
                 self.update_channel(author=author,url=url)
@@ -102,7 +102,7 @@ class Commands:
                               )
         
     def get_links(self,event=None):
-        result = self._menu.en_lnks.get()
+        result = self._menu.ent_lnk.get()
         if result and result != _('Get links from URL'):
             sh.log.append ('Commands.get_links'
                           ,_('DEBUG')
@@ -116,7 +116,7 @@ class Commands:
                           )
     
     def get_url(self,event=None):
-        result = self._menu.en_gurl.get()
+        result = self._menu.ent_url.get()
         if result and result != _('Get video from URL'):
             sh.log.append ('Commands.get_url'
                           ,_('INFO')
@@ -148,14 +148,14 @@ class Commands:
         sh.log.append ('Commands.set_trending'
                       ,_('INFO')
                       ,_('Switch to channel "%s"') \
-                      % str(self._menu.om_trnd.choice)
+                      % str(self._menu.opt_trd.choice)
                       )
         country = 'RU'
-        if self._menu.om_trnd.choice == _('Trending'):
+        if self._menu.opt_trd.choice == _('Trending'):
             user = _('Trending') + ' - ' + _('Russia')
         else:
-            user = _('Trending') + ' - ' + self._menu.om_trnd.choice
-            country = self._countries[self._menu.om_trnd.choice]
+            user = _('Trending') + ' - ' + self._menu.opt_trd.choice
+            country = self._countries[self._menu.opt_trd.choice]
         url = 'https://www.youtube.com/feed/trending?gl=%s' % country
         sh.log.append ('Commands.set_trending'
                       ,_('DEBUG')
@@ -172,7 +172,7 @@ class Commands:
         self.update_trending(user=user,url=url)
         
     def search_youtube(self,event=None):
-        result = self._menu.en_srch.get()
+        result = self._menu.ent_src.get()
         if result and result != _('Search Youtube'):
             root_url = 'https://www.youtube.com/results?search_query=%s'
             result = sh.Online (base_str   = root_url
@@ -191,7 +191,7 @@ class Commands:
                           )
                           
     def filter_view(self,event=None):
-        result = self._menu.en_fltr.get()
+        result = self._menu.ent_flt.get()
         if result and result != _('Filter this view'):
             sh.log.append ('Commands.filter_view'
                           ,_('INFO')
@@ -230,39 +230,39 @@ class Commands:
         self._menu.btn_dld.action = self.download
         self._menu.btn_ply.action = self.play
         # Menu: labels
-        sg.bind (obj      = self._menu.en_srch
+        sg.bind (obj      = self._menu.ent_src
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.search_youtube
                 )
-        sg.bind (obj      = self._menu.en_gurl
+        sg.bind (obj      = self._menu.ent_url
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.get_url
                 )
-        sg.bind (obj      = self._menu.en_lnks
+        sg.bind (obj      = self._menu.ent_lnk
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.get_links
                 )
-        sg.bind (obj      = self._menu.en_fltr
+        sg.bind (obj      = self._menu.ent_flt
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.filter_view
                 )
         # Menu: checkboxes
         self._menu.cb_slct.widget.config(command=self.toggle_select)
         # Menu: OptionMenus
-        self._menu.om_wday.reset (items   = self._days
+        self._menu.opt_day.reset (items   = self._days
                                  ,default = self._day
                                  )
-        self._menu.om_mnth.reset (items   = self._months
+        self._menu.opt_mth.reset (items   = self._months
                                  ,default = self._month
                                  )
-        self._menu.om_yers.reset (items   = self._years
+        self._menu.opt_yrs.reset (items   = self._years
                                  ,default = self._year
                                  )
-        self._menu.om_trnd.reset (items   = self._trending
+        self._menu.opt_trd.reset (items   = self._trending
                                  ,default = _('Trending')
                                  ,action  = self.set_trending
                                  )
-        self._menu.om_chnl.reset (items   = self._channels
+        self._menu.opt_chl.reset (items   = self._channels
                                  ,default = _('Channels')
                                  ,action  = self.set_channel
                                  )
