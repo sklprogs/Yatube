@@ -272,6 +272,7 @@ class Menu:
 class Video:
     
     def __init__(self,parent,no=0):
+        # 'no' does not involve logic, it's merely a part of GUI
         self._no    = no
         self.parent = parent
         self.values()

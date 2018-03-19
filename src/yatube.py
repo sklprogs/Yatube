@@ -286,14 +286,6 @@ class Commands:
     def play(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
-                # Video numbering starts with 1
-                ''' #note: This condition may actually not be
-                    observed because 'self._videos' are videos that
-                    we successfuly got. If there are random
-                    connection problems, the condition may fail.
-                    #if len(self._videos) >= video_gui._no:
-                '''
-                #video = self._videos[video_gui._no]
                 video = self._videos[video_gui]
                 video.video()
                 video.path()
@@ -305,33 +297,14 @@ class Commands:
                                              ,'-nocorrect-pts'
                                              ]
                               )
-                '''
-                else:
-                    sg.Message ('Commands.play'
-                               ,_('ERROR')
-                               ,_('The condition "%s" is not observed!') \
-                               % ('%d > %d') % (len(self._videos)
-                                               ,video_gui._no
-                                               )
-                                 )
-                '''
         
     def download(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
-                if len(self._videos) >= video_gui._no:
-                    video = self._videos[video_gui]
-                    video.video()
-                    video.path()
-                    video.download()
-                else:
-                    sg.Message ('Commands.download'
-                               ,_('ERROR')
-                               ,_('The condition "%s" is not observed!') \
-                                % ('%d > %d') % (len(self._videos)
-                                                ,video_gui._no
-                                                )
-                               )
+                video = self._videos[video_gui]
+                video.video()
+                video.path()
+                video.download()
         
     def update_channels(self,event=None):
         for i in range(len(self._subsc_auth)):
