@@ -88,9 +88,9 @@ class Menu:
                                                 )
                                      ,default = _('Newer than')
                                      )
-        self.om_wday = sg.OptionMenu (parent  = self.frame1)
-        self.om_mnth = sg.OptionMenu (parent  = self.frame1)
-        self.om_yers = sg.OptionMenu (parent  = self.frame1)
+        self.om_wday = sg.OptionMenu (parent = self.frame1)
+        self.om_mnth = sg.OptionMenu (parent = self.frame1)
+        self.om_yers = sg.OptionMenu (parent = self.frame1)
         # Search Youtube
         self.en_srch = sg.Entry (parent    = self.frame2
                                 ,Composite = True
@@ -278,6 +278,11 @@ class Video:
         self.values()
         self.gui()
     
+    def menus(self):
+        #cur
+        pass
+        #sg.OptionMenu()
+    
     def values(self):
         self._author   = _('Author')
         self._title    = _('Title')
@@ -410,6 +415,7 @@ class Video:
         self.frames()
         self.checkboxes()
         self.labels()
+        self.menus()
         self.bindings()
         
     def reset (self,author,title,duration
@@ -668,7 +674,7 @@ class Objects:
     
     def __init__(self):
         self._def_image = self._channel = self._menu = self._parent \
-                        = self._context_menu = None
+                        = None
         
     def def_image(self):
         if not self._def_image:
@@ -690,29 +696,6 @@ class Objects:
         if not self._menu:
             self._menu = Menu(parent=self.parent())
         return self._menu
-        
-    def context_menu(self):
-        if not self._context_menu:
-            actions = (_('Full video summary')
-                      ,_('Open URL in a default browser')
-                      ,_('Copy URL')
-                      )
-            icon = sh.objs.pdir().add ('..','resources'
-                                      ,'icon_64x64_yatube.gif'
-                                      )
-            ''' #fix: Modifying 'SingleClick' and 'SelectionCloses' is
-                needed here only not to toggle the checkbox of
-                the parent (this is a bug and should be fixed).
-            '''
-            self._context_menu = sg.ListBox (parent          = sg.objs.new_top()
-                                            ,lst             = actions
-                                            ,title           = _('Select an action:')
-                                            ,icon            = icon
-                                            ,SingleClick     = False
-                                            ,SelectionCloses = False
-                                            )
-            self._context_menu.close()
-        return self._context_menu
 
 
 objs = Objects()

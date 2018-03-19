@@ -266,16 +266,6 @@ class Commands:
                                  ,default = _('Channels')
                                  ,action  = self.set_channel
                                  )
-                    
-    def context_action(self,event=None):
-        print('Context Action here') #todo: del
-        gi.objs.context_menu().show
-        if gi.objs.context_menu._obj._get == _('Full video summary'):
-            print(_('Full video summary')) #todo: implement
-        elif gi.objs.context_menu._obj._get == _('Open URL in a default browser'):
-            print(_('Open URL in a default browser')) #todo: implement
-        elif gi.objs.context_menu._obj == _('Copy URL'):
-            print(_('Copy URL'))
         
     def select_new(self,event=None):
         sg.Message ('Commands.select_new'
@@ -336,13 +326,6 @@ class Commands:
         self._menu.framev = sg.Frame(parent=self._menu.parent)
         gi.objs._channel = None
         gi.objs.channel(parent=self._menu.framev)
-        #cur
-        for video_gui in gi.objs.channel()._videos:
-            #for video_gui in self._videos:
-            sg.bind (obj      = video_gui.parent
-                    ,bindings = '<ButtonRelease-3>'
-                    ,action   = self.context_action
-                    )
         
     def channel_gui(self):
         for i in range(len(self._channel._links)):
