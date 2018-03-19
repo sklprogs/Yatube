@@ -18,6 +18,16 @@ version = '(beta)'
 # A default picture height
 def_height = 110
 
+context_items = (_('Select an action')
+                ,_('Show the full summary')
+                ,_('Download')
+                ,_('Play')
+                ,_('Stream')
+                ,_('Block this channel')
+                ,_('Subscribe to this channel')
+                ,_('Open video URL')
+                ,_('Open channel URL')
+                )
 
 
 class Menu:
@@ -279,9 +289,11 @@ class Video:
         self.gui()
     
     def menus(self):
-        #cur
-        pass
-        #sg.OptionMenu()
+        #todo: implement actions
+        self.opt_act = sg.OptionMenu (parent = self.frame5
+                                     ,items  = context_items
+                                     ,side   = 'right'
+                                     )
     
     def values(self):
         self._author   = _('Author')

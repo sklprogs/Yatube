@@ -56,6 +56,42 @@ class Commands:
         else:
             self._channels = default_channels
     
+    def context(self,event=None):
+        for video_gui in gi.objs.channel()._videos:
+            choice = video_gui.opt_act.choice
+            if choice != _('Select an action'):
+                if choice == _('Select an action'):
+                    print(_('Select an action'))
+                elif choice == _('Show the full summary'):
+                    print(_('Show the full summary'))
+                elif choice == _('Download'):
+                    print(_('Download'))
+                elif choice == _('Play'):
+                    print(_('Play'))
+                elif choice == _('Stream'):
+                    print(_('Stream'))
+                elif choice == _('Block this channel'):
+                    print(_('Block this channel'))
+                elif choice == _('Subscribe to this channel'):
+                    print(_('Subscribe to this channel'))
+                elif choice == _('Open video URL'):
+                    print(_('Open video URL'))
+                elif choice == _('Open channel URL'):
+                    print(_('Open channel URL'))
+                else:
+                    sh.obj.mes ('Commands.context'
+                               ,_('ERROR')
+                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                               % (str(choice),';'.join(gi.context_items))
+                               )
+                video_gui.opt_act.set(_('Select an action'))
+                break
+        else:
+            sh.log.append ('Commands.context'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def update_channel(self,author,url,Show=True):
         self._menu.opt_chl.set(author)
         self._channel = lg.Channel(url=url)
@@ -349,6 +385,14 @@ class Commands:
                                 ,duration = duration
                                 ,image    = video._image
                                 )
+                #cur
+                video_gui.opt_act.action = self.context
+                '''
+                video_gui.opt_act.reset (items   = gi.context_items
+                                        ,default = _('Select an action')
+                                        ,action  = self.context(video_gui)
+                                        )
+                '''
                 ''' This does not work in 'Channel.__init__' for some
                     reason, calling this externally.
                 '''
