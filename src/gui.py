@@ -289,18 +289,11 @@ class Video:
         self.objects()
     
     def objects(self):
-        self._objects = [self.opt_act,self.cbox,self.label1,self.label2
-                        ,self.label3,self.label4,self.label5,self.label6
-                        ,self.label7,self.label8,self.frame,self.frame1
-                        ,self.frame2,self.frame3,self.frame4,self.frame5
+        self._objects = [self.cbox,self.label1,self.label2,self.label3
+                        ,self.label4,self.label5,self.label6,self.label7
+                        ,self.label8,self.frame,self.frame1,self.frame2
+                        ,self.frame3,self.frame4,self.frame5
                         ]
-    
-    def menus(self):
-        #todo: implement actions
-        self.opt_act = sg.OptionMenu (parent = self.frame5
-                                     ,items  = context_items
-                                     ,side   = 'right'
-                                     )
     
     def values(self):
         self._widgets  = []
@@ -442,7 +435,6 @@ class Video:
         self.frames()
         self.checkboxes()
         self.labels()
-        self.menus()
         self.bindings()
         
     def reset (self,author,title,duration
