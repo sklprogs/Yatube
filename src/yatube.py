@@ -24,10 +24,12 @@ AllOS = False
 class Commands:
     
     def __init__(self):
-        self._menu    = gi.objs.menu()
         # Get a logic object by a GUI object
         self._videos  = {}
+        self._video   = None
+        self._gvideo  = None
         self._channel = None
+        self._menu    = gi.objs.menu()
         itime         = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
@@ -56,7 +58,65 @@ class Commands:
         else:
             self._channels = default_channels
     
+    def find_widget(self,event=None):
+        if event:
+            ''' Widgets must be in a string format to be compared
+                (otherwise, we will have, for example,
+                'Tkinter.Frame object' vs 'string').
+                For some reason, Tkinter adds some information to
+                the address of the widget got as 'event.widget'
+                (original widget address will be shorter)
+            '''
+            for video_gui in gi.objs.channel()._videos:
+                if str(video_gui.frame.widget) in str(event.widget):
+                    self._gvideo = video_gui
+                    return self._gvideo
+        else:
+            sh.log.append ('Commands.find_widget'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def summary(self,event=None):
+        gi.objs.summary().read_only(False)
+        if self._video:
+            gi.objs._summary.reset()
+            gi.objs._summary.insert(self._video.summary())
+        gi.objs._summary.read_only(True)
+        gi.objs._summary.show()
+    
     def context(self,event=None):
+        self.find_widget(event=event)
+        if self._gvideo:
+            self._video = self._videos[self._gvideo]
+            message = _('Video #%d:') % self._gvideo._no
+            gi.objs.context().title(message)
+            gi.objs._context.show()
+            choice = gi.objs._context._get
+            if choice == _('Show the full summary'):
+                self.summary()
+            elif choice == _('Download'):
+                print(_('Download'))
+            elif choice == _('Play'):
+                print(_('Play'))
+            elif choice == _('Stream'):
+                print(_('Stream'))
+            elif choice == _('Block this channel'):
+                print(_('Block this channel'))
+            elif choice == _('Subscribe to this channel'):
+                print(_('Subscribe to this channel'))
+            elif choice == _('Open video URL'):
+                print(_('Open video URL'))
+            elif choice == _('Open channel URL'):
+                print(_('Open channel URL'))
+            else:
+                sh.obj.mes ('Commands.context'
+                           ,_('ERROR')
+                           ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                           % (str(choice),';'.join(gi.context_items))
+                           )
+    
+    def context2(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             choice = video_gui.opt_act.choice
             if choice != _('Select an action'):
@@ -361,6 +421,12 @@ class Commands:
         gi.objs._channel = None
         gi.objs.channel(parent=self._menu.framev)
         
+    def bind_context(self,event=None):
+        sg.bind (obj      = gi.objs.menu()
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = self.context
+                )
+        
     def channel_gui(self):
         for i in range(len(self._channel._links)):
             gi.objs.channel().add(no=i)
@@ -384,16 +450,16 @@ class Commands:
                                 ,image    = video._image
                                 )
                 video_gui.opt_act.action = self.context
-                ''' This does not work in 'Channel.__init__' for some
-                    reason, calling this externally.
-                '''
-                ''' #fix showing only videos No. 10-21 with 'update_scroll'
-                    disabled
-                '''
                 self._videos[video_gui] = video
                 #if not video.Saved:
+                ''' #fix showing only videos No. 10-21 with 'update_scroll'
+                    disabled.
+                    This does not work in 'Channel.__init__' for some
+                    reason, calling this externally.
+                '''
                 gi.objs._channel.update_scroll()
         dbi.save()
+        self.bind_context()
         # Move back to video #0
         gi.objs._channel.canvas.widget.yview_moveto(0)
     

@@ -29,6 +29,8 @@ context_items = (_('Select an action')
                 ,_('Open channel URL')
                 )
 
+icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
+
 
 class Menu:
     
@@ -245,10 +247,7 @@ class Menu:
     
     def icon(self,path=None):
         if not path:
-            path = sh.objs.pdir().add ('..'
-                                      ,'resources'
-                                      ,'icon_64x64_yatube.gif'
-                                      )
+            path = icon_path
         sg.WidgetShared.icon(self.parent,path)
     
     def clear_url(self,event=None):
@@ -287,6 +286,15 @@ class Video:
         self.parent = parent
         self.values()
         self.gui()
+        self.widgets()
+    
+    def widgets(self):
+        self._widgets = [self.opt_act,self.frame,self.frame1,self.frame2
+                        ,self.frame3,self.frame4,self.frame5,self.label1
+                        ,self.label2,self.label3,self.label4,self.label5
+                        ,self.label6,self.label7,self.label8,self.cbox
+                        ]
+        self._widgets = [str(obj.widget) for obj in self._widgets]
     
     def menus(self):
         #todo: implement actions
@@ -296,6 +304,7 @@ class Video:
                                      )
     
     def values(self):
+        self._widgets  = []
         self._author   = _('Author')
         self._title    = _('Title')
         self._duration = _('Duration')
@@ -390,6 +399,13 @@ class Video:
                                 )
                                 
     def bindings(self):
+        #cur
+        '''
+        sg.bind (obj      = self.parent
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = self.cbox.toggle
+                )
+        '''
         sg.bind (obj      = self.label1
                 ,bindings = '<ButtonRelease-1>'
                 ,action   = self.cbox.toggle
@@ -686,8 +702,33 @@ class Objects:
     
     def __init__(self):
         self._def_image = self._channel = self._menu = self._parent \
-                        = None
+                        = self._context = self._summary = None
         
+    def summary(self):
+        if not self._summary:
+            top = sg.Top(parent=sg.objs.root())
+            sg.Geometry(parent=top).set('1024x768')
+            self._summary = sg.TextBox(parent=top)
+            self._summary.icon(icon_path)
+            self._summary.title(_('Full summary:'))
+        return self._summary
+    
+    def context(self):
+        if not self._context:
+            ''' #fix: Modifying 'SingleClick' and 'SelectionCloses' is
+                needed here only not to toggle the checkbox of
+                the parent (this is a bug and should be fixed).
+            '''
+            self._context = sg.ListBox (parent          = sg.objs.new_top()
+                                       ,lst             = context_items
+                                       ,title           = _('Select an action:')
+                                       ,icon            = icon_path
+                                       ,SingleClick     = False
+                                       ,SelectionCloses = False
+                                       )
+            self._context.close()
+        return self._context
+    
     def def_image(self):
         if not self._def_image:
             path = sh.objs.pdir().add('..','resources','nopic.png')
@@ -710,14 +751,81 @@ class Objects:
         return self._menu
 
 
+def test_rmb(event=None):
+    if event:
+        found = None
+        ''' Widgets must be in a string format to be compared
+            (otherwise, we will have, for example,
+            'Tkinter.Frame object' vs 'string').
+            For some reason, Tkinter adds some information to
+            the address of the widget got as 'event.widget'
+            (original widget address will be shorter)
+        '''
+        for video_gui in objs.channel()._videos:
+            if str(video_gui.frame.widget) in str(event.widget):
+                found = video_gui
+                break
+        if found:
+            message = 'Widget %s has been found at %s' \
+                      % (type(video_gui.frame.widget)
+                        ,str(video_gui.frame.widget)
+                        )
+            sg.Message ('test_rmb'
+                       ,_('INFO')
+                       ,message
+                       )
+        else:
+            sh.objs.mes ('test_rmb'
+                        ,_('ERROR')
+                        ,_('Widget %s does not exist!') \
+                        % str(event.widget)
+                        )
+    else:
+        sh.log.append ('test_rmb'
+                      ,_('WARNING')
+                      ,_('Empty input is not allowed!')
+                      )
+        
+
+def test_lmb(event=None):
+    sg.Message ('test_lmb'
+               ,_('INFO')
+               ,'Event (LMB) has been triggered.'
+               )
+
+
 objs = Objects()
 
 
 if __name__ == '__main__':
     sg.objs.start()
-    #objs.channel(parent=objs.menu().parent)
-    #objs._menu.show()
-    parent = sg.objs.new_top()
-    video = Video(parent=parent)
+    parent = objs.menu().parent
+    objs.channel(parent=parent)
+    #parent = sg.objs.new_top()
+    #video = Video(parent=parent)
+    for i in range(5):
+        objs._channel.add(no=i)
+        video_gui = objs._channel._videos[-1]
+        video_gui.reset (no       = i + 1
+                        ,author   = 'Author (%d)' % (i + 1)
+                        ,title    = 'Title (%d)'  % (i + 1)
+                        ,duration = 60 * (i + 1)
+                        )
+    sg.bind (obj      = parent
+            ,bindings = '<ButtonRelease-3>'
+            ,action   = test_rmb
+            )
+    for video_gui in objs._channel._videos:
+        sg.bind (obj      = video_gui.frame
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = test_lmb
+                )
+    '''
+    for video_gui in objs._channel._videos:
+        sg.bind (obj      = video_gui.frame
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = lambda event,obj=video_gui.frame
+                )
+    '''
     parent.show()
     sg.objs.end()
