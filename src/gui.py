@@ -286,15 +286,14 @@ class Video:
         self.parent = parent
         self.values()
         self.gui()
-        self.widgets()
+        self.objects()
     
-    def widgets(self):
-        self._widgets = [self.opt_act,self.frame,self.frame1,self.frame2
-                        ,self.frame3,self.frame4,self.frame5,self.label1
-                        ,self.label2,self.label3,self.label4,self.label5
-                        ,self.label6,self.label7,self.label8,self.cbox
+    def objects(self):
+        self._objects = [self.opt_act,self.cbox,self.label1,self.label2
+                        ,self.label3,self.label4,self.label5,self.label6
+                        ,self.label7,self.label8,self.frame,self.frame1
+                        ,self.frame2,self.frame3,self.frame4,self.frame5
                         ]
-        self._widgets = [str(obj.widget) for obj in self._widgets]
     
     def menus(self):
         #todo: implement actions
@@ -723,8 +722,8 @@ class Objects:
                                        ,lst             = context_items
                                        ,title           = _('Select an action:')
                                        ,icon            = icon_path
-                                       ,SingleClick     = False
-                                       ,SelectionCloses = False
+                                       #,SingleClick     = False
+                                       #,SelectionCloses = False
                                        )
             self._context.close()
         return self._context
@@ -751,42 +750,6 @@ class Objects:
         return self._menu
 
 
-def test_rmb(event=None):
-    if event:
-        found = None
-        ''' Widgets must be in a string format to be compared
-            (otherwise, we will have, for example,
-            'Tkinter.Frame object' vs 'string').
-            For some reason, Tkinter adds some information to
-            the address of the widget got as 'event.widget'
-            (original widget address will be shorter)
-        '''
-        for video_gui in objs.channel()._videos:
-            if str(video_gui.frame.widget) in str(event.widget):
-                found = video_gui
-                break
-        if found:
-            message = 'Widget %s has been found at %s' \
-                      % (type(video_gui.frame.widget)
-                        ,str(video_gui.frame.widget)
-                        )
-            sg.Message ('test_rmb'
-                       ,_('INFO')
-                       ,message
-                       )
-        else:
-            sh.objs.mes ('test_rmb'
-                        ,_('ERROR')
-                        ,_('Widget %s does not exist!') \
-                        % str(event.widget)
-                        )
-    else:
-        sh.log.append ('test_rmb'
-                      ,_('WARNING')
-                      ,_('Empty input is not allowed!')
-                      )
-        
-
 def test_lmb(event=None):
     sg.Message ('test_lmb'
                ,_('INFO')
@@ -811,10 +774,6 @@ if __name__ == '__main__':
                         ,title    = 'Title (%d)'  % (i + 1)
                         ,duration = 60 * (i + 1)
                         )
-    sg.bind (obj      = parent
-            ,bindings = '<ButtonRelease-3>'
-            ,action   = test_rmb
-            )
     for video_gui in objs._channel._videos:
         sg.bind (obj      = video_gui.frame
                 ,bindings = '<ButtonRelease-1>'

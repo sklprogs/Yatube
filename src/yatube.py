@@ -58,7 +58,7 @@ class Commands:
         else:
             self._channels = default_channels
     
-    def find_widget(self,event=None):
+    def get_widget(self,event=None):
         if event:
             ''' Widgets must be in a string format to be compared
                 (otherwise, we will have, for example,
@@ -68,11 +68,12 @@ class Commands:
                 (original widget address will be shorter)
             '''
             for video_gui in gi.objs.channel()._videos:
-                if str(video_gui.frame.widget) in str(event.widget):
-                    self._gvideo = video_gui
-                    return self._gvideo
+                for obj in video_gui._objects:
+                    if str(obj.widget) in str(event.widget):
+                        self._gvideo = video_gui
+                        return self._gvideo
         else:
-            sh.log.append ('Commands.find_widget'
+            sh.log.append ('Commands.get_widget'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -86,35 +87,44 @@ class Commands:
         gi.objs._summary.show()
     
     def context(self,event=None):
-        self.find_widget(event=event)
+        # 'event' will be 'tuple' if it is a callback from 'Button.click'
+        if isinstance(event,tuple):
+            event = event[0]
+        self.get_widget(event=event)
         if self._gvideo:
             self._video = self._videos[self._gvideo]
             message = _('Video #%d:') % self._gvideo._no
             gi.objs.context().title(message)
             gi.objs._context.show()
             choice = gi.objs._context._get
-            if choice == _('Show the full summary'):
-                self.summary()
-            elif choice == _('Download'):
-                print(_('Download'))
-            elif choice == _('Play'):
-                print(_('Play'))
-            elif choice == _('Stream'):
-                print(_('Stream'))
-            elif choice == _('Block this channel'):
-                print(_('Block this channel'))
-            elif choice == _('Subscribe to this channel'):
-                print(_('Subscribe to this channel'))
-            elif choice == _('Open video URL'):
-                print(_('Open video URL'))
-            elif choice == _('Open channel URL'):
-                print(_('Open channel URL'))
+            if choice:
+                if choice == _('Show the full summary'):
+                    self.summary()
+                elif choice == _('Download'):
+                    print(_('Download'))
+                elif choice == _('Play'):
+                    print(_('Play'))
+                elif choice == _('Stream'):
+                    print(_('Stream'))
+                elif choice == _('Block this channel'):
+                    print(_('Block this channel'))
+                elif choice == _('Subscribe to this channel'):
+                    print(_('Subscribe to this channel'))
+                elif choice == _('Open video URL'):
+                    print(_('Open video URL'))
+                elif choice == _('Open channel URL'):
+                    print(_('Open channel URL'))
+                else:
+                    sh.objs.mes ('Commands.context'
+                                ,_('ERROR')
+                                ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                % (str(choice),';'.join(gi.context_items))
+                                )
             else:
-                sh.obj.mes ('Commands.context'
-                           ,_('ERROR')
-                           ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                           % (str(choice),';'.join(gi.context_items))
-                           )
+                sh.log.append ('Commands.context'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
     
     def context2(self,event=None):
         for video_gui in gi.objs.channel()._videos:
@@ -137,11 +147,11 @@ class Commands:
                 elif choice == _('Open channel URL'):
                     print(_('Open channel URL'))
                 else:
-                    sh.obj.mes ('Commands.context'
-                               ,_('ERROR')
-                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                               % (str(choice),';'.join(gi.context_items))
-                               )
+                    sh.objs.mes ('Commands.context'
+                                ,_('ERROR')
+                                ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                % (str(choice),';'.join(gi.context_items))
+                                )
                 video_gui.opt_act.set(_('Select an action'))
                 break
         else:
@@ -415,6 +425,7 @@ class Commands:
         self.channel_gui()
         
     def reset_channel_gui(self):
+        self._video = self._gvideo = None
         # Clears the old Channel widget
         self._menu.framev.widget.pack_forget()
         self._menu.framev = sg.Frame(parent=self._menu.parent)
