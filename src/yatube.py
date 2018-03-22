@@ -377,6 +377,7 @@ class Commands:
             self._video.video()
             self._video.path()
             self._video.download()
+            dbi.mark_downloaded(url=self._video.url)
             self._gvideo.cbox.disable()
         else:
             sh.log.append ('Commands.download_video'

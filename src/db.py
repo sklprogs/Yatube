@@ -19,6 +19,24 @@ class DB:
         self.dbc     = self.db.cursor()
         self.create_videos()
     
+    def mark_downloaded(self,url):
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set READY = True \
+                                   where URL =?',(url,)
+                                 )
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.mark_downloaded'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
+        else:
+            sh.log.append ('DB.mark_downloaded'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def create_videos(self):
         if self.Success:
             try:
