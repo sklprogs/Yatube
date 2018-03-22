@@ -101,9 +101,9 @@ class Commands:
                 if choice == _('Show the full summary'):
                     self.summary()
                 elif choice == _('Download'):
-                    print(_('Download'))
+                    self.download_video()
                 elif choice == _('Play'):
-                    print(_('Play'))
+                    self.play_video()
                 elif choice == _('Stream'):
                     print(_('Stream'))
                 elif choice == _('Block this channel'):
@@ -343,28 +343,59 @@ class Commands:
                    ,_('Not implemented yet!')
                    )
         
+    def play_video(self,event=None):
+        if self._video:
+            sh.Launch (target=self._video._path).app \
+                          (custom_app  = '/usr/bin/mplayer'
+                          ,custom_args = ['-ao','sdl','-fs'
+                                         ,'-framedrop'
+                                         ,'-nocorrect-pts'
+                                         ]
+                          )
+        else:
+            sh.log.append ('Commands.play_video'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def play(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
-                video = self._videos[video_gui]
-                video.video()
-                video.path()
-                video.download()
-                sh.Launch (target=video._path).app \
-                              (custom_app  = '/usr/bin/mplayer'
-                              ,custom_args = ['-ao','sdl','-fs'
-                                             ,'-framedrop'
-                                             ,'-nocorrect-pts'
-                                             ]
-                              )
+                self._gvideo = video_gui
+                if self._gvideo in self._videos:
+                    self._video = self._videos[self._gvideo]
+                    self.download_video()
+                    self.play_video()
+                else:
+                    sg.Message ('Commands.play'
+                               ,_('ERROR')
+                               ,_('Wrong input data!')
+                               )
         
+    def download_video(self,event=None):
+        if self._video and self._gvideo:
+            self._video.video()
+            self._video.path()
+            self._video.download()
+            self._gvideo.cbox.disable()
+        else:
+            sh.log.append ('Commands.download_video'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def download(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
-                video = self._videos[video_gui]
-                video.video()
-                video.path()
-                video.download()
+                self._gvideo = video_gui
+                if self._gvideo in self._videos:
+                    self._video = self._videos[self._gvideo]
+                    self.download_video()
+                else:
+                    sg.Message ('Commands.download'
+                               ,_('ERROR')
+                               ,_('Wrong input data!')
+                               )
         
     def update_channels(self,event=None):
         for i in range(len(self._subsc_auth)):

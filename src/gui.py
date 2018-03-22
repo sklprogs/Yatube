@@ -286,13 +286,13 @@ class Video:
         self.parent = parent
         self.values()
         self.gui()
-        self.objects()
     
     def objects(self):
-        self._objects = [self.cbox,self.label1,self.label2,self.label3
-                        ,self.label4,self.label5,self.label6,self.label7
-                        ,self.label8,self.frame,self.frame1,self.frame2
-                        ,self.frame3,self.frame4,self.frame5
+        # Do not include 'self.cbox'. Children must come first.
+        self._objects = [self.label1,self.label2,self.label3,self.label4
+                        ,self.label5,self.label6,self.label7,self.label8
+                        ,self.frame,self.frame1,self.frame2,self.frame3
+                        ,self.frame4,self.frame5
                         ]
     
     def values(self):
@@ -391,50 +391,17 @@ class Video:
                                 )
                                 
     def bindings(self):
-        #cur
-        '''
-        sg.bind (obj      = self.parent
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        '''
-        sg.bind (obj      = self.label1
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label2
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label3
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label4
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label5
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label6
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label7
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
-        sg.bind (obj      = self.label8
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.cbox.toggle
-                )
+        for obj in self._objects:
+            sg.bind (obj      = obj
+                    ,bindings = '<ButtonRelease-1>'
+                    ,action   = self.cbox.toggle
+                    )
     
     def gui(self):
         self.frames()
         self.checkboxes()
         self.labels()
+        self.objects()
         self.bindings()
         
     def reset (self,author,title,duration
@@ -742,13 +709,6 @@ class Objects:
         return self._menu
 
 
-def test_lmb(event=None):
-    sg.Message ('test_lmb'
-               ,_('INFO')
-               ,'Event (LMB) has been triggered.'
-               )
-
-
 objs = Objects()
 
 
@@ -766,17 +726,5 @@ if __name__ == '__main__':
                         ,title    = 'Title (%d)'  % (i + 1)
                         ,duration = 60 * (i + 1)
                         )
-    for video_gui in objs._channel._videos:
-        sg.bind (obj      = video_gui.frame
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = test_lmb
-                )
-    '''
-    for video_gui in objs._channel._videos:
-        sg.bind (obj      = video_gui.frame
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = lambda event,obj=video_gui.frame
-                )
-    '''
     parent.show()
     sg.objs.end()
