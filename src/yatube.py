@@ -723,22 +723,28 @@ class Video:
     
     def download(self):
         if self.Success:
-            if self._video:
-                sh.log.append ('Video.download'
-                              ,_('INFO')
-                              ,_('Download "%s"') % self._path
-                              )
-                sg.objs.waitbox().reset (func_title = 'Video.download'
-                                        ,message    = _('Download %s') \
-                                                      % self._path
-                                        )
-                sg.objs._waitbox.show()
-                #todo: select format & quality
-                stream = self._video.getbest (preftype    = 'mp4'
-                                             ,ftypestrict = True
-                                             )
-                stream.download(filepath=self._path)
-                sg.objs._waitbox.close()
+            if self._video and self._path:
+                if sh.rewrite(self._path):
+                    sh.log.append ('Video.download'
+                                  ,_('INFO')
+                                  ,_('Download "%s"') % self._path
+                                  )
+                    sg.objs.waitbox().reset (func_title = 'Video.download'
+                                            ,message    = _('Download %s') \
+                                                          % self._path
+                                            )
+                    sg.objs._waitbox.show()
+                    #todo: select format & quality
+                    stream = self._video.getbest (preftype    = 'mp4'
+                                                 ,ftypestrict = True
+                                                 )
+                    stream.download(filepath=self._path)
+                    sg.objs._waitbox.close()
+                else:
+                    sh.log.append ('Video.download'
+                                  ,_('INFO')
+                                  ,_('Operation has been canceled by the user.')
+                                  )
             else:
                 sh.log.append ('Video.download'
                               ,_('WARNING')
