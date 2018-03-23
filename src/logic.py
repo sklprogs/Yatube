@@ -20,9 +20,7 @@ class Time:
         self._year   = ''
         self._day    = ''
         self._month  = ''
-        self.itime = sh.Time (pattern       = '%d'
-                             ,MondayWarning = False
-                             )
+        self.itime = sh.Time(pattern='%d')
     
     def days(self):
         self._days = [str(day+1) for day in range(31)]

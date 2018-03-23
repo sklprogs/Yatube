@@ -18,8 +18,7 @@ version = '(beta)'
 # A default picture height
 def_height = 110
 
-context_items = (_('Select an action')
-                ,_('Show the full summary')
+context_items = (_('Show the full summary')
                 ,_('Download')
                 ,_('Play')
                 ,_('Stream')
@@ -90,11 +89,11 @@ class Menu:
         self.btn_all = sg.Button (parent = self.frame1
                                  ,text   = _('Select all new videos')
                                  )
-        self.cb_date = sg.CheckBox (parent = self.frame1
+        self.chb_dat = sg.CheckBox (parent = self.frame1
                                    ,Active = False
                                    ,side   = 'left'
                                    )
-        self.om_date = sg.OptionMenu (parent  = self.frame1
+        self.opt_dat = sg.OptionMenu (parent  = self.frame1
                                      ,items   = (_('Newer than')
                                                 ,_('Older than')
                                                 )
@@ -147,7 +146,7 @@ class Menu:
         self.btn_flt = sg.Button (parent = self.frame2
                                  ,text   = _('Filter')
                                  )
-        self.cb_slct = sg.CheckBox (parent = self.frame3
+        self.chb_sel = sg.CheckBox (parent = self.frame3
                                    ,Active = False
                                    ,side   = 'left'
                                    )

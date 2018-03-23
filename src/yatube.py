@@ -58,6 +58,23 @@ class Commands:
         else:
             self._channels = default_channels
     
+    def filter_by_date(self,event=None):
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui in self._videos:
+                video = self._videos[video_gui]
+                if video._date:
+                    pass
+                else:
+                    sh.log.append ('Commands.filter_by_date'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data!')
+                                  )
+            else:
+                sh.objs.mes ('Commands.filter_by_date'
+                            ,_('ERROR')
+                            ,_('Wrong input data!')
+                            )
+    
     def get_widget(self,event=None):
         if event:
             ''' Widgets must be in a string format to be compared
@@ -207,7 +224,7 @@ class Commands:
                           )
     
     def toggle_select(self):
-        if self._menu.cb_slct.get():
+        if self._menu.chb_sel.get():
             for video in gi.objs.channel()._videos:
                 video.cbox.enable()
         else:
@@ -317,7 +334,8 @@ class Commands:
                 ,action   = self.filter_view
                 )
         # Menu: checkboxes
-        self._menu.cb_slct.widget.config(command=self.toggle_select)
+        self._menu.chb_sel.widget.config(command=self.toggle_select)
+        self._menu.chb_dat.widget.config(command=self.filter_by_date)
         # Menu: OptionMenus
         self._menu.opt_day.reset (items   = self._days
                                  ,default = self._day
@@ -377,7 +395,7 @@ class Commands:
             self._video.video()
             self._video.path()
             self._video.download()
-            dbi.mark_downloaded(url=self._video.url)
+            dbi.mark_downloaded(url=self._video._url)
             self._gvideo.cbox.disable()
         else:
             sh.log.append ('Commands.download_video'

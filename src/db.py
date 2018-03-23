@@ -22,8 +22,8 @@ class DB:
     def mark_downloaded(self,url):
         if self.Success:
             try:
-                self.dbc.execute ('update VIDEOS set READY = True \
-                                   where URL =?',(url,)
+                self.dbc.execute ('update VIDEOS set READY=? where URL=?'
+                                 ,(True,url,)
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
