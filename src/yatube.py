@@ -600,7 +600,7 @@ class Video:
                                          )
                 except:
                     self.Success = False
-                    sh.log.append ('Videos.video'
+                    sh.log.append ('Video.video'
                                   ,_('WARNING')
                                   ,_('Error adding "%s"!') % self._url
                                   )

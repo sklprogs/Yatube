@@ -306,7 +306,7 @@ class Links:
         self._pos   = 0
         self._links = []
         self._text  = text
-        
+    
     def poses(self):
         text = self._text
         search = sh.Search (text   = self._text
@@ -337,6 +337,10 @@ class Links:
     def delete_suffixes(self):
         for i in range(len(self._links)):
             self._links[i] = re.sub ('&amp;index=\d+&amp;list=.*'
+                                    ,''
+                                    ,self._links[i]
+                                    )
+            self._links[i] = re.sub ('&amp;list=.*'
                                     ,''
                                     ,self._links[i]
                                     )
