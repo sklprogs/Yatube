@@ -449,10 +449,12 @@ class Commands:
         gi.objs.channel(parent=self._menu.framev)
         
     def bind_context(self,event=None):
-        sg.bind (obj      = gi.objs.menu()
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.context
-                )
+        for video_gui in gi.objs.channel()._videos:
+            for obj in video_gui._objects:
+                sg.bind (obj      = obj
+                        ,bindings = '<ButtonRelease-3>'
+                        ,action   = self.context
+                        )
         
     def channel_gui(self):
         for i in range(len(self._channel._links)):
