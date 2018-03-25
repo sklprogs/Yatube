@@ -22,10 +22,13 @@ context_items = (_('Show the full summary')
                 ,_('Download')
                 ,_('Play')
                 ,_('Stream')
+                ,_('Mark as downloaded')
                 ,_('Block this channel')
                 ,_('Subscribe to this channel')
                 ,_('Open video URL')
+                ,_('Copy video URL')
                 ,_('Open channel URL')
+                ,_('Copy channel URL')
                 )
 
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
@@ -290,14 +293,20 @@ class Video:
         self.values()
         self.gui()
     
+    def gray_out(self,event=None):
+        for label in self._labels:
+            label.widget.config(fg='gray40')
+    
     def objects(self):
         # Do not include 'self.cbox'. Children must come first.
-        self._objects = [self.label1,self.label2,self.label3,self.label4
+        self._labels  = [self.label1,self.label2,self.label3,self.label4
                         ,self.label5,self.label6,self.label7,self.label8
-                        ,self.frame,self.frame1,self.frame2,self.frame3
-                        ,self.frame4,self.frame5
                         ]
-    
+        self._objects = self._labels + [self.frame,self.frame1
+                                       ,self.frame2,self.frame3
+                                       ,self.frame4,self.frame5
+                                       ]
+
     def values(self):
         self._widgets  = []
         self._author   = _('Author')

@@ -478,6 +478,8 @@ class Commands:
                                 ,duration = duration
                                 ,image    = video._image
                                 )
+                if video.Ready:
+                    video_gui.gray_out()
                 self._videos[video_gui] = video
                 #if not video.Saved:
                 ''' #fix showing only videos No. 10-21 with 'update_scroll'
@@ -512,6 +514,7 @@ class Video:
         
     def values(self):
         self.Success = True
+        self.Ready   = False
         self._video  = self._image = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path = ''
@@ -562,7 +565,7 @@ class Video:
         
     def assign_offline(self,data):
         if data:
-            data_len = 12
+            data_len = 13
             if len(data) >= data_len:
                 self._author   = data[0]
                 self._title    = data[1]
@@ -576,6 +579,7 @@ class Video:
                 self._dislikes = data[9]
                 self._rating   = data[10]
                 self._bytes    = data[11]
+                self.Ready     = data[12]
                 img = sg.Image()
                 img._bytes = self._bytes
                 img.loader()
