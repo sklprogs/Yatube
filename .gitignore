@@ -1,4 +1,5 @@
 __pycache__/
 *.pyc
 *.db
+*.db-journal
 subscribe2.txt
