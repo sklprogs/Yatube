@@ -225,6 +225,10 @@ class Menu:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = lambda x:self.clear_filter(Force=True)
                 )
+        sg.bind (obj      = self
+                ,bindings = '<F3>'
+                ,action   = self.clear_search
+                )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
     def title(self,text=None):
