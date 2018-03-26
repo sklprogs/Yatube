@@ -547,13 +547,21 @@ class Channel:
         sg.objs.root().widget.update_idletasks()
         self._max_y = self.label.widget.winfo_reqheight()
         self._max_x = self.label.widget.winfo_reqwidth()
+        '''
+        # Too frequent
         sh.log.append ('Channel.update_scroll'
                       ,_('DEBUG')
                       ,_('Widget sizes: %dx%d') \
                        % (self._max_x,self._max_y)
                       )
-        self.scrollregion()
-        self.scroll2start()
+        '''
+        self.canvas.region (x = self._max_x
+                           ,y = self._max_y
+                           )
+        # Scroll canvas to the current video as the channel is loading
+        self.canvas.scroll (x = 0
+                           ,y = self._no * def_height
+                           )
         
     def values(self):
         self._no     = 0
@@ -621,8 +629,10 @@ class Channel:
         self.scrollbars()
         self.canvas.focus()
         self.bindings()
-        # This will allow to show the 1st video
-        self.scrollregion()
+        # This shows the 1st video
+        self.canvas.region (x = self._max_x
+                           ,y = self._max_y
+                           )
         
     def add(self,no=0):
         self._no = no
@@ -630,24 +640,6 @@ class Channel:
                                    ,no     = self._no
                                    )
                             )
-                            
-    def scrollregion(self):
-        if self._max_x and self._max_y:
-            self.canvas.widget.configure \
-                (scrollregion = (-self._max_x/2,-self._max_y/2
-                                , self._max_x/2, self._max_y/2
-                                )
-                )
-        else:
-            sh.log.append ('Channel.scrollregion'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-                          
-    def scroll2start(self,event=None):
-        self.canvas.widget.xview_moveto(0)
-        # Scroll canvas to the current video as the channel is loading
-        self.canvas.widget.yview_moveto(self._no*def_height)
         
     def show(self,event=None):
         self.obj.show()

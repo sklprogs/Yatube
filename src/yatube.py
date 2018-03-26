@@ -602,7 +602,7 @@ class Video:
             if not self._video:
                 try:
                     self._video = pf.new (url   = self._url
-                                         ,basic = True
+                                         ,basic = False
                                          ,gdata = False
                                          )
                 except:
@@ -622,6 +622,7 @@ class Video:
             if self._video:
                 image = sh.Get (url      = self._video.thumb
                                ,encoding = None
+                               ,Verbose  = False
                                ).run()
                 if image:
                     img = sg.Image()
