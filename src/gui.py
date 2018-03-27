@@ -664,8 +664,19 @@ class Objects:
     
     def __init__(self):
         self._def_image = self._channel = self._menu = self._parent \
-                        = self._context = self._summary = None
+                        = self._context = self._summary \
+                        = self._progress = None
         
+    def progress(self):
+        if not self._progress:
+            self._progress = sg.ProgressBar()
+        #cur
+        '''
+        if not self._progress.Active:
+            self._progress.show()
+        '''
+        return self._progress
+    
     def summary(self):
         if not self._summary:
             top = sg.Top(parent=sg.objs.root())

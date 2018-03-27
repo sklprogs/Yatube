@@ -409,6 +409,8 @@ class Commands:
             if video_gui.cbox.get():
                 self._gvideo = video_gui
                 if self._gvideo in self._videos:
+                    #cur
+                    gi.objs.progress().add()
                     self._video = self._videos[self._gvideo]
                     self.download_video()
                 else:
@@ -513,12 +515,30 @@ class Video:
         self.values()
         self._url = url
         
+    def progress (self,total=0,cur_size=0
+                 ,ratio=0,rate=0,eta=0
+                 ):
+        total    = total    / 1000000
+        cur_size = cur_size / 1000000
+        rate     = int(rate)
+        eta      = int(eta)
+        gi.objs.progress()._item.text (file     = self._pathsh
+                                      ,cur_size = cur_size
+                                      ,total    = total
+                                      ,rate     = rate
+                                      ,eta      = eta
+                                      )
+        percent = round((100*cur_size)/total)
+        gi.objs._progress._item.widget['value'] = percent
+        sg.objs.root().widget.update_idletasks()
+    
     def values(self):
         self.Success = True
         self.Ready   = False
         self._video  = self._image = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
-                     = self._desc = self._dur = self._path = ''
+                     = self._desc = self._dur = self._path \
+                     = self._pathsh = ''
         self._len    = self._views = self._likes = self._dislikes = 0
         self._rating = 0.0
         
@@ -742,6 +762,7 @@ class Video:
                                             ,author,title
                                             )
             self._path += '.mp4'
+            self._pathsh = sh.Text(text=self._path).shorten(max_len=22)
         else:
             sh.log.append ('Video.path'
                           ,_('WARNING')
@@ -756,17 +777,13 @@ class Video:
                                   ,_('INFO')
                                   ,_('Download "%s"') % self._path
                                   )
-                    sg.objs.waitbox().reset (func_title = 'Video.download'
-                                            ,message    = _('Download %s') \
-                                                          % self._path
-                                            )
-                    sg.objs._waitbox.show()
                     #todo: select format & quality
                     stream = self._video.getbest (preftype    = 'mp4'
                                                  ,ftypestrict = True
                                                  )
-                    stream.download(filepath=self._path)
-                    sg.objs._waitbox.close()
+                    stream.download (filepath = self._path
+                                    ,callback = self.progress
+                                    )
                 else:
                     sh.log.append ('Video.download'
                                   ,_('INFO')
@@ -792,6 +809,7 @@ if __name__ == '__main__':
     dbi = db.DB()
     commands = Commands()
     commands.bindings()
+    gi.objs.progress()
     gi.objs.menu().show()
     dbi.save()
     dbi.close()
