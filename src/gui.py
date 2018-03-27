@@ -524,6 +524,11 @@ class Channel:
                        % ((max_x,max_y) + (x, y))
                       )
     
+    def scroll(self):
+        # Scroll canvas to the current video as the channel is loading
+        self.canvas.widget.xview_moveto(0)
+        self.canvas.move_bottom()
+    
     def update_scroll(self):
         # Do this after adding all videos
         sg.objs.root().widget.update_idletasks()
@@ -542,9 +547,7 @@ class Channel:
                            ,x_border = 20
                            ,y_border = 20
                            )
-        # Scroll canvas to the current video as the channel is loading
-        self.canvas.widget.xview_moveto(0)
-        self.canvas.move_bottom()
+        self.scroll()
         
     def values(self):
         self._no     = 0

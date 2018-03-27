@@ -562,8 +562,7 @@ class Commands:
     def channel_gui(self):
         for i in range(len(self._channel._links)):
             gi.objs.channel().add(no=i)
-            # Show default picture & video information
-            sg.objs.root().widget.update_idletasks()
+            gi.objs._channel.update_scroll()
             video = Video(url=self._channel._links[i])
             video.get()
             if video.Success:
@@ -588,10 +587,7 @@ class Commands:
                 #if not video.Saved:
                 ''' #fix showing only videos No. 10-21 with 'update_scroll'
                     disabled.
-                    This does not work in 'Channel.__init__' for some
-                    reason, calling this externally.
                 '''
-                gi.objs._channel.update_scroll()
         dbi.save()
         self.bind_context()
         # Move back to video #0
