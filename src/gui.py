@@ -15,8 +15,6 @@ gettext.install('yatube','../resources/locale')
 
 product = 'Yatube'
 version = '(beta)'
-# A default picture height
-def_height = 110
 
 context_items = (_('Show the full summary')
                 ,_('Download')
@@ -545,13 +543,8 @@ class Channel:
                            ,y_border = 20
                            )
         # Scroll canvas to the current video as the channel is loading
-        if self._no == 1:
-            y = 0
-        else:
-            y = self._no * def_height
-        self.canvas.scroll (x = 0
-                           ,y = y
-                           )
+        self.canvas.widget.xview_moveto(0)
+        self.canvas.move_bottom()
         
     def values(self):
         self._no     = 0
@@ -715,11 +708,10 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    parent = objs.menu().parent
-    objs.channel(parent=parent)
-    #parent = sg.objs.new_top()
-    #video = Video(parent=parent)
-    for i in range(5):
+    objs.channel(parent=objs.menu().parent)
+    sg.objs.root().widget.update_idletasks()
+    import time
+    for i in range(20):
         objs._channel.add(no=i)
         video_gui = objs._channel._videos[-1]
         video_gui.reset (no       = i + 1
@@ -727,5 +719,7 @@ if __name__ == '__main__':
                         ,title    = 'Title (%d)'  % (i + 1)
                         ,duration = 60 * (i + 1)
                         )
-    parent.show()
-    sg.objs.end()
+        sg.objs.root().widget.update_idletasks()
+        time.sleep(1)
+    sg.objs.root().widget.wait_window()
+    #sg.objs.end()

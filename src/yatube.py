@@ -127,8 +127,9 @@ class Commands:
     def filter_by_date(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui in self._videos:
-                video = self._videos[video_gui]
-                if video._date:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                if self._video._date:
                     pass
                 else:
                     sh.log.append ('Commands.filter_by_date'
@@ -362,9 +363,10 @@ class Commands:
             result = result.lower()
             for video_gui in gi.objs.channel()._videos:
                 if video_gui in self._videos:
-                    video = self._videos[video_gui]
-                    if result in video._search:
-                        video_gui.red_out()
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    if result in self._video._search:
+                        self._gvideo.red_out()
                 else:
                     sh.log.append ('Commands.filter_view'
                                   ,_('WARNING')
@@ -437,10 +439,21 @@ class Commands:
                                  )
         
     def select_new(self,event=None):
-        sg.Message ('Commands.select_new'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        if self._menu.chb_dat.get():
+            #cur
+            pass
+        else:
+            for video_gui in gi.objs.channel()._videos:
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    if not self._video.Ready and not self._video.Block:
+                        self._gvideo.cbox.enable()
+                else:
+                    sh.log.append ('Commands.select_new'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data!')
+                                  )
         
     def play_video(self,event=None):
         if self._video:
@@ -460,9 +473,9 @@ class Commands:
     def play(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
-                self._gvideo = video_gui
-                if self._gvideo in self._videos:
-                    self._video = self._videos[self._gvideo]
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
                     self.download_video()
                     self.play_video()
                 else:
@@ -561,6 +574,7 @@ class Commands:
                 or video._author in self._block_auth:
                     author = title = _('BLOCKED')
                     video._image = None
+                    video.Block = True
                 video_gui = gi.objs._channel._videos[i]
                 video_gui.reset (no       = i + 1
                                 ,author   = author
@@ -581,7 +595,7 @@ class Commands:
         dbi.save()
         self.bind_context()
         # Move back to video #0
-        gi.objs._channel.canvas.widget.yview_moveto(0)
+        gi.objs._channel.canvas.move_top()
     
     #todo: elaborate
     def manage_sub(self,event=None):
