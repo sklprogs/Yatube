@@ -466,64 +466,40 @@ class Channel:
         '''
         sg.bind (obj      = objs.parent()
                 ,bindings = '<Down>'
-                ,action   = self.scroll_down
+                ,action   = self.canvas.move_down
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<Up>'
-                ,action   = self.scroll_up
+                ,action   = self.canvas.move_up
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<Left>'
-                ,action   = self.scroll_left
+                ,action   = self.canvas.move_left
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<Right>'
-                ,action   = self.scroll_right
+                ,action   = self.canvas.move_right
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<Next>'
-                ,action   = self.scroll_page_down
+                ,action   = self.canvas.move_page_down
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<Prior>'
-                ,action   = self.scroll_page_up
+                ,action   = self.canvas.move_page_up
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<End>'
-                ,action   = self.scroll_end
+                ,action   = self.canvas.move_bottom
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = '<Home>'
-                ,action   = self.scroll_start
+                ,action   = self.canvas.move_top
                 )
         sg.bind (obj      = objs._parent
                 ,bindings = ['<MouseWheel>','<Button 4>','<Button 5>']
                 ,action   = self.mouse_wheel
                 )
-                
-    def scroll_left(self,event=None):
-        self.canvas.widget.xview_scroll(-1,'units')
-        
-    def scroll_right(self,event=None):
-        self.canvas.widget.xview_scroll(1,'units')
-        
-    def scroll_up(self,event=None):
-        self.canvas.widget.yview_scroll(-1,'units')
-        
-    def scroll_down(self,event=None):
-        self.canvas.widget.yview_scroll(1,'units')
-        
-    def scroll_page_down(self,event=None):
-        self.canvas.widget.yview_scroll(1,'pages')
-        
-    def scroll_page_up(self,event=None):
-        self.canvas.widget.yview_scroll(-1,'pages')
-        
-    def scroll_start(self,event=None):
-        self.canvas.widget.yview_moveto(0)
-        
-    def scroll_end(self,event=None):
-        self.canvas.widget.yview_moveto(len(self._videos)*def_height)
     
     # orphan
     def center(self,max_x=0,max_y=0):
@@ -559,12 +535,18 @@ class Channel:
                        % (self._max_x,self._max_y)
                       )
         '''
-        self.canvas.region (x = self._max_x
-                           ,y = self._max_y
+        self.canvas.region (x        = self._max_x
+                           ,y        = self._max_y
+                           ,x_border = 20
+                           ,y_border = 20
                            )
         # Scroll canvas to the current video as the channel is loading
+        if self._no == 1:
+            y = 0
+        else:
+            y = self._no * def_height
         self.canvas.scroll (x = 0
-                           ,y = self._no * def_height
+                           ,y = y
                            )
         
     def values(self):
@@ -657,9 +639,9 @@ class Channel:
             другое
         '''
         if event.num == 5 or event.delta < 0:
-            self.scroll_down()
+            self.canvas.move_down()
         if event.num == 4 or event.delta > 0:
-            self.scroll_up()
+            self.canvas.move_up()
         return 'break'
 
 
