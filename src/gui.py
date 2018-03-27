@@ -670,11 +670,7 @@ class Objects:
     def progress(self):
         if not self._progress:
             self._progress = sg.ProgressBar()
-        #cur
-        '''
-        if not self._progress.Active:
-            self._progress.show()
-        '''
+            self._progress.obj.icon(icon_path)
         return self._progress
     
     def summary(self):

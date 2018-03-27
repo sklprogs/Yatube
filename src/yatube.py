@@ -394,6 +394,11 @@ class Commands:
         if self._video and self._gvideo:
             self._video.video()
             self._video.path()
+            gi.objs.progress().add()
+            gi.objs._progress.show()
+            #todo: raise the widget
+            gi.objs._progress.obj.widget.focus_set()
+            sg.Geometry(parent=gi.objs._progress.obj).activate()
             self._video.download()
             dbi.mark_downloaded(url=self._video._url)
             self._gvideo.cbox.disable()
@@ -409,8 +414,6 @@ class Commands:
             if video_gui.cbox.get():
                 self._gvideo = video_gui
                 if self._gvideo in self._videos:
-                    #cur
-                    gi.objs.progress().add()
                     self._video = self._videos[self._gvideo]
                     self.download_video()
                 else:
@@ -762,7 +765,9 @@ class Video:
                                             ,author,title
                                             )
             self._path += '.mp4'
-            self._pathsh = sh.Text(text=self._path).shorten(max_len=22)
+            self._pathsh = sh.Text(text=self._path).shorten (max_len = 22
+                                                            ,FromEnd = 1
+                                                            )
         else:
             sh.log.append ('Video.path'
                           ,_('WARNING')
@@ -810,7 +815,7 @@ if __name__ == '__main__':
     commands = Commands()
     commands.bindings()
     gi.objs.progress()
-    gi.objs.menu().show()
+    gi.objs.menu().widget.wait_window()
     dbi.save()
     dbi.close()
     sg.objs.end()
