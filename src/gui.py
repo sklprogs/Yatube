@@ -21,14 +21,14 @@ def_height = 110
 context_items = (_('Show the full summary')
                 ,_('Download')
                 ,_('Play')
-                ,_('Stream')
-                ,_('Mark as downloaded')
-                ,_('Block this channel')
-                ,_('Subscribe to this channel')
+                #,_('Stream')
+                ,_('Toggle the download status')
+                #,_('Block this channel')
+                #,_('Subscribe to this channel')
                 ,_('Open video URL')
                 ,_('Copy video URL')
-                ,_('Open channel URL')
-                ,_('Copy channel URL')
+                #,_('Open channel URL')
+                #,_('Copy channel URL')
                 )
 
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
@@ -296,6 +296,10 @@ class Video:
     def gray_out(self,event=None):
         for label in self._labels:
             label.widget.config(fg='gray40')
+            
+    def black_out(self,event=None):
+        for label in self._labels:
+            label.widget.config(fg='black')
     
     def objects(self):
         # Do not include 'self.cbox'. Children must come first.
@@ -692,8 +696,8 @@ class Objects:
                                        ,lst             = context_items
                                        ,title           = _('Select an action:')
                                        ,icon            = icon_path
-                                       #,SingleClick     = False
-                                       #,SelectionCloses = False
+                                       ,SingleClick     = False
+                                       ,SelectionCloses = False
                                        )
             self._context.close()
         return self._context

@@ -19,11 +19,11 @@ class DB:
         self.dbc     = self.db.cursor()
         self.create_videos()
     
-    def mark_downloaded(self,url):
+    def mark_downloaded(self,url,Ready=True):
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set READY=? where URL=?'
-                                 ,(True,url,)
+                                 ,(Ready,url,)
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False

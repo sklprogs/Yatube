@@ -58,6 +58,64 @@ class Commands:
         else:
             self._channels = default_channels
     
+    def open_channel_url(self,event=None):
+        sg.Message ('Commands.open_channel_url'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+                   
+    def copy_channel_url(self,event=None):
+        sg.Message ('Commands.copy_channel_url'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def open_video_url(self,event=None):
+        sg.Message ('Commands.open_video_url'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+                   
+    def copy_video_url(self,event=None):
+        sg.Message ('Commands.copy_video_url'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def subscribe(self,event=None):
+        sg.Message ('Commands.subscribe'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def block(self,event=None):
+        sg.Message ('Commands.block'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
+    def stream(self,event=None):
+        sg.Message ('Commands.stream'
+                   ,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+                   
+    def toggle_downloaded(self,event=None):
+        if self._video and self._gvideo:
+            self._video.Ready = not self._video.Ready
+            dbi.mark_downloaded (url   = self._video._url
+                                ,Ready = self._video.Ready
+                                )
+            if self._video.Ready:
+                self._gvideo.gray_out()
+            else:
+                self._gvideo.black_out()
+        else:
+            sh.log.append ('Commands.toggle_downloaded'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def filter_by_date(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui in self._videos:
@@ -122,15 +180,21 @@ class Commands:
                 elif choice == _('Play'):
                     self.play_video()
                 elif choice == _('Stream'):
-                    print(_('Stream'))
+                    self.stream()
+                elif choice == _('Toggle the download status'):
+                    self.toggle_downloaded()
                 elif choice == _('Block this channel'):
-                    print(_('Block this channel'))
+                    self.block()
                 elif choice == _('Subscribe to this channel'):
-                    print(_('Subscribe to this channel'))
+                    self.subscribe()
                 elif choice == _('Open video URL'):
-                    print(_('Open video URL'))
+                    self.open_video_url()
+                elif choice == _('Copy video URL'):
+                    self.copy_video_url()
                 elif choice == _('Open channel URL'):
-                    print(_('Open channel URL'))
+                    self.open_channel_url()
+                elif choice == _('Copy channel URL'):
+                    self.copy_channel_url()
                 else:
                     sh.objs.mes ('Commands.context'
                                 ,_('ERROR')
@@ -396,7 +460,11 @@ class Commands:
             self._video.path()
             gi.objs.progress().add()
             gi.objs._progress.show()
-            gi.objs._progress.obj.widget.focus_force()
+            ''' Do not focus this widget since the user may do some work
+                in the background, and we do not want to interrupt it.
+                Just activate the window without focusing so the user
+                would see that the program is downloading something.
+            '''
             sg.Geometry(parent=gi.objs._progress.obj).activate()
             self._video.download()
             dbi.mark_downloaded(url=self._video._url)
