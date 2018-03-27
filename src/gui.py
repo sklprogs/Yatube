@@ -300,6 +300,10 @@ class Video:
     def black_out(self,event=None):
         for label in self._labels:
             label.widget.config(fg='black')
+            
+    def red_out(self,event=None):
+        for label in self._labels:
+            label.widget.config(fg='red')
     
     def objects(self):
         # Do not include 'self.cbox'. Children must come first.

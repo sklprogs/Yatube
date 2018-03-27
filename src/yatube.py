@@ -350,21 +350,30 @@ class Commands:
                           )
                           
     def filter_view(self,event=None):
+        # Remove previous filter; drop selection if no filter is given
+        for video_gui in gi.objs.channel()._videos:
+            video_gui.black_out()
         result = self._menu.ent_flt.get()
         if result and result != _('Filter this view'):
             sh.log.append ('Commands.filter_view'
                           ,_('INFO')
                           ,_('Filter by "%s"') % result
                           )
-            sg.Message ('Commands.filter_view'
-                       ,_('INFO')
-                       ,_('Not implemented yet!')
-                       )
-            #todo: implement
+            result = result.lower()
+            for video_gui in gi.objs.channel()._videos:
+                if video_gui in self._videos:
+                    video = self._videos[video_gui]
+                    if result in video._search:
+                        video_gui.red_out()
+                else:
+                    sh.log.append ('Commands.filter_view'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data!')
+                                  )
         else:
             sh.log.append ('Commands.filter_view'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
+                          ,_('INFO')
+                          ,_('Nothing to do!')
                           )
     
     def bindings(self):
