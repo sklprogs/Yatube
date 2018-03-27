@@ -242,9 +242,9 @@ class Commands:
                          )
         data = idb.dbcw.fetchone()
         if data:
-            print('Author: "%s"' % str(data[0]))
-            print('Title: "%s"' % str(data[1]))
-            print('Search: "%s"' % str(data[2]))
+            print('Author: "%s"'    % str(data[0]))
+            print('Title: "%s"'     % str(data[1]))
+            print('Search: "%s"'    % str(data[2]))
             print('Timestamp: "%s"' % str(data[3]))
         else:
             sh.log.append ('Commands.read_random'

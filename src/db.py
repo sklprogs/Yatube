@@ -40,7 +40,7 @@ class DB:
     def create_videos(self):
         if self.Success:
             try:
-                # 16 columns by now
+                # 18 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
                      URL       text    \
@@ -59,6 +59,8 @@ class DB:
                     ,BLOCK     boolean \
                     ,IGNORE    boolean \
                     ,READY     boolean \
+                    ,SEARCH    text    \
+                    ,TIMESTAMP float   \
                                                        )'
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
@@ -77,7 +79,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
@@ -112,7 +114,8 @@ class DB:
         if self.Success:
             self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
                                     ,DURATION,LENGTH,VIEWS,LIKES \
-                                    ,DISLIKES,RATING,IMAGE,READY \
+                                    ,DISLIKES,RATING,IMAGE,READY,SEARCH\
+                                    ,TIMESTAMP \
                               from   VIDEOS \
                               where  URL = ?',(url,))
             return self.dbc.fetchone()

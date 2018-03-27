@@ -612,27 +612,33 @@ class Video:
     
     def values(self):
         self.Success = True
-        self.Ready   = False
+        self.Block   = self.Ignore = self.Ready = False
         self._video  = self._image = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path \
-                     = self._pathsh = ''
+                     = self._pathsh = self._search = self._timestamp \
+                     = ''
         self._len    = self._views = self._likes = self._dislikes = 0
         self._rating = 0.0
         
     def assign_online(self):
         if self._video:
-            self._author   = self._video.author
-            self._title    = self._video.title
-            self._date     = self._video.published
-            self._cat      = self._video.category
-            self._desc     = self._video.description
-            self._dur      = self._video.duration
-            self._len      = self._video.length
-            self._views    = self._video.viewcount
-            self._likes    = self._video.likes
-            self._dislikes = self._video.dislikes
-            self._rating   = self._video.rating
+            self._author    = self._video.author
+            self._title     = self._video.title
+            self._date      = self._video.published
+            self._cat       = self._video.category
+            self._desc      = self._video.description
+            self._dur       = self._video.duration
+            self._len       = self._video.length
+            self._views     = self._video.viewcount
+            self._likes     = self._video.likes
+            self._dislikes  = self._video.dislikes
+            self._rating    = self._video.rating
+            self._search    = self._author.lower() + ' ' \
+                              + self._title.lower()
+            itime           = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
+            itime._date     = self._date
+            self._timestamp = itime.timestamp()
         else:
             sh.log.append ('Video.assign_online'
                           ,_('WARNING')
@@ -648,7 +654,8 @@ class Video:
                 data = (self._url,self._author,self._title,self._date
                        ,self._cat,self._desc,self._dur,self._len
                        ,self._views,self._likes,self._dislikes
-                       ,self._rating,self._bytes,False,False,False
+                       ,self._rating,self._bytes,self.Block,self.Ignore
+                       ,self.Ready,self._search,self._timestamp
                        )
                 dbi.add_video(data)
             else:
@@ -664,21 +671,23 @@ class Video:
         
     def assign_offline(self,data):
         if data:
-            data_len = 13
+            data_len = 15
             if len(data) >= data_len:
-                self._author   = data[0]
-                self._title    = data[1]
-                self._date     = data[2]
-                self._cat      = data[3]
-                self._desc     = data[4]
-                self._dur      = data[5]
-                self._len      = data[6]
-                self._views    = data[7]
-                self._likes    = data[8]
-                self._dislikes = data[9]
-                self._rating   = data[10]
-                self._bytes    = data[11]
-                self.Ready     = data[12]
+                self._author    = data[0]
+                self._title     = data[1]
+                self._date      = data[2]
+                self._cat       = data[3]
+                self._desc      = data[4]
+                self._dur       = data[5]
+                self._len       = data[6]
+                self._views     = data[7]
+                self._likes     = data[8]
+                self._dislikes  = data[9]
+                self._rating    = data[10]
+                self._bytes     = data[11]
+                self.Ready      = data[12]
+                self._search    = data[13]
+                self._timestamp = data[14]
                 img = sg.Image()
                 img._bytes = self._bytes
                 img.loader()
@@ -839,11 +848,10 @@ class Video:
             self._path = sh.objs.pdir().add ('..','user','Youtube'
                                             ,author,title
                                             )
-            self._path += '.mp4'
-            self._pathsh = self._path.replace('.mp4','',1)
             self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
                                                             ,FromEnd = 1
                                                             )
+            self._path += '.mp4'
         else:
             sh.log.append ('Video.path'
                           ,_('WARNING')
