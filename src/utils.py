@@ -235,12 +235,12 @@ class Commands:
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )
-        idb.connectw()
-        idb.dbcw.execute ('select AUTHOR,TITLE,SEARCH,TIMESTAMP \
-                           from VIDEOS where AUTHOR=?\
-                          ',('kamikadzedead',)
+        idb.connect()
+        idb.dbc.execute ('select AUTHOR,TITLE,SEARCH,TIMESTAMP \
+                          from VIDEOS where SEARCH like ?\
+                         ',('%стихийный митинг%',)
                          )
-        data = idb.dbcw.fetchone()
+        data = idb.dbc.fetchone()
         if data:
             print('Author: "%s"'    % str(data[0]))
             print('Title: "%s"'     % str(data[1]))
@@ -251,7 +251,7 @@ class Commands:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-        idb.closew()
+        idb.close()
 
 
 if __name__ == '__main__':
