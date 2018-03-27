@@ -396,8 +396,7 @@ class Commands:
             self._video.path()
             gi.objs.progress().add()
             gi.objs._progress.show()
-            #todo: raise the widget
-            gi.objs._progress.obj.widget.focus_set()
+            gi.objs._progress.obj.widget.focus_force()
             sg.Geometry(parent=gi.objs._progress.obj).activate()
             self._video.download()
             dbi.mark_downloaded(url=self._video._url)
