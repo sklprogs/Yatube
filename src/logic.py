@@ -9,6 +9,8 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
+video_root_url = 'https://www.youtube.com/watch?v='
+
 
 
 class Time:
@@ -394,6 +396,21 @@ class Lists:
                             )
                    )
                                                  )
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self._online = None
+        
+    def online(self):
+        if not self._online:
+            self._online = sh.Online(MTSpecific=False)
+        return self._online
+
+
+objs = Objects()
 
 
 if __name__ == '__main__':

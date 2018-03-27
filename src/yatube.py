@@ -71,16 +71,24 @@ class Commands:
                    )
     
     def open_video_url(self,event=None):
-        sg.Message ('Commands.open_video_url'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        if self._video:
+            lg.objs.online()._url = lg.video_root_url + self._video._url
+            lg.objs._online.browse()
+        else:
+            sh.log.append ('Commands.open_video_url'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
                    
     def copy_video_url(self,event=None):
-        sg.Message ('Commands.copy_video_url'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        if self._video:
+            url = lg.video_root_url + self._video._url
+            sg.Clipboard().copy(text=url)
+        else:
+            sh.log.append ('Commands.copy_video_url'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def subscribe(self,event=None):
         sg.Message ('Commands.subscribe'
