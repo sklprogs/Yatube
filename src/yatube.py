@@ -840,7 +840,8 @@ class Video:
                                             ,author,title
                                             )
             self._path += '.mp4'
-            self._pathsh = sh.Text(text=self._path).shorten (max_len = 22
+            self._pathsh = self._path.replace('.mp4','',1)
+            self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
                                                             ,FromEnd = 1
                                                             )
         else:
