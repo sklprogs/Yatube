@@ -167,19 +167,20 @@ class Commands:
         cond1 = self._video._timestamp >= self.timestamp()
         cond2 = self._menu.opt_dat.choice == _('Newer than')
         if (cond1 and cond2) or (not cond1 and not cond2):
-            self._gvideo.red_out()
+            return True
     
     ''' 'filter_by_date' uses the loop to filter videos by date upon
         event (changing filter date or filter settings).
         'video_date_filter' is used to mark a suitable video immediately
         when loading a channel.
-        '_date_filter' is used by both methods and should not be called
-        externally.
+        '_date_filter' is used by both methods (+'select_new') and
+        should not be called externally in other cases.
     '''
     def video_date_filter(self,event=None):
         if self._video and self._gvideo and self._video._timestamp:
             if self._menu.chb_dat.get():
-                self._date_filter()
+                if self._date_filter():
+                    self._gvideo.red_out()
         else:
             sh.log.append ('Commands.video_date_filter'
                           ,_('WARNING')
@@ -197,7 +198,8 @@ class Commands:
                     if video_gui in self._videos:
                         self._gvideo = video_gui
                         self._video  = self._videos[self._gvideo]
-                        self._date_filter()
+                        if self._date_filter():
+                            self._gvideo.red_out()
                     else:
                         sh.objs.mes ('Commands.filter_by_date'
                                     ,_('ERROR')
@@ -512,21 +514,25 @@ class Commands:
                                  )
         
     def select_new(self,event=None):
-        if self._menu.chb_dat.get():
-            #cur
-            pass
-        else:
-            for video_gui in gi.objs.channel()._videos:
-                if video_gui in self._videos:
-                    self._gvideo = video_gui
-                    self._video  = self._videos[self._gvideo]
-                    if not self._video.Ready and not self._video.Block:
-                        self._gvideo.cbox.enable()
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui in self._videos:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                # Drop all previous selections
+                self._gvideo.cbox.disable()
+                if self._menu.chb_dat.get():
+                    cond = not self._video.Ready and \
+                           not self._video.Block and self._date_filter()
                 else:
-                    sh.log.append ('Commands.select_new'
-                                  ,_('WARNING')
-                                  ,_('Wrong input data!')
-                                  )
+                    cond = not self._video.Ready and \
+                           not self._video.Block
+                if cond:
+                    self._gvideo.cbox.enable()
+            else:
+                sh.log.append ('Commands.select_new'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
         
     def play_video(self,event=None):
         if self._video:
