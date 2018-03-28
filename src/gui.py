@@ -157,6 +157,15 @@ class Menu:
         self.btn_ply = sg.Button (parent = self.frame3
                                  ,text   = _('Play')
                                  )
+        self.chb_slw = sg.CheckBox (parent = self.frame3
+                                   ,Active = True
+                                   ,side   = 'left'
+                                   )
+        self.lab_slw = sg.Label (parent = self.frame3
+                                ,text   = _('Slow PC')
+                                ,side   = 'left'
+                                ,Close  = False
+                                )
         self.opt_trd = sg.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
                                      ,Combo  = True
@@ -229,6 +238,10 @@ class Menu:
         sg.bind (obj      = self
                 ,bindings = '<F3>'
                 ,action   = self.clear_search
+                )
+        sg.bind (obj      = self.lab_slw
+                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-3>']
+                ,action   = self.chb_slw.toggle
                 )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
@@ -711,7 +724,11 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    objs.channel(parent=objs.menu().parent)
+    sg.Geometry(parent=objs.parent()).set('985x600')
+    objs.menu().widget.wait_window()
+    sg.objs.end()
+    '''
+    objs.channel(parent=objs.parent())
     sg.objs.root().widget.update_idletasks()
     import time
     for i in range(20):
@@ -725,4 +742,4 @@ if __name__ == '__main__':
         sg.objs.root().widget.update_idletasks()
         time.sleep(1)
     sg.objs.root().widget.wait_window()
-    #sg.objs.end()
+    '''

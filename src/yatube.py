@@ -534,15 +534,29 @@ class Commands:
                               ,_('Wrong input data!')
                               )
         
+    def _play_slow(self,app='/usr/bin/mplayer'):
+        sh.Launch (target = self._video._path
+                  ).app (custom_app  = app
+                        ,custom_args = ['-ao','sdl','-fs'
+                                       ,'-framedrop'
+                                       ,'-nocorrect-pts'
+                                       ]
+                        )
+                        
+    def _play_default(self):
+        sh.Launch(target=self._video._path).default()
+
     def play_video(self,event=None):
         if self._video:
-            sh.Launch (target=self._video._path).app \
-                          (custom_app  = '/usr/bin/mplayer'
-                          ,custom_args = ['-ao','sdl','-fs'
-                                         ,'-framedrop'
-                                         ,'-nocorrect-pts'
-                                         ]
-                          )
+            if self._menu.chb_slw.get():
+                if os.path.exists('/usr/bin/mplayer'):
+                    self._play_slow()
+                elif os.path.exists('/usr/bin/mpv'):
+                    self._play_slow(app='/usr/bin/mpv')
+                else:
+                    self._play_default()
+            else:
+                self._play_default()
         else:
             sh.log.append ('Commands.play_video'
                           ,_('WARNING')
