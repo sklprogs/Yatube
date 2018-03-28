@@ -576,23 +576,40 @@ class Commands:
                                ,_('ERROR')
                                ,_('Wrong input data!')
                                )
+        gi.objs._progress.close()
         
     def download_video(self,event=None):
         if self._video and self._gvideo:
             self._video.video()
             self._video.path()
-            gi.objs.progress().add()
-            gi.objs._progress.show()
-            ''' Do not focus this widget since the user may do some work
-                in the background, and we do not want to interrupt it.
-                Just activate the window without focusing so the user
-                would see that the program is downloading something.
-            '''
-            sg.Geometry(parent=gi.objs._progress.obj).activate()
-            self._video.download()
-            dbi.mark_downloaded(url=self._video._url)
-            self._gvideo.cbox.disable()
-            self._gvideo.gray_out()
+            if sh.rewrite(self._video._path):
+                gi.objs.progress().add()
+                gi.objs._progress.show()
+                ''' Do not focus this widget since the user may do some
+                    work in the background, and we do not want to
+                    interrupt it.
+                    Just activate the window without focusing so
+                    the user would see that the program is downloading
+                    something.
+                '''
+                sg.Geometry(parent=gi.objs._progress.obj).activate()
+                if self._video.download():
+                    self._gvideo.cbox.disable()
+                    dbi.mark_downloaded(url=self._video._url)
+                    self._gvideo.gray_out()
+            else:
+                self._gvideo.cbox.disable()
+                ''' Do this because files could be downloaded with
+                    a previous version which did not update the READY
+                    field. However, do not put this in the end because
+                    we do not want to update failed downnloads.
+                '''
+                dbi.mark_downloaded(url=self._video._url)
+                self._gvideo.gray_out()
+                sh.log.append ('Commands.download_video'
+                              ,_('INFO')
+                              ,_('Operation has been canceled by the user.')
+                              )
         else:
             sh.log.append ('Commands.download_video'
                           ,_('WARNING')
@@ -611,6 +628,7 @@ class Commands:
                                ,_('ERROR')
                                ,_('Wrong input data!')
                                )
+        gi.objs._progress.close()
         
     def update_channels(self,event=None):
         for i in range(len(self._subsc_auth)):
@@ -974,23 +992,26 @@ class Video:
     def download(self):
         if self.Success:
             if self._video and self._path:
-                if sh.rewrite(self._path):
-                    sh.log.append ('Video.download'
-                                  ,_('INFO')
-                                  ,_('Download "%s"') % self._path
-                                  )
-                    #todo: select format & quality
+                sh.log.append ('Video.download'
+                              ,_('INFO')
+                              ,_('Download "%s"') % self._path
+                              )
+                #todo: select format & quality
+                try:
                     stream = self._video.getbest (preftype    = 'mp4'
                                                  ,ftypestrict = True
                                                  )
                     stream.download (filepath = self._path
                                     ,callback = self.progress
                                     )
-                else:
-                    sh.log.append ('Video.download'
-                                  ,_('INFO')
-                                  ,_('Operation has been canceled by the user.')
-                                  )
+                    # Tell other functions the operation was a success
+                    return True
+                except:
+                    sh.objs.mes ('Video.download'
+                                ,_('WARNING')
+                                ,_('Failed to download "%s"!') \
+                                % self._path
+                                )
             else:
                 sh.log.append ('Video.download'
                               ,_('WARNING')
