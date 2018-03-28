@@ -187,20 +187,27 @@ class Commands:
                           )
     
     def filter_by_date(self,event=None):
-        for video_gui in gi.objs.channel()._videos:
-            video_gui.black_out()
-        if self._menu.chb_dat.get():
-            timestamp = self.timestamp()
-            for video_gui in gi.objs.channel()._videos:
-                if video_gui in self._videos:
-                    self._gvideo = video_gui
-                    self._video  = self._videos[self._gvideo]
-                    self._date_filter()
-                else:
-                    sh.objs.mes ('Commands.filter_by_date'
-                                ,_('ERROR')
-                                ,_('Wrong input data!')
-                                )
+        # Do not allow to update channel GUI when no channels are loaded
+        if gi.objs._channel:
+            for video_gui in gi.objs._channel._videos:
+                video_gui.black_out()
+            if self._menu.chb_dat.get():
+                timestamp = self.timestamp()
+                for video_gui in gi.objs.channel()._videos:
+                    if video_gui in self._videos:
+                        self._gvideo = video_gui
+                        self._video  = self._videos[self._gvideo]
+                        self._date_filter()
+                    else:
+                        sh.objs.mes ('Commands.filter_by_date'
+                                    ,_('ERROR')
+                                    ,_('Wrong input data!')
+                                    )
+        else:
+            sh.log.append ('Commands.filter_by_date'
+                          ,_('INFO')
+                          ,_('Nothing to do.')
+                          )
     
     def get_widget(self,event=None):
         if event:
@@ -247,6 +254,7 @@ class Commands:
                 elif choice == _('Download'):
                     self.download_video()
                 elif choice == _('Play'):
+                    self.download_video()
                     self.play_video()
                 elif choice == _('Stream'):
                     self.stream()
