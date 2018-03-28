@@ -352,11 +352,14 @@ class Commands:
                           ,_('Download "%s"') % result
                           )
             #todo: check URL
-            video = Video(url=result)
-            video.video()
-            video.assign_online()
-            video.path()
-            video.download()
+            self._video = Video(url=result)
+            self._video.video()
+            self._video.assign_online()
+            ''' Set to 'None', otherwise, wrong GUI object will be
+                manipulated!
+            '''
+            self._gvideo = None
+            self.download_video()
             #todo: if downloaded successfully:
             self._menu.clear_url()
         else:
@@ -578,7 +581,11 @@ class Commands:
         gi.objs._progress.close()
         
     def download_video(self,event=None):
-        if self._video and self._gvideo:
+        ''' In case of 'get_url', there is no GUI to be handled
+            ('self._gvideo' must be set to 'None'), so we do not force
+            'self._gvideo' check here.
+        '''
+        if self._video:
             self._video.video()
             self._video.path()
             if sh.rewrite(self._video._path):
@@ -593,18 +600,20 @@ class Commands:
                 '''
                 sg.Geometry(parent=gi.objs._progress.obj).activate()
                 if self._video.download():
-                    self._gvideo.cbox.disable()
                     dbi.mark_downloaded(url=self._video._url)
-                    self._gvideo.gray_out()
+                    if self._gvideo:
+                        self._gvideo.cbox.disable()
+                        self._gvideo.gray_out()
             else:
-                self._gvideo.cbox.disable()
                 ''' Do this because files could be downloaded with
                     a previous version which did not update the READY
                     field. However, do not put this in the end because
-                    we do not want to update failed downnloads.
+                    we do not want to update failed downloads.
                 '''
                 dbi.mark_downloaded(url=self._video._url)
-                self._gvideo.gray_out()
+                if self._gvideo:
+                    self._gvideo.cbox.disable()
+                    self._gvideo.gray_out()
                 sh.log.append ('Commands.download_video'
                               ,_('INFO')
                               ,_('Operation has been canceled by the user.')
