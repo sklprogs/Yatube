@@ -25,26 +25,27 @@ class Commands:
     
     def __init__(self):
         # Get a logic object by a GUI object
-        self._videos  = {}
-        self._video   = None
-        self._gvideo  = None
-        self._channel = None
-        self._menu    = gi.objs.menu()
-        itime         = lg.Time()
+        self._videos     = {}
+        self._video      = None
+        self._gvideo     = None
+        self._channel    = None
+        self._timestamp  = None
+        self._menu       = gi.objs.menu()
+        itime            = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
         itime.months()
         itime.days()
-        self._years  = itime._years
-        self._year   = itime._year
-        self._months = itime._months
-        self._month  = itime._month
-        self._days   = itime._days
-        self._day    = itime._day
-        const        = lg.Constants()
-        self._countries = const.countries()
-        self._trending  = const.trending()
-        lists           = lg.Lists()
+        self._years      = itime._years
+        self._year       = itime._year
+        self._months     = itime._months
+        self._month      = itime._month
+        self._days       = itime._days
+        self._day        = itime._day
+        const            = lg.Constants()
+        self._countries  = const.countries()
+        self._trending   = const.trending()
+        lists            = lg.Lists()
         lists.load()
         self._fblock     = lists._fblock
         self._fsubsc     = lists._fsubsc
@@ -124,23 +125,82 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
     
+    def reset_date_filter(self,event=None):
+        self._timestamp = None
+        self.filter_by_date()
+    
+    def timestamp(self,event=None):
+        if not self._timestamp:
+            day   = self._menu.opt_day.choice
+            month = self._menu.opt_mth.choice
+            year  = self._menu.opt_yrs.choice
+            if month == _('Jan'):
+                month = '01'
+            elif month == _('Feb'):
+                month = '02'
+            elif month == _('Mar'):
+                month = '03'
+            elif month == _('Apr'):
+                month = '04'
+            elif month == _('May'):
+                month = '05'
+            elif month == _('Jun'):
+                month = '06'
+            elif month == _('Jul'):
+                month = '07'
+            elif month == _('Aug'):
+                month = '08'
+            elif month == _('Sep'):
+                month = '09'
+            elif month == _('Oct'):
+                month = '10'
+            elif month == _('Nov'):
+                month = '11'
+            elif month == _('Dec'):
+                month = '12'
+            itime = sh.Time(pattern='%Y-%m-%d')
+            itime._date = year + '-' + month + '-' + day
+            self._timestamp = itime.timestamp()
+        return self._timestamp
+    
+    def _date_filter(self):
+        cond1 = self._video._timestamp >= self.timestamp()
+        cond2 = self._menu.opt_dat.choice == _('Newer than')
+        if (cond1 and cond2) or (not cond1 and not cond2):
+            self._gvideo.red_out()
+    
+    ''' 'filter_by_date' uses the loop to filter videos by date upon
+        event (changing filter date or filter settings).
+        'video_date_filter' is used to mark a suitable video immediately
+        when loading a channel.
+        '_date_filter' is used by both methods and should not be called
+        externally.
+    '''
+    def video_date_filter(self,event=None):
+        if self._video and self._gvideo and self._video._timestamp:
+            if self._menu.chb_dat.get():
+                self._date_filter()
+        else:
+            sh.log.append ('Commands.video_date_filter'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def filter_by_date(self,event=None):
         for video_gui in gi.objs.channel()._videos:
-            if video_gui in self._videos:
-                self._gvideo = video_gui
-                self._video  = self._videos[self._gvideo]
-                if self._video._date:
-                    pass
+            video_gui.black_out()
+        if self._menu.chb_dat.get():
+            timestamp = self.timestamp()
+            for video_gui in gi.objs.channel()._videos:
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    self._date_filter()
                 else:
-                    sh.log.append ('Commands.filter_by_date'
-                                  ,_('WARNING')
-                                  ,_('Wrong input data!')
-                                  )
-            else:
-                sh.objs.mes ('Commands.filter_by_date'
-                            ,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
+                    sh.objs.mes ('Commands.filter_by_date'
+                                ,_('ERROR')
+                                ,_('Wrong input data!')
+                                )
     
     def get_widget(self,event=None):
         if event:
@@ -419,15 +479,20 @@ class Commands:
         # Menu: checkboxes
         self._menu.chb_sel.widget.config(command=self.toggle_select)
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
+        
+        self._menu.opt_dat.action = self.filter_by_date
         # Menu: OptionMenus
         self._menu.opt_day.reset (items   = self._days
                                  ,default = self._day
+                                 ,action  = self.reset_date_filter
                                  )
         self._menu.opt_mth.reset (items   = self._months
                                  ,default = self._month
+                                 ,action  = self.reset_date_filter
                                  )
         self._menu.opt_yrs.reset (items   = self._years
                                  ,default = self._year
+                                 ,action  = self.reset_date_filter
                                  )
         self._menu.opt_trd.reset (items   = self._trending
                                  ,default = _('Trending')
@@ -562,7 +627,6 @@ class Commands:
     def channel_gui(self):
         for i in range(len(self._channel._links)):
             gi.objs.channel().add(no=i)
-            gi.objs._channel.update_scroll()
             video = Video(url=self._channel._links[i])
             video.get()
             if video.Success:
@@ -574,20 +638,22 @@ class Commands:
                     author = title = _('BLOCKED')
                     video._image = None
                     video.Block = True
-                video_gui = gi.objs._channel._videos[i]
-                video_gui.reset (no       = i + 1
-                                ,author   = author
-                                ,title    = title
-                                ,duration = duration
-                                ,image    = video._image
-                                )
-                if video.Ready:
-                    video_gui.gray_out()
-                self._videos[video_gui] = video
-                #if not video.Saved:
-                ''' #fix showing only videos No. 10-21 with 'update_scroll'
-                    disabled.
+                ''' 'idletasks' must be updated before drawing a default
+                    picture
                 '''
+                gi.objs._channel.update_scroll()
+                self._video  = video
+                self._gvideo = gi.objs._channel._videos[i]
+                self._gvideo.reset (no       = i + 1
+                                   ,author   = author
+                                   ,title    = title
+                                   ,duration = duration
+                                   ,image    = video._image
+                                   )
+                if self._video.Ready:
+                    self._gvideo.gray_out()
+                self.video_date_filter()
+                self._videos[self._gvideo] = self._video
         dbi.save()
         self.bind_context()
         # Move back to video #0
