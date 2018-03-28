@@ -11,7 +11,7 @@ rm ./resources/locale/ru/LC_MESSAGES/yatube.mo
 rm ./user/{block.txt,subscribe.txt}
 
 # Remove optional Yatube resources
-rm ./user/{subscribe2.txt,yatube.db}
+#rm ./user/{subscribe2.txt,yatube.db}
 
 # Remove Yatube Python files
 rm ./{db,gui,logic,tests,yatube}.py

@@ -14,7 +14,7 @@ cp -u /usr/local/bin/Yatube/resources/locale/ru/LC_MESSAGES/yatube.mo ./resource
 cp -u /usr/local/bin/Yatube/user/{block.txt,subscribe.txt} ./user
 
 # Copy optional Yatube resources
-cp -u /usr/local/bin/Yatube/user/{subscribe2.txt,yatube.db} ./user
+#cp -u /usr/local/bin/Yatube/user/{subscribe2.txt,yatube.db} ./user
 
 # Copy Yatube Python files
 cp -u /usr/local/bin/Yatube/src/{db,gui,logic,tests,yatube}\.py .
