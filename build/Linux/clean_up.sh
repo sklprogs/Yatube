@@ -23,7 +23,7 @@ rm ./{gettext_windows,shared,sharedGUI}.py
 rm ./resources/icon_64x64_yatube.gif
 
 # (Linux-only) Remove build scripts
-rm {build.sh,clean_up.sh,setup.py,update_yatube.sh}
+rm {build.sh,clean_up.sh,setup.py,update_finish.sh,update_yatube.sh}
 
 # Do not use dots in case of '-p' key
 rmdir -p resources/locale/ru/LC_MESSAGES/ user/Youtube

@@ -26,6 +26,6 @@ cp -u /usr/local/bin/shared/src/{gettext_windows,shared,sharedGUI}.py .
 cp -u /usr/local/bin/Yatube/resources/icon_64x64_yatube.gif ./resources/
 
 # (Linux-only) Copy build scripts
-cp -u /usr/local/bin/Yatube/build/Linux/{build.sh,clean_up.sh,setup.py,update_yatube.sh} .
+cp -u /usr/local/bin/Yatube/build/Linux/{build.sh,clean_up.sh,setup.py,update_finish.sh,update_yatube.sh} .
 
 ls .
