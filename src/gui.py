@@ -665,8 +665,31 @@ class Objects:
     def __init__(self):
         self._def_image = self._channel = self._menu = self._parent \
                         = self._context = self._summary \
-                        = self._progress = None
+                        = self._progress = self._blacklist \
+                        = self._subscribe = None
         
+    def subscribe(self):
+        if not self._subscribe:
+            top = sg.Top(parent=sg.objs.root())
+            sg.Geometry(parent=top).set('1024x768')
+            self._subscribe = sg.TextBox (parent        = top
+                                         ,SpecialReturn = False
+                                         )
+            self._subscribe.icon(icon_path)
+            self._subscribe.title(_('Edit subscriptions:'))
+        return self._subscribe
+    
+    def blacklist(self):
+        if not self._blacklist:
+            top = sg.Top(parent=sg.objs.root())
+            sg.Geometry(parent=top).set('1024x768')
+            self._blacklist = sg.TextBox (parent        = top
+                                         ,SpecialReturn = False
+                                         )
+            self._blacklist.icon(icon_path)
+            self._blacklist.title(_('Edit the blacklist:'))
+        return self._blacklist
+    
     def progress(self):
         if not self._progress:
             self._progress = sg.ProgressBar()

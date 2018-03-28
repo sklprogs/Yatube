@@ -42,22 +42,21 @@ class Commands:
         self._month      = itime._month
         self._days       = itime._days
         self._day        = itime._day
-        const            = lg.Constants()
-        self._countries  = const.countries()
-        self._trending   = const.trending()
-        lists            = lg.Lists()
-        lists.load()
-        self._fblock     = lists._fblock
-        self._fsubsc     = lists._fsubsc
-        self._block_auth = lists._block_auth
-        self._subsc_auth = lists._subsc_auth
-        self._subsc_urls = lists._subsc_urls
-        #todo: implement
+        lg.objs.lists().reset()
+        self.reset_channels()
+    
+    def reset_channels(self,event=None):
+        #todo (?): implement view for all channels
         default_channels = [_('Channels')] #,_('All')
-        if self._subsc_auth:
-            self._channels = default_channels + self._subsc_auth
+        if lg.objs.lists()._subsc_auth:
+            self._channels = default_channels \
+                             + lg.objs._lists._subsc_auth
         else:
             self._channels = default_channels
+        self._menu.opt_chl.reset (items   = self._channels
+                                 ,default = _('Channels')
+                                 ,action  = self.set_channel
+                                 )
     
     def open_channel_url(self,event=None):
         sg.Message ('Commands.open_channel_url'
@@ -319,10 +318,10 @@ class Commands:
                           ,_('Switch to channel "%s"') \
                           % str(self._menu.opt_chl.choice)
                           )
-            if self._menu.opt_chl.choice in self._subsc_auth:
+            if self._menu.opt_chl.choice in lg.objs.lists()._subsc_auth:
                 author = self._menu.opt_chl.choice
-                no     = self._subsc_auth.index(author)
-                url    = self._subsc_urls[no]
+                no     = lg.objs._lists._subsc_auth.index(author)
+                url    = lg.objs._lists._subsc_urls[no]
                 self.update_channel(author=author,url=url)
             else:
                 #todo: console + GUI
@@ -385,7 +384,7 @@ class Commands:
             user = _('Trending') + ' - ' + _('Russia')
         else:
             user = _('Trending') + ' - ' + self._menu.opt_trd.choice
-            country = self._countries[self._menu.opt_trd.choice]
+            country = lg.objs.const()._countries[self._menu.opt_trd.choice]
         url = 'https://www.youtube.com/feed/trending?gl=%s' % country
         sh.log.append ('Commands.set_trending'
                       ,_('DEBUG')
@@ -504,7 +503,7 @@ class Commands:
                                  ,default = self._year
                                  ,action  = self.reset_date_filter
                                  )
-        self._menu.opt_trd.reset (items   = self._trending
+        self._menu.opt_trd.reset (items   = lg.objs.const()._trending
                                  ,default = _('Trending')
                                  ,action  = self.set_trending
                                  )
@@ -631,9 +630,9 @@ class Commands:
         gi.objs._progress.close()
         
     def update_channels(self,event=None):
-        for i in range(len(self._subsc_auth)):
-            self.update_channel (author = self._subsc_auth[i]
-                                ,url    = self._subsc_urls[i]
+        for i in range(len(lg.objs.lists()._subsc_auth)):
+            self.update_channel (author = lg.objs._lists._subsc_auth[i]
+                                ,url    = lg.objs._lists._subsc_urls[i]
                                 ,Show   = False
                                 )
         
@@ -679,8 +678,8 @@ class Commands:
                 author    = sh.Text(text=video._author).delete_unsupported()
                 title     = sh.Text(text=video._title).delete_unsupported()
                 duration  = sh.Text(text=video._dur).delete_unsupported()
-                if author in self._block_auth \
-                or video._author in self._block_auth:
+                if author in lg.objs.lists()._block_auth \
+                or video._author in lg.objs._lists._block_auth:
                     author = title = _('BLOCKED')
                     video._image = None
                     video.Block = True
@@ -705,15 +704,66 @@ class Commands:
         # Move back to video #0
         gi.objs._channel.canvas.move_top()
     
-    #todo: elaborate
+    def manage_sub1(self):
+        words = sh.Words(text=lg.objs.lists()._subsc)
+        gi.objs.subscribe().reset(words=words)
+        gi.objs._subscribe.insert(text=lg.objs._lists._subsc)
+        gi.objs._subscribe.show()
+        text = gi.objs._subscribe.get()
+        if text:
+            sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+                             ,AskRewrite = False
+                             ).write(text=text)
+        else:
+            sh.log.append ('Commands.manage_sub1'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                             
+    def manage_sub2(self):
+        if os.path.exists(lg.objs.lists()._fsubsc2):
+            words = sh.Words(text=lg.objs._lists._subsc2)
+            gi.objs.subscribe().reset(words=words)
+            gi.objs._subscribe.insert(text=lg.objs._lists._subsc2)
+            gi.objs._subscribe.show()
+            text = gi.objs._subscribe.get()
+            if text:
+                sh.WriteTextFile (file       = lg.objs._lists._fsubsc2
+                                 ,AskRewrite = False
+                                 ).write(text=text)
+            else:
+                sh.log.append ('Commands.manage_sub2'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Commands.manage_sub2'
+                          ,_('INFO')
+                          ,_('Nothing to do.')
+                          )
+    
     def manage_sub(self,event=None):
-        sh.Launch(self._fsubsc).default()
-        #todo: reload
+        self.manage_sub1()
+        self.manage_sub2()
+        lg.objs.lists().reset()
+        self.reset_channels()
         
-    #todo: elaborate
     def manage_block(self,event=None):
-        sh.Launch(self._fblock).default()
-        #todo: reload
+        words = sh.Words(text=lg.objs.lists()._block)
+        gi.objs.blacklist().reset(words=words)
+        gi.objs._blacklist.insert(text=lg.objs._lists._block)
+        gi.objs._blacklist.show()
+        text = gi.objs._blacklist.get()
+        if text:
+            sh.WriteTextFile (file       = lg.objs._lists._fblock
+                             ,AskRewrite = False
+                             ).write(text=text)
+            lg.objs._lists.reset()
+        else:
+            sh.log.append ('Commands.manage_block'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
 
 
 

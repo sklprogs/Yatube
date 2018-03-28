@@ -363,11 +363,18 @@ class Lists:
     
     def __init__(self):
         self.values()
-        self._fblock = sh.objs.pdir().add('..','user','block.txt')
-        self._fsubsc = sh.objs.pdir().add('..','user','subscribe.txt')
-        self._fsubs2 = sh.objs.pdir().add('..','user','subscribe2.txt')
+        self._fblock  = sh.objs.pdir().add('..','user','block.txt')
+        self._fsubsc  = sh.objs.pdir().add('..','user','subscribe.txt')
+        self._fsubsc2 = sh.objs.pdir().add('..','user','subscribe2.txt')
         
+    def reset(self):
+        self.values()
+        self.load()
+    
     def values(self):
+        self._block      = ''
+        self._subsc      = ''
+        self._subsc2     = ''
         self._block_auth = []
         self._subsc_auth = []
         self._subsc_urls = []
@@ -375,18 +382,20 @@ class Lists:
     def load(self):
         text = sh.ReadTextFile(file=self._fblock).get()
         if text:
+            self._block = text
             self._block_auth = text.splitlines()
-        #note: 'sh.Dic' still uses GUI for critical errors
         dic = sh.Dic (file     = self._fsubsc
                      ,Sortable = False
                      )
         if dic.Success:
+            self._subsc      = dic.text
             self._subsc_auth = dic.orig
             self._subsc_urls = dic.transl
-        dic = sh.Dic (file     = self._fsubs2
+        dic = sh.Dic (file     = self._fsubsc2
                      ,Sortable = False
                      )
         if dic.Success:
+            self._subsc2      = dic.text
             self._subsc_auth += dic.orig
             self._subsc_urls += dic.transl
         if self._subsc_auth:
@@ -402,12 +411,24 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        self._online = None
+        self._online = self._lists = self._const = None
         
+    def const(self):
+        if not self._const:
+            self._const = Constants()
+            self._const.countries()
+            self._const.trending()
+        return self._const
+    
     def online(self):
         if not self._online:
             self._online = sh.Online(MTSpecific=False)
         return self._online
+        
+    def lists(self):
+        if not self._lists:
+            self._lists = Lists()
+        return self._lists
 
 
 objs = Objects()
