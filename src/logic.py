@@ -391,13 +391,14 @@ class Lists:
             self._subsc      = dic.text
             self._subsc_auth = dic.orig
             self._subsc_urls = dic.transl
-        dic = sh.Dic (file     = self._fsubsc2
-                     ,Sortable = False
-                     )
-        if dic.Success:
-            self._subsc2      = dic.text
-            self._subsc_auth += dic.orig
-            self._subsc_urls += dic.transl
+        if os.path.exists(self._fsubsc2):
+            dic = sh.Dic (file     = self._fsubsc2
+                         ,Sortable = False
+                         )
+            if dic.Success:
+                self._subsc2      = dic.text
+                self._subsc_auth += dic.orig
+                self._subsc_urls += dic.transl
         if self._subsc_auth:
             self._subsc_auth, self._subsc_urls = (list(x) for x \
             in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)
