@@ -164,6 +164,7 @@ class Menu:
         self.lab_slw = sg.Label (parent = self.frame3
                                 ,text   = _('Slow PC')
                                 ,side   = 'left'
+                                ,font   = 'Sans 9'
                                 ,Close  = False
                                 )
         self.opt_trd = sg.OptionMenu (parent = self.frame4
