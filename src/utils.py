@@ -17,18 +17,36 @@ class DB:
         self._clone  = clone
         self.Success = self._clone and sh.File(file=self._path).Success
     
-    def save(self):
+    def down_markw(self):
+        if self.Success:
+            try:
+                self.dbcw.execute ('update VIDEOS set READY=? \
+                                    where  READY=?',(False,True,)
+                                  )
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.down_markw'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._clone
+                            )
+        else:
+            sh.log.append ('DB.down_markw'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def savew(self):
         if self.Success:
             try:
                 self.dbw.commit()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False
-                sh.objs.mes ('DB.save'
+                sh.objs.mes ('DB.savew'
                             ,_('WARNING')
                             ,_('Database "%s" has failed!') % self._clone
                             )
         else:
-            sh.log.append ('DB.save'
+            sh.log.append ('DB.savew'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
@@ -216,6 +234,25 @@ class Commands:
         self._path  = '/home/pete/bin/Yatube/user/yatube.db'
         self._clone = '/tmp/yatube.db'
         
+    def down_markw(self):
+        Success = sh.File (file       = self._path
+                          ,dest       = self._clone
+                          ,AskRewrite = False
+                          ).copy()
+        if Success:
+            idb = DB (path  = self._path
+                     ,clone = self._clone
+                     )
+            idb.connectw()
+            idb.down_markw()
+            idb.savew()
+            idb.closew()
+        else:
+            sh.log.append ('Commands.down_markw'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def alter(self):
         sh.File(file=self._clone).delete()
         # Alter DB and add new columns 'SEARCH', 'TIMESTAMP'
@@ -227,7 +264,7 @@ class Commands:
         idb.fetch()
         idb.create_table()
         idb.fill()
-        idb.save()
+        idb.savew()
         idb.close()
         idb.closew()
         
@@ -257,4 +294,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.read_random()
+    commands.down_markw()
