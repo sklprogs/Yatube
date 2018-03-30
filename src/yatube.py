@@ -45,6 +45,39 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def delete_selected(self,event=None):
+        deleted = []
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui.cbox.get():
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    path = self._video._path
+                    if self.delete_video():
+                        deleted.append(path)
+                else:
+                    sh.log.append ('Commands.delete_selected'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+        if deleted:
+            message = _('The following files have been deleted:')
+            message += '\n\n'
+            message += '\n\n'.join(deleted)
+            sh.objs.mes ('Commands.delete_selected'
+                        ,_('INFO')
+                        ,message
+                        )
+    
+    def delete_video(self,event=None):
+        if self._video and self._video._path:
+            return sh.File(file=self._video._path).delete()
+        else:
+            sh.log.append ('Commands.delete_video'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def reset_channels(self,event=None):
         #todo (?): implement view for all channels
         default_channels = [_('Channels')] #,_('All')
@@ -261,6 +294,8 @@ class Commands:
                     self.stream()
                 elif choice == _('Toggle the download status'):
                     self.toggle_downloaded()
+                elif choice == _('Delete the downloaded file'):
+                    self.delete_video()
                 elif choice == _('Block this channel'):
                     self.block()
                 elif choice == _('Subscribe to this channel'):
@@ -459,6 +494,10 @@ class Commands:
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-d>'
                 ,action   = self.download
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Shift-Delete>'
+                ,action   = self.delete_selected
                 )
         # Menu: buttons
         self._menu.btn_sub.action = self.manage_sub
