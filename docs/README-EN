@@ -1,0 +1,7 @@
+Yatube is a program to browse Youtube and download videos from it.
+The following hotkeys are supported:
+Control-w, Control-q - Quit
+Control-d - Download selected file(s)
+Control-p - Play selected file(s)
+Shift-Delete - Delete selected file(s)
+Escape (on the main window) - Minimize
