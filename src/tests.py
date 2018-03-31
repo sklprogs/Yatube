@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import db
 import logic as lg
 
 
@@ -46,7 +47,14 @@ def all():
     delimiter()
     constants()
     delimiter()
+    
+def author():
+    dbi = db.DB()
+    result = dbi.channel_videos(author='Алексей Навальный')
+    if result:
+        print(len(result))
+    dbi.close()
 
 
 if __name__ == '__main__':
-    lists()
+    author()

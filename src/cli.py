@@ -13,15 +13,24 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
+sh.objs.mes(Silent=True)
 
-class Objects:
+
+class Commands:
     
     def __init__(self):
-        pass
+        lg.objs.lists().reset()
+        
+    def update_channels(self):
+        for i in range(len(lg.objs.lists()._subsc_auth)):
+            self.update_channel (author = lg.objs._lists._subsc_auth[i]
+                                ,url    = lg.objs._lists._subsc_urls[i]
+                                )
+                                
+    def update_channel(self,author,url):
+        self._channel = lg.Channel(url=url)
+        self._channel.run()
 
-
-sh.objs.mes(Silent=True)
-objs = Objects()
 
 
 class Help:
@@ -52,6 +61,16 @@ class Help:
         
     def print(self):
         print(self._summary)
+
+
+
+class Objects:
+    
+    def __init__(self):
+        pass
+
+
+objs = Objects()
 
 
 if __name__ == '__main__':

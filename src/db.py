@@ -12,12 +12,50 @@ gettext.install('yatube','../resources/locale')
 class DB:
     
     def __init__(self):
+        self.values()
+        self.connect()
+        self.create_videos()
+        
+    def values(self):
         self.Success = True
         self._user   = ''
         self._path   = sh.objs.pdir().add('..','user','yatube.db')
-        self.db      = sqlite3.connect(self._path)
-        self.dbc     = self.db.cursor()
-        self.create_videos()
+        
+    def connect(self):
+        if self.Success:
+            try:
+                self.db  = sqlite3.connect(self._path)
+                self.dbc = self.db.cursor()
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.connect'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
+        else:
+            sh.log.append ('DB.connect'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def channel_videos(self,author):
+        if self.Success:
+            try:
+                self.dbc.execute ('select URL from VIDEOS where AUTHOR=?'
+                                 ,(author,)
+                                 )
+                return self.dbc.fetchall()
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.channel_videos'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
+        else:
+            sh.log.append ('DB.channel_videos'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
     
     def mark_downloaded(self,url,Ready=True):
         if self.Success:
