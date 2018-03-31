@@ -619,6 +619,12 @@ class Commands:
                                )
         gi.objs._progress.close()
         
+    def mark_downloaded(self):
+        dbi.mark_downloaded(url=self._video._url)
+        if self._gvideo:
+            self._gvideo.cbox.disable()
+            self._gvideo.gray_out()
+    
     def download_video(self,event=None):
         ''' In case of 'get_url', there is no GUI to be handled
             ('self._gvideo' must be set to 'None'), so we do not force
@@ -627,35 +633,31 @@ class Commands:
         if self._video:
             self._video.video()
             self._video.path()
-            if sh.rewrite(self._video._path):
-                gi.objs.progress().add()
-                gi.objs._progress.show()
-                ''' Do not focus this widget since the user may do some
-                    work in the background, and we do not want to
-                    interrupt it.
-                    Just activate the window without focusing so
-                    the user would see that the program is downloading
-                    something.
-                '''
-                sg.Geometry(parent=gi.objs._progress.obj).activate()
-                if self._video.download():
-                    dbi.mark_downloaded(url=self._video._url)
-                    if self._gvideo:
-                        self._gvideo.cbox.disable()
-                        self._gvideo.gray_out()
+            if self._video._path:
+                if os.path.exists(self._video._path):
+                    ''' Do this because files could be downloaded with
+                        a previous version which did not update
+                        the READY field. However, do not put this
+                        in the end because we do not want to update
+                        failed downloads.
+                    '''
+                    self.mark_downloaded()
+                else:
+                    gi.objs.progress().add()
+                    gi.objs._progress.show()
+                    ''' Do not focus this widget since the user may do
+                        some work in the background, and we do not want
+                        to interrupt it. Just activate the window
+                        without focusing so the user would see that
+                        the program is downloading something.
+                    '''
+                    sg.Geometry(parent=gi.objs._progress.obj).activate()
+                    if self._video.download():
+                        self.mark_downloaded()
             else:
-                ''' Do this because files could be downloaded with
-                    a previous version which did not update the READY
-                    field. However, do not put this in the end because
-                    we do not want to update failed downloads.
-                '''
-                dbi.mark_downloaded(url=self._video._url)
-                if self._gvideo:
-                    self._gvideo.cbox.disable()
-                    self._gvideo.gray_out()
                 sh.log.append ('Commands.download_video'
-                              ,_('INFO')
-                              ,_('Operation has been canceled by the user.')
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
                               )
         else:
             sh.log.append ('Commands.download_video'
