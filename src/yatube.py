@@ -1,23 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import sys
 import os
-import io
-import pafy      as pf
 import shared    as sh
 import sharedGUI as sg
 import logic     as lg
 import gui       as gi
-import db
 
 import gettext, gettext_windows
 
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
-
-
-AllOS = False
 
 
 
@@ -52,7 +45,7 @@ class Commands:
                 if video_gui in self._videos:
                     self._gvideo = video_gui
                     self._video  = self._videos[self._gvideo]
-                    path = self._video._path
+                    path = self._video.model._path
                     if self.delete_video():
                         deleted.append(path)
                 else:
@@ -70,8 +63,8 @@ class Commands:
                         )
     
     def delete_video(self,event=None):
-        if self._video and self._video._path:
-            return sh.File(file=self._video._path).delete()
+        if self._video and self._video.model._path:
+            return sh.File(file=self._video.model._path).delete()
         else:
             sh.log.append ('Commands.delete_video'
                           ,_('WARNING')
@@ -105,7 +98,8 @@ class Commands:
     
     def open_video_url(self,event=None):
         if self._video:
-            lg.objs.online()._url = lg.video_root_url + self._video._url
+            lg.objs.online()._url = lg.video_root_url \
+                                    + self._video.model._url
             lg.objs._online.browse()
         else:
             sh.log.append ('Commands.open_video_url'
@@ -115,7 +109,7 @@ class Commands:
                    
     def copy_video_url(self,event=None):
         if self._video:
-            url = lg.video_root_url + self._video._url
+            url = lg.video_root_url + self._video.model._url
             sg.Clipboard().copy(text=url)
         else:
             sh.log.append ('Commands.copy_video_url'
@@ -143,11 +137,11 @@ class Commands:
                    
     def toggle_downloaded(self,event=None):
         if self._video and self._gvideo:
-            self._video.Ready = not self._video.Ready
-            dbi.mark_downloaded (url   = self._video._url
-                                ,Ready = self._video.Ready
+            self._video.model.Ready = not self._video.model.Ready
+            idb.mark_downloaded (url   = self._video.model._url
+                                ,Ready = self._video.model.Ready
                                 )
-            if self._video.Ready:
+            if self._video.model.Ready:
                 self._gvideo.gray_out()
             else:
                 self._gvideo.black_out()
@@ -196,7 +190,7 @@ class Commands:
         return self._timestamp
     
     def _date_filter(self):
-        cond1 = self._video._timestamp >= self.timestamp()
+        cond1 = self._video.model._timestamp >= self.timestamp()
         cond2 = self._menu.opt_dat.choice == _('Newer than')
         if (cond1 and cond2) or (not cond1 and not cond2):
             return True
@@ -209,7 +203,7 @@ class Commands:
         should not be called externally in other cases.
     '''
     def video_date_filter(self,event=None):
-        if self._video and self._gvideo and self._video._timestamp:
+        if self._video and self._gvideo and self._video.model._timestamp:
             if self._menu.chb_dat.get():
                 if self._date_filter():
                     self._gvideo.red_out()
@@ -267,7 +261,7 @@ class Commands:
         gi.objs.summary().read_only(False)
         if self._video:
             gi.objs._summary.reset()
-            gi.objs._summary.insert(self._video.summary())
+            gi.objs._summary.insert(self._video.model.summary())
         gi.objs._summary.read_only(True)
         gi.objs._summary.show()
     
@@ -277,47 +271,53 @@ class Commands:
             event = event[0]
         self.get_widget(event=event)
         if self._gvideo:
-            self._video = self._videos[self._gvideo]
-            message = _('Video #%d:') % self._gvideo._no
-            gi.objs.context().title(message)
-            gi.objs._context.show()
-            choice = gi.objs._context._get
-            if choice:
-                if choice == _('Show the full summary'):
-                    self.summary()
-                elif choice == _('Download'):
-                    self.download_video()
-                elif choice == _('Play'):
-                    self.download_video()
-                    self.play_video()
-                elif choice == _('Stream'):
-                    self.stream()
-                elif choice == _('Toggle the download status'):
-                    self.toggle_downloaded()
-                elif choice == _('Delete the downloaded file'):
-                    self.delete_video()
-                elif choice == _('Block this channel'):
-                    self.block()
-                elif choice == _('Subscribe to this channel'):
-                    self.subscribe()
-                elif choice == _('Open video URL'):
-                    self.open_video_url()
-                elif choice == _('Copy video URL'):
-                    self.copy_video_url()
-                elif choice == _('Open channel URL'):
-                    self.open_channel_url()
-                elif choice == _('Copy channel URL'):
-                    self.copy_channel_url()
+            if self._gvideo in self._videos:
+                self._video = self._videos[self._gvideo]
+                message = _('Video #%d:') % self._gvideo._no
+                gi.objs.context().title(message)
+                gi.objs._context.show()
+                choice = gi.objs._context._get
+                if choice:
+                    if choice == _('Show the full summary'):
+                        self.summary()
+                    elif choice == _('Download'):
+                        self.download_video()
+                    elif choice == _('Play'):
+                        self.download_video()
+                        self.play_video()
+                    elif choice == _('Stream'):
+                        self.stream()
+                    elif choice == _('Toggle the download status'):
+                        self.toggle_downloaded()
+                    elif choice == _('Delete the downloaded file'):
+                        self.delete_video()
+                    elif choice == _('Block this channel'):
+                        self.block()
+                    elif choice == _('Subscribe to this channel'):
+                        self.subscribe()
+                    elif choice == _('Open video URL'):
+                        self.open_video_url()
+                    elif choice == _('Copy video URL'):
+                        self.copy_video_url()
+                    elif choice == _('Open channel URL'):
+                        self.open_channel_url()
+                    elif choice == _('Copy channel URL'):
+                        self.copy_channel_url()
+                    else:
+                        sh.objs.mes ('Commands.context'
+                                    ,_('ERROR')
+                                    ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                    % (str(choice),';'.join(gi.context_items))
+                                    )
                 else:
-                    sh.objs.mes ('Commands.context'
-                                ,_('ERROR')
-                                ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                % (str(choice),';'.join(gi.context_items))
-                                )
+                    sh.log.append ('Commands.context'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
             else:
                 sh.log.append ('Commands.context'
                               ,_('WARNING')
-                              ,_('Empty input is not allowed!')
+                              ,_('Wrong input data!')
                               )
     
     def update_channel(self,author,url,Show=True):
@@ -388,8 +388,8 @@ class Commands:
                           )
             #todo: check URL
             self._video = Video(url=result)
-            self._video.video()
-            self._video.assign_online()
+            self._video.model.video()
+            self._video.model.assign_online()
             ''' Set to 'None', otherwise, wrong GUI object will be
                 manipulated!
             '''
@@ -472,7 +472,7 @@ class Commands:
                 if video_gui in self._videos:
                     self._gvideo = video_gui
                     self._video  = self._videos[self._gvideo]
-                    if result in self._video._search:
+                    if result in self._video.model._search:
                         self._gvideo.red_out()
                 else:
                     sh.log.append ('Commands.filter_view'
@@ -562,11 +562,12 @@ class Commands:
                 # Drop all previous selections
                 self._gvideo.cbox.disable()
                 if self._menu.chb_dat.get():
-                    cond = not self._video.Ready and \
-                           not self._video.Block and self._date_filter()
+                    cond = not self._video.model.Ready and \
+                           not self._video.model.Block and \
+                           self._date_filter()
                 else:
-                    cond = not self._video.Ready and \
-                           not self._video.Block
+                    cond = not self._video.model.Ready and \
+                           not self._video.model.Block
                 if cond:
                     self._gvideo.cbox.enable()
             else:
@@ -576,7 +577,7 @@ class Commands:
                               )
         
     def _play_slow(self,app='/usr/bin/mplayer'):
-        sh.Launch (target = self._video._path
+        sh.Launch (target = self._video.model._path
                   ).app (custom_app  = app
                         ,custom_args = ['-ao','sdl','-fs'
                                        ,'-framedrop'
@@ -585,7 +586,7 @@ class Commands:
                         )
                         
     def _play_default(self):
-        sh.Launch(target=self._video._path).default()
+        sh.Launch(target=self._video.model._path).default()
 
     def play_video(self,event=None):
         if self._video:
@@ -620,7 +621,7 @@ class Commands:
         gi.objs._progress.close()
         
     def mark_downloaded(self):
-        dbi.mark_downloaded(url=self._video._url)
+        idb.mark_downloaded(url=self._video.model._url)
         if self._gvideo:
             self._gvideo.cbox.disable()
             self._gvideo.gray_out()
@@ -631,10 +632,10 @@ class Commands:
             'self._gvideo' check here.
         '''
         if self._video:
-            self._video.video()
-            self._video.path()
-            if self._video._path:
-                if os.path.exists(self._video._path):
+            self._video.model.video()
+            self._video.model.path()
+            if self._video.model._path:
+                if os.path.exists(self._video.model._path):
                     ''' Do this because files could be downloaded with
                         a previous version which did not update
                         the READY field. However, do not put this
@@ -652,7 +653,7 @@ class Commands:
                         the program is downloading something.
                     '''
                     sg.Geometry(parent=gi.objs._progress.obj).activate()
-                    if self._video.download():
+                    if self._video.model.download():
                         self.mark_downloaded()
             else:
                 sh.log.append ('Commands.download_video'
@@ -724,15 +725,15 @@ class Commands:
             gi.objs.channel().add(no=i)
             video = Video(url=self._channel._links[i])
             video.get()
-            if video.Success:
-                author    = sh.Text(text=video._author).delete_unsupported()
-                title     = sh.Text(text=video._title).delete_unsupported()
-                duration  = sh.Text(text=video._dur).delete_unsupported()
+            if video.model.Success:
+                author    = sh.Text(text=video.model._author).delete_unsupported()
+                title     = sh.Text(text=video.model._title).delete_unsupported()
+                duration  = sh.Text(text=video.model._dur).delete_unsupported()
                 if author in lg.objs.lists()._block_auth \
-                or video._author in lg.objs._lists._block_auth:
+                or video.model._author in lg.objs._lists._block_auth:
                     author = title = _('BLOCKED')
                     video._image = None
-                    video.Block = True
+                    video.model.Block = True
                 ''' 'idletasks' must be updated before drawing a default
                     picture
                 '''
@@ -745,11 +746,11 @@ class Commands:
                                    ,duration = duration
                                    ,image    = video._image
                                    )
-                if self._video.Ready:
+                if self._video.model.Ready:
                     self._gvideo.gray_out()
                 self.video_date_filter()
                 self._videos[self._gvideo] = self._video
-        dbi.save()
+        idb.save()
         self.bind_context()
         # Move back to video #0
         gi.objs._channel.canvas.move_top()
@@ -817,12 +818,14 @@ class Commands:
 
 
 
-# Requires dbi
+# Requires idb
 class Video:
     
     def __init__(self,url):
-        self.values()
-        self._url = url
+        self.model  = lg.Video (url      = url
+                               ,callback = self.progress
+                               )
+        self._image = None
         
     def progress (self,total=0,cur_size=0
                  ,ratio=0,rate=0,eta=0
@@ -831,7 +834,7 @@ class Video:
         cur_size = cur_size / 1000000
         rate     = int(rate)
         eta      = int(eta)
-        gi.objs.progress()._item.text (file     = self._pathsh
+        gi.objs.progress()._item.text (file     = self.model._pathsh
                                       ,cur_size = cur_size
                                       ,total    = total
                                       ,rate     = rate
@@ -841,287 +844,21 @@ class Video:
         gi.objs._progress._item.widget['value'] = percent
         sg.objs.root().widget.update_idletasks()
     
-    def values(self):
-        self.Success = True
-        self.Block   = self.Ignore = self.Ready = False
-        self._video  = self._image = self._bytes = self.Saved = None
-        self._author = self._title = self._date = self._cat \
-                     = self._desc = self._dur = self._path \
-                     = self._pathsh = self._search = self._timestamp \
-                     = ''
-        self._len    = self._views = self._likes = self._dislikes = 0
-        self._rating = 0.0
-        
-    def assign_online(self):
-        if self._video:
-            self._author    = self._video.author
-            self._title     = self._video.title
-            self._date      = self._video.published
-            self._cat       = self._video.category
-            self._desc      = self._video.description
-            self._dur       = self._video.duration
-            self._len       = self._video.length
-            self._views     = self._video.viewcount
-            self._likes     = self._video.likes
-            self._dislikes  = self._video.dislikes
-            self._rating    = self._video.rating
-            self._search    = self._author.lower() + ' ' \
-                              + self._title.lower()
-            itime           = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
-            itime._date     = self._date
-            self._timestamp = itime.timestamp()
-        else:
-            sh.log.append ('Video.assign_online'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-                          
-    def dump(self):
-        if self.Success:
-            ''' Do no write default data.
-                Do not forget to commit where necessary.
-            '''
-            if self._video:
-                data = (self._url,self._author,self._title,self._date
-                       ,self._cat,self._desc,self._dur,self._len
-                       ,self._views,self._likes,self._dislikes
-                       ,self._rating,self._bytes,self.Block,self.Ignore
-                       ,self.Ready,self._search,self._timestamp
-                       )
-                dbi.add_video(data)
-            else:
-                sh.log.append ('Video.dump'
-                              ,_('INFO')
-                              ,_('Nothing to do.')
-                              )
-        else:
-            sh.log.append ('Video.dump'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-        
-    def assign_offline(self,data):
-        if data:
-            data_len = 15
-            if len(data) >= data_len:
-                self._author    = data[0]
-                self._title     = data[1]
-                self._date      = data[2]
-                self._cat       = data[3]
-                self._desc      = data[4]
-                self._dur       = data[5]
-                self._len       = data[6]
-                self._views     = data[7]
-                self._likes     = data[8]
-                self._dislikes  = data[9]
-                self._rating    = data[10]
-                self._bytes     = data[11]
-                self.Ready      = data[12]
-                self._search    = data[13]
-                self._timestamp = data[14]
-                img = sg.Image()
-                img._bytes = self._bytes
-                img.loader()
-                self._image = img.image()
-            else:
-                sg.Message ('Video.assign_offline'
-                           ,_('ERROR')
-                           ,_('The condition "%s" is not observed!') \
-                            % '%d >= %d' % (len(data),data_len)
-                           )
-        else:
-            sh.log.append ('Video.assign_offline'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-        
-    def video(self):
-        if self.Success:
-            if not self._video:
-                try:
-                    self._video = pf.new (url   = self._url
-                                         ,basic = False
-                                         ,gdata = False
-                                         )
-                except:
-                    self.Success = False
-                    sh.log.append ('Video.video'
-                                  ,_('WARNING')
-                                  ,_('Error adding "%s"!') % self._url
-                                  )
-        else:
-            sh.log.append ('Video.video'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
     def image(self):
-        if self.Success:
-            if self._video:
-                image = sh.Get (url      = self._video.thumb
-                               ,encoding = None
-                               ,Verbose  = False
-                               ).run()
-                if image:
-                    img = sg.Image()
-                    self._bytes = img._bytes = image
-                    img.loader()
-                    self._image = img.image()
-                else:
-                    sh.log.append ('Video.image'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-            else:
-                sh.log.append ('Video.image'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+        if self.model._bytes:
+            img = sg.Image()
+            img._bytes = self.model._bytes
+            img.loader()
+            self._image = img.image()
         else:
             sh.log.append ('Video.image'
                           ,_('WARNING')
-                          ,_('Operation has been canceled.')
+                          ,_('Empty input is not allowed!')
                           )
     
     def get(self):
-        if self.Success:
-            self.Saved = dbi.get_video(url=self._url)
-            if self.Saved:
-                self.assign_offline(self.Saved)
-            else:
-                self.video()
-                self.assign_online()
-                self.image()
-                self.dump()
-        else:
-            sh.log.append ('Video.get'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
-    def summary(self):
-        if self.Success:
-            tmp = io.StringIO()
-            tmp.write(_('Author'))
-            tmp.write(': ')
-            tmp.write(self._author)
-            tmp.write('\n')
-            tmp.write(_('Title'))
-            tmp.write(': ')
-            tmp.write(self._title)
-            tmp.write('\n')
-            tmp.write(_('Date'))
-            tmp.write(': ')
-            tmp.write(self._date)
-            tmp.write('\n')
-            tmp.write(_('Category'))
-            tmp.write(': ')
-            tmp.write(self._cat)
-            tmp.write('\n')
-            tmp.write(_('Description'))
-            tmp.write(': ')
-            tmp.write(self._desc)
-            tmp.write('\n')
-            tmp.write(_('Duration'))
-            tmp.write(': ')
-            tmp.write(self._dur)
-            tmp.write('\n')
-            tmp.write(_('Length'))
-            tmp.write(': ')
-            tmp.write(str(self._len))
-            tmp.write('\n')
-            tmp.write(_('Views'))
-            tmp.write(': ')
-            tmp.write(str(self._views))
-            tmp.write('\n')
-            tmp.write(_('Likes'))
-            tmp.write(': ')
-            tmp.write(str(self._likes))
-            tmp.write('\n')
-            tmp.write(_('Dislikes'))
-            tmp.write(': ')
-            tmp.write(str(self._dislikes))
-            tmp.write('\n')
-            tmp.write(_('Rating'))
-            tmp.write(': ')
-            tmp.write(str(self._rating))
-            tmp.write('\n')
-            #todo: elaborate
-            if self._video:
-                tmp.write(_('Small video picture URL'))
-                tmp.write(': ')
-                tmp.write(str(self._video.thumb))
-                tmp.write('\n')
-            result = tmp.getvalue()
-            result = sh.Text(text=result).delete_unsupported()
-            tmp.close()
-            return result
-        else:
-            sh.log.append ('Video.summary'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-        
-    def path(self):
-        if self.Success:
-            author = sh.FixBaseName (basename = self._author
-                                    ,AllOS    = AllOS
-                                    ,max_len  = 100
-                                    ).run()
-            title  = sh.FixBaseName (basename = self._title
-                                    ,AllOS    = AllOS
-                                    ,max_len  = 100
-                                    ).run()
-            author = sh.Text(text=author).delete_unsupported()
-            title  = sh.Text(text=title).delete_unsupported()
-            folder = sh.objs.pdir().add('..','user','Youtube',author)
-            self.Success = sh.Path(path=folder).create()
-            self._path = sh.objs.pdir().add ('..','user','Youtube'
-                                            ,author,title
-                                            )
-            self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
-                                                            ,FromEnd = 1
-                                                            )
-            self._path += '.mp4'
-        else:
-            sh.log.append ('Video.path'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
-    def download(self):
-        if self.Success:
-            if self._video and self._path:
-                sh.log.append ('Video.download'
-                              ,_('INFO')
-                              ,_('Download "%s"') % self._path
-                              )
-                #todo: select format & quality
-                try:
-                    stream = self._video.getbest (preftype    = 'mp4'
-                                                 ,ftypestrict = True
-                                                 )
-                    stream.download (filepath = self._path
-                                    ,callback = self.progress
-                                    )
-                    # Tell other functions the operation was a success
-                    return True
-                except:
-                    sh.objs.mes ('Video.download'
-                                ,_('WARNING')
-                                ,_('Failed to download "%s"!') \
-                                % self._path
-                                )
-            else:
-                sh.log.append ('Video.download'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Video.download'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+        self.model.get()
+        self.image()
 
 
 
@@ -1129,11 +866,11 @@ if __name__ == '__main__':
     sg.objs.start()
     parent = gi.objs.parent()
     sg.Geometry(parent=parent).set('985x600')
-    dbi = db.DB()
+    idb = lg.idb
     commands = Commands()
     commands.bindings()
     gi.objs.progress()
     gi.objs.menu().widget.wait_window()
-    dbi.save()
-    dbi.close()
+    idb.save()
+    idb.close()
     sg.objs.end()

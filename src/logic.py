@@ -3,13 +3,18 @@
 
 import re
 import os
+import io
+import pafy   as pf
 import shared as sh
+import db
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 video_root_url = 'https://www.youtube.com/watch?v='
+AllOS = False
+idb = db.DB()
 
 
 
@@ -239,18 +244,18 @@ class Channel:
                     self.warn()
                 else:
                     self.Success = False
-                    sh.log.append ('Channel.user'
+                    sh.log.append ('Channel.url'
                                   ,_('WARNING')
                                   ,_('Wrong input data!')
                                   )
             else:
                 self.Success = False
-                sh.log.append ('Channel.user'
+                sh.log.append ('Channel.url'
                               ,_('WARNING')
                               ,_('Empty input is not allowed!')
                               )
         else:
-            sh.log.append ('Channel.user'
+            sh.log.append ('Channel.url'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
@@ -430,6 +435,298 @@ class Objects:
         if not self._lists:
             self._lists = Lists()
         return self._lists
+
+
+
+# Requires idb
+class Video:
+    
+    def __init__(self,url,callback=None):
+        self.values()
+        self._url = url
+        self._callback = callback
+        
+    def values(self):
+        self.Success = True
+        self.Block   = self.Ignore = self.Ready = False
+        self._video  = self._bytes = self.Saved = None
+        self._author = self._title = self._date = self._cat \
+                     = self._desc = self._dur = self._path \
+                     = self._pathsh = self._search = self._timestamp \
+                     = ''
+        self._len    = self._views = self._likes = self._dislikes = 0
+        self._rating = 0.0
+        
+    def assign_online(self):
+        if self._video:
+            try:
+                self._author    = self._video.author
+                self._title     = self._video.title
+                self._date      = self._video.published
+                self._cat       = self._video.category
+                self._desc      = self._video.description
+                self._dur       = self._video.duration
+                self._len       = self._video.length
+                self._views     = self._video.viewcount
+                self._likes     = self._video.likes
+                self._dislikes  = self._video.dislikes
+                self._rating    = self._video.rating
+            # Youtube says: invalid parameters
+            except:
+                sh.log.append ('Video.assign_online'
+                              ,_('WARNING')
+                              ,_('Third party module has failed!')
+                              )
+            self._search    = self._author.lower() + ' ' \
+                              + self._title.lower()
+            itime           = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
+            itime._date     = self._date
+            self._timestamp = itime.timestamp()
+        else:
+            sh.log.append ('Video.assign_online'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    def dump(self):
+        if self.Success:
+            ''' Do no write default data.
+                Do not forget to commit where necessary.
+            '''
+            if self._video:
+                data = (self._url,self._author,self._title,self._date
+                       ,self._cat,self._desc,self._dur,self._len
+                       ,self._views,self._likes,self._dislikes
+                       ,self._rating,self._bytes,self.Block,self.Ignore
+                       ,self.Ready,self._search,self._timestamp
+                       )
+                idb.add_video(data)
+            else:
+                sh.log.append ('Video.dump'
+                              ,_('INFO')
+                              ,_('Nothing to do.')
+                              )
+        else:
+            sh.log.append ('Video.dump'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def assign_offline(self,data):
+        if data:
+            data_len = 15
+            if len(data) >= data_len:
+                self._author    = data[0]
+                self._title     = data[1]
+                self._date      = data[2]
+                self._cat       = data[3]
+                self._desc      = data[4]
+                self._dur       = data[5]
+                self._len       = data[6]
+                self._views     = data[7]
+                self._likes     = data[8]
+                self._dislikes  = data[9]
+                self._rating    = data[10]
+                self._bytes     = data[11]
+                self.Ready      = data[12]
+                self._search    = data[13]
+                self._timestamp = data[14]
+            else:
+                sh.objs.mes ('Video.assign_offline'
+                            ,_('ERROR')
+                            ,_('The condition "%s" is not observed!') \
+                            % '%d >= %d' % (len(data),data_len)
+                            )
+        else:
+            sh.log.append ('Video.assign_offline'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        
+    def video(self):
+        if self.Success:
+            if not self._video:
+                try:
+                    self._video = pf.new (url   = self._url
+                                         ,basic = False
+                                         ,gdata = False
+                                         )
+                except:
+                    self.Success = False
+                    sh.log.append ('Video.video'
+                                  ,_('WARNING')
+                                  ,_('Error adding "%s"!') % self._url
+                                  )
+        else:
+            sh.log.append ('Video.video'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def image(self):
+        if self.Success:
+            if self._video:
+                image = sh.Get (url      = self._video.thumb
+                               ,encoding = None
+                               ,Verbose  = False
+                               ).run()
+                if image:
+                    self._bytes = image
+                else:
+                    sh.log.append ('Video.image'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+            else:
+                sh.log.append ('Video.image'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.image'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def get(self):
+        if self.Success:
+            self.Saved = idb.get_video(url=self._url)
+            if self.Saved:
+                self.assign_offline(self.Saved)
+            else:
+                self.video()
+                self.assign_online()
+                self.image()
+                self.dump()
+        else:
+            sh.log.append ('Video.get'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def summary(self):
+        if self.Success:
+            tmp = io.StringIO()
+            tmp.write(_('Author'))
+            tmp.write(': ')
+            tmp.write(self._author)
+            tmp.write('\n')
+            tmp.write(_('Title'))
+            tmp.write(': ')
+            tmp.write(self._title)
+            tmp.write('\n')
+            tmp.write(_('Date'))
+            tmp.write(': ')
+            tmp.write(self._date)
+            tmp.write('\n')
+            tmp.write(_('Category'))
+            tmp.write(': ')
+            tmp.write(self._cat)
+            tmp.write('\n')
+            tmp.write(_('Description'))
+            tmp.write(': ')
+            tmp.write(self._desc)
+            tmp.write('\n')
+            tmp.write(_('Duration'))
+            tmp.write(': ')
+            tmp.write(self._dur)
+            tmp.write('\n')
+            tmp.write(_('Length'))
+            tmp.write(': ')
+            tmp.write(str(self._len))
+            tmp.write('\n')
+            tmp.write(_('Views'))
+            tmp.write(': ')
+            tmp.write(str(self._views))
+            tmp.write('\n')
+            tmp.write(_('Likes'))
+            tmp.write(': ')
+            tmp.write(str(self._likes))
+            tmp.write('\n')
+            tmp.write(_('Dislikes'))
+            tmp.write(': ')
+            tmp.write(str(self._dislikes))
+            tmp.write('\n')
+            tmp.write(_('Rating'))
+            tmp.write(': ')
+            tmp.write(str(self._rating))
+            tmp.write('\n')
+            #todo: elaborate
+            if self._video:
+                tmp.write(_('Small video picture URL'))
+                tmp.write(': ')
+                tmp.write(str(self._video.thumb))
+                tmp.write('\n')
+            result = tmp.getvalue()
+            result = sh.Text(text=result).delete_unsupported()
+            tmp.close()
+            return result
+        else:
+            sh.log.append ('Video.summary'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def path(self):
+        if self.Success:
+            author = sh.FixBaseName (basename = self._author
+                                    ,AllOS    = AllOS
+                                    ,max_len  = 100
+                                    ).run()
+            title  = sh.FixBaseName (basename = self._title
+                                    ,AllOS    = AllOS
+                                    ,max_len  = 100
+                                    ).run()
+            author = sh.Text(text=author).delete_unsupported()
+            title  = sh.Text(text=title).delete_unsupported()
+            folder = sh.objs.pdir().add('..','user','Youtube',author)
+            self.Success = sh.Path(path=folder).create()
+            self._path = sh.objs.pdir().add ('..','user','Youtube'
+                                            ,author,title
+                                            )
+            self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
+                                                            ,FromEnd = 1
+                                                            )
+            self._path += '.mp4'
+        else:
+            sh.log.append ('Video.path'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def download(self):
+        if self.Success:
+            if self._video and self._path:
+                sh.log.append ('Video.download'
+                              ,_('INFO')
+                              ,_('Download "%s"') % self._path
+                              )
+                #todo: select format & quality
+                try:
+                    stream = self._video.getbest (preftype    = 'mp4'
+                                                 ,ftypestrict = True
+                                                 )
+                    stream.download (filepath = self._path
+                                    ,callback = self._callback
+                                    )
+                    # Tell other functions the operation was a success
+                    return True
+                except:
+                    sh.objs.mes ('Video.download'
+                                ,_('WARNING')
+                                ,_('Failed to download "%s"!') \
+                                % self._path
+                                )
+            else:
+                sh.log.append ('Video.download'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.download'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 objs = Objects()
