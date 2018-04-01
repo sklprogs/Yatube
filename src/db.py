@@ -134,6 +134,10 @@ class DB:
                           
     def save(self):
         if self.Success:
+            sh.log.append ('DB.save'
+                          ,_('INFO')
+                          ,_('Save "%s"') % self._path
+                          )
             try:
                 self.db.commit()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):

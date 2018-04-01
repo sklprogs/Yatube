@@ -118,7 +118,7 @@ class Objects:
 
 
 objs = Objects()
-idb  = db.DB()
+idb  = lg.idb
 
 
 if __name__ == '__main__':
@@ -127,7 +127,11 @@ if __name__ == '__main__':
     else:
         #todo: implement
         print('Parse arguments')
-        #Commands().update_channels()
+        Commands().update_channels()
+        '''
         Commands().update_channel (author = 'Анатолий Шарий'
                                   ,url    = 'https://www.youtube.com/user/SuperSharij/videos'
                                   )
+        '''
+        idb.save()
+        idb.close()

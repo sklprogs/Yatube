@@ -594,6 +594,10 @@ class Video:
             if self.Saved:
                 self.assign_offline(self.Saved)
             else:
+                sh.log.append ('Video.get'
+                              ,_('INFO')
+                              ,_('Get new URL: %s') % str(self._url)
+                              )
                 self.video()
                 self.assign_online()
                 self.image()
