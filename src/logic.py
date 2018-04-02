@@ -233,6 +233,7 @@ class Channel:
                                                       + self._channel \
                                                       + self._link_p3
                             self.page()
+                    '''
                     sh.log.append ('Channel.url'
                                   ,_('DEBUG')
                                   ,_('User:') + ' ' + self._channel
@@ -241,6 +242,7 @@ class Channel:
                                   ,_('DEBUG')
                                   ,_('URL:') + ' ' + self._url
                                   )
+                    '''
                     self.warn()
                 else:
                     self.Success = False
@@ -291,8 +293,7 @@ class Channel:
             self._links = result._links
             sh.log.append ('Channel.links'
                           ,_('INFO')
-                          ,_('Fetched %d links for the user "%s"') \
-                          % (len(self._links),self._channel)
+                          ,_('Fetched %d links') % len(self._links)
                           )
         else:
             sh.log.append ('Channel.links'
