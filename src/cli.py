@@ -28,21 +28,23 @@ class Commands:
         itime = sh.Time()
         itime.add_days(days_delta=-days_delta)
         timestamp = itime.timestamp()
-        result = idb.date_filter (timestamp = timestamp
-                                 ,Newer     = Newer
-                                 )
-        '''
-        if result:
-            sh.Table (headers = ['URL','AUTHOR','TITLE','DATE']
-                     ,rows    = result
+        return idb.date_filter (timestamp = timestamp
+                               ,Newer     = Newer
+                               )
+        
+    def new_today(self,data):
+        if data:
+            data = [(row[1],row[2],row[3]) for row in data]
+            sh.Table (headers = ['AUTHOR','TITLE','DATE']
+                     ,rows    = data
+                     ,MaxRow  = 30
+                     ,MaxRows = 50
                      ).print()
         else:
-            sh.log.append ('Commands.date_filter'
+            sh.log.append ('Commands.new_today'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-        '''
-        return result
     
     def update_channels(self):
         delta = 0
@@ -147,7 +149,8 @@ if __name__ == '__main__':
     else:
         #todo: implement
         print('Parse arguments')
-        Commands().update_channels()
-        Commands().date_filter(days_delta=0,Newer=1)
+        com = Commands()
+        #com.update_channels()
+        com.new_today(com.date_filter(days_delta=0,Newer=1))
         idb.save()
         idb.close()

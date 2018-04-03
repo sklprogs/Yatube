@@ -23,7 +23,7 @@ class DB:
                     #todo (?): BLOCK, IGNORE
                     self.dbc.execute ('select URL,AUTHOR,TITLE,DATE \
                                        from VIDEOS where TIMESTAMP >= ?\
-                                       order by TIMESTAMP'
+                                       order by AUTHOR,TIMESTAMP'
                                      ,(timestamp,)
                                      )
                 else:
