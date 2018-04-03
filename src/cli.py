@@ -24,6 +24,26 @@ class Commands:
         self._timestamp = None
         lg.objs.lists().reset()
         
+    def date_filter(self,days_delta=7,Newer=True):
+        itime = sh.Time()
+        itime.add_days(days_delta=-days_delta)
+        timestamp = itime.timestamp()
+        result = idb.date_filter (timestamp = timestamp
+                                 ,Newer     = Newer
+                                 )
+        '''
+        if result:
+            sh.Table (headers = ['URL','AUTHOR','TITLE','DATE']
+                     ,rows    = result
+                     ).print()
+        else:
+            sh.log.append ('Commands.date_filter'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        '''
+        return result
+    
     def update_channels(self):
         delta = 0
         for i in range(len(lg.objs.lists()._subsc_auth)):
@@ -128,5 +148,6 @@ if __name__ == '__main__':
         #todo: implement
         print('Parse arguments')
         Commands().update_channels()
+        Commands().date_filter(days_delta=0,Newer=1)
         idb.save()
         idb.close()

@@ -16,6 +16,35 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def date_filter(self,timestamp,Newer=True):
+        if self.Success:
+            try:
+                if Newer:
+                    #todo (?): BLOCK, IGNORE
+                    self.dbc.execute ('select URL,AUTHOR,TITLE,DATE \
+                                       from VIDEOS where TIMESTAMP >= ?\
+                                       order by TIMESTAMP'
+                                     ,(timestamp,)
+                                     )
+                else:
+                    self.dbc.execute ('select URL,AUTHOR,TITLE,DATE \
+                                       from VIDEOS where TIMESTAMP <= ?\
+                                       order by TIMESTAMP'
+                                     ,(timestamp,)
+                                     )
+                return self.dbc.fetchall()
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.date_filter'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
+        else:
+            sh.log.append ('DB.date_filter'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def values(self):
         self.Success = True
         self._user   = ''

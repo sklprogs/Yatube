@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import shared as sh
+import logic  as lg
 import db
-import logic as lg
 
 
 def time():
@@ -49,12 +50,26 @@ def all():
     delimiter()
     
 def author():
-    dbi = db.DB()
-    result = dbi.channel_videos(author='Алексей Навальный')
+    idb = db.DB()
+    result = idb.channel_videos(author='Алексей Навальный')
     if result:
         print(len(result))
-    dbi.close()
+    idb.close()
+    
+def timestamp():
+    itime = sh.Time()
+    itime._date = '2007-09-01'
+    result = itime.timestamp()
+    idb = db.DB()
+    result = idb.date_filter (timestamp = result
+                             ,Newer     = False
+                             )
+    if result:
+        sh.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
+                 ,rows    = result
+                 ).print()
+    idb.close()
 
 
 if __name__ == '__main__':
-    author()
+    timestamp()
