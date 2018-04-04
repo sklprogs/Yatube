@@ -35,7 +35,7 @@ class Commands:
                                ,WithReady = WithReady
                                )
         
-    def new_today(self,data):
+    def report(self,data):
         if data:
             data = [(row[1],row[2],row[3]) for row in data]
             sh.Table (headers = ['AUTHOR','TITLE','DATE']
@@ -44,7 +44,7 @@ class Commands:
                      ,MaxRows = 50
                      ).print()
         else:
-            sh.log.append ('Commands.new_today'
+            sh.log.append ('Commands.report'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -176,6 +176,6 @@ if __name__ == '__main__':
                                ,WithReady  = False
                                )
         com.download(data)
-        com.new_today(data)
+        com.report(data)
         idb.save()
         idb.close()
