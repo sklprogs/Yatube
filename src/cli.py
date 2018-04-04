@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import sys
-import io
 import pafy   as pf
 import shared as sh
 import logic  as lg
@@ -14,6 +12,7 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 sh.objs.mes(Silent=True)
+idb = lg.idb
 
 
 class Commands:
@@ -117,65 +116,34 @@ class Commands:
         else:
             sh.log.append ('Commands.download'
                           ,_('WARNING')
-                          ,_('Operation has been canceled.')
+                          ,_('Empty input is not allowed!')
                           )
 
 
-
-class Help:
-    
-    def __init__(self):
-        self._summary = ''
-        self.summary()
-    
-    def summary(self):
-        tmp = io.StringIO()
-        # -d
-        tmp.write('-d')
-        tmp.write('\t\t')
-        tmp.write(_('Download updated subscriptions'))
-        tmp.write('\n')
-        # -n
-        tmp.write('-n <integer>')
-        tmp.write('\t')
-        tmp.write(_('Filter by date. For example, "-n 3" means "select videos no older than 3 days"'))
-        tmp.write('\n')
-        # -u
-        tmp.write('-u')
-        tmp.write('\t\t')
-        tmp.write(_('Update subscriptions in database'))
-        tmp.write('\n')
-        self._summary = tmp.getvalue()
-        tmp.close()
-        
-    def print(self):
-        print(self._summary)
-
-
-
-class Objects:
-    
-    def __init__(self):
-        pass
-
-
-objs = Objects()
-idb  = lg.idb
-
-
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        Help().print()
-    else:
-        #todo: implement
-        print('Parse arguments')
-        com = Commands()
-        com.update_channels()
-        data = com.date_filter (days_delta = 0
-                               ,Newer      = True
-                               ,WithReady  = False
-                               )
-        com.download(data)
-        com.report(data)
-        idb.save()
-        idb.close()
+    com = Commands()
+    # Fetch metadata on new videos
+    com.update_channels()
+    ''' Select new videos
+        'days_delta': 0 is today, 1 is tomorrow and today, 7 - for
+        the entire week, etc. Beware: large subscribe lists will use
+        a HUGE amount of traffic even when 'days_delta' is set to 0
+        (today).
+        'Newer': True  - select videos that are newer than 'days_delta'
+                 False - select videos that are older than 'days_delta'
+        'WithReady': True  - also process videos that were already
+                             downloaded. May be useful if you lost your
+                             video files or moved to another PC. Note
+                             that video files that already exist will
+                             be skipped.
+                     False - do not process videos that were already
+                             downloaded (default).
+    '''
+    data = com.date_filter (days_delta = 0
+                           ,Newer      = True
+                           ,WithReady  = False
+                           )
+    #com.download(data)
+    com.report(data)
+    idb.save()
+    idb.close()
