@@ -16,22 +16,46 @@ class DB:
         self.connect()
         self.create_videos()
         
-    def date_filter(self,timestamp,Newer=True):
+    def _filt1(self,timestamp):
+        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
+                           where TIMESTAMP >= ? \
+                           order by AUTHOR,TIMESTAMP',(timestamp,)
+                         )
+                         
+    def _filt2(self,timestamp):
+        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
+                           where READY = ? and TIMESTAMP >= ? \
+                           order by AUTHOR,TIMESTAMP',(False,timestamp,)
+                         )
+    
+    def _filt3(self,timestamp):
+        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
+                           where TIMESTAMP <= ? \
+                           order by AUTHOR,TIMESTAMP',(timestamp,)
+                         )
+                         
+    def _filt4(self,timestamp):
+        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
+                           where READY = ? and TIMESTAMP <= ? \
+                           order by AUTHOR,TIMESTAMP',(False,timestamp,)
+                         )
+    
+    def date_filter (self,timestamp
+                    ,Newer=True,WithReady=False
+                    ):
         if self.Success:
+            #todo (?): BLOCK, IGNORE
             try:
                 if Newer:
-                    #todo (?): BLOCK, IGNORE
-                    self.dbc.execute ('select URL,AUTHOR,TITLE,DATE \
-                                       from VIDEOS where TIMESTAMP >= ?\
-                                       order by AUTHOR,TIMESTAMP'
-                                     ,(timestamp,)
-                                     )
+                    if WithReady:
+                        self._filt1(timestamp)
+                    else:
+                        self._filt2(timestamp)
                 else:
-                    self.dbc.execute ('select URL,AUTHOR,TITLE,DATE \
-                                       from VIDEOS where TIMESTAMP <= ?\
-                                       order by TIMESTAMP'
-                                     ,(timestamp,)
-                                     )
+                    if WithReady:
+                        self._filt3(timestamp)
+                    else:
+                        self._filt4(timestamp)
                 return self.dbc.fetchall()
             except (sqlite3.DatabaseError,sqlite3.OperationalError):
                 self.Success = False

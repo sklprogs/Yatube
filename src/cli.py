@@ -24,12 +24,15 @@ class Commands:
         self._timestamp = None
         lg.objs.lists().reset()
         
-    def date_filter(self,days_delta=7,Newer=True):
+    def date_filter (self,days_delta=7
+                    ,Newer=True,WithReady=False
+                    ):
         itime = sh.Time()
         itime.add_days(days_delta=-days_delta)
         timestamp = itime.timestamp()
         return idb.date_filter (timestamp = timestamp
                                ,Newer     = Newer
+                               ,WithReady = WithReady
                                )
         
     def new_today(self,data):
@@ -99,6 +102,23 @@ class Commands:
                     author = title = _('BLOCKED')
                     self._video.Block = True
         idb.save()
+        
+    def download(self,data):
+        if data:
+            for row in data:
+                video = lg.Video(url=row[0])
+                video.video()
+                video._author = row[1]
+                video._title  = row[2]
+                video.path()
+                video.download()
+                if video.Success:
+                    idb.mark_downloaded(url=row[0])
+        else:
+            sh.log.append ('Commands.download'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
@@ -150,7 +170,12 @@ if __name__ == '__main__':
         #todo: implement
         print('Parse arguments')
         com = Commands()
-        #com.update_channels()
-        com.new_today(com.date_filter(days_delta=0,Newer=1))
+        com.update_channels()
+        data = com.date_filter (days_delta = 0
+                               ,Newer      = True
+                               ,WithReady  = False
+                               )
+        com.download(data)
+        com.new_today(data)
         idb.save()
         idb.close()
