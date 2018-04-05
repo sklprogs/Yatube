@@ -258,11 +258,9 @@ class Commands:
                           )
     
     def summary(self,event=None):
-        gi.objs.summary().read_only(False)
         if self._video:
-            gi.objs._summary.reset()
+            gi.objs.summary().reset()
             gi.objs._summary.insert(self._video.model.summary())
-        gi.objs._summary.read_only(True)
         gi.objs._summary.show()
     
     def context(self,event=None):
@@ -381,22 +379,47 @@ class Commands:
     
     def get_url(self,event=None):
         result = self._menu.ent_url.get()
-        if result and result != _('Get video from URL'):
-            sh.log.append ('Commands.get_url'
-                          ,_('INFO')
-                          ,_('Download "%s"') % result
-                          )
-            #todo: check URL
-            self._video = Video(url=result)
-            self._video.model.video()
-            self._video.model.assign_online()
-            ''' Set to 'None', otherwise, wrong GUI object will be
-                manipulated!
-            '''
-            self._gvideo = None
-            self.download_video()
-            #todo: if downloaded successfully:
-            self._menu.clear_url()
+        if result:
+            if result == _('Get video from URL'):
+                sh.log.append ('Commands.get_url'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            elif self._menu.opt_url.choice in gi.url_items:
+                video = Video(url=result)
+                video.get()
+                if video.model.Success:
+                    self._video = video
+                    ''' Set to 'None', otherwise, wrong GUI object will
+                        be manipulated!
+                    '''
+                    self._gvideo = None
+                    if self._menu.opt_url.choice == _('Show summary'):
+                        self.summary()
+                    elif self._menu.opt_url.choice == _('Download'):
+                        self.download_video()
+                    elif self._menu.opt_url.choice == _('Play'):
+                        self.download_video()
+                        self.play_video()
+                    elif self._menu.opt_url.choice == _('Stream'):
+                        self.stream()
+                    elif self._menu.opt_url.choice == _('Delete'):
+                        self._video.model.path()
+                        self.delete_video()
+                        self._menu.clear_url()
+                else:
+                    sh.log.append ('Commands.get_url'
+                                  ,_('WARNING')
+                                  ,_('Operation has been canceled.')
+                                  )
+            else:
+                sh.objs.mes ('Commands.get_url'
+                            ,_('WARNING')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                            % (str(self._menu.opt_url.choice)
+                              ,';'.join(gi.url_items)
+                              )
+                            )
         else:
             sh.log.append ('Commands.get_url'
                           ,_('WARNING')
@@ -505,7 +528,6 @@ class Commands:
         self._menu.btn_upd.action = self.update_channels
         self._menu.btn_all.action = self.select_new
         self._menu.btn_ytb.action = self.search_youtube
-        self._menu.btn_url.action = self.get_url
         self._menu.btn_lnk.action = self.get_links
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_dld.action = self.download
@@ -531,8 +553,9 @@ class Commands:
         self._menu.chb_sel.widget.config(command=self.toggle_select)
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
-        self._menu.opt_dat.action = self.filter_by_date
         # Menu: OptionMenus
+        self._menu.opt_dat.action = self.filter_by_date
+        self._menu.opt_url.action = self.get_url
         self._menu.opt_day.reset (items   = self._days
                                  ,default = self._day
                                  ,action  = self.reset_date_filter
@@ -859,7 +882,6 @@ class Video:
     def get(self):
         self.model.get()
         self.image()
-
 
 
 if __name__ == '__main__':

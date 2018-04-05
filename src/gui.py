@@ -30,6 +30,13 @@ context_items = (_('Show the full summary')
                 #,_('Copy channel URL')
                 )
 
+url_items = (_('Show summary')
+            ,_('Download')
+            ,_('Play')
+            #,_('Stream')
+            ,_('Delete')
+            )
+
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
@@ -123,9 +130,9 @@ class Menu:
                                 ,side      = 'left'
                                 )
         self.ent_url.insert(_('Get video from URL'))
-        self.btn_url = sg.Button (parent = self.frame2
-                                 ,text   = _('Download')
-                                 )
+        self.opt_url = sg.OptionMenu (parent = self.frame2
+                                     ,items  = url_items
+                                     )
         # Get links from URL
         self.ent_lnk = sg.Entry (parent    = self.frame2
                                 ,Composite = True
@@ -749,7 +756,7 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
-    sg.Geometry(parent=objs.parent()).set('985x600')
+    sg.Geometry(parent=objs.parent()).set('1024x600')
     objs.menu().widget.wait_window()
     sg.objs.end()
     '''
