@@ -887,7 +887,7 @@ class Video:
 if __name__ == '__main__':
     sg.objs.start()
     parent = gi.objs.parent()
-    sg.Geometry(parent=parent).set('985x600')
+    sg.Geometry(parent=parent).set('1024x600')
     idb = lg.idb
     commands = Commands()
     commands.bindings()

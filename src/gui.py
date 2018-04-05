@@ -37,6 +37,7 @@ url_items = (_('Show summary')
             ,_('Delete')
             )
 
+default_entry_width = 19
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
@@ -117,6 +118,7 @@ class Menu:
                                 ,font      = 'Serif 10 italic'
                                 ,fg        = 'grey'
                                 ,side      = 'left'
+                                ,width     = default_entry_width
                                 )
         self.ent_src.insert(_('Search Youtube'))
         self.btn_ytb = sg.Button (parent = self.frame2
@@ -128,6 +130,7 @@ class Menu:
                                 ,font      = 'Serif 10 italic'
                                 ,fg        = 'grey'
                                 ,side      = 'left'
+                                ,width     = default_entry_width
                                 )
         self.ent_url.insert(_('Get video from URL'))
         self.opt_url = sg.OptionMenu (parent = self.frame2
@@ -139,6 +142,7 @@ class Menu:
                                 ,font      = 'Serif 10 italic'
                                 ,fg        = 'grey'
                                 ,side      = 'left'
+                                ,width     = default_entry_width
                                 )
         self.ent_lnk.insert(_('Get links from URL'))
         self.btn_lnk = sg.Button (parent = self.frame2
@@ -150,6 +154,7 @@ class Menu:
                                 ,font      = 'Serif 10 italic'
                                 ,fg        = 'grey'
                                 ,side      = 'left'
+                                ,width     = default_entry_width
                                 )
         self.ent_flt.insert(_('Filter this view'))
         self.btn_flt = sg.Button (parent = self.frame2
