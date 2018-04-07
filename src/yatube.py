@@ -38,6 +38,29 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def show_new(self):
+        itime = sh.Time()
+        itime.add_days(days_delta=-1)
+        urls = idb.new_videos (timestamp = itime.timestamp()
+                              ,authors   = lg.objs.lists()._subsc_auth
+                              )
+        if urls:
+            ''' URL can be any here, even 'None', but we do not use 'None'
+                in order to be on the safe side since many classes have
+                checks against empty input in '__init__'.
+            '''
+            self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
+            self._channel._links = urls
+            self.reset_channel_gui()
+            self.channel_gui()
+            gi.objs._channel.show()
+        else:
+            # Do not warn here since this is actually a common case
+            sh.log.append ('Commands.show_new'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
     def delete_selected(self,event=None):
         deleted = []
         for video_gui in gi.objs.channel()._videos:
@@ -341,10 +364,7 @@ class Commands:
                           
     def set_channel(self,event=None):
         if self._menu.opt_chl.choice == _('Channels'):
-            sh.log.append ('Commands.set_channel'
-                          ,_('INFO')
-                          ,_('Nothing to do.')
-                          )
+            self.show_new()
         else:
             sh.log.append ('Commands.set_channel'
                           ,_('INFO')
@@ -355,7 +375,9 @@ class Commands:
                 author = self._menu.opt_chl.choice
                 no     = lg.objs._lists._subsc_auth.index(author)
                 url    = lg.objs._lists._subsc_urls[no]
-                self.update_channel(author=author,url=url)
+                self.update_channel (author = author
+                                    ,url    = url
+                                    )
             else:
                 #todo: console + GUI
                 sh.log.append ('Commands.set_channel'

@@ -139,7 +139,7 @@ if __name__ == '__main__':
                      False - do not process videos that were already
                              downloaded (default).
     '''
-    data = com.date_filter (days_delta = 0
+    data = com.date_filter (days_delta = 1
                            ,Newer      = True
                            ,WithReady  = False
                            )

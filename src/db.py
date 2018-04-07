@@ -16,6 +16,30 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def new_videos(self,timestamp,authors):
+        if self.Success:
+            try:
+                query = 'select   URL from VIDEOS \
+                         where    AUTHOR in (%s) and TIMESTAMP >= %f\
+                         order by AUTHOR,TIMESTAMP' \
+                        % (','.join('?'*len(authors)),timestamp)
+                self.dbc.execute(query,authors)
+                result = self.dbc.fetchall()
+                if result:
+                    #todo: should we return a list or a tuple?
+                    return [row[0] for row in result]
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.new_videos'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
+        else:
+            sh.log.append ('DB.new_videos'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def _filt1(self,timestamp):
         self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
                            where TIMESTAMP >= ? \
@@ -261,4 +285,13 @@ class DB:
 
 
 if __name__ == '__main__':
-    pass
+    idb = DB()
+    itime = sh.Time()
+    itime.add_days(days_delta=-1)
+    urls = idb.new_videos (timestamp = itime.timestamp()
+                          ,authors   = ('Анатолий Шарий','kamikadzedead'
+                                       ,'Алексей Навальный','BBC'
+                                       )
+                          )
+    print(urls)
+    idb.close()
