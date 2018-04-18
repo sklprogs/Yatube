@@ -70,11 +70,11 @@ class Commands:
         self._channel.run()
         self.channel_cli()
         new_urls = idb.channel_videos(author=author)
-        old_urls = sh.Input (func_title = 'Commands.update_channel'
-                            ,val        = old_urls
+        old_urls = sh.Input (title = 'Commands.update_channel'
+                            ,value = old_urls
                             ).list()
-        new_urls = sh.Input (func_title = 'Commands.update_channel'
-                            ,val        = new_urls
+        new_urls = sh.Input (title = 'Commands.update_channel'
+                            ,value = new_urls
                             ).list()
         delta_urls = []
         for url in new_urls:

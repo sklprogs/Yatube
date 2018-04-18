@@ -48,8 +48,8 @@ class Time:
         # Year of Youtube birth
         first_year = 2005
         last_year  = self.itime.year()
-        last_year  = sh.Input (func_title = 'Time.years'
-                              ,val        = last_year
+        last_year  = sh.Input (title = 'Time.years'
+                              ,value = last_year
                               ).integer()
         if not last_year > first_year:
             sh.log.append ('Time.years'

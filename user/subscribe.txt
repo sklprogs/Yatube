@@ -1,7 +1,3 @@
-Россия	https://www.youtube.com/channel/UCLSUk_DwbnEj-69pJxCLSCQ/videos
-Lucas the Spider	https://www.youtube.com/channel/UCNqRS1gSJFMNPVwye1gyI_g/videos
-Арслан Энн	https://www.youtube.com/channel/UCXvjLCLrGKMsb0HutfX_KDQ/videos
-Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
 Anton SKALD	https://www.youtube.com/channel/UC9ZGgqp95RHAXFm2Sq0PBPw/videos
 BadComedian	https://www.youtube.com/user/TheBadComedian/videos
 BBC	https://www.youtube.com/user/BBC/videos
@@ -10,12 +6,15 @@ Brave New Films	https://www.youtube.com/user/bravenewfilms/videos
 Brave Wilderness	https://www.youtube.com/user/BreakingTrail/videos
 BRIGHT SIDE	https://www.youtube.com/channel/UC4rlAVgAK0SGk-yTfe48Qpw/videos
 CenterStrain01	https://www.youtube.com/user/CenterStrain01/videos
+Cuteness Overload	https://www.youtube.com/channel/UC_mZ9VeAwUOOpC50CJw0Llw
 Dobryak	https://www.youtube.com/user/mrDobryakovich/videos
 ExplosmEntertainment	https://www.youtube.com/user/ExplosmEntertainment/videos
 itpedia	https://www.youtube.com/user/itpediachannel/videos
 kamikadzedead	https://www.youtube.com/user/kamikadzedead/videos
 Kurzgesagt	https://www.youtube.com/user/Kurzgesagt/videos
+Lucas the Spider	https://www.youtube.com/channel/UCNqRS1gSJFMNPVwye1gyI_g/videos
 maxman.tv	https://www.youtube.com/user/mxmantv/videos
+Meduza	https://www.youtube.com/channel/UC-30BJyAAObw1irWxu6IPkw/videos
 NEMAGIA	https://www.youtube.com/user/NEMAGIA/videos
 NEMAGIA-LifE	https://www.youtube.com/user/BrizgliviI1/videos
 Parfenon	https://www.youtube.com/channel/UCbhMGG0ZievPtK8mzLH5jhQ/videos
@@ -30,9 +29,11 @@ TheRichest	https://www.youtube.com/channel/UCdxi8d8qRsRyUi2ERYjYb-w/videos
 tophype	https://www.youtube.com/user/SteelBallsStatham/videos
 Алексей Навальный	https://www.youtube.com/user/NavalnyRu/videos
 Анатолий Шарий	https://www.youtube.com/user/SuperSharij/videos
+Арслан Энн	https://www.youtube.com/channel/UCXvjLCLrGKMsb0HutfX_KDQ/videos
 Асхаб Алибеков	https://www.youtube.com/channel/UCGOZDR25IE3X079Le0vuVtw/videos
 Быть Или	https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos
 Видео от SoLiDa	https://www.youtube.com/user/xxxxxSoLiDxxxxx/videos
+Джастин	https://www.youtube.com/channel/UCrMnWbWKMm_D0cNvzkKP1jQ/videos
 Дмитрий ПОТАПЕНКО	https://www.youtube.com/channel/UC54SBo5_usXGEoybX1ZVETQ/videos
 Думай Сам/ Думай Сейчас	https://www.youtube.com/channel/UCalD8p9-KemFd8AQfS6mmVA/videos
 Итальянцы by Kuzno Productions	https://www.youtube.com/channel/UC82ZIpmWhgwXfwMfGc5FYoA/videos
@@ -47,4 +48,7 @@ tophype	https://www.youtube.com/user/SteelBallsStatham/videos
 Обмани Меня	https://www.youtube.com/channel/UCC4NURIvKftk2vuNUpJEoZA/videos
 Привет с Урала	https://www.youtube.com/channel/UCZYlAcdQZ0PE6IQiPk6omug/videos
 Реальная журналистика	https://www.youtube.com/channel/UCgbZ5Zi0sIbwvUwiGCIom1g/videos
+Россия	https://www.youtube.com/channel/UCLSUk_DwbnEj-69pJxCLSCQ/videos
 Теперь я Знаю	https://www.youtube.com/channel/UCVqJYFWsnkLEUkmmS-avyQg/videos
+Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
+Царьград ТВ	https://www.youtube.com/user/tsargradtv/videos
