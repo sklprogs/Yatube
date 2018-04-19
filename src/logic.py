@@ -12,9 +12,12 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-video_root_url = 'https://www.youtube.com/watch?v='
-AllOS = False
-idb = db.DB()
+pattern1  = 'https://www.youtube.com/watch?v='
+pattern2  = '<meta itemprop="channelId" content="'
+pattern3a = 'https://www.youtube.com/channel/'
+pattern3b = '/videos'
+AllOS    = False
+idb      = db.DB()
 
 
 
@@ -442,6 +445,7 @@ class Objects:
 # Requires idb
 class Video:
     
+    # URL is shorten (a video ID)
     def __init__(self,url,callback=None):
         self.values()
         self._url = url
@@ -454,39 +458,121 @@ class Video:
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path \
                      = self._pathsh = self._search = self._timestamp \
-                     = ''
+                     = self._channel_url = self._page = ''
         self._len    = self._views = self._likes = self._dislikes = 0
         self._rating = 0.0
         
+    def page(self):
+        if self.Success:
+            if not self._page:
+                if self._url:
+                    url = pattern1 + self._url
+                    self._page = sh.Get(url=url).run()
+                else:
+                    sh.log.append ('Video.page'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+            return self._page
+        else:
+            sh.log.append ('Video.page'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def channel_url(self):
+        if self.Success:
+            if not self._channel_url:
+                if self.page():
+                    pos1 = sh.Search (text   = self._page
+                                     ,search = pattern2
+                                     ).next()
+                    if str(pos1).isdigit():
+                        pos1 += len(pattern2)
+                        if pos1 < len(self._page):
+                            search = sh.Search (text   = self._page
+                                               ,search = '"'
+                                               )
+                            search.i = pos1
+                            pos2 = search.next()
+                            if str(pos2).isdigit():
+                                url = self._page[pos1:pos2]
+                                if url:
+                                    self._channel_url = pattern3a \
+                                                        + url \
+                                                        + pattern3b
+                                    sh.log.append ('Video.channel_url'
+                                                  ,_('DEBUG')
+                                                  ,self._channel_url
+                                                  )
+                                    return self._channel_url
+                                else:
+                                    sh.log.append ('Video.channel_url'
+                                                  ,_('WARNING')
+                                                  ,_('Empty input is not allowed!')
+                                                  )
+                            else:
+                                sh.log.append ('Video.channel_url'
+                                              ,_('WARNING')
+                                              ,_('Wrong input data!')
+                                              )
+                        else:
+                            sh.log.append ('Video.channel_url'
+                                          ,_('WARNING')
+                                          ,_('Wrong input data!')
+                                          )
+                    else:
+                        sh.log.append ('Video.channel_url'
+                                      ,_('WARNING')
+                                      ,_('Wrong input data!')
+                                      )
+                else:
+                    sh.log.append ('Video.channel_url'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+            return self._channel_url
+        else:
+            sh.log.append ('Video.channel_url'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def assign_online(self):
-        if self._video:
-            try:
-                self._author    = self._video.author
-                self._title     = self._video.title
-                self._date      = self._video.published
-                self._cat       = self._video.category
-                self._desc      = self._video.description
-                self._dur       = self._video.duration
-                self._len       = self._video.length
-                self._views     = self._video.viewcount
-                self._likes     = self._video.likes
-                self._dislikes  = self._video.dislikes
-                self._rating    = self._video.rating
-            # Youtube says: invalid parameters
-            except:
+        if self.Success:
+            if self._video:
+                try:
+                    self._author    = self._video.author
+                    self._title     = self._video.title
+                    self._date      = self._video.published
+                    self._cat       = self._video.category
+                    self._desc      = self._video.description
+                    self._dur       = self._video.duration
+                    self._len       = self._video.length
+                    self._views     = self._video.viewcount
+                    self._likes     = self._video.likes
+                    self._dislikes  = self._video.dislikes
+                    self._rating    = self._video.rating
+                # Youtube says: invalid parameters
+                except:
+                    sh.log.append ('Video.assign_online'
+                                  ,_('WARNING')
+                                  ,_('Third party module has failed!')
+                                  )
+                self._search    = self._author.lower() + ' ' \
+                                  + self._title.lower()
+                itime           = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
+                itime._date     = self._date
+                self._timestamp = itime.timestamp()
+            else:
                 sh.log.append ('Video.assign_online'
                               ,_('WARNING')
-                              ,_('Third party module has failed!')
+                              ,_('Empty input is not allowed!')
                               )
-            self._search    = self._author.lower() + ' ' \
-                              + self._title.lower()
-            itime           = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
-            itime._date     = self._date
-            self._timestamp = itime.timestamp()
         else:
             sh.log.append ('Video.assign_online'
                           ,_('WARNING')
-                          ,_('Empty input is not allowed!')
+                          ,_('Operation has been canceled.')
                           )
                           
     def dump(self):
@@ -514,34 +600,40 @@ class Video:
                           )
         
     def assign_offline(self,data):
-        if data:
-            data_len = 15
-            if len(data) >= data_len:
-                self._author    = data[0]
-                self._title     = data[1]
-                self._date      = data[2]
-                self._cat       = data[3]
-                self._desc      = data[4]
-                self._dur       = data[5]
-                self._len       = data[6]
-                self._views     = data[7]
-                self._likes     = data[8]
-                self._dislikes  = data[9]
-                self._rating    = data[10]
-                self._bytes     = data[11]
-                self.Ready      = data[12]
-                self._search    = data[13]
-                self._timestamp = data[14]
+        if self.Success:
+            if data:
+                data_len = 15
+                if len(data) >= data_len:
+                    self._author    = data[0]
+                    self._title     = data[1]
+                    self._date      = data[2]
+                    self._cat       = data[3]
+                    self._desc      = data[4]
+                    self._dur       = data[5]
+                    self._len       = data[6]
+                    self._views     = data[7]
+                    self._likes     = data[8]
+                    self._dislikes  = data[9]
+                    self._rating    = data[10]
+                    self._bytes     = data[11]
+                    self.Ready      = data[12]
+                    self._search    = data[13]
+                    self._timestamp = data[14]
+                else:
+                    sh.objs.mes ('Video.assign_offline'
+                                ,_('ERROR')
+                                ,_('The condition "%s" is not observed!') \
+                                % '%d >= %d' % (len(data),data_len)
+                                )
             else:
-                sh.objs.mes ('Video.assign_offline'
-                            ,_('ERROR')
-                            ,_('The condition "%s" is not observed!') \
-                            % '%d >= %d' % (len(data),data_len)
-                            )
+                sh.log.append ('Video.assign_offline'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('Video.assign_offline'
                           ,_('WARNING')
-                          ,_('Empty input is not allowed!')
+                          ,_('Operation has been canceled.')
                           )
         
     def video(self):
@@ -738,4 +830,11 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    pass
+    video = Video(url='https://www.youtube.com/watch?v=8zCjHftxt8E')
+    url = str(video.channel_url())
+    print('"' + url + '"')
+    import sharedGUI as sg
+    sg.objs.start()
+    sg.Clipboard().copy(url)
+    input('Press Return')
+    sg.objs.end()

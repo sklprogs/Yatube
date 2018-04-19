@@ -18,23 +18,23 @@ class Commands:
     
     def __init__(self):
         # Get a logic object by a GUI object
-        self._videos     = {}
-        self._video      = None
-        self._gvideo     = None
-        self._channel    = None
-        self._timestamp  = None
-        self._menu       = gi.objs.menu()
-        itime            = lg.Time()
+        self._videos    = {}
+        self._video     = None
+        self._gvideo    = None
+        self._channel   = None
+        self._timestamp = None
+        self._menu      = gi.objs.menu()
+        itime           = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
         itime.months()
         itime.days()
-        self._years      = itime._years
-        self._year       = itime._year
-        self._months     = itime._months
-        self._month      = itime._month
-        self._days       = itime._days
-        self._day        = itime._day
+        self._years     = itime._years
+        self._year      = itime._year
+        self._months    = itime._months
+        self._month     = itime._month
+        self._days      = itime._days
+        self._day       = itime._day
         lg.objs.lists().reset()
         self.reset_channels()
     
@@ -107,22 +107,9 @@ class Commands:
                                  ,action  = self.set_channel
                                  )
     
-    def open_channel_url(self,event=None):
-        sg.Message ('Commands.open_channel_url'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
-                   
-    def copy_channel_url(self,event=None):
-        sg.Message ('Commands.copy_channel_url'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
-    
     def open_video_url(self,event=None):
         if self._video:
-            lg.objs.online()._url = lg.video_root_url \
-                                    + self._video.model._url
+            lg.objs.online()._url = lg.pattern1 + self._video.model._url
             lg.objs._online.browse()
         else:
             sh.log.append ('Commands.open_video_url'
@@ -132,7 +119,7 @@ class Commands:
                    
     def copy_video_url(self,event=None):
         if self._video:
-            url = lg.video_root_url + self._video.model._url
+            url = lg.pattern1 + self._video.model._url
             sg.Clipboard().copy(text=url)
         else:
             sh.log.append ('Commands.copy_video_url'
@@ -141,16 +128,92 @@ class Commands:
                           )
     
     def subscribe(self,event=None):
-        sg.Message ('Commands.subscribe'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        if self._video and self._video.model.channel_url():
+            self._video.model.video()
+            if self._video.model._author in lg.objs.lists()._subsc_auth:
+                sh.log.append ('Commands.subscribe'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                subscriptions = []
+                for i in range(len(lg.objs._lists._subsc_auth)):
+                    subscriptions.append (lg.objs._lists._subsc_auth[i]\
+                                         + '\t' \
+                                         + lg.objs._lists._subsc_urls[i]
+                                         )
+                    subscriptions.sort()
+                subscriptions = '\n'.join(subscriptions)
+                if subscriptions:
+                    sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+                                     ,AskRewrite = False
+                                     ).write(text=subscriptions)
+                    lg.objs._lists.reset()
+                    self.reset_channels()
+                else:
+                    sh.log.append ('Commands.subscribe'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+        else:
+            sh.log.append ('Commands.subscribe'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def block(self,event=None):
-        sg.Message ('Commands.block'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        if self._video:
+            self._video.model.video()
+            if self._video.model._author:
+                if self._video.model._author in lg.objs.lists()._block_auth:
+                    sh.log.append ('Commands.block'
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+                else:
+                    lg.objs._lists._block_auth.append(self._video.model._author)
+                    lg.objs._lists._block_auth.sort()
+                    blocked = '\n'.join(lg.objs._lists._block_auth)
+                    if blocked:
+                        sh.WriteTextFile (file       = lg.objs._lists._fblock
+                                         ,AskRewrite = False
+                                         ).write(text=blocked)
+                        lg.objs._lists.reset()
+                        self.reset_channels()
+                    else:
+                        sh.log.append ('Commands.block'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
+            else:
+                sh.log.append ('Commands.block'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Commands.block'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                   
+    def open_channel_url(self,event=None):
+        if self._video and self._video.model.channel_url():
+            lg.objs.online()._url = self._video.model._channel_url
+            lg.objs._online.browse()
+        else:
+            sh.log.append ('Commands.open_channel_url'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+
+    def copy_channel_url(self,event=None):
+        if self._video and self._video.model.channel_url():
+            sg.Clipboard().copy(text=self._video.model._channel_url)
+        else:
+            sh.log.append ('Commands.copy_channel_url'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def stream(self,event=None):
         sg.Message ('Commands.stream'
@@ -807,6 +870,9 @@ class Commands:
         gi.objs._subscribe.show()
         text = gi.objs._subscribe.get()
         if text:
+            text = text.splitlines()
+            text.sort()
+            text = '\n'.join(text)
             sh.WriteTextFile (file       = lg.objs._lists._fsubsc
                              ,AskRewrite = False
                              ).write(text=text)
@@ -824,6 +890,9 @@ class Commands:
             gi.objs._subscribe.show()
             text = gi.objs._subscribe.get()
             if text:
+                text = text.splitlines()
+                text.sort()
+                text = '\n'.join(text)
                 sh.WriteTextFile (file       = lg.objs._lists._fsubsc2
                                  ,AskRewrite = False
                                  ).write(text=text)
@@ -851,6 +920,9 @@ class Commands:
         gi.objs._blacklist.show()
         text = gi.objs._blacklist.get()
         if text:
+            text = text.splitlines()
+            text.sort()
+            text = '\n'.join(text)
             sh.WriteTextFile (file       = lg.objs._lists._fblock
                              ,AskRewrite = False
                              ).write(text=text)
