@@ -1,5 +1,3 @@
-#SLOVOSPB PRODUCTION
-# Грудинин
 AcademeG
 AcademeG 2nd CH
 AcademeG DailyStream

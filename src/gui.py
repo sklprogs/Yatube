@@ -22,6 +22,7 @@ context_items = (_('Show the full summary')
                 #,_('Stream')
                 ,_('Toggle the download status')
                 ,_('Delete the downloaded file')
+                ,_('Load this channel')
                 ,_('Block this channel')
                 ,_('Subscribe to this channel')
                 ,_('Open video URL')
@@ -35,6 +36,8 @@ url_items = (_('Show summary')
             ,_('Play')
             #,_('Stream')
             ,_('Delete')
+            ,_('Extract links')
+            ,_('Full menu')
             )
 
 default_entry_width = 19
@@ -124,7 +127,7 @@ class Menu:
         self.btn_ytb = sg.Button (parent = self.frame2
                                  ,text   = _('Search')
                                  )
-        # Get video from URL
+        # Paste URL here
         self.ent_url = sg.Entry (parent    = self.frame2
                                 ,Composite = True
                                 ,font      = 'Serif 10 italic'
@@ -132,22 +135,10 @@ class Menu:
                                 ,side      = 'left'
                                 ,width     = default_entry_width
                                 )
-        self.ent_url.insert(_('Get video from URL'))
+        self.ent_url.insert(_('Paste URL here'))
         self.opt_url = sg.OptionMenu (parent = self.frame2
                                      ,items  = url_items
                                      )
-        # Get links from URL
-        self.ent_lnk = sg.Entry (parent    = self.frame2
-                                ,Composite = True
-                                ,font      = 'Serif 10 italic'
-                                ,fg        = 'grey'
-                                ,side      = 'left'
-                                ,width     = default_entry_width
-                                )
-        self.ent_lnk.insert(_('Get links from URL'))
-        self.btn_lnk = sg.Button (parent = self.frame2
-                                 ,text   = _('Get')
-                                 )
         # Filter this view
         self.ent_flt = sg.Entry (parent    = self.frame2
                                 ,Composite = True
@@ -218,7 +209,7 @@ class Menu:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = lambda x:self.clear_search(Force=True)
                 )
-        # Get video from URL
+        # Paste URL
         sg.bind (obj      = self.ent_url
                 ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
                 ,action   = self.paste_url
@@ -226,15 +217,6 @@ class Menu:
         sg.bind (obj      = self.ent_url
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.clear_url
-                )
-        # Get links from URL
-        sg.bind (obj      = self.ent_lnk
-                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
-                ,action   = self.paste_links
-                )
-        sg.bind (obj      = self.ent_lnk
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.clear_links
                 )
         # Filter this view
         sg.bind (obj      = self.ent_flt
@@ -297,15 +279,6 @@ class Menu:
     def paste_filter(self,event=None):
         self.clear_filter()
         self.ent_flt.insert(text=sg.Clipboard().paste())
-    
-    def paste_links(self,event=None):
-        self.clear_links()
-        self.ent_lnk.insert(text=sg.Clipboard().paste())
-    
-    def clear_links(self,event=None):
-        self.ent_lnk.clear_text()
-        self.ent_lnk.widget.config(fg='black',font='Serif 10')
-        self.ent_lnk.focus()
 
 
 

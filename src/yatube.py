@@ -86,7 +86,7 @@ class Commands:
                         )
     
     def delete_video(self,event=None):
-        if self._video and self._video.model._path:
+        if self._video and self._video.model.path():
             return sh.File(file=self._video.model._path).delete()
         else:
             sh.log.append ('Commands.delete_video'
@@ -211,6 +211,19 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
                    
+    def load_channel(self,event=None):
+        if self._video and self._video.model.channel_url():
+            self._channel = lg.Channel(url=self._video.model._channel_url)
+            self._channel.run()
+            self.reset_channel_gui()
+            self.channel_gui()
+            gi.objs._channel.show()
+        else:
+            sh.log.append ('Commands.load_channel'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def open_channel_url(self,event=None):
         if self._video and self._video.model.channel_url():
             lg.objs.online()._url = self._video.model._channel_url
@@ -364,6 +377,47 @@ class Commands:
             gi.objs._summary.insert(self._video.model.summary())
         gi.objs._summary.show()
     
+    def _context(self,choice,event=None):
+        if choice:
+            if choice == _('Show the full summary'):
+                self.summary()
+            elif choice == _('Download'):
+                self.download_video()
+            elif choice == _('Play'):
+                self.download_video()
+                self.play_video()
+            elif choice == _('Stream'):
+                self.stream()
+            elif choice == _('Toggle the download status'):
+                self.toggle_downloaded()
+            elif choice == _('Delete the downloaded file'):
+                self.delete_video()
+            elif choice == _('Load this channel'):
+                self.load_channel()
+            elif choice == _('Block this channel'):
+                self.block()
+            elif choice == _('Subscribe to this channel'):
+                self.subscribe()
+            elif choice == _('Open video URL'):
+                self.open_video_url()
+            elif choice == _('Copy video URL'):
+                self.copy_video_url()
+            elif choice == _('Open channel URL'):
+                self.open_channel_url()
+            elif choice == _('Copy channel URL'):
+                self.copy_channel_url()
+            else:
+                sh.objs.mes ('Commands._context'
+                            ,_('ERROR')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                            % (str(choice),';'.join(gi.context_items))
+                            )
+        else:
+            sh.log.append ('Commands._context'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def context(self,event=None):
         # 'event' will be 'tuple' if it is a callback from 'Button.click'
         if isinstance(event,tuple):
@@ -376,43 +430,7 @@ class Commands:
                 gi.objs.context().title(message)
                 gi.objs._context.show()
                 choice = gi.objs._context._get
-                if choice:
-                    if choice == _('Show the full summary'):
-                        self.summary()
-                    elif choice == _('Download'):
-                        self.download_video()
-                    elif choice == _('Play'):
-                        self.download_video()
-                        self.play_video()
-                    elif choice == _('Stream'):
-                        self.stream()
-                    elif choice == _('Toggle the download status'):
-                        self.toggle_downloaded()
-                    elif choice == _('Delete the downloaded file'):
-                        self.delete_video()
-                    elif choice == _('Block this channel'):
-                        self.block()
-                    elif choice == _('Subscribe to this channel'):
-                        self.subscribe()
-                    elif choice == _('Open video URL'):
-                        self.open_video_url()
-                    elif choice == _('Copy video URL'):
-                        self.copy_video_url()
-                    elif choice == _('Open channel URL'):
-                        self.open_channel_url()
-                    elif choice == _('Copy channel URL'):
-                        self.copy_channel_url()
-                    else:
-                        sh.objs.mes ('Commands.context'
-                                    ,_('ERROR')
-                                    ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                    % (str(choice),';'.join(gi.context_items))
-                                    )
-                else:
-                    sh.log.append ('Commands.context'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                self._context(choice)
             else:
                 sh.log.append ('Commands.context'
                               ,_('WARNING')
@@ -428,7 +446,7 @@ class Commands:
         if Show:
             gi.objs._channel.show()
         
-    def _get_links(self,url):
+    def get_links(self,url):
         channel = self._channel = lg.Channel(url=url)
         channel._channel = url
         ''' We assume that there is no need to delete
@@ -463,24 +481,10 @@ class Commands:
                               ,_('Wrong input data!')
                               )
         
-    def get_links(self,event=None):
-        result = self._menu.ent_lnk.get()
-        if result and result != _('Get links from URL'):
-            sh.log.append ('Commands.get_links'
-                          ,_('DEBUG')
-                          ,_('Get links from "%s"') % result
-                          )
-            self._get_links(url=result)
-        else:
-            sh.log.append ('Commands.get_links'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-    
     def get_url(self,event=None):
         result = self._menu.ent_url.get()
         if result:
-            if result == _('Get video from URL'):
+            if result == _('Paste URL here'):
                 sh.log.append ('Commands.get_url'
                               ,_('INFO')
                               ,_('Nothing to do!')
@@ -504,9 +508,15 @@ class Commands:
                     elif self._menu.opt_url.choice == _('Stream'):
                         self.stream()
                     elif self._menu.opt_url.choice == _('Delete'):
-                        self._video.model.path()
                         self.delete_video()
                         self._menu.clear_url()
+                    elif self._menu.opt_url.choice == _('Extract links'):
+                        self.get_links(url=result)
+                    elif self._menu.opt_url.choice == _('Full menu'):
+                        gi.objs.context().title(_('Selected video'))
+                        gi.objs._context.show()
+                        choice = gi.objs._context._get
+                        self._context(choice)
                 else:
                     sh.log.append ('Commands.get_url'
                                   ,_('WARNING')
@@ -573,7 +583,7 @@ class Commands:
                           ,_('DEBUG')
                           ,result
                           )
-            self._get_links(url=result)
+            self.get_links(url=result)
         else:
             sh.log.append ('Commands.search_youtube'
                           ,_('WARNING')
@@ -628,7 +638,6 @@ class Commands:
         self._menu.btn_upd.action = self.update_channels
         self._menu.btn_all.action = self.select_new
         self._menu.btn_ytb.action = self.search_youtube
-        self._menu.btn_lnk.action = self.get_links
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_dld.action = self.download
         self._menu.btn_ply.action = self.play
@@ -640,10 +649,6 @@ class Commands:
         sg.bind (obj      = self._menu.ent_url
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.get_url
-                )
-        sg.bind (obj      = self._menu.ent_lnk
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.get_links
                 )
         sg.bind (obj      = self._menu.ent_flt
                 ,bindings = ['<Return>','<KP_Enter>']

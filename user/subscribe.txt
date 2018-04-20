@@ -13,6 +13,7 @@ itpedia	https://www.youtube.com/user/itpediachannel/videos
 Kurzgesagt	https://www.youtube.com/user/Kurzgesagt/videos
 kamikadzedead	https://www.youtube.com/user/kamikadzedead/videos
 Lucas the Spider	https://www.youtube.com/channel/UCNqRS1gSJFMNPVwye1gyI_g/videos
+Longmir Teron	https://www.youtube.com/channel/UC83_9VXKZNPnkBUYerwni-A/videos
 Meduza	https://www.youtube.com/channel/UC-30BJyAAObw1irWxu6IPkw/videos
 maxman.tv	https://www.youtube.com/user/mxmantv/videos
 NEMAGIA	https://www.youtube.com/user/NEMAGIA/videos
@@ -27,6 +28,7 @@ TheNafig	https://www.youtube.com/user/TheNafig/videos
 TheOdd1sOut	https://www.youtube.com/channel/UCo8bcnLyZH8tBIH9V1mLgqQ/videos
 TheRichest	https://www.youtube.com/channel/UCdxi8d8qRsRyUi2ERYjYb-w/videos
 tophype	https://www.youtube.com/user/SteelBallsStatham/videos
+tritonas01	https://www.youtube.com/channel/UCk2CXNRR5NWa9YkHoefITfQ/videos
 Алексей Навальный	https://www.youtube.com/user/NavalnyRu/videos
 Анатолий Шарий	https://www.youtube.com/user/SuperSharij/videos
 Арслан Энн	https://www.youtube.com/channel/UCXvjLCLrGKMsb0HutfX_KDQ/videos

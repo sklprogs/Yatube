@@ -451,7 +451,7 @@ class Objects:
 # Requires idb
 class Video:
     
-    # URL is shorten (a video ID)
+    # URL can be shorten (a video ID)
     def __init__(self,url,callback=None):
         self.values()
         self._url = url
@@ -472,7 +472,10 @@ class Video:
         if self.Success:
             if not self._page:
                 if self._url:
-                    url = pattern1 + self._url
+                    if pattern1 in self._url:
+                        url = self._url
+                    else:
+                        url = pattern1 + self._url
                     self._page = sh.Get(url=url).run()
                 else:
                     sh.log.append ('Video.page'
@@ -772,25 +775,27 @@ class Video:
         
     def path(self):
         if self.Success:
-            author = sh.FixBaseName (basename = self._author
-                                    ,AllOS    = AllOS
-                                    ,max_len  = 100
-                                    ).run()
-            title  = sh.FixBaseName (basename = self._title
-                                    ,AllOS    = AllOS
-                                    ,max_len  = 100
-                                    ).run()
-            author = sh.Text(text=author).delete_unsupported()
-            title  = sh.Text(text=title).delete_unsupported()
-            folder = sh.objs.pdir().add('..','user','Youtube',author)
-            self.Success = sh.Path(path=folder).create()
-            self._path = sh.objs.pdir().add ('..','user','Youtube'
-                                            ,author,title
-                                            )
-            self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
-                                                            ,FromEnd = 1
-                                                            )
-            self._path += '.mp4'
+            if not self._path:
+                author = sh.FixBaseName (basename = self._author
+                                        ,AllOS    = AllOS
+                                        ,max_len  = 100
+                                        ).run()
+                title  = sh.FixBaseName (basename = self._title
+                                        ,AllOS    = AllOS
+                                        ,max_len  = 100
+                                        ).run()
+                author = sh.Text(text=author).delete_unsupported()
+                title  = sh.Text(text=title).delete_unsupported()
+                folder = sh.objs.pdir().add('..','user','Youtube',author)
+                self.Success = sh.Path(path=folder).create()
+                self._path = sh.objs.pdir().add ('..','user','Youtube'
+                                                ,author,title
+                                                )
+                self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
+                                                                ,FromEnd = 1
+                                                                )
+                self._path += '.mp4'
+            return self._path
         else:
             sh.log.append ('Video.path'
                           ,_('WARNING')
