@@ -381,12 +381,16 @@ class Lists:
         self.load()
     
     def values(self):
-        self._block      = ''
-        self._subsc      = ''
-        self._subsc2     = ''
-        self._block_auth = []
-        self._subsc_auth = []
-        self._subsc_urls = []
+        self._block       = ''
+        self._subsc       = ''
+        self._subsc2      = ''
+        self._block_auth  = []
+        self._subsc_auth  = []
+        self._subsc_urls  = []
+        self._subsc_auth1 = []
+        self._subsc_urls1 = []
+        self._subsc_auth2 = []
+        self._subsc_urls2 = []
     
     def load(self):
         text = sh.ReadTextFile(file=self._fblock).get()
@@ -397,17 +401,19 @@ class Lists:
                      ,Sortable = False
                      )
         if dic.Success:
-            self._subsc      = dic.text
-            self._subsc_auth = dic.orig
-            self._subsc_urls = dic.transl
+            self._subsc       = dic.text
+            self._subsc_auth1 = dic.orig
+            self._subsc_urls1 = dic.transl
         if os.path.exists(self._fsubsc2):
             dic = sh.Dic (file     = self._fsubsc2
                          ,Sortable = False
                          )
             if dic.Success:
                 self._subsc2      = dic.text
-                self._subsc_auth += dic.orig
-                self._subsc_urls += dic.transl
+                self._subsc_auth2 = dic.orig
+                self._subsc_urls2 = dic.transl
+        self._subsc_auth = self._subsc_auth1 + self._subsc_auth2
+        self._subsc_urls = self._subsc_urls1 + self._subsc_urls2
         if self._subsc_auth:
             self._subsc_auth, self._subsc_urls = (list(x) for x \
             in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)

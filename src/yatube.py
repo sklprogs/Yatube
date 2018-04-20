@@ -130,31 +130,43 @@ class Commands:
     def subscribe(self,event=None):
         if self._video and self._video.model.channel_url():
             self._video.model.video()
-            if self._video.model._author in lg.objs.lists()._subsc_auth:
-                sh.log.append ('Commands.subscribe'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-            else:
-                subscriptions = []
-                for i in range(len(lg.objs._lists._subsc_auth)):
-                    subscriptions.append (lg.objs._lists._subsc_auth[i]\
-                                         + '\t' \
-                                         + lg.objs._lists._subsc_urls[i]
-                                         )
-                    subscriptions.sort()
-                subscriptions = '\n'.join(subscriptions)
-                if subscriptions:
-                    sh.WriteTextFile (file       = lg.objs._lists._fsubsc
-                                     ,AskRewrite = False
-                                     ).write(text=subscriptions)
-                    lg.objs._lists.reset()
-                    self.reset_channels()
-                else:
+            if self._video.model._author:
+                if self._video.model._author in lg.objs.lists()._subsc_auth:
                     sh.log.append ('Commands.subscribe'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
                                   )
+                else:
+                    subscriptions = []
+                    for i in range(len(lg.objs._lists._subsc_auth1)):
+                        subscriptions.append (lg.objs._lists._subsc_auth1[i]\
+                                             + '\t' \
+                                             + lg.objs._lists._subsc_urls1[i]
+                                             )
+                    subscriptions.append (self._video.model._author \
+                                         + '\t' \
+                                         + self._video.model._channel_url
+                                         )
+                    subscriptions = sorted (subscriptions
+                                           ,key=lambda x:x[0].lower()
+                                           )
+                    subscriptions = '\n'.join(subscriptions)
+                    if subscriptions:
+                        sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+                                         ,AskRewrite = False
+                                         ).write(text=subscriptions)
+                        lg.objs._lists.reset()
+                        self.reset_channels()
+                    else:
+                        sh.log.append ('Commands.subscribe'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
+            else:
+                sh.log.append ('Commands.subscribe'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('Commands.subscribe'
                           ,_('WARNING')
@@ -172,8 +184,11 @@ class Commands:
                                   )
                 else:
                     lg.objs._lists._block_auth.append(self._video.model._author)
-                    lg.objs._lists._block_auth.sort()
-                    blocked = '\n'.join(lg.objs._lists._block_auth)
+                    blocked = lg.objs._lists._block_auth
+                    blocked = sorted (blocked
+                                     ,key=lambda x:x[0].lower()
+                                     )
+                    blocked = '\n'.join(blocked)
                     if blocked:
                         sh.WriteTextFile (file       = lg.objs._lists._fblock
                                          ,AskRewrite = False
@@ -871,7 +886,9 @@ class Commands:
         text = gi.objs._subscribe.get()
         if text:
             text = text.splitlines()
-            text.sort()
+            text = sorted (text
+                          ,key = lambda x:x[0].lower()
+                          )
             text = '\n'.join(text)
             sh.WriteTextFile (file       = lg.objs._lists._fsubsc
                              ,AskRewrite = False
@@ -891,7 +908,9 @@ class Commands:
             text = gi.objs._subscribe.get()
             if text:
                 text = text.splitlines()
-                text.sort()
+                text = sorted (text
+                              ,key = lambda x:x[0].lower()
+                              )
                 text = '\n'.join(text)
                 sh.WriteTextFile (file       = lg.objs._lists._fsubsc2
                                  ,AskRewrite = False
@@ -921,7 +940,9 @@ class Commands:
         text = gi.objs._blacklist.get()
         if text:
             text = text.splitlines()
-            text.sort()
+            text = sorted (text
+                          ,key = lambda x:x[0].lower()
+                          )
             text = '\n'.join(text)
             sh.WriteTextFile (file       = lg.objs._lists._fblock
                              ,AskRewrite = False

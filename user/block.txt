@@ -1,3 +1,5 @@
+#SLOVOSPB PRODUCTION
+# Грудинин
 AcademeG
 AcademeG 2nd CH
 AcademeG DailyStream
@@ -15,7 +17,6 @@ PutinTeam
 RapNews
 RED21
 Room Factory
-#SLOVOSPB PRODUCTION
 The Люди
 This is Хорошо
 Timofey KO
@@ -33,7 +34,6 @@ WylsaLive
 Вольнов Talks
 В ПЕРВЫЙ РАЗ
 ВПИСКА
-# Грудинин
 Диана Борисова
 Евгений Вольнов
 Знакомьтесь, Боб
