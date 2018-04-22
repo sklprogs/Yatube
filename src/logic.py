@@ -451,7 +451,7 @@ class Objects:
 # Requires idb
 class Video:
     
-    # URL can be shorten (a video ID)
+    # URL is a full URL or a video ID
     def __init__(self,url,callback=None):
         self.values()
         self._url = url
@@ -472,7 +472,7 @@ class Video:
         if self.Success:
             if not self._page:
                 if self._url:
-                    if pattern1 in self._url:
+                    if 'http' in self._url:
                         url = self._url
                     else:
                         url = pattern1 + self._url

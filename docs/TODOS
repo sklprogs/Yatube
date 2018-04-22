@@ -1,3 +1,4 @@
+- Decide when we should use full URLs
 - Restore gray color after removing filters
 - Allow URLs like https://www.youtube.com/embed/R0CUk9O8Ers (supported
   link types: https://youtu.be/gOrhQE2TsbM)
