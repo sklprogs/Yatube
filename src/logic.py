@@ -659,6 +659,7 @@ class Video:
                                   ,_('WARNING')
                                   ,_('Error adding "%s"!') % self._url
                                   )
+            return self._video
         else:
             sh.log.append ('Video.video'
                           ,_('WARNING')

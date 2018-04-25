@@ -399,6 +399,14 @@ class Commands:
                 self.toggle_downloaded()
             elif choice == _('Delete the downloaded file'):
                 self.delete_video()
+            elif choice == _('Extract links'):
+                if self._video.model._url:
+                    self.get_links(url=self._video.model._url)
+                else:
+                    sh.log.append ('Commands._context'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
             elif choice == _('Load this channel'):
                 self.load_channel()
             elif choice == _('Block this channel'):
