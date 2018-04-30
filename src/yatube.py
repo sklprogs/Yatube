@@ -77,9 +77,10 @@ class Commands:
                                   ,_('Empty input is not allowed!')
                                   )
         if deleted:
-            message = _('The following files have been deleted:')
-            message += '\n\n'
-            message += '\n\n'.join(deleted)
+            message = '\n\n'.join(deleted)
+            message = _('The following files have been deleted:') \
+                      + '\n\n' \
+                      + message
             sh.objs.mes ('Commands.delete_selected'
                         ,_('INFO')
                         ,message
@@ -87,7 +88,9 @@ class Commands:
     
     def delete_video(self,event=None):
         if self._video and self._video.model.path():
-            return sh.File(file=self._video.model._path).delete()
+            # Do not warn about missing files
+            if os.path.exists(self._video.model._path):
+                return sh.File(file=self._video.model._path).delete()
         else:
             sh.log.append ('Commands.delete_video'
                           ,_('WARNING')
