@@ -347,11 +347,7 @@ class Links:
                               
     def delete_suffixes(self):
         for i in range(len(self._links)):
-            self._links[i] = re.sub ('&amp;index=\d+&amp;list=.*'
-                                    ,''
-                                    ,self._links[i]
-                                    )
-            self._links[i] = re.sub ('&amp;list=.*'
+            self._links[i] = re.sub ('&amp;.*'
                                     ,''
                                     ,self._links[i]
                                     )

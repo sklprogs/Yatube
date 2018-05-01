@@ -39,6 +39,92 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def unsubscribe(self,event=None):
+        if self._video and self._video.model.channel_url():
+            self._video.model.video()
+            if self._video.model._author:
+                if self._video.model._author \
+                in lg.objs.lists()._subsc_auth:
+                    sh.log.append ('Commands.unsubscribe'
+                                  ,_('INFO')
+                                  ,_('Unsubscribe from channel "%s"') \
+                                  % self._video.model._author
+                                  )
+                    if self._video.model._author \
+                    in lg.objs._lists._subsc_auth1:
+                        ind = lg.objs._lists._subsc_auth1.index(self._video.model._author)
+                        del lg.objs._lists._subsc_auth1[ind]
+                        del lg.objs._lists._subsc_urls1[ind]
+                        subscriptions = []
+                        for i in range(len(lg.objs._lists._subsc_auth1)):
+                            subscriptions.append (lg.objs._lists._subsc_auth1[i]\
+                                                 + '\t' \
+                                                 + lg.objs._lists._subsc_urls1[i]
+                                                 )
+                        subscriptions = '\n'.join(subscriptions)
+                        if subscriptions:
+                            sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+                                             ,AskRewrite = False
+                                             ).write(text=subscriptions)
+                            lg.objs._lists.reset()
+                            self.reset_channels()
+                else:
+                    sh.log.append ('Commands.unsubscribe'
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+            else:
+                sh.log.append ('Commands.unsubscribe'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Commands.unsubscribe'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def unblock(self,event=None):
+        if self._video:
+            self._video.model.video()
+            if self._video.model._author:
+                if self._video.model._author \
+                in lg.objs.lists()._block_auth:
+                    sh.log.append ('Commands.unblock'
+                                  ,_('INFO')
+                                  ,_('Unblock channel "%s"') \
+                                  % self._video.model._author
+                                  )
+                    lg.objs._lists._block_auth.remove(self._video.model._author)
+                    blocked = lg.objs._lists._block_auth
+                    blocked = '\n'.join(blocked)
+                    if blocked:
+                        sh.WriteTextFile (file       = lg.objs._lists._fblock
+                                         ,AskRewrite = False
+                                         ).write(text=blocked)
+                        lg.objs._lists.reset()
+                        self.reset_channels()
+                    else:
+                        sh.log.append ('Commands.unblock'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
+                else:
+                    sh.log.append ('Commands.unblock'
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+            else:
+                sh.log.append ('Commands.unblock'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Commands.unblock'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def show_new(self):
         itime = sh.Time()
         itime.add_days(days_delta=-1)
@@ -142,12 +228,18 @@ class Commands:
         if self._video and self._video.model.channel_url():
             self._video.model.video()
             if self._video.model._author:
-                if self._video.model._author in lg.objs.lists()._subsc_auth:
+                if self._video.model._author \
+                in lg.objs.lists()._subsc_auth:
                     sh.log.append ('Commands.subscribe'
                                   ,_('INFO')
                                   ,_('Nothing to do!')
                                   )
                 else:
+                    sh.log.append ('Commands.subscribe'
+                                  ,_('INFO')
+                                  ,_('Subscribe to channel "%s"') \
+                                  % self._video.model._author
+                                  )
                     subscriptions = []
                     for i in range(len(lg.objs._lists._subsc_auth1)):
                         subscriptions.append (lg.objs._lists._subsc_auth1[i]\
@@ -188,12 +280,18 @@ class Commands:
         if self._video:
             self._video.model.video()
             if self._video.model._author:
-                if self._video.model._author in lg.objs.lists()._block_auth:
+                if self._video.model._author \
+                in lg.objs.lists()._block_auth:
                     sh.log.append ('Commands.block'
                                   ,_('INFO')
                                   ,_('Nothing to do!')
                                   )
                 else:
+                    sh.log.append ('Commands.block'
+                                  ,_('INFO')
+                                  ,_('Block channel "%s"') \
+                                  % self._video.model._author
+                                  )
                     lg.objs._lists._block_auth.append(self._video.model._author)
                     blocked = lg.objs._lists._block_auth
                     blocked = sorted (blocked
@@ -415,8 +513,12 @@ class Commands:
                 self.load_channel()
             elif choice == _('Block this channel'):
                 self.block()
+            elif choice == _('Unblock'):
+                self.unblock()
             elif choice == _('Subscribe to this channel'):
                 self.subscribe()
+            elif choice == _('Unsubscribe'):
+                self.unsubscribe()
             elif choice == _('Open video URL'):
                 self.open_video_url()
             elif choice == _('Copy video URL'):
