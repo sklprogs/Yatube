@@ -1,6 +1,7 @@
 1.1
 * Block/unblock/subscribe/unsubscribe actions
 * Load latest videos from subscriptions by selecting "Channels"
+* Delete videos
 * Add actions for external URL
 * Command-line management
 * Refactor code
