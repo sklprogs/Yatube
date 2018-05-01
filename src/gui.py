@@ -727,6 +727,7 @@ class Objects:
     def menu(self):
         if not self._menu:
             self._menu = Menu(parent=self.parent())
+            self._menu.parent.center()
         return self._menu
 
 
@@ -734,11 +735,16 @@ objs = Objects()
 
 
 if __name__ == '__main__':
+    '''
+    # Menu
     sg.objs.start()
     sg.Geometry(parent=objs.parent()).set('1024x600')
     objs.menu().widget.wait_window()
     sg.objs.end()
     '''
+    '''
+    # Simulate filling a channel
+    sg.objs.start(Close=0)
     objs.channel(parent=objs.parent())
     sg.objs.root().widget.update_idletasks()
     import time
@@ -754,3 +760,9 @@ if __name__ == '__main__':
         time.sleep(1)
     sg.objs.root().widget.wait_window()
     '''
+    # Progress bar
+    sg.objs.start(Close=0)
+    objs.progress().add()
+    objs._progress.show()
+    objs._progress.obj.center()
+    sg.objs.root().widget.wait_window()

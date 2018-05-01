@@ -23,6 +23,7 @@ class Commands:
         self._gvideo    = None
         self._channel   = None
         self._timestamp = None
+        self.FirstVideo = True
         self._menu      = gi.objs.menu()
         itime           = lg.Time()
         itime.set_date(DaysDelta=7)
@@ -798,7 +799,10 @@ class Commands:
                         without focusing so the user would see that
                         the program is downloading something.
                     '''
-                    sg.Geometry(parent=gi.objs._progress.obj).activate()
+                    if self.FirstVideo:
+                        sg.Geometry(parent=gi.objs._progress.obj).activate()
+                        gi.objs._progress.obj.center()
+                        self.FirstVideo = False
                     if self._video.model.download():
                         self.mark_downloaded()
             else:
