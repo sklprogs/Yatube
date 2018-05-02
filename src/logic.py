@@ -16,8 +16,8 @@ pattern1  = 'https://www.youtube.com/watch?v='
 pattern2  = '<meta itemprop="channelId" content="'
 pattern3a = 'https://www.youtube.com/channel/'
 pattern3b = '/videos'
-AllOS    = False
-idb      = db.DB()
+AllOS     = False
+idb       = db.DB()
 
 
 
@@ -559,11 +559,12 @@ class Video:
                     self._dislikes  = self._video.dislikes
                     self._rating    = self._video.rating
                 # Youtube says: invalid parameters
-                except:
-                    sh.log.append ('Video.assign_online'
-                                  ,_('WARNING')
-                                  ,_('Third party module has failed!')
-                                  )
+                except Exception as e:
+                    sh.objs.mes ('Video.assign_online'
+                                ,_('WARNING')
+                                ,_('Third party module has failed!\n\nDetails: %s') \
+                                % str(e)
+                                )
                 self._search    = self._author.lower() + ' ' \
                                   + self._title.lower()
                 itime           = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
@@ -649,12 +650,13 @@ class Video:
                                          ,basic = False
                                          ,gdata = False
                                          )
-                except:
+                except Exception as e:
                     self.Success = False
-                    sh.log.append ('Video.video'
-                                  ,_('WARNING')
-                                  ,_('Error adding "%s"!') % self._url
-                                  )
+                    sh.objs.mes ('Video.video'
+                                ,_('WARNING')
+                                ,_('Error adding "%s"!\n\nDetails: %s')\
+                                % (self._url,str(e))
+                                )
             return self._video
         else:
             sh.log.append ('Video.video'
@@ -816,11 +818,11 @@ class Video:
                                     )
                     # Tell other functions the operation was a success
                     return True
-                except:
+                except Exception as e:
                     sh.objs.mes ('Video.download'
                                 ,_('WARNING')
-                                ,_('Failed to download "%s"!') \
-                                % self._path
+                                ,_('Failed to download "%s"!\n\nDetails: %s') \
+                                % (self._path,str(e))
                                 )
             else:
                 sh.log.append ('Video.download'
