@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-02 01:53+0300\n"
+"POT-Creation-Date: 2018-05-03 00:21+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -239,22 +239,22 @@ msgstr ""
 #: /usr/local/bin/Yatube/src/logic.py:536
 #: /usr/local/bin/Yatube/src/logic.py:542
 #: /usr/local/bin/Yatube/src/logic.py:564
-#: /usr/local/bin/Yatube/src/logic.py:574
-#: /usr/local/bin/Yatube/src/logic.py:579
-#: /usr/local/bin/Yatube/src/logic.py:603
-#: /usr/local/bin/Yatube/src/logic.py:635
-#: /usr/local/bin/Yatube/src/logic.py:640
-#: /usr/local/bin/Yatube/src/logic.py:655
-#: /usr/local/bin/Yatube/src/logic.py:661
-#: /usr/local/bin/Yatube/src/logic.py:676
-#: /usr/local/bin/Yatube/src/logic.py:681
-#: /usr/local/bin/Yatube/src/logic.py:686
-#: /usr/local/bin/Yatube/src/logic.py:706
-#: /usr/local/bin/Yatube/src/logic.py:769
-#: /usr/local/bin/Yatube/src/logic.py:798
-#: /usr/local/bin/Yatube/src/logic.py:821
-#: /usr/local/bin/Yatube/src/logic.py:827
-#: /usr/local/bin/Yatube/src/logic.py:832
+#: /usr/local/bin/Yatube/src/logic.py:575
+#: /usr/local/bin/Yatube/src/logic.py:580
+#: /usr/local/bin/Yatube/src/logic.py:604
+#: /usr/local/bin/Yatube/src/logic.py:636
+#: /usr/local/bin/Yatube/src/logic.py:641
+#: /usr/local/bin/Yatube/src/logic.py:656
+#: /usr/local/bin/Yatube/src/logic.py:663
+#: /usr/local/bin/Yatube/src/logic.py:678
+#: /usr/local/bin/Yatube/src/logic.py:683
+#: /usr/local/bin/Yatube/src/logic.py:688
+#: /usr/local/bin/Yatube/src/logic.py:708
+#: /usr/local/bin/Yatube/src/logic.py:771
+#: /usr/local/bin/Yatube/src/logic.py:800
+#: /usr/local/bin/Yatube/src/logic.py:823
+#: /usr/local/bin/Yatube/src/logic.py:829
+#: /usr/local/bin/Yatube/src/logic.py:834
 #: /usr/local/bin/Yatube/src/utils.py:29
 #: /usr/local/bin/Yatube/src/utils.py:34
 #: /usr/local/bin/Yatube/src/utils.py:45
@@ -458,15 +458,15 @@ msgstr "Ошибка базы данных \"%s\"!"
 #: /usr/local/bin/Yatube/src/logic.py:304
 #: /usr/local/bin/Yatube/src/logic.py:485
 #: /usr/local/bin/Yatube/src/logic.py:543
-#: /usr/local/bin/Yatube/src/logic.py:580
-#: /usr/local/bin/Yatube/src/logic.py:604
-#: /usr/local/bin/Yatube/src/logic.py:641
-#: /usr/local/bin/Yatube/src/logic.py:662
-#: /usr/local/bin/Yatube/src/logic.py:687
-#: /usr/local/bin/Yatube/src/logic.py:707
-#: /usr/local/bin/Yatube/src/logic.py:770
-#: /usr/local/bin/Yatube/src/logic.py:799
-#: /usr/local/bin/Yatube/src/logic.py:833
+#: /usr/local/bin/Yatube/src/logic.py:581
+#: /usr/local/bin/Yatube/src/logic.py:605
+#: /usr/local/bin/Yatube/src/logic.py:642
+#: /usr/local/bin/Yatube/src/logic.py:664
+#: /usr/local/bin/Yatube/src/logic.py:689
+#: /usr/local/bin/Yatube/src/logic.py:709
+#: /usr/local/bin/Yatube/src/logic.py:772
+#: /usr/local/bin/Yatube/src/logic.py:801
+#: /usr/local/bin/Yatube/src/logic.py:835
 #: /usr/local/bin/Yatube/src/utils.py:35
 #: /usr/local/bin/Yatube/src/utils.py:51
 #: /usr/local/bin/Yatube/src/utils.py:68
@@ -545,9 +545,9 @@ msgstr "Операция отменена."
 #: /usr/local/bin/Yatube/src/shared.py:4274
 #: /usr/local/bin/Yatube/src/gui.py:525
 #: /usr/local/bin/Yatube/src/logic.py:298
-#: /usr/local/bin/Yatube/src/logic.py:598
-#: /usr/local/bin/Yatube/src/logic.py:697
-#: /usr/local/bin/Yatube/src/logic.py:806
+#: /usr/local/bin/Yatube/src/logic.py:599
+#: /usr/local/bin/Yatube/src/logic.py:699
+#: /usr/local/bin/Yatube/src/logic.py:808
 #: /usr/local/bin/Yatube/src/utils.py:153
 #: /usr/local/bin/Yatube/src/yatube.py:49
 #: /usr/local/bin/Yatube/src/yatube.py:73
@@ -679,7 +679,7 @@ msgstr "Сохранение \"%s\""
 #: /usr/local/bin/Yatube/src/shared.py:4156
 #: /usr/local/bin/Yatube/src/shared.py:4177
 #: /usr/local/bin/Yatube/src/shared.py:4232
-#: /usr/local/bin/Yatube/src/logic.py:629
+#: /usr/local/bin/Yatube/src/logic.py:630
 #: /usr/local/bin/Yatube/src/yatube.py:454
 #: /usr/local/bin/Yatube/src/yatube.py:532
 #: /usr/local/bin/Yatube/src/yatube.py:601
@@ -776,7 +776,7 @@ msgstr "Неизвестный цвет \"%s\"!"
 #: /usr/local/bin/Yatube/src/shared.py:4157
 #: /usr/local/bin/Yatube/src/shared.py:4178
 #: /usr/local/bin/Yatube/src/shared.py:4233
-#: /usr/local/bin/Yatube/src/logic.py:630
+#: /usr/local/bin/Yatube/src/logic.py:631
 #, python-format
 msgid "The condition \"%s\" is not observed!"
 msgstr "Условие \"%s\" не выполнено!"
@@ -877,11 +877,11 @@ msgstr "Совпадений больше нет, поиск продолжен 
 #: /usr/local/bin/Yatube/src/logic.py:479
 #: /usr/local/bin/Yatube/src/logic.py:517
 #: /usr/local/bin/Yatube/src/logic.py:537
-#: /usr/local/bin/Yatube/src/logic.py:575
-#: /usr/local/bin/Yatube/src/logic.py:636
-#: /usr/local/bin/Yatube/src/logic.py:677
-#: /usr/local/bin/Yatube/src/logic.py:682
-#: /usr/local/bin/Yatube/src/logic.py:828
+#: /usr/local/bin/Yatube/src/logic.py:576
+#: /usr/local/bin/Yatube/src/logic.py:637
+#: /usr/local/bin/Yatube/src/logic.py:679
+#: /usr/local/bin/Yatube/src/logic.py:684
+#: /usr/local/bin/Yatube/src/logic.py:830
 #: /usr/local/bin/Yatube/src/utils.py:189
 #: /usr/local/bin/Yatube/src/utils.py:289
 #: /usr/local/bin/Yatube/src/yatube.py:79
@@ -1209,7 +1209,7 @@ msgstr "У виджета \"%s\" нет действия \"close\"!"
 #: /usr/local/bin/Yatube/src/sharedGUI.py:3266
 #: /usr/local/bin/Yatube/src/shared.py:2710
 #: /usr/local/bin/Yatube/src/shared.py:2755
-#: /usr/local/bin/Yatube/src/logic.py:599
+#: /usr/local/bin/Yatube/src/logic.py:600
 #: /usr/local/bin/Yatube/src/yatube.py:460
 #: /usr/local/bin/Yatube/src/yatube.py:1055
 msgid "Nothing to do."
@@ -1827,17 +1827,17 @@ msgid "Slow PC"
 msgstr "Медленный ПК"
 
 #: /usr/local/bin/Yatube/src/gui.py:321
-#: /usr/local/bin/Yatube/src/logic.py:713
+#: /usr/local/bin/Yatube/src/logic.py:715
 msgid "Author"
 msgstr "Автор"
 
 #: /usr/local/bin/Yatube/src/gui.py:322
-#: /usr/local/bin/Yatube/src/logic.py:717
+#: /usr/local/bin/Yatube/src/logic.py:719
 msgid "Title"
 msgstr "Заголовок"
 
 #: /usr/local/bin/Yatube/src/gui.py:323
-#: /usr/local/bin/Yatube/src/logic.py:733
+#: /usr/local/bin/Yatube/src/logic.py:735
 msgid "Duration"
 msgstr "Продолжительность"
 
@@ -2281,64 +2281,83 @@ msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
 #: /usr/local/bin/Yatube/src/logic.py:565
-msgid "Third party module has failed!"
-msgstr "Ошибка модуля третьей стороны!"
-
-#: /usr/local/bin/Yatube/src/logic.py:656
 #, python-format
-msgid "Error adding \"%s\"!"
-msgstr "Не удается добавить \"%s\"!"
+msgid ""
+"Third party module has failed!\n"
+"\n"
+"Details: %s"
+msgstr ""
+"Ошибка модуля третьей стороны!\n"
+"\n"
+"Детали: %s"
 
-#: /usr/local/bin/Yatube/src/logic.py:698
+#: /usr/local/bin/Yatube/src/logic.py:657
+#, python-format
+msgid ""
+"Error adding \"%s\"!\n"
+"\n"
+"Details: %s"
+msgstr ""
+"Ошибка при обработке \"%s\"!\n"
+"\n"
+"Детали: %s"
+
+#: /usr/local/bin/Yatube/src/logic.py:700
 #, python-format
 msgid "Get new URL: %s"
 msgstr "Получение нового URL: %s"
 
-#: /usr/local/bin/Yatube/src/logic.py:721
+#: /usr/local/bin/Yatube/src/logic.py:723
 msgid "Date"
 msgstr "Дата"
 
-#: /usr/local/bin/Yatube/src/logic.py:725
+#: /usr/local/bin/Yatube/src/logic.py:727
 msgid "Category"
 msgstr "Категория"
 
-#: /usr/local/bin/Yatube/src/logic.py:729
+#: /usr/local/bin/Yatube/src/logic.py:731
 msgid "Description"
 msgstr "Описание"
 
-#: /usr/local/bin/Yatube/src/logic.py:737
+#: /usr/local/bin/Yatube/src/logic.py:739
 msgid "Length"
 msgstr "Длина"
 
-#: /usr/local/bin/Yatube/src/logic.py:741
+#: /usr/local/bin/Yatube/src/logic.py:743
 msgid "Views"
 msgstr "Просмотров"
 
-#: /usr/local/bin/Yatube/src/logic.py:745
+#: /usr/local/bin/Yatube/src/logic.py:747
 msgid "Likes"
 msgstr "Нравится"
 
-#: /usr/local/bin/Yatube/src/logic.py:749
+#: /usr/local/bin/Yatube/src/logic.py:751
 msgid "Dislikes"
 msgstr "Не нравится"
 
-#: /usr/local/bin/Yatube/src/logic.py:753
+#: /usr/local/bin/Yatube/src/logic.py:755
 msgid "Rating"
 msgstr "Рейтинг"
 
-#: /usr/local/bin/Yatube/src/logic.py:759
+#: /usr/local/bin/Yatube/src/logic.py:761
 msgid "Small video picture URL"
 msgstr "Адрес маленького изображения"
 
-#: /usr/local/bin/Yatube/src/logic.py:807
+#: /usr/local/bin/Yatube/src/logic.py:809
 #, python-format
 msgid "Download \"%s\""
 msgstr "Загрузка \"%s\""
 
-#: /usr/local/bin/Yatube/src/logic.py:822
+#: /usr/local/bin/Yatube/src/logic.py:824
 #, python-format
-msgid "Failed to download \"%s\"!"
-msgstr "Не удалось загрузить \"%s\"!"
+msgid ""
+"Failed to download \"%s\"!\n"
+"\n"
+"Details: %s"
+msgstr ""
+"Не удалось загрузить \"%s\"!\n"
+"\n"
+"Детали: %s"
 
 #: /usr/local/bin/Yatube/src/yatube.py:50
 #, python-format
