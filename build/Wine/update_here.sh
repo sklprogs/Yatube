@@ -28,6 +28,6 @@ cp -u /usr/local/bin/Yatube/resources/icon_64x64_yatube.gif ./resources/
 cp -u /usr/local/bin/Yatube/resources/icon_64x64_yatube.ico ./resources/
 
 # (Wine-only) Copy build scripts
-cp -u /usr/local/bin/Yatube/build/Wine/{build.sh,clean_up.sh,setup.py,Yatube.cmd} .
+cp -u /usr/local/bin/Yatube/build/Wine/{build.sh,clean_up.sh,setup.py,update_yatube.sh,Yatube.cmd} .
 
 ls .
