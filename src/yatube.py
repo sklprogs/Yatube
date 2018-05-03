@@ -148,6 +148,7 @@ class Commands:
                           ,_('Nothing to do!')
                           )
     
+    # GUI-only
     def delete_selected(self,event=None):
         deleted = []
         for video_gui in gi.objs.channel()._videos:
@@ -155,9 +156,8 @@ class Commands:
                 if video_gui in self._videos:
                     self._gvideo = video_gui
                     self._video  = self._videos[self._gvideo]
-                    path = self._video.model._path
                     if self.delete_video():
-                        deleted.append(path)
+                        deleted.append(self._video.model.path())
                 else:
                     sh.log.append ('Commands.delete_selected'
                                   ,_('WARNING')
@@ -174,10 +174,17 @@ class Commands:
                         )
     
     def delete_video(self,event=None):
-        if self._video and self._video.model.path():
-            # Do not warn about missing files
-            if os.path.exists(self._video.model._path):
-                return sh.File(file=self._video.model._path).delete()
+        ''' Do not warn when the GUI object is not available (e.g.,
+            performing deletion through OptionMenu.
+        '''
+        if self._gvideo:
+            ''' We probably want to disable the checkbox even when
+                the file was not removed, e.g., the user selected all
+                videos on the channel and pressed 'Shift-Del'.
+            '''
+            self._gvideo.cbox.disable()
+        if self._video:
+            return self._video.model.delete()
         else:
             sh.log.append ('Commands.delete_video'
                           ,_('WARNING')

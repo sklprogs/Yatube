@@ -464,6 +464,23 @@ class Video:
         self._len    = self._views = self._likes = self._dislikes = 0
         self._rating = 0.0
         
+    def delete(self):
+        if self.Success:
+            if self.path():
+                # Do not warn about missing files
+                if os.path.exists(self._path):
+                    return sh.File(file=self._path).delete()
+            else:
+                sh.log.append ('Video.delete'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.delete'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def page(self):
         if self.Success:
             if not self._page:
