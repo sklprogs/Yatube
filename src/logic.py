@@ -450,7 +450,7 @@ class Video:
     # URL is a full URL or a video ID
     def __init__(self,url,callback=None):
         self.values()
-        self._url = url
+        self._url      = url
         self._callback = callback
         
     def values(self):
@@ -460,7 +460,7 @@ class Video:
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path \
                      = self._pathsh = self._search = self._timestamp \
-                     = self._channel_url = self._page = ''
+                     = self._channel_url = self._page = self._dir = ''
         self._len    = self._views = self._likes = self._dislikes = 0
         self._rating = 0.0
         
@@ -469,7 +469,11 @@ class Video:
             if self.path():
                 # Do not warn about missing files
                 if os.path.exists(self._path):
-                    return sh.File(file=self._path).delete()
+                    Success = sh.File(file=self._path).delete()
+                    idir = sh.Directory(path=self._dir)
+                    if not idir.files():
+                        idir.delete()
+                    return Success
             else:
                 sh.log.append ('Video.delete'
                               ,_('WARNING')
@@ -802,8 +806,10 @@ class Video:
                                         ).run()
                 author = sh.Text(text=author).delete_unsupported()
                 title  = sh.Text(text=title).delete_unsupported()
-                folder = sh.objs.pdir().add('..','user','Youtube',author)
-                self.Success = sh.Path(path=folder).create()
+                self._dir = sh.objs.pdir().add ('..','user','Youtube'
+                                               ,author
+                                               )
+                self.Success = sh.Path(path=self._dir).create()
                 self._path = sh.objs.pdir().add ('..','user','Youtube'
                                                 ,author,title
                                                 )
