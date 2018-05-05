@@ -580,6 +580,7 @@ class Commands:
         ''' We assume that there is no need to delete
             unsupported characters in countries.
         '''
+        channel.url()
         channel.page()
         channel.links()
         self.reset_channel_gui()

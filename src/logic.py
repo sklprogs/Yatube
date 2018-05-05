@@ -809,7 +809,6 @@ class Video:
                 self._dir = sh.objs.pdir().add ('..','user','Youtube'
                                                ,author
                                                )
-                self.Success = sh.Path(path=self._dir).create()
                 self._path = sh.objs.pdir().add ('..','user','Youtube'
                                                 ,author,title
                                                 )
@@ -824,7 +823,24 @@ class Video:
                           ,_('Operation has been canceled.')
                           )
     
+    def make_dir(self):
+        if self.Success:
+            if self._dir:
+                self.Success = sh.Path(path=self._dir).create()
+            else:
+                self.Success = False
+                sh.log.append ('Video.make_dir'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.make_dir'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def download(self):
+        self.make_dir()
         if self.Success:
             if self._video and self._path:
                 sh.log.append ('Video.download'
