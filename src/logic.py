@@ -356,6 +356,7 @@ class Links:
         if self._text:
             self.poses()
             self.delete_suffixes()
+            self._links = list(set(self._links))
         else:
             sh.log.append ('Links.run'
                           ,_('WARNING')

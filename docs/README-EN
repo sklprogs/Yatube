@@ -3,5 +3,6 @@ The following hotkeys are supported:
 Control-w, Control-q - Quit
 Control-d - Download selected file(s)
 Control-p - Play selected file(s)
+Control-h - Show download history
 Shift-Delete - Delete selected file(s)
 Escape (on the main window) - Minimize

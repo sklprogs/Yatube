@@ -1,4 +1,4 @@
-- Delete duplicate URLs on the same page
+- Use either full URL or video ID in 'URL' field
 - strip URL entry
 - Decide when we should use full URLs
 - Restore gray color after removing filters

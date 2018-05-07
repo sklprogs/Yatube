@@ -39,6 +39,25 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def history(self,event=None):
+        urls = idb.downloaded()
+        if urls:
+            ''' URL can be any here, even 'None', but we do not use 'None'
+                in order to be on the safe side since many classes have
+                checks against empty input in '__init__'.
+            '''
+            self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
+            self._channel._links = urls
+            self.reset_channel_gui()
+            self.channel_gui()
+            gi.objs._channel.show()
+        else:
+            # Do not warn here since this is actually a common case
+            sh.log.append ('Commands.history'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
     def unsubscribe(self,event=None):
         if self._video and self._video.model.channel_url():
             self._video.model.video()
@@ -756,6 +775,10 @@ class Commands:
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-d>'
                 ,action   = self.download
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Control-h>'
+                ,action   = self.history
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Shift-Delete>'

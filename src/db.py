@@ -16,6 +16,29 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def downloaded(self,limit=50):
+        if self.Success:
+            try:
+                self.dbc.execute ('select URL from VIDEOS \
+                                   where READY = ?\
+                                   order by TIMESTAMP desc limit ?'
+                                 ,(True,limit,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+                self.Success = False
+                sh.objs.mes ('DB.downloaded'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!') % self._path
+                            )
+        else:
+            sh.log.append ('DB.downloaded'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def new_videos(self,timestamp,authors):
         if self.Success:
             try:
@@ -286,12 +309,9 @@ class DB:
 
 if __name__ == '__main__':
     idb = DB()
-    itime = sh.Time()
-    itime.add_days(days_delta=-1)
-    urls = idb.new_videos (timestamp = itime.timestamp()
-                          ,authors   = ('Анатолий Шарий','kamikadzedead'
-                                       ,'Алексей Навальный','BBC'
-                                       )
-                          )
-    print(urls)
+    urls = idb.downloaded()
+    urls = list(urls)
+    for i in range(len(urls)):
+        urls[i] = str(i) + ': ' + urls[i]
+    print('\n'.join(urls))
     idb.close()
