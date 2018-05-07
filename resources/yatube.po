@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-03 00:21+0300\n"
+"POT-Creation-Date: 2018-05-08 00:48+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -15,26 +15,28 @@ msgstr ""
 "X-Poedit-Basepath: /usr/local/bin/Yatube/src\n"
 "X-Poedit-SearchPath-0: /usr/local/bin/Yatube/src\n"
 
-#: /usr/local/bin/Yatube/src/db.py:34
-#: /usr/local/bin/Yatube/src/db.py:39
-#: /usr/local/bin/Yatube/src/db.py:87
-#: /usr/local/bin/Yatube/src/db.py:92
-#: /usr/local/bin/Yatube/src/db.py:109
-#: /usr/local/bin/Yatube/src/db.py:114
-#: /usr/local/bin/Yatube/src/db.py:128
-#: /usr/local/bin/Yatube/src/db.py:133
-#: /usr/local/bin/Yatube/src/db.py:146
+#: /usr/local/bin/Yatube/src/db.py:33
+#: /usr/local/bin/Yatube/src/db.py:38
+#: /usr/local/bin/Yatube/src/db.py:57
+#: /usr/local/bin/Yatube/src/db.py:62
+#: /usr/local/bin/Yatube/src/db.py:110
+#: /usr/local/bin/Yatube/src/db.py:115
+#: /usr/local/bin/Yatube/src/db.py:132
+#: /usr/local/bin/Yatube/src/db.py:137
 #: /usr/local/bin/Yatube/src/db.py:151
-#: /usr/local/bin/Yatube/src/db.py:184
-#: /usr/local/bin/Yatube/src/db.py:189
-#: /usr/local/bin/Yatube/src/db.py:203
-#: /usr/local/bin/Yatube/src/db.py:208
-#: /usr/local/bin/Yatube/src/db.py:223
-#: /usr/local/bin/Yatube/src/db.py:228
-#: /usr/local/bin/Yatube/src/db.py:243
-#: /usr/local/bin/Yatube/src/db.py:254
-#: /usr/local/bin/Yatube/src/db.py:259
+#: /usr/local/bin/Yatube/src/db.py:156
+#: /usr/local/bin/Yatube/src/db.py:169
+#: /usr/local/bin/Yatube/src/db.py:174
+#: /usr/local/bin/Yatube/src/db.py:207
+#: /usr/local/bin/Yatube/src/db.py:212
+#: /usr/local/bin/Yatube/src/db.py:226
+#: /usr/local/bin/Yatube/src/db.py:231
+#: /usr/local/bin/Yatube/src/db.py:246
+#: /usr/local/bin/Yatube/src/db.py:251
+#: /usr/local/bin/Yatube/src/db.py:266
+#: /usr/local/bin/Yatube/src/db.py:277
 #: /usr/local/bin/Yatube/src/db.py:282
+#: /usr/local/bin/Yatube/src/db.py:305
 #: /usr/local/bin/Yatube/src/sharedGUI.py:76
 #: /usr/local/bin/Yatube/src/sharedGUI.py:81
 #: /usr/local/bin/Yatube/src/sharedGUI.py:356
@@ -157,69 +159,69 @@ msgstr ""
 #: /usr/local/bin/Yatube/src/shared.py:2287
 #: /usr/local/bin/Yatube/src/shared.py:2308
 #: /usr/local/bin/Yatube/src/shared.py:2334
-#: /usr/local/bin/Yatube/src/shared.py:2348
-#: /usr/local/bin/Yatube/src/shared.py:2371
-#: /usr/local/bin/Yatube/src/shared.py:2428
-#: /usr/local/bin/Yatube/src/shared.py:2455
-#: /usr/local/bin/Yatube/src/shared.py:2461
-#: /usr/local/bin/Yatube/src/shared.py:2472
-#: /usr/local/bin/Yatube/src/shared.py:2478
-#: /usr/local/bin/Yatube/src/shared.py:2621
-#: /usr/local/bin/Yatube/src/shared.py:2636
-#: /usr/local/bin/Yatube/src/shared.py:2675
-#: /usr/local/bin/Yatube/src/shared.py:2686
-#: /usr/local/bin/Yatube/src/shared.py:2715
-#: /usr/local/bin/Yatube/src/shared.py:2761
-#: /usr/local/bin/Yatube/src/shared.py:2773
-#: /usr/local/bin/Yatube/src/shared.py:2797
-#: /usr/local/bin/Yatube/src/shared.py:2804
-#: /usr/local/bin/Yatube/src/shared.py:2840
-#: /usr/local/bin/Yatube/src/shared.py:3074
-#: /usr/local/bin/Yatube/src/shared.py:3093
-#: /usr/local/bin/Yatube/src/shared.py:3133
-#: /usr/local/bin/Yatube/src/shared.py:3170
-#: /usr/local/bin/Yatube/src/shared.py:3180
-#: /usr/local/bin/Yatube/src/shared.py:3213
-#: /usr/local/bin/Yatube/src/shared.py:3232
-#: /usr/local/bin/Yatube/src/shared.py:3242
-#: /usr/local/bin/Yatube/src/shared.py:3261
-#: /usr/local/bin/Yatube/src/shared.py:3280
-#: /usr/local/bin/Yatube/src/shared.py:3295
-#: /usr/local/bin/Yatube/src/shared.py:3310
-#: /usr/local/bin/Yatube/src/shared.py:3329
-#: /usr/local/bin/Yatube/src/shared.py:3340
-#: /usr/local/bin/Yatube/src/shared.py:3354
-#: /usr/local/bin/Yatube/src/shared.py:3368
-#: /usr/local/bin/Yatube/src/shared.py:3382
-#: /usr/local/bin/Yatube/src/shared.py:3414
-#: /usr/local/bin/Yatube/src/shared.py:3420
-#: /usr/local/bin/Yatube/src/shared.py:3426
-#: /usr/local/bin/Yatube/src/shared.py:3447
-#: /usr/local/bin/Yatube/src/shared.py:3453
-#: /usr/local/bin/Yatube/src/shared.py:3470
-#: /usr/local/bin/Yatube/src/shared.py:3495
-#: /usr/local/bin/Yatube/src/shared.py:3506
-#: /usr/local/bin/Yatube/src/shared.py:3519
-#: /usr/local/bin/Yatube/src/shared.py:3534
-#: /usr/local/bin/Yatube/src/shared.py:3550
-#: /usr/local/bin/Yatube/src/shared.py:3567
-#: /usr/local/bin/Yatube/src/shared.py:3840
-#: /usr/local/bin/Yatube/src/shared.py:3849
-#: /usr/local/bin/Yatube/src/shared.py:3858
-#: /usr/local/bin/Yatube/src/shared.py:3917
-#: /usr/local/bin/Yatube/src/shared.py:3966
-#: /usr/local/bin/Yatube/src/shared.py:3979
-#: /usr/local/bin/Yatube/src/shared.py:4076
-#: /usr/local/bin/Yatube/src/shared.py:4092
-#: /usr/local/bin/Yatube/src/shared.py:4098
-#: /usr/local/bin/Yatube/src/shared.py:4116
-#: /usr/local/bin/Yatube/src/shared.py:4121
-#: /usr/local/bin/Yatube/src/shared.py:4141
-#: /usr/local/bin/Yatube/src/shared.py:4162
-#: /usr/local/bin/Yatube/src/shared.py:4183
-#: /usr/local/bin/Yatube/src/shared.py:4218
-#: /usr/local/bin/Yatube/src/shared.py:4238
-#: /usr/local/bin/Yatube/src/shared.py:4252
+#: /usr/local/bin/Yatube/src/shared.py:2349
+#: /usr/local/bin/Yatube/src/shared.py:2372
+#: /usr/local/bin/Yatube/src/shared.py:2429
+#: /usr/local/bin/Yatube/src/shared.py:2456
+#: /usr/local/bin/Yatube/src/shared.py:2462
+#: /usr/local/bin/Yatube/src/shared.py:2473
+#: /usr/local/bin/Yatube/src/shared.py:2479
+#: /usr/local/bin/Yatube/src/shared.py:2622
+#: /usr/local/bin/Yatube/src/shared.py:2637
+#: /usr/local/bin/Yatube/src/shared.py:2676
+#: /usr/local/bin/Yatube/src/shared.py:2687
+#: /usr/local/bin/Yatube/src/shared.py:2716
+#: /usr/local/bin/Yatube/src/shared.py:2762
+#: /usr/local/bin/Yatube/src/shared.py:2774
+#: /usr/local/bin/Yatube/src/shared.py:2798
+#: /usr/local/bin/Yatube/src/shared.py:2805
+#: /usr/local/bin/Yatube/src/shared.py:2841
+#: /usr/local/bin/Yatube/src/shared.py:3075
+#: /usr/local/bin/Yatube/src/shared.py:3094
+#: /usr/local/bin/Yatube/src/shared.py:3134
+#: /usr/local/bin/Yatube/src/shared.py:3171
+#: /usr/local/bin/Yatube/src/shared.py:3181
+#: /usr/local/bin/Yatube/src/shared.py:3214
+#: /usr/local/bin/Yatube/src/shared.py:3233
+#: /usr/local/bin/Yatube/src/shared.py:3243
+#: /usr/local/bin/Yatube/src/shared.py:3262
+#: /usr/local/bin/Yatube/src/shared.py:3281
+#: /usr/local/bin/Yatube/src/shared.py:3296
+#: /usr/local/bin/Yatube/src/shared.py:3311
+#: /usr/local/bin/Yatube/src/shared.py:3330
+#: /usr/local/bin/Yatube/src/shared.py:3341
+#: /usr/local/bin/Yatube/src/shared.py:3355
+#: /usr/local/bin/Yatube/src/shared.py:3369
+#: /usr/local/bin/Yatube/src/shared.py:3383
+#: /usr/local/bin/Yatube/src/shared.py:3415
+#: /usr/local/bin/Yatube/src/shared.py:3421
+#: /usr/local/bin/Yatube/src/shared.py:3427
+#: /usr/local/bin/Yatube/src/shared.py:3448
+#: /usr/local/bin/Yatube/src/shared.py:3454
+#: /usr/local/bin/Yatube/src/shared.py:3471
+#: /usr/local/bin/Yatube/src/shared.py:3496
+#: /usr/local/bin/Yatube/src/shared.py:3507
+#: /usr/local/bin/Yatube/src/shared.py:3520
+#: /usr/local/bin/Yatube/src/shared.py:3535
+#: /usr/local/bin/Yatube/src/shared.py:3551
+#: /usr/local/bin/Yatube/src/shared.py:3568
+#: /usr/local/bin/Yatube/src/shared.py:3841
+#: /usr/local/bin/Yatube/src/shared.py:3850
+#: /usr/local/bin/Yatube/src/shared.py:3859
+#: /usr/local/bin/Yatube/src/shared.py:3918
+#: /usr/local/bin/Yatube/src/shared.py:3967
+#: /usr/local/bin/Yatube/src/shared.py:3980
+#: /usr/local/bin/Yatube/src/shared.py:4077
+#: /usr/local/bin/Yatube/src/shared.py:4093
+#: /usr/local/bin/Yatube/src/shared.py:4099
+#: /usr/local/bin/Yatube/src/shared.py:4117
+#: /usr/local/bin/Yatube/src/shared.py:4122
+#: /usr/local/bin/Yatube/src/shared.py:4142
+#: /usr/local/bin/Yatube/src/shared.py:4163
+#: /usr/local/bin/Yatube/src/shared.py:4184
+#: /usr/local/bin/Yatube/src/shared.py:4219
+#: /usr/local/bin/Yatube/src/shared.py:4239
+#: /usr/local/bin/Yatube/src/shared.py:4253
 #: /usr/local/bin/Yatube/src/logic.py:59
 #: /usr/local/bin/Yatube/src/logic.py:201
 #: /usr/local/bin/Yatube/src/logic.py:253
@@ -229,32 +231,36 @@ msgstr ""
 #: /usr/local/bin/Yatube/src/logic.py:303
 #: /usr/local/bin/Yatube/src/logic.py:334
 #: /usr/local/bin/Yatube/src/logic.py:344
-#: /usr/local/bin/Yatube/src/logic.py:361
-#: /usr/local/bin/Yatube/src/logic.py:478
-#: /usr/local/bin/Yatube/src/logic.py:484
-#: /usr/local/bin/Yatube/src/logic.py:516
-#: /usr/local/bin/Yatube/src/logic.py:521
-#: /usr/local/bin/Yatube/src/logic.py:526
-#: /usr/local/bin/Yatube/src/logic.py:531
-#: /usr/local/bin/Yatube/src/logic.py:536
-#: /usr/local/bin/Yatube/src/logic.py:542
+#: /usr/local/bin/Yatube/src/logic.py:362
+#: /usr/local/bin/Yatube/src/logic.py:480
+#: /usr/local/bin/Yatube/src/logic.py:485
+#: /usr/local/bin/Yatube/src/logic.py:500
+#: /usr/local/bin/Yatube/src/logic.py:506
+#: /usr/local/bin/Yatube/src/logic.py:538
+#: /usr/local/bin/Yatube/src/logic.py:543
+#: /usr/local/bin/Yatube/src/logic.py:548
+#: /usr/local/bin/Yatube/src/logic.py:553
+#: /usr/local/bin/Yatube/src/logic.py:558
 #: /usr/local/bin/Yatube/src/logic.py:564
-#: /usr/local/bin/Yatube/src/logic.py:575
-#: /usr/local/bin/Yatube/src/logic.py:580
-#: /usr/local/bin/Yatube/src/logic.py:604
-#: /usr/local/bin/Yatube/src/logic.py:636
-#: /usr/local/bin/Yatube/src/logic.py:641
-#: /usr/local/bin/Yatube/src/logic.py:656
+#: /usr/local/bin/Yatube/src/logic.py:586
+#: /usr/local/bin/Yatube/src/logic.py:597
+#: /usr/local/bin/Yatube/src/logic.py:602
+#: /usr/local/bin/Yatube/src/logic.py:626
+#: /usr/local/bin/Yatube/src/logic.py:658
 #: /usr/local/bin/Yatube/src/logic.py:663
 #: /usr/local/bin/Yatube/src/logic.py:678
-#: /usr/local/bin/Yatube/src/logic.py:683
-#: /usr/local/bin/Yatube/src/logic.py:688
-#: /usr/local/bin/Yatube/src/logic.py:708
-#: /usr/local/bin/Yatube/src/logic.py:771
-#: /usr/local/bin/Yatube/src/logic.py:800
+#: /usr/local/bin/Yatube/src/logic.py:685
+#: /usr/local/bin/Yatube/src/logic.py:700
+#: /usr/local/bin/Yatube/src/logic.py:705
+#: /usr/local/bin/Yatube/src/logic.py:710
+#: /usr/local/bin/Yatube/src/logic.py:730
+#: /usr/local/bin/Yatube/src/logic.py:793
 #: /usr/local/bin/Yatube/src/logic.py:823
-#: /usr/local/bin/Yatube/src/logic.py:829
 #: /usr/local/bin/Yatube/src/logic.py:834
+#: /usr/local/bin/Yatube/src/logic.py:839
+#: /usr/local/bin/Yatube/src/logic.py:863
+#: /usr/local/bin/Yatube/src/logic.py:869
+#: /usr/local/bin/Yatube/src/logic.py:874
 #: /usr/local/bin/Yatube/src/utils.py:29
 #: /usr/local/bin/Yatube/src/utils.py:34
 #: /usr/local/bin/Yatube/src/utils.py:45
@@ -276,57 +282,58 @@ msgstr ""
 #: /usr/local/bin/Yatube/src/utils.py:225
 #: /usr/local/bin/Yatube/src/utils.py:252
 #: /usr/local/bin/Yatube/src/utils.py:288
-#: /usr/local/bin/Yatube/src/yatube.py:78
-#: /usr/local/bin/Yatube/src/yatube.py:83
-#: /usr/local/bin/Yatube/src/yatube.py:109
-#: /usr/local/bin/Yatube/src/yatube.py:119
-#: /usr/local/bin/Yatube/src/yatube.py:124
-#: /usr/local/bin/Yatube/src/yatube.py:163
-#: /usr/local/bin/Yatube/src/yatube.py:183
-#: /usr/local/bin/Yatube/src/yatube.py:210
-#: /usr/local/bin/Yatube/src/yatube.py:223
-#: /usr/local/bin/Yatube/src/yatube.py:265
-#: /usr/local/bin/Yatube/src/yatube.py:270
-#: /usr/local/bin/Yatube/src/yatube.py:275
-#: /usr/local/bin/Yatube/src/yatube.py:309
-#: /usr/local/bin/Yatube/src/yatube.py:314
-#: /usr/local/bin/Yatube/src/yatube.py:319
-#: /usr/local/bin/Yatube/src/yatube.py:332
-#: /usr/local/bin/Yatube/src/yatube.py:342
-#: /usr/local/bin/Yatube/src/yatube.py:351
-#: /usr/local/bin/Yatube/src/yatube.py:373
-#: /usr/local/bin/Yatube/src/yatube.py:435
-#: /usr/local/bin/Yatube/src/yatube.py:479
-#: /usr/local/bin/Yatube/src/yatube.py:509
-#: /usr/local/bin/Yatube/src/yatube.py:538
-#: /usr/local/bin/Yatube/src/yatube.py:557
-#: /usr/local/bin/Yatube/src/yatube.py:643
-#: /usr/local/bin/Yatube/src/yatube.py:648
-#: /usr/local/bin/Yatube/src/yatube.py:656
-#: /usr/local/bin/Yatube/src/yatube.py:710
-#: /usr/local/bin/Yatube/src/yatube.py:733
-#: /usr/local/bin/Yatube/src/yatube.py:824
-#: /usr/local/bin/Yatube/src/yatube.py:853
-#: /usr/local/bin/Yatube/src/yatube.py:912
-#: /usr/local/bin/Yatube/src/yatube.py:917
-#: /usr/local/bin/Yatube/src/yatube.py:1027
-#: /usr/local/bin/Yatube/src/yatube.py:1049
-#: /usr/local/bin/Yatube/src/yatube.py:1082
-#: /usr/local/bin/Yatube/src/yatube.py:1122
+#: /usr/local/bin/Yatube/src/yatube.py:97
+#: /usr/local/bin/Yatube/src/yatube.py:102
+#: /usr/local/bin/Yatube/src/yatube.py:128
+#: /usr/local/bin/Yatube/src/yatube.py:138
+#: /usr/local/bin/Yatube/src/yatube.py:143
+#: /usr/local/bin/Yatube/src/yatube.py:182
+#: /usr/local/bin/Yatube/src/yatube.py:209
+#: /usr/local/bin/Yatube/src/yatube.py:236
+#: /usr/local/bin/Yatube/src/yatube.py:249
+#: /usr/local/bin/Yatube/src/yatube.py:291
+#: /usr/local/bin/Yatube/src/yatube.py:296
+#: /usr/local/bin/Yatube/src/yatube.py:301
+#: /usr/local/bin/Yatube/src/yatube.py:335
+#: /usr/local/bin/Yatube/src/yatube.py:340
+#: /usr/local/bin/Yatube/src/yatube.py:345
+#: /usr/local/bin/Yatube/src/yatube.py:358
+#: /usr/local/bin/Yatube/src/yatube.py:368
+#: /usr/local/bin/Yatube/src/yatube.py:377
+#: /usr/local/bin/Yatube/src/yatube.py:399
+#: /usr/local/bin/Yatube/src/yatube.py:461
+#: /usr/local/bin/Yatube/src/yatube.py:505
+#: /usr/local/bin/Yatube/src/yatube.py:535
+#: /usr/local/bin/Yatube/src/yatube.py:564
+#: /usr/local/bin/Yatube/src/yatube.py:583
+#: /usr/local/bin/Yatube/src/yatube.py:670
+#: /usr/local/bin/Yatube/src/yatube.py:675
+#: /usr/local/bin/Yatube/src/yatube.py:683
+#: /usr/local/bin/Yatube/src/yatube.py:737
+#: /usr/local/bin/Yatube/src/yatube.py:760
+#: /usr/local/bin/Yatube/src/yatube.py:855
+#: /usr/local/bin/Yatube/src/yatube.py:884
+#: /usr/local/bin/Yatube/src/yatube.py:943
+#: /usr/local/bin/Yatube/src/yatube.py:948
+#: /usr/local/bin/Yatube/src/yatube.py:1058
+#: /usr/local/bin/Yatube/src/yatube.py:1080
+#: /usr/local/bin/Yatube/src/yatube.py:1113
+#: /usr/local/bin/Yatube/src/yatube.py:1153
 #: /usr/local/bin/Yatube/src/cli.py:47
 #: /usr/local/bin/Yatube/src/cli.py:118
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
-#: /usr/local/bin/Yatube/src/db.py:35
-#: /usr/local/bin/Yatube/src/db.py:88
-#: /usr/local/bin/Yatube/src/db.py:110
-#: /usr/local/bin/Yatube/src/db.py:129
-#: /usr/local/bin/Yatube/src/db.py:147
-#: /usr/local/bin/Yatube/src/db.py:185
-#: /usr/local/bin/Yatube/src/db.py:204
-#: /usr/local/bin/Yatube/src/db.py:224
-#: /usr/local/bin/Yatube/src/db.py:255
+#: /usr/local/bin/Yatube/src/db.py:34
+#: /usr/local/bin/Yatube/src/db.py:58
+#: /usr/local/bin/Yatube/src/db.py:111
+#: /usr/local/bin/Yatube/src/db.py:133
+#: /usr/local/bin/Yatube/src/db.py:152
+#: /usr/local/bin/Yatube/src/db.py:170
+#: /usr/local/bin/Yatube/src/db.py:208
+#: /usr/local/bin/Yatube/src/db.py:227
+#: /usr/local/bin/Yatube/src/db.py:247
+#: /usr/local/bin/Yatube/src/db.py:278
 #: /usr/local/bin/Yatube/src/utils.py:30
 #: /usr/local/bin/Yatube/src/utils.py:46
 #: /usr/local/bin/Yatube/src/utils.py:63
@@ -340,17 +347,18 @@ msgstr "ПРЕДУПРЕЖДЕНИЕ"
 msgid "Database \"%s\" has failed!"
 msgstr "Ошибка базы данных \"%s\"!"
 
-#: /usr/local/bin/Yatube/src/db.py:40
-#: /usr/local/bin/Yatube/src/db.py:93
-#: /usr/local/bin/Yatube/src/db.py:115
-#: /usr/local/bin/Yatube/src/db.py:134
-#: /usr/local/bin/Yatube/src/db.py:152
-#: /usr/local/bin/Yatube/src/db.py:190
-#: /usr/local/bin/Yatube/src/db.py:209
-#: /usr/local/bin/Yatube/src/db.py:229
-#: /usr/local/bin/Yatube/src/db.py:244
-#: /usr/local/bin/Yatube/src/db.py:260
+#: /usr/local/bin/Yatube/src/db.py:39
+#: /usr/local/bin/Yatube/src/db.py:63
+#: /usr/local/bin/Yatube/src/db.py:116
+#: /usr/local/bin/Yatube/src/db.py:138
+#: /usr/local/bin/Yatube/src/db.py:157
+#: /usr/local/bin/Yatube/src/db.py:175
+#: /usr/local/bin/Yatube/src/db.py:213
+#: /usr/local/bin/Yatube/src/db.py:232
+#: /usr/local/bin/Yatube/src/db.py:252
+#: /usr/local/bin/Yatube/src/db.py:267
 #: /usr/local/bin/Yatube/src/db.py:283
+#: /usr/local/bin/Yatube/src/db.py:306
 #: /usr/local/bin/Yatube/src/sharedGUI.py:357
 #: /usr/local/bin/Yatube/src/sharedGUI.py:373
 #: /usr/local/bin/Yatube/src/sharedGUI.py:384
@@ -413,60 +421,62 @@ msgstr "Ошибка базы данных \"%s\"!"
 #: /usr/local/bin/Yatube/src/shared.py:2288
 #: /usr/local/bin/Yatube/src/shared.py:2309
 #: /usr/local/bin/Yatube/src/shared.py:2335
-#: /usr/local/bin/Yatube/src/shared.py:2349
-#: /usr/local/bin/Yatube/src/shared.py:2372
-#: /usr/local/bin/Yatube/src/shared.py:2429
-#: /usr/local/bin/Yatube/src/shared.py:2462
-#: /usr/local/bin/Yatube/src/shared.py:2479
-#: /usr/local/bin/Yatube/src/shared.py:2687
-#: /usr/local/bin/Yatube/src/shared.py:2762
-#: /usr/local/bin/Yatube/src/shared.py:2774
-#: /usr/local/bin/Yatube/src/shared.py:2805
-#: /usr/local/bin/Yatube/src/shared.py:2841
-#: /usr/local/bin/Yatube/src/shared.py:3134
-#: /usr/local/bin/Yatube/src/shared.py:3171
-#: /usr/local/bin/Yatube/src/shared.py:3181
-#: /usr/local/bin/Yatube/src/shared.py:3214
-#: /usr/local/bin/Yatube/src/shared.py:3233
-#: /usr/local/bin/Yatube/src/shared.py:3243
-#: /usr/local/bin/Yatube/src/shared.py:3262
-#: /usr/local/bin/Yatube/src/shared.py:3281
-#: /usr/local/bin/Yatube/src/shared.py:3296
-#: /usr/local/bin/Yatube/src/shared.py:3311
-#: /usr/local/bin/Yatube/src/shared.py:3330
-#: /usr/local/bin/Yatube/src/shared.py:3341
-#: /usr/local/bin/Yatube/src/shared.py:3355
-#: /usr/local/bin/Yatube/src/shared.py:3369
-#: /usr/local/bin/Yatube/src/shared.py:3383
-#: /usr/local/bin/Yatube/src/shared.py:3427
-#: /usr/local/bin/Yatube/src/shared.py:3454
-#: /usr/local/bin/Yatube/src/shared.py:3471
-#: /usr/local/bin/Yatube/src/shared.py:3507
-#: /usr/local/bin/Yatube/src/shared.py:3520
-#: /usr/local/bin/Yatube/src/shared.py:3535
-#: /usr/local/bin/Yatube/src/shared.py:3551
-#: /usr/local/bin/Yatube/src/shared.py:3568
-#: /usr/local/bin/Yatube/src/shared.py:3967
-#: /usr/local/bin/Yatube/src/shared.py:3980
-#: /usr/local/bin/Yatube/src/shared.py:4163
-#: /usr/local/bin/Yatube/src/shared.py:4184
-#: /usr/local/bin/Yatube/src/shared.py:4219
-#: /usr/local/bin/Yatube/src/shared.py:4239
-#: /usr/local/bin/Yatube/src/shared.py:4253
+#: /usr/local/bin/Yatube/src/shared.py:2350
+#: /usr/local/bin/Yatube/src/shared.py:2373
+#: /usr/local/bin/Yatube/src/shared.py:2430
+#: /usr/local/bin/Yatube/src/shared.py:2463
+#: /usr/local/bin/Yatube/src/shared.py:2480
+#: /usr/local/bin/Yatube/src/shared.py:2688
+#: /usr/local/bin/Yatube/src/shared.py:2763
+#: /usr/local/bin/Yatube/src/shared.py:2775
+#: /usr/local/bin/Yatube/src/shared.py:2806
+#: /usr/local/bin/Yatube/src/shared.py:2842
+#: /usr/local/bin/Yatube/src/shared.py:3135
+#: /usr/local/bin/Yatube/src/shared.py:3172
+#: /usr/local/bin/Yatube/src/shared.py:3182
+#: /usr/local/bin/Yatube/src/shared.py:3215
+#: /usr/local/bin/Yatube/src/shared.py:3234
+#: /usr/local/bin/Yatube/src/shared.py:3244
+#: /usr/local/bin/Yatube/src/shared.py:3263
+#: /usr/local/bin/Yatube/src/shared.py:3282
+#: /usr/local/bin/Yatube/src/shared.py:3297
+#: /usr/local/bin/Yatube/src/shared.py:3312
+#: /usr/local/bin/Yatube/src/shared.py:3331
+#: /usr/local/bin/Yatube/src/shared.py:3342
+#: /usr/local/bin/Yatube/src/shared.py:3356
+#: /usr/local/bin/Yatube/src/shared.py:3370
+#: /usr/local/bin/Yatube/src/shared.py:3384
+#: /usr/local/bin/Yatube/src/shared.py:3428
+#: /usr/local/bin/Yatube/src/shared.py:3455
+#: /usr/local/bin/Yatube/src/shared.py:3472
+#: /usr/local/bin/Yatube/src/shared.py:3508
+#: /usr/local/bin/Yatube/src/shared.py:3521
+#: /usr/local/bin/Yatube/src/shared.py:3536
+#: /usr/local/bin/Yatube/src/shared.py:3552
+#: /usr/local/bin/Yatube/src/shared.py:3569
+#: /usr/local/bin/Yatube/src/shared.py:3968
+#: /usr/local/bin/Yatube/src/shared.py:3981
+#: /usr/local/bin/Yatube/src/shared.py:4164
+#: /usr/local/bin/Yatube/src/shared.py:4185
+#: /usr/local/bin/Yatube/src/shared.py:4220
+#: /usr/local/bin/Yatube/src/shared.py:4240
+#: /usr/local/bin/Yatube/src/shared.py:4254
 #: /usr/local/bin/Yatube/src/logic.py:265
 #: /usr/local/bin/Yatube/src/logic.py:289
 #: /usr/local/bin/Yatube/src/logic.py:304
-#: /usr/local/bin/Yatube/src/logic.py:485
-#: /usr/local/bin/Yatube/src/logic.py:543
-#: /usr/local/bin/Yatube/src/logic.py:581
-#: /usr/local/bin/Yatube/src/logic.py:605
-#: /usr/local/bin/Yatube/src/logic.py:642
+#: /usr/local/bin/Yatube/src/logic.py:486
+#: /usr/local/bin/Yatube/src/logic.py:507
+#: /usr/local/bin/Yatube/src/logic.py:565
+#: /usr/local/bin/Yatube/src/logic.py:603
+#: /usr/local/bin/Yatube/src/logic.py:627
 #: /usr/local/bin/Yatube/src/logic.py:664
-#: /usr/local/bin/Yatube/src/logic.py:689
-#: /usr/local/bin/Yatube/src/logic.py:709
-#: /usr/local/bin/Yatube/src/logic.py:772
-#: /usr/local/bin/Yatube/src/logic.py:801
-#: /usr/local/bin/Yatube/src/logic.py:835
+#: /usr/local/bin/Yatube/src/logic.py:686
+#: /usr/local/bin/Yatube/src/logic.py:711
+#: /usr/local/bin/Yatube/src/logic.py:731
+#: /usr/local/bin/Yatube/src/logic.py:794
+#: /usr/local/bin/Yatube/src/logic.py:824
+#: /usr/local/bin/Yatube/src/logic.py:840
+#: /usr/local/bin/Yatube/src/logic.py:875
 #: /usr/local/bin/Yatube/src/utils.py:35
 #: /usr/local/bin/Yatube/src/utils.py:51
 #: /usr/local/bin/Yatube/src/utils.py:68
@@ -477,11 +487,11 @@ msgstr "Ошибка базы данных \"%s\"!"
 #: /usr/local/bin/Yatube/src/utils.py:210
 #: /usr/local/bin/Yatube/src/utils.py:226
 #: /usr/local/bin/Yatube/src/utils.py:253
-#: /usr/local/bin/Yatube/src/yatube.py:644
+#: /usr/local/bin/Yatube/src/yatube.py:671
 msgid "Operation has been canceled."
 msgstr "Операция отменена."
 
-#: /usr/local/bin/Yatube/src/db.py:215
+#: /usr/local/bin/Yatube/src/db.py:238
 #: /usr/local/bin/Yatube/src/sharedGUI.py:349
 #: /usr/local/bin/Yatube/src/sharedGUI.py:459
 #: /usr/local/bin/Yatube/src/sharedGUI.py:464
@@ -525,55 +535,56 @@ msgstr "Операция отменена."
 #: /usr/local/bin/Yatube/src/shared.py:1927
 #: /usr/local/bin/Yatube/src/shared.py:2172
 #: /usr/local/bin/Yatube/src/shared.py:2274
-#: /usr/local/bin/Yatube/src/shared.py:2363
-#: /usr/local/bin/Yatube/src/shared.py:2377
-#: /usr/local/bin/Yatube/src/shared.py:2415
-#: /usr/local/bin/Yatube/src/shared.py:2422
-#: /usr/local/bin/Yatube/src/shared.py:2607
-#: /usr/local/bin/Yatube/src/shared.py:2668
-#: /usr/local/bin/Yatube/src/shared.py:2692
-#: /usr/local/bin/Yatube/src/shared.py:2709
-#: /usr/local/bin/Yatube/src/shared.py:2723
-#: /usr/local/bin/Yatube/src/shared.py:2754
-#: /usr/local/bin/Yatube/src/shared.py:3118
-#: /usr/local/bin/Yatube/src/shared.py:3894
-#: /usr/local/bin/Yatube/src/shared.py:3939
-#: /usr/local/bin/Yatube/src/shared.py:4070
-#: /usr/local/bin/Yatube/src/shared.py:4193
-#: /usr/local/bin/Yatube/src/shared.py:4199
-#: /usr/local/bin/Yatube/src/shared.py:4205
-#: /usr/local/bin/Yatube/src/shared.py:4274
+#: /usr/local/bin/Yatube/src/shared.py:2364
+#: /usr/local/bin/Yatube/src/shared.py:2378
+#: /usr/local/bin/Yatube/src/shared.py:2416
+#: /usr/local/bin/Yatube/src/shared.py:2423
+#: /usr/local/bin/Yatube/src/shared.py:2608
+#: /usr/local/bin/Yatube/src/shared.py:2669
+#: /usr/local/bin/Yatube/src/shared.py:2693
+#: /usr/local/bin/Yatube/src/shared.py:2710
+#: /usr/local/bin/Yatube/src/shared.py:2724
+#: /usr/local/bin/Yatube/src/shared.py:2755
+#: /usr/local/bin/Yatube/src/shared.py:3119
+#: /usr/local/bin/Yatube/src/shared.py:3895
+#: /usr/local/bin/Yatube/src/shared.py:3940
+#: /usr/local/bin/Yatube/src/shared.py:4071
+#: /usr/local/bin/Yatube/src/shared.py:4194
+#: /usr/local/bin/Yatube/src/shared.py:4200
+#: /usr/local/bin/Yatube/src/shared.py:4206
+#: /usr/local/bin/Yatube/src/shared.py:4275
 #: /usr/local/bin/Yatube/src/gui.py:525
 #: /usr/local/bin/Yatube/src/logic.py:298
-#: /usr/local/bin/Yatube/src/logic.py:599
-#: /usr/local/bin/Yatube/src/logic.py:699
-#: /usr/local/bin/Yatube/src/logic.py:808
+#: /usr/local/bin/Yatube/src/logic.py:621
+#: /usr/local/bin/Yatube/src/logic.py:721
+#: /usr/local/bin/Yatube/src/logic.py:848
 #: /usr/local/bin/Yatube/src/utils.py:153
-#: /usr/local/bin/Yatube/src/yatube.py:49
-#: /usr/local/bin/Yatube/src/yatube.py:73
-#: /usr/local/bin/Yatube/src/yatube.py:94
-#: /usr/local/bin/Yatube/src/yatube.py:114
-#: /usr/local/bin/Yatube/src/yatube.py:147
-#: /usr/local/bin/Yatube/src/yatube.py:172
-#: /usr/local/bin/Yatube/src/yatube.py:234
-#: /usr/local/bin/Yatube/src/yatube.py:239
-#: /usr/local/bin/Yatube/src/yatube.py:286
-#: /usr/local/bin/Yatube/src/yatube.py:291
-#: /usr/local/bin/Yatube/src/yatube.py:357
-#: /usr/local/bin/Yatube/src/yatube.py:459
-#: /usr/local/bin/Yatube/src/yatube.py:587
-#: /usr/local/bin/Yatube/src/yatube.py:610
-#: /usr/local/bin/Yatube/src/yatube.py:670
-#: /usr/local/bin/Yatube/src/yatube.py:721
-#: /usr/local/bin/Yatube/src/yatube.py:738
-#: /usr/local/bin/Yatube/src/yatube.py:1054
+#: /usr/local/bin/Yatube/src/yatube.py:57
+#: /usr/local/bin/Yatube/src/yatube.py:68
+#: /usr/local/bin/Yatube/src/yatube.py:92
+#: /usr/local/bin/Yatube/src/yatube.py:113
+#: /usr/local/bin/Yatube/src/yatube.py:133
+#: /usr/local/bin/Yatube/src/yatube.py:166
+#: /usr/local/bin/Yatube/src/yatube.py:191
+#: /usr/local/bin/Yatube/src/yatube.py:260
+#: /usr/local/bin/Yatube/src/yatube.py:265
+#: /usr/local/bin/Yatube/src/yatube.py:312
+#: /usr/local/bin/Yatube/src/yatube.py:317
+#: /usr/local/bin/Yatube/src/yatube.py:383
+#: /usr/local/bin/Yatube/src/yatube.py:485
+#: /usr/local/bin/Yatube/src/yatube.py:614
+#: /usr/local/bin/Yatube/src/yatube.py:637
+#: /usr/local/bin/Yatube/src/yatube.py:697
+#: /usr/local/bin/Yatube/src/yatube.py:748
+#: /usr/local/bin/Yatube/src/yatube.py:765
+#: /usr/local/bin/Yatube/src/yatube.py:1085
 #: /usr/local/bin/Yatube/src/cli.py:58
 #: /usr/local/bin/Yatube/src/cli.py:65
 #: /usr/local/bin/Yatube/src/cli.py:84
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
-#: /usr/local/bin/Yatube/src/db.py:216
+#: /usr/local/bin/Yatube/src/db.py:239
 #, python-format
 msgid "Save \"%s\""
 msgstr "Сохранение \"%s\""
@@ -670,21 +681,21 @@ msgstr "Сохранение \"%s\""
 #: /usr/local/bin/Yatube/src/shared.py:2035
 #: /usr/local/bin/Yatube/src/shared.py:2060
 #: /usr/local/bin/Yatube/src/shared.py:2184
-#: /usr/local/bin/Yatube/src/shared.py:2357
-#: /usr/local/bin/Yatube/src/shared.py:2385
-#: /usr/local/bin/Yatube/src/shared.py:2532
-#: /usr/local/bin/Yatube/src/shared.py:2699
-#: /usr/local/bin/Yatube/src/shared.py:2734
-#: /usr/local/bin/Yatube/src/shared.py:2835
-#: /usr/local/bin/Yatube/src/shared.py:4156
-#: /usr/local/bin/Yatube/src/shared.py:4177
-#: /usr/local/bin/Yatube/src/shared.py:4232
-#: /usr/local/bin/Yatube/src/logic.py:630
-#: /usr/local/bin/Yatube/src/yatube.py:454
-#: /usr/local/bin/Yatube/src/yatube.py:532
-#: /usr/local/bin/Yatube/src/yatube.py:601
-#: /usr/local/bin/Yatube/src/yatube.py:867
-#: /usr/local/bin/Yatube/src/yatube.py:930
+#: /usr/local/bin/Yatube/src/shared.py:2358
+#: /usr/local/bin/Yatube/src/shared.py:2386
+#: /usr/local/bin/Yatube/src/shared.py:2533
+#: /usr/local/bin/Yatube/src/shared.py:2700
+#: /usr/local/bin/Yatube/src/shared.py:2735
+#: /usr/local/bin/Yatube/src/shared.py:2836
+#: /usr/local/bin/Yatube/src/shared.py:4157
+#: /usr/local/bin/Yatube/src/shared.py:4178
+#: /usr/local/bin/Yatube/src/shared.py:4233
+#: /usr/local/bin/Yatube/src/logic.py:652
+#: /usr/local/bin/Yatube/src/yatube.py:480
+#: /usr/local/bin/Yatube/src/yatube.py:558
+#: /usr/local/bin/Yatube/src/yatube.py:628
+#: /usr/local/bin/Yatube/src/yatube.py:898
+#: /usr/local/bin/Yatube/src/yatube.py:961
 msgid "ERROR"
 msgstr "ОШИБКА"
 
@@ -697,8 +708,8 @@ msgstr "Не удалось задействовать сочетание кла
 #: /usr/local/bin/Yatube/src/sharedGUI.py:1921
 #: /usr/local/bin/Yatube/src/sharedGUI.py:1976
 #: /usr/local/bin/Yatube/src/shared.py:2231
-#: /usr/local/bin/Yatube/src/shared.py:3415
-#: /usr/local/bin/Yatube/src/shared.py:3421
+#: /usr/local/bin/Yatube/src/shared.py:3416
+#: /usr/local/bin/Yatube/src/shared.py:3422
 #, python-format
 msgid "Wrong input data: \"%s\""
 msgstr "Недопустимые входные данные: \"%s\""
@@ -722,23 +733,23 @@ msgstr "Недопустимые входные данные: \"%s\""
 #: /usr/local/bin/Yatube/src/shared.py:853
 #: /usr/local/bin/Yatube/src/shared.py:1452
 #: /usr/local/bin/Yatube/src/shared.py:1961
-#: /usr/local/bin/Yatube/src/shared.py:2637
-#: /usr/local/bin/Yatube/src/shared.py:2716
-#: /usr/local/bin/Yatube/src/shared.py:3496
-#: /usr/local/bin/Yatube/src/shared.py:4117
+#: /usr/local/bin/Yatube/src/shared.py:2638
+#: /usr/local/bin/Yatube/src/shared.py:2717
+#: /usr/local/bin/Yatube/src/shared.py:3497
+#: /usr/local/bin/Yatube/src/shared.py:4118
 #: /usr/local/bin/Yatube/src/logic.py:60
 #: /usr/local/bin/Yatube/src/logic.py:254
 #: /usr/local/bin/Yatube/src/logic.py:345
-#: /usr/local/bin/Yatube/src/logic.py:522
-#: /usr/local/bin/Yatube/src/logic.py:527
-#: /usr/local/bin/Yatube/src/logic.py:532
-#: /usr/local/bin/Yatube/src/yatube.py:455
-#: /usr/local/bin/Yatube/src/yatube.py:558
-#: /usr/local/bin/Yatube/src/yatube.py:602
-#: /usr/local/bin/Yatube/src/yatube.py:734
-#: /usr/local/bin/Yatube/src/yatube.py:825
-#: /usr/local/bin/Yatube/src/yatube.py:868
-#: /usr/local/bin/Yatube/src/yatube.py:931
+#: /usr/local/bin/Yatube/src/logic.py:544
+#: /usr/local/bin/Yatube/src/logic.py:549
+#: /usr/local/bin/Yatube/src/logic.py:554
+#: /usr/local/bin/Yatube/src/yatube.py:481
+#: /usr/local/bin/Yatube/src/yatube.py:584
+#: /usr/local/bin/Yatube/src/yatube.py:629
+#: /usr/local/bin/Yatube/src/yatube.py:761
+#: /usr/local/bin/Yatube/src/yatube.py:856
+#: /usr/local/bin/Yatube/src/yatube.py:899
+#: /usr/local/bin/Yatube/src/yatube.py:962
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -773,10 +784,10 @@ msgstr "Неизвестный цвет \"%s\"!"
 #: /usr/local/bin/Yatube/src/shared.py:627
 #: /usr/local/bin/Yatube/src/shared.py:2036
 #: /usr/local/bin/Yatube/src/shared.py:2061
-#: /usr/local/bin/Yatube/src/shared.py:4157
-#: /usr/local/bin/Yatube/src/shared.py:4178
-#: /usr/local/bin/Yatube/src/shared.py:4233
-#: /usr/local/bin/Yatube/src/logic.py:631
+#: /usr/local/bin/Yatube/src/shared.py:4158
+#: /usr/local/bin/Yatube/src/shared.py:4179
+#: /usr/local/bin/Yatube/src/shared.py:4234
+#: /usr/local/bin/Yatube/src/logic.py:653
 #, python-format
 msgid "The condition \"%s\" is not observed!"
 msgstr "Условие \"%s\" не выполнено!"
@@ -865,57 +876,59 @@ msgstr "Совпадений больше нет, поиск продолжен 
 #: /usr/local/bin/Yatube/src/shared.py:1521
 #: /usr/local/bin/Yatube/src/shared.py:1882
 #: /usr/local/bin/Yatube/src/shared.py:2014
-#: /usr/local/bin/Yatube/src/shared.py:2622
-#: /usr/local/bin/Yatube/src/shared.py:2798
-#: /usr/local/bin/Yatube/src/shared.py:3841
-#: /usr/local/bin/Yatube/src/shared.py:3918
-#: /usr/local/bin/Yatube/src/shared.py:4099
-#: /usr/local/bin/Yatube/src/shared.py:4122
-#: /usr/local/bin/Yatube/src/shared.py:4142
+#: /usr/local/bin/Yatube/src/shared.py:2623
+#: /usr/local/bin/Yatube/src/shared.py:2799
+#: /usr/local/bin/Yatube/src/shared.py:3842
+#: /usr/local/bin/Yatube/src/shared.py:3919
+#: /usr/local/bin/Yatube/src/shared.py:4100
+#: /usr/local/bin/Yatube/src/shared.py:4123
+#: /usr/local/bin/Yatube/src/shared.py:4143
 #: /usr/local/bin/Yatube/src/logic.py:260
-#: /usr/local/bin/Yatube/src/logic.py:362
-#: /usr/local/bin/Yatube/src/logic.py:479
-#: /usr/local/bin/Yatube/src/logic.py:517
-#: /usr/local/bin/Yatube/src/logic.py:537
-#: /usr/local/bin/Yatube/src/logic.py:576
-#: /usr/local/bin/Yatube/src/logic.py:637
-#: /usr/local/bin/Yatube/src/logic.py:679
-#: /usr/local/bin/Yatube/src/logic.py:684
-#: /usr/local/bin/Yatube/src/logic.py:830
+#: /usr/local/bin/Yatube/src/logic.py:363
+#: /usr/local/bin/Yatube/src/logic.py:481
+#: /usr/local/bin/Yatube/src/logic.py:501
+#: /usr/local/bin/Yatube/src/logic.py:539
+#: /usr/local/bin/Yatube/src/logic.py:559
+#: /usr/local/bin/Yatube/src/logic.py:598
+#: /usr/local/bin/Yatube/src/logic.py:659
+#: /usr/local/bin/Yatube/src/logic.py:701
+#: /usr/local/bin/Yatube/src/logic.py:706
+#: /usr/local/bin/Yatube/src/logic.py:835
+#: /usr/local/bin/Yatube/src/logic.py:870
 #: /usr/local/bin/Yatube/src/utils.py:189
 #: /usr/local/bin/Yatube/src/utils.py:289
-#: /usr/local/bin/Yatube/src/yatube.py:79
-#: /usr/local/bin/Yatube/src/yatube.py:84
-#: /usr/local/bin/Yatube/src/yatube.py:110
-#: /usr/local/bin/Yatube/src/yatube.py:120
-#: /usr/local/bin/Yatube/src/yatube.py:125
-#: /usr/local/bin/Yatube/src/yatube.py:164
-#: /usr/local/bin/Yatube/src/yatube.py:184
-#: /usr/local/bin/Yatube/src/yatube.py:211
-#: /usr/local/bin/Yatube/src/yatube.py:224
-#: /usr/local/bin/Yatube/src/yatube.py:266
-#: /usr/local/bin/Yatube/src/yatube.py:271
-#: /usr/local/bin/Yatube/src/yatube.py:276
-#: /usr/local/bin/Yatube/src/yatube.py:310
-#: /usr/local/bin/Yatube/src/yatube.py:315
-#: /usr/local/bin/Yatube/src/yatube.py:320
-#: /usr/local/bin/Yatube/src/yatube.py:333
-#: /usr/local/bin/Yatube/src/yatube.py:343
-#: /usr/local/bin/Yatube/src/yatube.py:352
-#: /usr/local/bin/Yatube/src/yatube.py:374
-#: /usr/local/bin/Yatube/src/yatube.py:436
-#: /usr/local/bin/Yatube/src/yatube.py:480
-#: /usr/local/bin/Yatube/src/yatube.py:510
-#: /usr/local/bin/Yatube/src/yatube.py:539
-#: /usr/local/bin/Yatube/src/yatube.py:657
-#: /usr/local/bin/Yatube/src/yatube.py:711
-#: /usr/local/bin/Yatube/src/yatube.py:854
-#: /usr/local/bin/Yatube/src/yatube.py:913
-#: /usr/local/bin/Yatube/src/yatube.py:918
-#: /usr/local/bin/Yatube/src/yatube.py:1028
-#: /usr/local/bin/Yatube/src/yatube.py:1050
-#: /usr/local/bin/Yatube/src/yatube.py:1083
-#: /usr/local/bin/Yatube/src/yatube.py:1123
+#: /usr/local/bin/Yatube/src/yatube.py:98
+#: /usr/local/bin/Yatube/src/yatube.py:103
+#: /usr/local/bin/Yatube/src/yatube.py:129
+#: /usr/local/bin/Yatube/src/yatube.py:139
+#: /usr/local/bin/Yatube/src/yatube.py:144
+#: /usr/local/bin/Yatube/src/yatube.py:183
+#: /usr/local/bin/Yatube/src/yatube.py:210
+#: /usr/local/bin/Yatube/src/yatube.py:237
+#: /usr/local/bin/Yatube/src/yatube.py:250
+#: /usr/local/bin/Yatube/src/yatube.py:292
+#: /usr/local/bin/Yatube/src/yatube.py:297
+#: /usr/local/bin/Yatube/src/yatube.py:302
+#: /usr/local/bin/Yatube/src/yatube.py:336
+#: /usr/local/bin/Yatube/src/yatube.py:341
+#: /usr/local/bin/Yatube/src/yatube.py:346
+#: /usr/local/bin/Yatube/src/yatube.py:359
+#: /usr/local/bin/Yatube/src/yatube.py:369
+#: /usr/local/bin/Yatube/src/yatube.py:378
+#: /usr/local/bin/Yatube/src/yatube.py:400
+#: /usr/local/bin/Yatube/src/yatube.py:462
+#: /usr/local/bin/Yatube/src/yatube.py:506
+#: /usr/local/bin/Yatube/src/yatube.py:536
+#: /usr/local/bin/Yatube/src/yatube.py:565
+#: /usr/local/bin/Yatube/src/yatube.py:684
+#: /usr/local/bin/Yatube/src/yatube.py:738
+#: /usr/local/bin/Yatube/src/yatube.py:885
+#: /usr/local/bin/Yatube/src/yatube.py:944
+#: /usr/local/bin/Yatube/src/yatube.py:949
+#: /usr/local/bin/Yatube/src/yatube.py:1059
+#: /usr/local/bin/Yatube/src/yatube.py:1081
+#: /usr/local/bin/Yatube/src/yatube.py:1114
+#: /usr/local/bin/Yatube/src/yatube.py:1154
 #: /usr/local/bin/Yatube/src/cli.py:48
 #: /usr/local/bin/Yatube/src/cli.py:119
 msgid "Empty input is not allowed!"
@@ -987,17 +1000,17 @@ msgstr "Не удалось сдвинуть экран до метки \"%s\"!"
 #: /usr/local/bin/Yatube/src/sharedGUI.py:2927
 #: /usr/local/bin/Yatube/src/sharedGUI.py:2957
 #: /usr/local/bin/Yatube/src/shared.py:193
-#: /usr/local/bin/Yatube/src/shared.py:2542
-#: /usr/local/bin/Yatube/src/shared.py:3005
-#: /usr/local/bin/Yatube/src/shared.py:3408
-#: /usr/local/bin/Yatube/src/shared.py:3733
-#: /usr/local/bin/Yatube/src/shared.py:3765
+#: /usr/local/bin/Yatube/src/shared.py:2543
+#: /usr/local/bin/Yatube/src/shared.py:3006
+#: /usr/local/bin/Yatube/src/shared.py:3409
+#: /usr/local/bin/Yatube/src/shared.py:3734
+#: /usr/local/bin/Yatube/src/shared.py:3766
 #: /usr/local/bin/Yatube/src/gui.py:517
-#: /usr/local/bin/Yatube/src/logic.py:510
-#: /usr/local/bin/Yatube/src/yatube.py:682
-#: /usr/local/bin/Yatube/src/yatube.py:686
-#: /usr/local/bin/Yatube/src/yatube.py:690
-#: /usr/local/bin/Yatube/src/yatube.py:704
+#: /usr/local/bin/Yatube/src/logic.py:532
+#: /usr/local/bin/Yatube/src/yatube.py:709
+#: /usr/local/bin/Yatube/src/yatube.py:713
+#: /usr/local/bin/Yatube/src/yatube.py:717
+#: /usr/local/bin/Yatube/src/yatube.py:731
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
@@ -1028,21 +1041,22 @@ msgstr "Ошибок правописания не обнаружено."
 #: /usr/local/bin/Yatube/src/shared.py:382
 #: /usr/local/bin/Yatube/src/shared.py:737
 #: /usr/local/bin/Yatube/src/shared.py:1763
-#: /usr/local/bin/Yatube/src/shared.py:3075
-#: /usr/local/bin/Yatube/src/shared.py:3094
+#: /usr/local/bin/Yatube/src/shared.py:3076
+#: /usr/local/bin/Yatube/src/shared.py:3095
 msgid "Not enough input data!"
 msgstr "Недостаточно входных данных!"
 
 #: /usr/local/bin/Yatube/src/sharedGUI.py:1367
 #: /usr/local/bin/Yatube/src/sharedGUI.py:1882
-#: /usr/local/bin/Yatube/src/shared.py:4275
-#: /usr/local/bin/Yatube/src/yatube.py:74
-#: /usr/local/bin/Yatube/src/yatube.py:115
-#: /usr/local/bin/Yatube/src/yatube.py:148
-#: /usr/local/bin/Yatube/src/yatube.py:235
-#: /usr/local/bin/Yatube/src/yatube.py:287
-#: /usr/local/bin/Yatube/src/yatube.py:611
-#: /usr/local/bin/Yatube/src/yatube.py:739
+#: /usr/local/bin/Yatube/src/shared.py:4276
+#: /usr/local/bin/Yatube/src/yatube.py:58
+#: /usr/local/bin/Yatube/src/yatube.py:93
+#: /usr/local/bin/Yatube/src/yatube.py:134
+#: /usr/local/bin/Yatube/src/yatube.py:167
+#: /usr/local/bin/Yatube/src/yatube.py:261
+#: /usr/local/bin/Yatube/src/yatube.py:313
+#: /usr/local/bin/Yatube/src/yatube.py:638
+#: /usr/local/bin/Yatube/src/yatube.py:766
 msgid "Nothing to do!"
 msgstr "Действие не требуется."
 
@@ -1052,8 +1066,8 @@ msgstr "Действие не требуется."
 #: /usr/local/bin/Yatube/src/sharedGUI.py:2765
 #: /usr/local/bin/Yatube/src/shared.py:342
 #: /usr/local/bin/Yatube/src/shared.py:1870
-#: /usr/local/bin/Yatube/src/yatube.py:533
-#: /usr/local/bin/Yatube/src/yatube.py:649
+#: /usr/local/bin/Yatube/src/yatube.py:559
+#: /usr/local/bin/Yatube/src/yatube.py:676
 #, python-format
 msgid ""
 "An unknown mode \"%s\"!\n"
@@ -1207,11 +1221,11 @@ msgstr "У виджета \"%s\" нет действия \"close\"!"
 
 #: /usr/local/bin/Yatube/src/sharedGUI.py:3259
 #: /usr/local/bin/Yatube/src/sharedGUI.py:3266
-#: /usr/local/bin/Yatube/src/shared.py:2710
-#: /usr/local/bin/Yatube/src/shared.py:2755
-#: /usr/local/bin/Yatube/src/logic.py:600
-#: /usr/local/bin/Yatube/src/yatube.py:460
-#: /usr/local/bin/Yatube/src/yatube.py:1055
+#: /usr/local/bin/Yatube/src/shared.py:2711
+#: /usr/local/bin/Yatube/src/shared.py:2756
+#: /usr/local/bin/Yatube/src/logic.py:622
+#: /usr/local/bin/Yatube/src/yatube.py:486
+#: /usr/local/bin/Yatube/src/yatube.py:1086
 msgid "Nothing to do."
 msgstr "Действие не требуется."
 
@@ -1372,73 +1386,73 @@ msgstr "Обратите внимание: указанная дата - пон�
 
 #: /usr/local/bin/Yatube/src/shared.py:1426
 #: /usr/local/bin/Yatube/src/logic.py:44
-#: /usr/local/bin/Yatube/src/yatube.py:386
+#: /usr/local/bin/Yatube/src/yatube.py:412
 msgid "Jan"
 msgstr "янв"
 
 #: /usr/local/bin/Yatube/src/shared.py:1428
 #: /usr/local/bin/Yatube/src/logic.py:44
-#: /usr/local/bin/Yatube/src/yatube.py:388
+#: /usr/local/bin/Yatube/src/yatube.py:414
 msgid "Feb"
 msgstr "фев"
 
 #: /usr/local/bin/Yatube/src/shared.py:1430
 #: /usr/local/bin/Yatube/src/logic.py:44
-#: /usr/local/bin/Yatube/src/yatube.py:390
+#: /usr/local/bin/Yatube/src/yatube.py:416
 msgid "Mar"
 msgstr "мар"
 
 #: /usr/local/bin/Yatube/src/shared.py:1432
 #: /usr/local/bin/Yatube/src/logic.py:44
-#: /usr/local/bin/Yatube/src/yatube.py:392
+#: /usr/local/bin/Yatube/src/yatube.py:418
 msgid "Apr"
 msgstr "апр"
 
 #: /usr/local/bin/Yatube/src/shared.py:1434
 #: /usr/local/bin/Yatube/src/logic.py:44
-#: /usr/local/bin/Yatube/src/yatube.py:394
+#: /usr/local/bin/Yatube/src/yatube.py:420
 msgid "May"
 msgstr "май"
 
 #: /usr/local/bin/Yatube/src/shared.py:1436
 #: /usr/local/bin/Yatube/src/logic.py:45
-#: /usr/local/bin/Yatube/src/yatube.py:396
+#: /usr/local/bin/Yatube/src/yatube.py:422
 msgid "Jun"
 msgstr "июн"
 
 #: /usr/local/bin/Yatube/src/shared.py:1438
 #: /usr/local/bin/Yatube/src/logic.py:45
-#: /usr/local/bin/Yatube/src/yatube.py:398
+#: /usr/local/bin/Yatube/src/yatube.py:424
 msgid "Jul"
 msgstr "июл"
 
 #: /usr/local/bin/Yatube/src/shared.py:1440
 #: /usr/local/bin/Yatube/src/logic.py:45
-#: /usr/local/bin/Yatube/src/yatube.py:400
+#: /usr/local/bin/Yatube/src/yatube.py:426
 msgid "Aug"
 msgstr "авг"
 
 #: /usr/local/bin/Yatube/src/shared.py:1442
 #: /usr/local/bin/Yatube/src/logic.py:45
-#: /usr/local/bin/Yatube/src/yatube.py:402
+#: /usr/local/bin/Yatube/src/yatube.py:428
 msgid "Sep"
 msgstr "сен"
 
 #: /usr/local/bin/Yatube/src/shared.py:1444
 #: /usr/local/bin/Yatube/src/logic.py:45
-#: /usr/local/bin/Yatube/src/yatube.py:404
+#: /usr/local/bin/Yatube/src/yatube.py:430
 msgid "Oct"
 msgstr "окт"
 
 #: /usr/local/bin/Yatube/src/shared.py:1446
 #: /usr/local/bin/Yatube/src/logic.py:46
-#: /usr/local/bin/Yatube/src/yatube.py:406
+#: /usr/local/bin/Yatube/src/yatube.py:432
 msgid "Nov"
 msgstr "ноя"
 
 #: /usr/local/bin/Yatube/src/shared.py:1448
 #: /usr/local/bin/Yatube/src/logic.py:46
-#: /usr/local/bin/Yatube/src/yatube.py:408
+#: /usr/local/bin/Yatube/src/yatube.py:434
 msgid "Dec"
 msgstr "дек"
 
@@ -1448,7 +1462,7 @@ msgid "The object \"%s\" is not a file!"
 msgstr "Объект \"%s\" не является файлом!"
 
 #: /usr/local/bin/Yatube/src/shared.py:1542
-#: /usr/local/bin/Yatube/src/shared.py:2378
+#: /usr/local/bin/Yatube/src/shared.py:2379
 #: /usr/local/bin/Yatube/src/utils.py:154
 #, python-format
 msgid "Copy \"%s\" to \"%s\""
@@ -1512,7 +1526,7 @@ msgid "Failed to change the time of the file \"%s\" to \"%s\"!"
 msgstr "Не удалось изменить время файла \"%s\" на \"%s\"!"
 
 #: /usr/local/bin/Yatube/src/shared.py:1734
-#: /usr/local/bin/Yatube/src/shared.py:2364
+#: /usr/local/bin/Yatube/src/shared.py:2365
 #, python-format
 msgid "Directory \"%s\" already exists."
 msgstr "Каталог \"%s\" уже существует."
@@ -1541,245 +1555,245 @@ msgstr "Не удается обработать следующие строки
 msgid "Failed to delete directory \"%s\"! Delete it manually."
 msgstr "Не удается удалить каталог \"%s\"! Удалите его вручную."
 
-#: /usr/local/bin/Yatube/src/shared.py:2358
+#: /usr/local/bin/Yatube/src/shared.py:2359
 #, python-format
 msgid "Unable to copy \"%s\" to iself!"
 msgstr "Нельзя скопировать \"%s\" сам в себя!"
 
-#: /usr/local/bin/Yatube/src/shared.py:2386
+#: /usr/local/bin/Yatube/src/shared.py:2387
 #, python-format
 msgid "Failed to copy \"%s\" to \"%s\"!"
 msgstr "Не удалось скопировать \"%s\" в \"%s\"!"
 
-#: /usr/local/bin/Yatube/src/shared.py:2402
+#: /usr/local/bin/Yatube/src/shared.py:2403
 msgid "The following sections and/or keys are missing:"
 msgstr "Отсутствуют следующие разделы и/или ключи:"
 
-#: /usr/local/bin/Yatube/src/shared.py:2416
+#: /usr/local/bin/Yatube/src/shared.py:2417
 #, python-format
 msgid "New value of the key \"%s\" has been loaded."
 msgstr "Загружено новое значение ключа \"%s\"."
 
-#: /usr/local/bin/Yatube/src/shared.py:2423
+#: /usr/local/bin/Yatube/src/shared.py:2424
 #, python-format
 msgid "Keys loaded in total: %d, whereas %d are modified."
 msgstr "Всего загружено ключей: %d, из них измененных: %d."
 
-#: /usr/local/bin/Yatube/src/shared.py:2449
+#: /usr/local/bin/Yatube/src/shared.py:2450
 #, python-format
 msgid "Missing sections: %d"
 msgstr "Отсутствующих разделов: %d"
 
-#: /usr/local/bin/Yatube/src/shared.py:2451
+#: /usr/local/bin/Yatube/src/shared.py:2452
 #, python-format
 msgid "Missing keys: %d"
 msgstr "Отсутствующих ключей: %d"
 
-#: /usr/local/bin/Yatube/src/shared.py:2453
+#: /usr/local/bin/Yatube/src/shared.py:2454
 msgid "The default configuration has been loaded."
 msgstr "Загружена конфигурация по умолчанию."
 
-#: /usr/local/bin/Yatube/src/shared.py:2473
+#: /usr/local/bin/Yatube/src/shared.py:2474
 #, python-format
 msgid "Failed to read the configuration file \"%s\". This file must share the same directory with the program and have UTF-8 encoding (no BOM) and UNIX line break type."
 msgstr "Не удается прочитать конфигурационный файл \"%s\". Этот файл должен находиться в одном каталоге с программой и иметь кодировку utf-8 (без BOM), тип разрыва строки - UNIX."
 
-#: /usr/local/bin/Yatube/src/shared.py:2533
+#: /usr/local/bin/Yatube/src/shared.py:2534
 #, python-format
 msgid "Failed to open URL \"%s\" in a default browser!"
 msgstr "Не удалось открыть адрес \"%s\" в браузере по умолчанию!"
 
-#: /usr/local/bin/Yatube/src/shared.py:2583
+#: /usr/local/bin/Yatube/src/shared.py:2584
 msgid "Differences:"
 msgstr "Различия:"
 
-#: /usr/local/bin/Yatube/src/shared.py:2608
+#: /usr/local/bin/Yatube/src/shared.py:2609
 msgid "Texts are identical!"
 msgstr "Различий нет!"
 
-#: /usr/local/bin/Yatube/src/shared.py:2669
+#: /usr/local/bin/Yatube/src/shared.py:2670
 #, python-format
 msgid "Delete the symbolic link \"%s\""
 msgstr "Удаление ярлыка \"%s\""
 
-#: /usr/local/bin/Yatube/src/shared.py:2676
+#: /usr/local/bin/Yatube/src/shared.py:2677
 #, python-format
 msgid "Failed to remove shortcut \"%s\". Remove it manually and press OK."
 msgstr "Не удается удалить ярлык \"%s\". Удалите его вручную и нажмите OK."
 
-#: /usr/local/bin/Yatube/src/shared.py:2693
-#: /usr/local/bin/Yatube/src/shared.py:2724
+#: /usr/local/bin/Yatube/src/shared.py:2694
+#: /usr/local/bin/Yatube/src/shared.py:2725
 #, python-format
 msgid "Create a symbolic link \"%s\""
 msgstr "Создание ярлыка \"%s\""
 
-#: /usr/local/bin/Yatube/src/shared.py:2700
-#: /usr/local/bin/Yatube/src/shared.py:2735
+#: /usr/local/bin/Yatube/src/shared.py:2701
+#: /usr/local/bin/Yatube/src/shared.py:2736
 #, python-format
 msgid "Failed to create shortcut \"%s\". Create it manually and press OK."
 msgstr "Не удается создать ярлык \"%s\". Создайте его вручную и нажмите OK."
 
-#: /usr/local/bin/Yatube/src/shared.py:2836
+#: /usr/local/bin/Yatube/src/shared.py:2837
 msgid "Failed to load an e-mail client."
 msgstr "Не удалось загрузить почтовый клиент."
 
-#: /usr/local/bin/Yatube/src/shared.py:3119
+#: /usr/local/bin/Yatube/src/shared.py:3120
 msgid "Analyze the text"
 msgstr "Анализ текста"
 
-#: /usr/local/bin/Yatube/src/shared.py:3448
+#: /usr/local/bin/Yatube/src/shared.py:3449
 #, python-format
 msgid "Failed to find words of paragraph #%d!"
 msgstr "Не удалось найти слова абзаца #%d!"
 
-#: /usr/local/bin/Yatube/src/shared.py:3850
-#: /usr/local/bin/Yatube/src/shared.py:3859
+#: /usr/local/bin/Yatube/src/shared.py:3851
+#: /usr/local/bin/Yatube/src/shared.py:3860
 msgid "The pool is empty!"
 msgstr "Пул пуст!"
 
-#: /usr/local/bin/Yatube/src/shared.py:3895
+#: /usr/local/bin/Yatube/src/shared.py:3896
 #, python-format
 msgid "The operation has taken %f s."
 msgstr "Операция завершена за %f с."
 
-#: /usr/local/bin/Yatube/src/shared.py:3940
+#: /usr/local/bin/Yatube/src/shared.py:3941
 #, python-format
 msgid "Set the max number of rows to %d"
 msgstr "Задать максимальное число столбцов: %d"
 
-#: /usr/local/bin/Yatube/src/shared.py:4071
+#: /usr/local/bin/Yatube/src/shared.py:4072
 #, python-format
 msgid "[OK]: \"%s\""
 msgstr "[Успешно]: \"%s\""
 
-#: /usr/local/bin/Yatube/src/shared.py:4077
+#: /usr/local/bin/Yatube/src/shared.py:4078
 #, python-format
 msgid "[FAILED]: \"%s\""
 msgstr "[ОШИБКА]: \"%s\""
 
-#: /usr/local/bin/Yatube/src/shared.py:4093
+#: /usr/local/bin/Yatube/src/shared.py:4094
 #, python-format
 msgid "Unable to decode \"%s\"!"
 msgstr "Не удается изменить кодировку \"%s\"!"
 
-#: /usr/local/bin/Yatube/src/shared.py:4194
+#: /usr/local/bin/Yatube/src/shared.py:4195
 msgid "No references have been found!"
 msgstr "Ориентиры не найдены!"
 
-#: /usr/local/bin/Yatube/src/shared.py:4200
+#: /usr/local/bin/Yatube/src/shared.py:4201
 msgid "No references to the right!"
 msgstr "Справа ориентиров нет!"
 
-#: /usr/local/bin/Yatube/src/shared.py:4206
+#: /usr/local/bin/Yatube/src/shared.py:4207
 msgid "No references to the left!"
 msgstr "Слева ориентиров нет!"
 
 #: /usr/local/bin/Yatube/src/gui.py:19
-#: /usr/local/bin/Yatube/src/yatube.py:491
+#: /usr/local/bin/Yatube/src/yatube.py:517
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
 #: /usr/local/bin/Yatube/src/gui.py:20
 #: /usr/local/bin/Yatube/src/gui.py:38
-#: /usr/local/bin/Yatube/src/yatube.py:493
-#: /usr/local/bin/Yatube/src/yatube.py:624
+#: /usr/local/bin/Yatube/src/yatube.py:519
+#: /usr/local/bin/Yatube/src/yatube.py:651
 msgid "Download"
 msgstr "Загрузить"
 
 #: /usr/local/bin/Yatube/src/gui.py:21
 #: /usr/local/bin/Yatube/src/gui.py:39
 #: /usr/local/bin/Yatube/src/gui.py:165
-#: /usr/local/bin/Yatube/src/yatube.py:495
-#: /usr/local/bin/Yatube/src/yatube.py:626
+#: /usr/local/bin/Yatube/src/yatube.py:521
+#: /usr/local/bin/Yatube/src/yatube.py:653
 msgid "Play"
 msgstr "Воспроизвести"
 
 #: /usr/local/bin/Yatube/src/gui.py:23
-#: /usr/local/bin/Yatube/src/yatube.py:500
+#: /usr/local/bin/Yatube/src/yatube.py:526
 msgid "Toggle the download status"
 msgstr "Переключить статус загрузки"
 
 #: /usr/local/bin/Yatube/src/gui.py:24
-#: /usr/local/bin/Yatube/src/yatube.py:502
+#: /usr/local/bin/Yatube/src/yatube.py:528
 msgid "Delete the downloaded file"
 msgstr "Удалить загруженный файл"
 
 #: /usr/local/bin/Yatube/src/gui.py:25
 #: /usr/local/bin/Yatube/src/gui.py:42
-#: /usr/local/bin/Yatube/src/yatube.py:504
-#: /usr/local/bin/Yatube/src/yatube.py:634
+#: /usr/local/bin/Yatube/src/yatube.py:530
+#: /usr/local/bin/Yatube/src/yatube.py:661
 msgid "Extract links"
 msgstr "Извлечь ссылки"
 
 #: /usr/local/bin/Yatube/src/gui.py:26
-#: /usr/local/bin/Yatube/src/yatube.py:512
+#: /usr/local/bin/Yatube/src/yatube.py:538
 msgid "Load this channel"
 msgstr "Загрузить этот канал"
 
 #: /usr/local/bin/Yatube/src/gui.py:27
-#: /usr/local/bin/Yatube/src/yatube.py:514
+#: /usr/local/bin/Yatube/src/yatube.py:540
 msgid "Block this channel"
 msgstr "Блокировать этот канал"
 
 #: /usr/local/bin/Yatube/src/gui.py:28
-#: /usr/local/bin/Yatube/src/yatube.py:516
+#: /usr/local/bin/Yatube/src/yatube.py:542
 msgid "Unblock"
 msgstr "Разблокировать"
 
 #: /usr/local/bin/Yatube/src/gui.py:29
-#: /usr/local/bin/Yatube/src/yatube.py:518
+#: /usr/local/bin/Yatube/src/yatube.py:544
 msgid "Subscribe to this channel"
 msgstr "Подписаться на этот канал"
 
 #: /usr/local/bin/Yatube/src/gui.py:30
-#: /usr/local/bin/Yatube/src/yatube.py:520
+#: /usr/local/bin/Yatube/src/yatube.py:546
 msgid "Unsubscribe"
 msgstr "Отписаться"
 
 #: /usr/local/bin/Yatube/src/gui.py:31
-#: /usr/local/bin/Yatube/src/yatube.py:522
+#: /usr/local/bin/Yatube/src/yatube.py:548
 msgid "Open video URL"
 msgstr "Открыть URL видео"
 
 #: /usr/local/bin/Yatube/src/gui.py:32
-#: /usr/local/bin/Yatube/src/yatube.py:524
+#: /usr/local/bin/Yatube/src/yatube.py:550
 msgid "Copy video URL"
 msgstr "Копировать URL видео"
 
 #: /usr/local/bin/Yatube/src/gui.py:33
-#: /usr/local/bin/Yatube/src/yatube.py:526
+#: /usr/local/bin/Yatube/src/yatube.py:552
 msgid "Open channel URL"
 msgstr "Открыть URL канала"
 
 #: /usr/local/bin/Yatube/src/gui.py:34
-#: /usr/local/bin/Yatube/src/yatube.py:528
+#: /usr/local/bin/Yatube/src/yatube.py:554
 msgid "Copy channel URL"
 msgstr "Копировать URL канала"
 
 #: /usr/local/bin/Yatube/src/gui.py:37
-#: /usr/local/bin/Yatube/src/yatube.py:622
+#: /usr/local/bin/Yatube/src/yatube.py:649
 msgid "Show summary"
 msgstr "Показать сводку"
 
 #: /usr/local/bin/Yatube/src/gui.py:41
-#: /usr/local/bin/Yatube/src/yatube.py:631
+#: /usr/local/bin/Yatube/src/yatube.py:658
 msgid "Delete"
 msgstr "Удалить"
 
 #: /usr/local/bin/Yatube/src/gui.py:43
-#: /usr/local/bin/Yatube/src/yatube.py:636
+#: /usr/local/bin/Yatube/src/yatube.py:663
 msgid "Full menu"
 msgstr "Полное меню"
 
 #: /usr/local/bin/Yatube/src/gui.py:82
 #: /usr/local/bin/Yatube/src/gui.py:153
-#: /usr/local/bin/Yatube/src/yatube.py:719
+#: /usr/local/bin/Yatube/src/yatube.py:746
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
 #: /usr/local/bin/Yatube/src/gui.py:89
 #: /usr/local/bin/Yatube/src/gui.py:129
-#: /usr/local/bin/Yatube/src/yatube.py:697
+#: /usr/local/bin/Yatube/src/yatube.py:724
 msgid "Search Youtube"
 msgstr "Поиск в Youtube"
 
@@ -1797,7 +1811,7 @@ msgstr "Выбрать все новые видео"
 
 #: /usr/local/bin/Yatube/src/gui.py:113
 #: /usr/local/bin/Yatube/src/gui.py:116
-#: /usr/local/bin/Yatube/src/yatube.py:417
+#: /usr/local/bin/Yatube/src/yatube.py:443
 msgid "Newer than"
 msgstr "Новее"
 
@@ -1810,7 +1824,7 @@ msgid "Search"
 msgstr "Найти"
 
 #: /usr/local/bin/Yatube/src/gui.py:141
-#: /usr/local/bin/Yatube/src/yatube.py:608
+#: /usr/local/bin/Yatube/src/yatube.py:635
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
@@ -1827,17 +1841,17 @@ msgid "Slow PC"
 msgstr "Медленный ПК"
 
 #: /usr/local/bin/Yatube/src/gui.py:321
-#: /usr/local/bin/Yatube/src/logic.py:715
+#: /usr/local/bin/Yatube/src/logic.py:737
 msgid "Author"
 msgstr "Автор"
 
 #: /usr/local/bin/Yatube/src/gui.py:322
-#: /usr/local/bin/Yatube/src/logic.py:719
+#: /usr/local/bin/Yatube/src/logic.py:741
 msgid "Title"
 msgstr "Заголовок"
 
 #: /usr/local/bin/Yatube/src/gui.py:323
-#: /usr/local/bin/Yatube/src/logic.py:735
+#: /usr/local/bin/Yatube/src/logic.py:757
 msgid "Duration"
 msgstr "Продолжительность"
 
@@ -2152,8 +2166,8 @@ msgid "Romania"
 msgstr "Румыния"
 
 #: /usr/local/bin/Yatube/src/logic.py:148
-#: /usr/local/bin/Yatube/src/yatube.py:676
-#: /usr/local/bin/Yatube/src/yatube.py:946
+#: /usr/local/bin/Yatube/src/yatube.py:703
+#: /usr/local/bin/Yatube/src/yatube.py:977
 msgid "Russia"
 msgstr "Россия"
 
@@ -2258,11 +2272,11 @@ msgid "Zimbabwe"
 msgstr "Зимбабве"
 
 #: /usr/local/bin/Yatube/src/logic.py:178
-#: /usr/local/bin/Yatube/src/yatube.py:675
-#: /usr/local/bin/Yatube/src/yatube.py:676
-#: /usr/local/bin/Yatube/src/yatube.py:678
-#: /usr/local/bin/Yatube/src/yatube.py:798
-#: /usr/local/bin/Yatube/src/yatube.py:946
+#: /usr/local/bin/Yatube/src/yatube.py:702
+#: /usr/local/bin/Yatube/src/yatube.py:703
+#: /usr/local/bin/Yatube/src/yatube.py:705
+#: /usr/local/bin/Yatube/src/yatube.py:829
+#: /usr/local/bin/Yatube/src/yatube.py:977
 msgid "Trending"
 msgstr "Популярное"
 
@@ -2280,7 +2294,7 @@ msgstr "Получено %d ссылок"
 msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
-#: /usr/local/bin/Yatube/src/logic.py:565
+#: /usr/local/bin/Yatube/src/logic.py:587
 #, python-format
 msgid ""
 "Third party module has failed!\n"
@@ -2291,7 +2305,7 @@ msgstr ""
 "\n"
 "Детали: %s"
 
-#: /usr/local/bin/Yatube/src/logic.py:657
+#: /usr/local/bin/Yatube/src/logic.py:679
 #, python-format
 msgid ""
 "Error adding \"%s\"!\n"
@@ -2302,53 +2316,53 @@ msgstr ""
 "\n"
 "Детали: %s"
 
-#: /usr/local/bin/Yatube/src/logic.py:700
+#: /usr/local/bin/Yatube/src/logic.py:722
 #, python-format
 msgid "Get new URL: %s"
 msgstr "Получение нового URL: %s"
 
-#: /usr/local/bin/Yatube/src/logic.py:723
+#: /usr/local/bin/Yatube/src/logic.py:745
 msgid "Date"
 msgstr "Дата"
 
-#: /usr/local/bin/Yatube/src/logic.py:727
+#: /usr/local/bin/Yatube/src/logic.py:749
 msgid "Category"
 msgstr "Категория"
 
-#: /usr/local/bin/Yatube/src/logic.py:731
+#: /usr/local/bin/Yatube/src/logic.py:753
 msgid "Description"
 msgstr "Описание"
 
-#: /usr/local/bin/Yatube/src/logic.py:739
+#: /usr/local/bin/Yatube/src/logic.py:761
 msgid "Length"
 msgstr "Длина"
 
-#: /usr/local/bin/Yatube/src/logic.py:743
+#: /usr/local/bin/Yatube/src/logic.py:765
 msgid "Views"
 msgstr "Просмотров"
 
-#: /usr/local/bin/Yatube/src/logic.py:747
+#: /usr/local/bin/Yatube/src/logic.py:769
 msgid "Likes"
 msgstr "Нравится"
 
-#: /usr/local/bin/Yatube/src/logic.py:751
+#: /usr/local/bin/Yatube/src/logic.py:773
 msgid "Dislikes"
 msgstr "Не нравится"
 
-#: /usr/local/bin/Yatube/src/logic.py:755
+#: /usr/local/bin/Yatube/src/logic.py:777
 msgid "Rating"
 msgstr "Рейтинг"
 
-#: /usr/local/bin/Yatube/src/logic.py:761
+#: /usr/local/bin/Yatube/src/logic.py:783
 msgid "Small video picture URL"
 msgstr "Адрес маленького изображения"
 
-#: /usr/local/bin/Yatube/src/logic.py:809
+#: /usr/local/bin/Yatube/src/logic.py:849
 #, python-format
 msgid "Download \"%s\""
 msgstr "Загрузка \"%s\""
 
-#: /usr/local/bin/Yatube/src/logic.py:824
+#: /usr/local/bin/Yatube/src/logic.py:864
 #, python-format
 msgid ""
 "Failed to download \"%s\"!\n"
@@ -2359,67 +2373,68 @@ msgstr ""
 "\n"
 "Детали: %s"
 
-#: /usr/local/bin/Yatube/src/yatube.py:50
+#: /usr/local/bin/Yatube/src/yatube.py:69
 #, python-format
 msgid "Unsubscribe from channel \"%s\""
 msgstr "Отписка от канала \"%s\""
 
-#: /usr/local/bin/Yatube/src/yatube.py:95
+#: /usr/local/bin/Yatube/src/yatube.py:114
 #, python-format
 msgid "Unblock channel \"%s\""
 msgstr "Разблокировка канала \"%s\""
 
-#: /usr/local/bin/Yatube/src/yatube.py:168
-msgid "The following files have been deleted:"
-msgstr "Удалены следующие файлы:"
+#: /usr/local/bin/Yatube/src/yatube.py:187
+#, python-format
+msgid "%d files have been deleted:"
+msgstr "Удалено %d файлов:"
 
-#: /usr/local/bin/Yatube/src/yatube.py:189
-#: /usr/local/bin/Yatube/src/yatube.py:196
-#: /usr/local/bin/Yatube/src/yatube.py:583
-#: /usr/local/bin/Yatube/src/yatube.py:802
+#: /usr/local/bin/Yatube/src/yatube.py:215
+#: /usr/local/bin/Yatube/src/yatube.py:222
+#: /usr/local/bin/Yatube/src/yatube.py:610
+#: /usr/local/bin/Yatube/src/yatube.py:833
 msgid "Channels"
 msgstr "Каналы"
 
-#: /usr/local/bin/Yatube/src/yatube.py:240
+#: /usr/local/bin/Yatube/src/yatube.py:266
 #, python-format
 msgid "Subscribe to channel \"%s\""
 msgstr "Подписка на канал \"%s\""
 
-#: /usr/local/bin/Yatube/src/yatube.py:292
+#: /usr/local/bin/Yatube/src/yatube.py:318
 #, python-format
 msgid "Block channel \"%s\""
 msgstr "Блокировка канала \"%s\""
 
-#: /usr/local/bin/Yatube/src/yatube.py:358
+#: /usr/local/bin/Yatube/src/yatube.py:384
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
-#: /usr/local/bin/Yatube/src/yatube.py:498
-#: /usr/local/bin/Yatube/src/yatube.py:629
+#: /usr/local/bin/Yatube/src/yatube.py:524
+#: /usr/local/bin/Yatube/src/yatube.py:656
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: /usr/local/bin/Yatube/src/yatube.py:550
+#: /usr/local/bin/Yatube/src/yatube.py:576
 #, python-format
 msgid "Video #%d:"
 msgstr "Видео №%d:"
 
-#: /usr/local/bin/Yatube/src/yatube.py:588
-#: /usr/local/bin/Yatube/src/yatube.py:671
+#: /usr/local/bin/Yatube/src/yatube.py:615
+#: /usr/local/bin/Yatube/src/yatube.py:698
 #, python-format
 msgid "Switch to channel \"%s\""
 msgstr "Переключение на канал \"%s\""
 
-#: /usr/local/bin/Yatube/src/yatube.py:637
+#: /usr/local/bin/Yatube/src/yatube.py:664
 msgid "Selected video"
 msgstr "Выбранное видео"
 
-#: /usr/local/bin/Yatube/src/yatube.py:722
+#: /usr/local/bin/Yatube/src/yatube.py:749
 #, python-format
 msgid "Filter by \"%s\""
 msgstr "Применение фильтра \"%s\""
 
-#: /usr/local/bin/Yatube/src/yatube.py:986
+#: /usr/local/bin/Yatube/src/yatube.py:1017
 #: /usr/local/bin/Yatube/src/cli.py:101
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
