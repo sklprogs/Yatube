@@ -184,7 +184,7 @@ class Commands:
                                   )
         if deleted:
             message = '\n\n'.join(deleted)
-            message = _('The following files have been deleted:') \
+            message = _('%d files have been deleted:') % len(deleted) \
                       + '\n\n' \
                       + message
             sh.objs.mes ('Commands.delete_selected'
