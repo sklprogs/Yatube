@@ -379,7 +379,7 @@ class Commands:
     def toggle_downloaded(self,event=None):
         if self._video and self._gvideo:
             self._video.model.Ready = not self._video.model.Ready
-            idb.mark_downloaded (url   = self._video.model._url
+            idb.mark_downloaded (url   = self._video.model._video_id
                                 ,Ready = self._video.model.Ready
                                 )
             if self._video.model.Ready:
@@ -893,7 +893,7 @@ class Commands:
         gi.objs._progress.close()
         
     def mark_downloaded(self):
-        idb.mark_downloaded(url=self._video.model._url)
+        idb.mark_downloaded(url=self._video.model._video_id)
         if self._gvideo:
             self._gvideo.cbox.disable()
             self._gvideo.gray_out()

@@ -32,7 +32,6 @@ tophype	https://www.youtube.com/user/SteelBallsStatham/videos
 tritonas01	https://www.youtube.com/channel/UCk2CXNRR5NWa9YkHoefITfQ/videos
 varlamov	https://www.youtube.com/channel/UC101o-vQ2iOj9vr00JUlyKw/videos
 Алексей Навальный	https://www.youtube.com/user/NavalnyRu/videos
-Анатолий Шарий	https://www.youtube.com/user/SuperSharij/videos
 Арслан Энн	https://www.youtube.com/channel/UCXvjLCLrGKMsb0HutfX_KDQ/videos
 Асхаб Алибеков	https://www.youtube.com/channel/UCGOZDR25IE3X079Le0vuVtw/videos
 Арбалет	https://www.youtube.com/channel/UCvE-in6_Qbf7ACLoyD3efww/videos
@@ -55,6 +54,7 @@ varlamov	https://www.youtube.com/channel/UC101o-vQ2iOj9vr00JUlyKw/videos
 Привет с Урала	https://www.youtube.com/channel/UCZYlAcdQZ0PE6IQiPk6omug/videos
 Реальная журналистика	https://www.youtube.com/channel/UCgbZ5Zi0sIbwvUwiGCIom1g/videos
 Россия	https://www.youtube.com/channel/UCLSUk_DwbnEj-69pJxCLSCQ/videos
+Реальная журналистика //RealRussianNews	https://www.youtube.com/channel/UChpUzS-wzKjaT-2HPoQeLiQ/videos
 Теперь я Знаю	https://www.youtube.com/channel/UCVqJYFWsnkLEUkmmS-avyQg/videos
 Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
 Усы Пескова	https://www.youtube.com/channel/UCNYsieni0V71jCgwkka79yQ/videos
