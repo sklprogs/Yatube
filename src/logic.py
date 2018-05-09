@@ -16,7 +16,7 @@ pattern1  = 'https://www.youtube.com/watch?v='
 pattern2  = '<meta itemprop="channelId" content="'
 pattern3a = 'https://www.youtube.com/channel/'
 pattern3b = '/videos'
-pattern4  = '?sort=dd'
+pattern4  = '?flow=list&sort=dd'
 pattern5  = 'https://www.youtube.com/'
 AllOS     = False
 idb       = db.DB()
@@ -295,7 +295,17 @@ class Links:
         if self._text:
             self.poses()
             self.delete_suffixes()
-            self._links = list(set(self._links))
+            ''' Sometimes there are duplicate URLs on a page - we delete
+                them there. We need to preserve an original sorting so
+                do not use 'set'.
+            '''
+            i = len(self._links) - 1
+            while i >= 0:
+                ind = self._links.index(self._links[i])
+                if ind < i:
+                    del self._links[i]
+                else:
+                    i -= 1
         else:
             sh.log.append ('Links.run'
                           ,_('WARNING')
