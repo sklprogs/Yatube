@@ -666,7 +666,7 @@ class Video:
             else:
                 sh.log.append ('Video.get'
                               ,_('INFO')
-                              ,_('Get new video: %s') \
+                              ,_('Get new video info: %s') \
                               % str(self._video_id)
                               )
                 self.video()
