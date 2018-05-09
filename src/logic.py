@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 import re
@@ -16,6 +16,8 @@ pattern1  = 'https://www.youtube.com/watch?v='
 pattern2  = '<meta itemprop="channelId" content="'
 pattern3a = 'https://www.youtube.com/channel/'
 pattern3b = '/videos'
+pattern4  = '?sort=dd'
+pattern5  = 'https://www.youtube.com/'
 AllOS     = False
 idb       = db.DB()
 
@@ -183,13 +185,6 @@ class Constants:
 
 class Channel:
        
-    ''' 'user' must represent one of the following patterns:
-        - 'https://www.youtube.com/channel/USER'
-        - 'https://www.youtube.com/channel/USER/videos'
-        - 'https://www.youtube.com/user/USER'
-        - 'https://www.youtube.com/user/USER/videos'
-        - 'USER'
-    '''
     def __init__(self,url):
         self.values()
         self._url = url
@@ -204,75 +199,18 @@ class Channel:
                         )
     
     def url(self):
-        if self.Success:
-            if self._url:
-                if isinstance(self._url,str):
-                    if self._url.endswith('/'):
-                        self._url = self._url[:-1]
-                    ''' 'https://www.youtube.com/user/AvtoKriminalist/videos?disable_polymer=1'
-                        или
-                        'https://www.youtube.com/user/AvtoKriminalist/videos'
-                    '''
-                    if self._link_p1 and self._link_p3 in self._url:
-                        self._channel = self._url.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'').replace(self._link_p3,'')
-                        self.page()
-                        self.warn()
-                    # 'https://www.youtube.com/user/AvtoKriminalist'
-                    elif self._link_p1 in self._url:
-                        self._url += self._link_p3
-                        self._channel = self._url.replace(self._link_p1,'').replace(self._link_p2a,'').replace(self._link_p2b,'')
-                        self.page()
-                    # 'AvtoKriminalist'
-                    else:
-                        # 'https://www.youtube.com/channel/AvtoKriminalist/videos'
-                        self._channel = self._url
-                        self._url = self._link_p1 + self._link_p2a \
-                                                  + self._url \
-                                                  + self._link_p3
-                        self.page()
-                        if not self._html:
-                            # 'https://www.youtube.com/user/AvtoKriminalist/videos'
-                            self._url = self._link_p1 + self._link_p2b \
-                                                      + self._channel \
-                                                      + self._link_p3
-                            self.page()
-                    '''
-                    sh.log.append ('Channel.url'
-                                  ,_('DEBUG')
-                                  ,_('User:') + ' ' + self._channel
-                                  )
-                    sh.log.append ('Channel.url'
-                                  ,_('DEBUG')
-                                  ,_('URL:') + ' ' + self._url
-                                  )
-                    '''
-                    self.warn()
-                else:
-                    self.Success = False
-                    sh.log.append ('Channel.url'
-                                  ,_('WARNING')
-                                  ,_('Wrong input data!')
-                                  )
-            else:
-                self.Success = False
-                sh.log.append ('Channel.url'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Channel.url'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+        iurl = URL(url=self._url)
+        self._url = iurl.channel_full()
+        if not self.page():
+            self._url = self._url.replace('/user/','/channel/')
+            self.page()
+        self._channel = self._url.replace(pattern5,'').replace('channel/','').replace('user/','').replace('/videos','')
+        self.warn()
             
     def values(self):
         self.Success    = True
         #todo: localize
         self._not_found = 'Такой канал не существует.'
-        self._link_p1   = 'https://www.youtube.com/'
-        self._link_p2a  = 'channel/'
-        self._link_p2b  = 'user/'
-        self._link_p3   = '/videos'
         self._channel   = ''
         self._html      = ''
         self._text      = ''
@@ -283,6 +221,7 @@ class Channel:
             response = sh.Get(url=self._url).run()
             if response and not self._not_found in response:
                 self._html = response
+            return self._html
         else:
             sh.log.append ('Channel.page'
                           ,_('WARNING')
@@ -451,8 +390,20 @@ class Video:
     # URL is a full URL or a video ID
     def __init__(self,url,callback=None):
         self.values()
-        self._url      = url
-        self._callback = callback
+        if url:
+            if pattern1 in url:
+                self._url      = url
+                self._video_id = self._url.replace(pattern1,'')
+            else:
+                self._video_id = url
+                self._url      = pattern1 + self._video_id
+            self._callback = callback
+        else:
+            self.Success = False
+            sh.log.append ('Video.__init__'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def values(self):
         self.Success = True
@@ -490,11 +441,7 @@ class Video:
         if self.Success:
             if not self._page:
                 if self._url:
-                    if 'http' in self._url:
-                        url = self._url
-                    else:
-                        url = pattern1 + self._url
-                    self._page = sh.Get(url=url).run()
+                    self._page = sh.Get(url=self._url).run()
                 else:
                     sh.log.append ('Video.page'
                                   ,_('WARNING')
@@ -580,7 +527,7 @@ class Video:
                     self._likes     = self._video.likes
                     self._dislikes  = self._video.dislikes
                     self._rating    = self._video.rating
-                # Youtube says: invalid parameters
+                # Youtube says...
                 except Exception as e:
                     sh.objs.mes ('Video.assign_online'
                                 ,_('WARNING')
@@ -609,9 +556,9 @@ class Video:
                 Do not forget to commit where necessary.
             '''
             if self._video:
-                data = (self._url,self._author,self._title,self._date
-                       ,self._cat,self._desc,self._dur,self._len
-                       ,self._views,self._likes,self._dislikes
+                data = (self._video_id,self._author,self._title
+                       ,self._date,self._cat,self._desc,self._dur
+                       ,self._len,self._views,self._likes,self._dislikes
                        ,self._rating,self._bytes,self.Block,self.Ignore
                        ,self.Ready,self._search,self._timestamp
                        )
@@ -668,7 +615,7 @@ class Video:
         if self.Success:
             if not self._video:
                 try:
-                    self._video = pf.new (url   = self._url
+                    self._video = pf.new (url   = self._video_id
                                          ,basic = False
                                          ,gdata = False
                                          )
@@ -713,13 +660,14 @@ class Video:
     
     def get(self):
         if self.Success:
-            self.Saved = idb.get_video(url=self._url)
+            self.Saved = idb.get_video(url=self._video_id)
             if self.Saved:
                 self.assign_offline(self.Saved)
             else:
                 sh.log.append ('Video.get'
                               ,_('INFO')
-                              ,_('Get new URL: %s') % str(self._url)
+                              ,_('Get new video: %s') \
+                              % str(self._video_id)
                               )
                 self.video()
                 self.assign_online()
@@ -876,15 +824,56 @@ class Video:
                           )
 
 
+
+class URL:
+    
+    def __init__(self,url):
+        self._url = url
+        self._url = sh.Input (title = 'URL.__init__'
+                             ,value = self._url
+                             ).not_none()
+        self._url = str(self._url)
+        self._url = self._url.strip()
+    
+    def channel_full(self):
+        if self._url:
+            self.trash()
+            self.prefixes()
+            self.suffixes()
+        else:
+            sh.log.append ('URL.channel_full'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        return self._url
+        
+    def trash(self):
+        if self._url.endswith('/'):
+            self._url = self._url[:-1]
+        self._url = self._url.replace('?disable_polymer=1','')
+    
+    def prefixes(self):
+        self._url = self._url.replace ('http://www.youtube.com/'
+                                      ,'https://www.youtube.com/'
+                                      )
+        if not pattern5 in self._url:
+            self._url = pattern5 + self._url
+        if '/user/' in self._url or '/channel/' in self._url:
+            pass
+        else:
+            self._url += '/user'
+            
+    def suffixes(self):
+        if not '/videos' in self._url:
+            self._url += '/videos'
+        if not pattern4 in self._url:
+            self._url += pattern4
+
+
 objs = Objects()
 
 
 if __name__ == '__main__':
-    video = Video(url='https://www.youtube.com/watch?v=8zCjHftxt8E')
-    url = str(video.channel_url())
-    print('"' + url + '"')
-    import sharedGUI as sg
-    sg.objs.start()
-    sg.Clipboard().copy(url)
-    input('Press Return')
-    sg.objs.end()
+    url = 'http://www.youtube.com/user/AvtoKriminalist/videos'
+    links = Links(sh.Get(url).run())
+    links.run()

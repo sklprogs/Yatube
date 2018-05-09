@@ -225,11 +225,7 @@ class Commands:
     
     def open_video_url(self,event=None):
         if self._video and self._video.model._url:
-            if 'http' in self._video.model._url:
-                lg.objs.online()._url = self._video.model._url
-            else:
-                lg.objs.online()._url = lg.pattern1 \
-                                        + self._video.model._url
+            lg.objs.online()._url = self._video.model._url
             lg.objs._online.browse()
         else:
             sh.log.append ('Commands.open_video_url'
@@ -239,11 +235,7 @@ class Commands:
                    
     def copy_video_url(self,event=None):
         if self._video and self._video.model._url:
-            if 'http' in self._video.model._url:
-                url = self._video.model._url
-            else:
-                url = lg.pattern1 + self._video.model._url
-            sg.Clipboard().copy(text=url)
+            sg.Clipboard().copy(text=self._video.model._url)
         else:
             sh.log.append ('Commands.copy_video_url'
                           ,_('WARNING')

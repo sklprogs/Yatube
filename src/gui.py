@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 ''' We need to explicitly import PIL, otherwise, cx_freeze will fail
