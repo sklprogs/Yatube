@@ -159,7 +159,6 @@ class Commands:
             self._channel._links = urls
             self.reset_channel_gui()
             self.channel_gui()
-            gi.objs._channel.show()
         else:
             # Do not warn here since this is actually a common case
             sh.log.append ('Commands.show_new'
@@ -179,8 +178,8 @@ class Commands:
                         deleted.append(self._video.model.path())
                 else:
                     sh.log.append ('Commands.delete_selected'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
+                                  ,_('ERROR')
+                                  ,_('Wrong input data!')
                                   )
         if deleted:
             message = '\n\n'.join(deleted)
@@ -576,14 +575,12 @@ class Commands:
                               ,_('Wrong input data!')
                               )
     
-    def update_channel(self,author,url,Show=True):
+    def update_channel(self,author,url):
         self._menu.opt_chl.set(author)
         self._channel = lg.Channel(url=url)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
-        if Show:
-            gi.objs._channel.show()
         
     def get_links(self,url):
         channel = self._channel = lg.Channel(url=url)
@@ -596,7 +593,6 @@ class Commands:
         channel.links()
         self.reset_channel_gui()
         self.channel_gui()
-        gi.objs._channel.show()
                           
     def set_channel(self,event=None):
         if self._menu.opt_chl.choice == _('Channels'):
@@ -982,10 +978,9 @@ class Commands:
     def reset_channel_gui(self):
         self._video = self._gvideo = None
         # Clears the old Channel widget
-        self._menu.framev.widget.pack_forget()
-        self._menu.framev = sg.Frame(parent=self._menu.parent)
-        gi.objs._channel = None
-        gi.objs.channel(parent=self._menu.framev)
+        for video_gui in gi.objs.channel()._videos:
+            video_gui.frame.widget.pack_forget()
+        gi.objs._channel._videos = []
         
     def bind_context(self,event=None):
         for video_gui in gi.objs.channel()._videos:
@@ -995,40 +990,109 @@ class Commands:
                         ,action   = self.context
                         )
         
-    def channel_gui(self):
+    def fill_default(self):
+        #todo: Operation takes ~1,72s - speed this up (?)
+        gi.objs.channel(parent=gi.objs.menu().framev)
         for i in range(len(self._channel._links)):
-            gi.objs.channel().add(no=i)
-            video = Video(url=self._channel._links[i])
-            video.get()
-            if video.model.Success:
-                author    = sh.Text(text=video.model._author).delete_unsupported()
-                title     = sh.Text(text=video.model._title).delete_unsupported()
-                duration  = sh.Text(text=video.model._dur).delete_unsupported()
-                if author in lg.objs.lists()._block_auth \
-                or video.model._author in lg.objs._lists._block_auth:
-                    author = title = _('BLOCKED')
-                    video._image = None
-                    video.model.Block = True
-                ''' 'idletasks' must be updated before drawing a default
-                    picture
-                '''
-                gi.objs._channel.update_scroll()
-                self._video  = video
-                self._gvideo = gi.objs._channel._videos[i]
-                self._gvideo.reset (no       = i + 1
-                                   ,author   = author
-                                   ,title    = title
-                                   ,duration = duration
-                                   ,image    = video._image
-                                   )
-                if self._video.model.Ready:
-                    self._gvideo.gray_out()
-                self.video_date_filter()
-                self._videos[self._gvideo] = self._video
+            gi.objs._channel.add(no=i)
+            
+    def dimensions(self):
+        sg.objs.root().idle()
+        height  = gi.objs._channel.label.widget.winfo_reqheight()
+        ''' #NOTE: Extra space can be caused by a difference of
+            the default and loaded pictures.
+        '''
+        #height = len(self._channel._links) * 112.133333333
+        sh.log.append ('Commands.channel_gui'
+                      ,_('DEBUG')
+                      ,_('Widget requires at least %d pixels in height')\
+                      % height
+                      )
+        gi.objs._channel.canvas.region (x        = 1024
+                                       ,y        = height
+                                       ,x_border = 20
+                                       ,y_border = 20
+                                       )
+    
+    def fill_unknown(self):
+        for i in range(len(self._channel._links)):
+            video_gui = gi.objs.channel()._videos[i]
+            if video_gui:
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    if not self._video.model.Saved:
+                        self._video.model.video()
+                        self._video.model.assign_online()
+                        self._video.model.image()
+                        self._video.image()
+                        self._video.model.dump()
+                        self.update_video(i)
+                else:
+                    sh.log.append ('Commands.fill_unknown'
+                                  ,_('ERROR')
+                                  ,_('Wrong input data!')
+                                  )
+            else:
+                sh.log.append ('Commands.fill_unknown'
+                              ,_('ERROR')
+                              ,_('Empty input is not allowed!')
+                              )
         idb.save()
+    
+    def update_video(self,i):
+        if self._video:
+            author   = sh.Text(text=self._video.model._author).delete_unsupported()
+            title    = sh.Text(text=self._video.model._title).delete_unsupported()
+            duration = sh.Text(text=self._video.model._dur).delete_unsupported()
+            if author in lg.objs.lists()._block_auth \
+            or self._video.model._author in lg.objs._lists._block_auth:
+                author = title = _('BLOCKED')
+                self._video._image = None
+                self._video.model.Block = True
+            self._gvideo = gi.objs.channel()._videos[i]
+            self._gvideo.reset (no       = i + 1
+                               ,author   = author
+                               ,title    = title
+                               ,duration = duration
+                               ,image    = self._video._image
+                               )
+            if self._video.model.Ready:
+                self._gvideo.gray_out()
+            self.video_date_filter()
+        else:
+            sh.log.append ('Commands.update_video'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def fill_known(self):
+        for i in range(len(self._channel._links)):
+            self._video = Video(url=self._channel._links[i])
+            self._gvideo = gi.objs._channel._videos[i]
+            self._videos[self._gvideo] = self._video
+            self._video.model.Saved = idb.get_video(url=self._video.model._video_id)
+            if self._video.model.Saved:
+                self._video.model.assign_offline(self._video.model.Saved)
+                #todo: elaborate 'Video.model.get' and delete this
+                self._video.image()
+                self.update_video(i)
+    
+    def channel_gui(self):
+        self.fill_default()
+        self.fill_known()
+        ''' The less we use GUI update, the faster will be the program.
+            Updating tkinter idle tasks may take ~0,4-1,7s, but this
+            must be done after creating all video widgets and
+            reading/updating images.
+        '''
+        sg.objs.root().idle()
+        self.fill_unknown()
         self.bind_context()
-        # Move back to video #0
+        self.dimensions()
         gi.objs._channel.canvas.move_top()
+        # Move focus away from 'ttk.Combobox' (OptionMenu)
+        gi.objs._channel.canvas.focus()
     
     def manage_sub1(self):
         words = sh.Words(text=lg.objs.lists()._subsc)
@@ -1153,13 +1217,12 @@ class Video:
 
 if __name__ == '__main__':
     sg.objs.start()
-    parent = gi.objs.parent()
-    sg.Geometry(parent=parent).set('1024x600')
+    sg.Geometry(parent=gi.objs.parent()).set('1024x600')
     idb = lg.idb
     commands = Commands()
     commands.bindings()
     gi.objs.progress()
-    gi.objs.menu().widget.wait_window()
+    gi.objs.menu().show()
     idb.save()
     idb.close()
     sg.objs.end()

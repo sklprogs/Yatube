@@ -14,7 +14,7 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 product = 'Yatube'
-version = '1.1'
+version = '1.2'
 
 context_items = (_('Show the full summary')
                 ,_('Download')
@@ -57,7 +57,7 @@ class Menu:
         self.parent.show()
         
     def close(self,event=None):
-        self.widget.destroy()
+        self.parent.close()
     
     def frames(self):
         self.frame1 = sg.Frame (parent = self.parent
@@ -73,9 +73,6 @@ class Menu:
                                ,expand = False
                                ,side   = 'right'
                                )
-        ''' We can create an additional frame here for Channel, but
-            Channel.bindings needs to have Toplevel as a parent.
-        '''
         self.framev = sg.Frame (parent = self.parent)
     
     def clear_filter(self,event=None,Force=False):
@@ -345,7 +342,7 @@ class Video:
         if not self._image:
             self._image = objs.def_image()
         self.label2.widget.config(image=self._image)
-        #This prevents the garbage collector from deleting the image
+        # This prevents the garbage collector from deleting the image
         self.label2.widget.image = self._image
     
     def labels(self):
@@ -454,21 +451,19 @@ class Channel:
     def __init__(self,parent=None):
         self.values()
         self.parent = parent
-        self.set_parent()
         self.gui()
         
-    def set_parent(self):
-        if self.parent:
-            self.obj = self.parent
-        else:
-            self.parent = sg.objs.root()
-            self.obj    = sg.SimpleTop(parent=self.parent)
+    def scroll(self,i):
+        #fix: seems that another unit type is required
+        value = i*112.133333333
+        sh.log.append ('Channel.scroll'
+                      ,_('DEBUG')
+                      ,_('Scroll to %d') % value
+                      )
+        self.canvas.scroll(y=value)
         
     def bindings(self):
-        ''' If possible, most actions should be bound here, not in
-            the controller (otherwise, we will have to rebind those
-            actions each time the parent is destroyed).
-        '''
+        #todo: elaborate the value
         sg.bind (obj      = objs.parent()
                 ,bindings = '<Down>'
                 ,action   = self.canvas.move_down
@@ -505,52 +500,6 @@ class Channel:
                 ,bindings = ['<MouseWheel>','<Button 4>','<Button 5>']
                 ,action   = self.mouse_wheel
                 )
-    
-    # orphan
-    def center(self,max_x=0,max_y=0):
-        if max_x and max_y:
-            pass
-        else:
-            max_x = self.widget.winfo_reqwidth()
-            max_y = self.widget.winfo_reqheight()
-        sh.log.append ('Channel.center'
-                      ,_('DEBUG')
-                      ,_('Widget sizes: %dx%d') % (max_x,max_y)
-                      )
-        self.widget.update_idletasks()
-        x = self.widget.winfo_screenwidth()/2 - max_x/2
-        y = self.widget.winfo_screenheight()/2 - max_y/2
-        self.widget.geometry("%dx%d+%d+%d" % ((max_x,max_y) + (x, y)))
-        sh.log.append ('Channel.center'
-                      ,_('INFO')
-                      ,_('Set geometry to "%dx%d+%d+%d"') \
-                       % ((max_x,max_y) + (x, y))
-                      )
-    
-    def scroll(self):
-        # Scroll canvas to the current video as the channel is loading
-        self.canvas.widget.xview_moveto(0)
-        self.canvas.move_bottom()
-    
-    def update_scroll(self):
-        # Do this after adding all videos
-        sg.objs.root().widget.update_idletasks()
-        self._max_y = self.label.widget.winfo_reqheight()
-        self._max_x = self.label.widget.winfo_reqwidth()
-        '''
-        # Too frequent
-        sh.log.append ('Channel.update_scroll'
-                      ,_('DEBUG')
-                      ,_('Widget sizes: %dx%d') \
-                       % (self._max_x,self._max_y)
-                      )
-        '''
-        self.canvas.region (x        = self._max_x
-                           ,y        = self._max_y
-                           ,x_border = 20
-                           ,y_border = 20
-                           )
-        self.scroll()
         
     def values(self):
         self._no     = 0
@@ -565,7 +514,7 @@ class Channel:
         self._max_y = 1120
         
     def frames(self):
-        self.frame   = sg.Frame (parent = self.obj)
+        self.frame   = sg.Frame (parent = self.parent)
         self.frame_y = sg.Frame (parent = self.frame
                                 ,expand = False
                                 ,fill   = 'y'
@@ -612,7 +561,7 @@ class Channel:
                      )
     
     def gui(self):
-        self.widget = self.obj.widget
+        self.widget = self.parent.widget
         self.frames()
         self.canvases()
         self.scrollbars()
@@ -629,12 +578,6 @@ class Channel:
                                    ,no     = self._no
                                    )
                             )
-        
-    def show(self,event=None):
-        self.obj.show()
-        
-    def close(self,event=None):
-        self.widget.destroy()
         
     def mouse_wheel(self,event=None):
         ''' #todo: fix: too small delta in Windows
@@ -683,6 +626,7 @@ class Objects:
         if not self._progress:
             self._progress = sg.ProgressBar()
             self._progress.obj.icon(icon_path)
+            # Widget is not created yet, do not 'center' it here!
         return self._progress
     
     def summary(self):
@@ -718,18 +662,23 @@ class Objects:
 
     def channel(self,parent=None):
         if not self._channel:
+            if parent is None:
+                sh.log.append ('Objects.channel'
+                              ,_('INFO')
+                              ,_('Set the default parent.')
+                              )
+                parent = self.menu().framev
             self._channel = Channel(parent=parent)
         return self._channel
         
     def parent(self):
         if not self._parent:
-            self._parent = sg.SimpleTop(parent=sg.objs.root())
+            self._parent = sg.Top(parent=sg.objs.root())
         return self._parent
     
     def menu(self):
         if not self._menu:
             self._menu = Menu(parent=self.parent())
-            self._menu.parent.center()
         return self._menu
 
 
@@ -737,34 +686,38 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    '''
-    # Menu
+    max_videos = 29
     sg.objs.start()
     sg.Geometry(parent=objs.parent()).set('1024x600')
-    objs.menu().widget.wait_window()
-    sg.objs.end()
-    '''
-    '''
-    # Simulate filling a channel
-    sg.objs.start(Close=0)
-    objs.channel(parent=objs.parent())
-    sg.objs.root().widget.update_idletasks()
-    import time
-    for i in range(20):
-        objs._channel.add(no=i)
+    objs.channel(parent=objs.menu().framev)
+    for i in range(max_videos):
+        objs._channel.add(no=i+1)
         video_gui = objs._channel._videos[-1]
         video_gui.reset (no       = i + 1
                         ,author   = 'Author (%d)' % (i + 1)
                         ,title    = 'Title (%d)'  % (i + 1)
                         ,duration = 60 * (i + 1)
                         )
-        sg.objs.root().widget.update_idletasks()
-        time.sleep(1)
-    sg.objs.root().widget.wait_window()
+    sg.objs.root().idle()
+    # height = 112.133333333
+    height = objs._channel.label.widget.winfo_reqheight()
+    sh.log.append ('gui.__main__'
+                  ,_('DEBUG')
+                  ,_('Widget must be %d pixels in height') % height
+                  )
+    # y = max_videos * height
+    objs._channel.canvas.region (x        = 1024
+                                ,y        = height
+                                ,x_border = 20
+                                ,y_border = 20
+                                )
+    objs._channel.canvas.move_top()
+    objs._menu.show()
+    sg.objs.end()
     '''
     # Progress bar
-    sg.objs.start(Close=0)
+    sg.objs.start()
     objs.progress().add()
     objs._progress.show()
-    objs._progress.obj.center()
-    sg.objs.root().widget.wait_window()
+    sg.objs.end()
+    '''
