@@ -703,7 +703,8 @@ if __name__ == '__main__':
     height = objs._channel.label.widget.winfo_reqheight()
     sh.log.append ('gui.__main__'
                   ,_('DEBUG')
-                  ,_('Widget must be %d pixels in height') % height
+                  ,_('Widget must be at least %d pixels in height') \
+                  % height
                   )
     # y = max_videos * height
     objs._channel.canvas.region (x        = 1024

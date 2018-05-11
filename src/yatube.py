@@ -1005,7 +1005,7 @@ class Commands:
         #height = len(self._channel._links) * 112.133333333
         sh.log.append ('Commands.channel_gui'
                       ,_('DEBUG')
-                      ,_('Widget requires at least %d pixels in height')\
+                      ,_('Widget must be at least %d pixels in height')\
                       % height
                       )
         gi.objs._channel.canvas.region (x        = 1024
