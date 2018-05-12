@@ -954,7 +954,6 @@ class Commands:
         for i in range(len(lg.objs.lists()._subsc_auth)):
             self.update_channel (author = lg.objs._lists._subsc_auth[i]
                                 ,url    = lg.objs._lists._subsc_urls[i]
-                                ,Show   = False
                                 )
         
     def update_trending (self,event=None,user=None
