@@ -42,15 +42,14 @@ class Commands:
     def history(self,event=None):
         urls = idb.downloaded()
         if urls:
-            ''' URL can be any here, even 'None', but we do not use 'None'
-                in order to be on the safe side since many classes have
-                checks against empty input in '__init__'.
+            ''' URL can be any here, even 'None', but we do not use
+                'None' in order to be on the safe side since many
+                classes have checks against empty input in '__init__'.
             '''
             self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
             self._channel._links = urls
             self.reset_channel_gui()
             self.channel_gui()
-            gi.objs._channel.show()
         else:
             # Do not warn here since this is actually a common case
             sh.log.append ('Commands.history'

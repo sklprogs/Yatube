@@ -19,8 +19,12 @@ class DB:
     def downloaded(self,limit=50):
         if self.Success:
             try:
+                ''' #todo: use BLOCK field. We do not have a list of
+                    blocked URLs, thus, we cannot easily remove
+                    a blocked URL from the history list.
+                '''
                 self.dbc.execute ('select URL from VIDEOS \
-                                   where READY = ?\
+                                   where READY = ? and BLOCK = ? \
                                    order by TIMESTAMP desc limit ?'
                                  ,(True,limit,)
                                  )
