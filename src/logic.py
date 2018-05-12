@@ -304,8 +304,7 @@ class Links:
                 ind = self._links.index(self._links[i])
                 if ind < i:
                     del self._links[i]
-                else:
-                    i -= 1
+                i -= 1
         else:
             sh.log.append ('Links.run'
                           ,_('WARNING')
