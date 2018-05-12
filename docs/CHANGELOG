@@ -3,6 +3,8 @@
 1.2
 * Remove duplicated URLs
 * Show history by Control-h
+* Refactor the code, speed up GUI
+* Hotkeys for trending and new videos
 
 1.1
 * Block/unblock/subscribe/unsubscribe actions

@@ -143,7 +143,7 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
     
-    def show_new(self):
+    def show_new(self,event=None):
         itime = sh.Time()
         itime.add_days(days_delta=-1)
         urls = idb.new_videos (timestamp = itime.timestamp()
@@ -763,12 +763,20 @@ class Commands:
                 ,action   = self.download
                 )
         sg.bind (obj      = self._menu.parent
-                ,bindings = '<Control-h>'
+                ,bindings = ['<Control-h>','<Alt-h>']
                 ,action   = self.history
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Shift-Delete>'
                 ,action   = self.delete_selected
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-c>'
+                ,action   = self.show_new
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-t>'
+                ,action   = self.update_trending
                 )
         # Menu: buttons
         self._menu.btn_sub.action = self.manage_sub

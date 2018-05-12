@@ -26,7 +26,7 @@ class DB:
                 self.dbc.execute ('select URL from VIDEOS \
                                    where READY = ? and BLOCK = ? \
                                    order by TIMESTAMP desc limit ?'
-                                 ,(True,limit,)
+                                 ,(True,False,limit,)
                                  )
                 result = self.dbc.fetchall()
                 if result:
