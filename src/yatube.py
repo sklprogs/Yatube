@@ -209,8 +209,7 @@ class Commands:
                           )
     
     def reset_channels(self,event=None):
-        #todo (?): implement view for all channels
-        default_channels = [_('Channels')] #,_('All')
+        default_channels = [_('Channels')]
         if lg.objs.lists()._subsc_auth:
             self._channels = default_channels \
                              + lg.objs._lists._subsc_auth
