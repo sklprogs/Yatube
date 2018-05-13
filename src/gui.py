@@ -572,7 +572,7 @@ class Channel:
                            ,y = self._max_y
                            )
         
-    def add(self,no=0):
+    def add(self,no=1):
         self._no = no
         self._videos.append (Video (parent = self.label
                                    ,no     = self._no
@@ -598,8 +598,13 @@ class Objects:
         self._def_image = self._channel = self._menu = self._parent \
                         = self._context = self._summary \
                         = self._progress = self._blacklist \
-                        = self._subscribe = None
+                        = self._subscribe = self._wait = None
         
+    def wait(self):
+        if self._wait is None:
+            self._wait = WaitMeta(parent=sg.Top(parent=sg.objs.root()))
+        return self._wait
+    
     def subscribe(self):
         if not self._subscribe:
             top = sg.Top(parent=sg.objs.root())
@@ -682,10 +687,73 @@ class Objects:
         return self._menu
 
 
+
+class WaitMeta:
+    
+    def __init__(self,parent):
+        self._video = None
+        self.parent = parent
+        self.gui()
+        
+    def title(self,text=None):
+        if not text:
+            text = _('Get video info')
+        self.parent.title(text)
+    
+    def gui(self):
+        self.frame = sg.Frame (parent = self.parent)
+        self.label = sg.Label (parent = self.frame
+                              ,expand = True
+                              ,fill   = 'x'
+                              ,text   = _('Loading metadata. Please wait...')
+                              )
+        self._video = Video(parent=self.frame)
+        self.title()
+        
+    def update(self):
+        self.frame.widget.update()
+        
+    def reset (self,author=_('Author'),title=_('Title')
+              ,duration=_('Duration'),image=None,no=0
+              ):
+        if self._video:
+            self._video.reset (author   = author
+                              ,title    = title
+                              ,duration = duration
+                              ,image    = image
+                              ,no       = no
+                              )
+        else:
+            sh.log.append ('WaitMeta.reset'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        
+    def show(self):
+        self.parent.show(Lock=False)
+        self.update()
+        self.parent.center(Force=1)
+        
+    def close(self):
+        self.parent.close()
+
+
 objs = Objects()
 
 
 if __name__ == '__main__':
+    sg.objs.start()
+    import time
+    wait = WaitMeta(parent=sg.objs.new_top())
+    wait.show()
+    time.sleep(2)
+    wait.reset(no=2,author=_('BLOCKED'))
+    wait.update()
+    time.sleep(2)
+    wait.close()
+    sg.objs.end()
+    '''
+    # Simulate channel filling
     max_videos = 29
     sg.objs.start()
     sg.Geometry(parent=objs.parent()).set('1024x600')
@@ -715,6 +783,7 @@ if __name__ == '__main__':
     objs._channel.canvas.move_top()
     objs._menu.show()
     sg.objs.end()
+    '''
     '''
     # Progress bar
     sg.objs.start()
