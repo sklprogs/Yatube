@@ -2,10 +2,10 @@
 * Reset widgets (Alt-b)
 
 1.2
-* Remove duplicated URLs
+* Remove duplicate URLs
 * Show history by Control-h
 * Refactor the code, speed up GUI
-* Hotkeys for trending and new videos
+* Hotkeys for trending (Alt-t) and new (Alt-c) videos
 
 1.1
 * Block/unblock/subscribe/unsubscribe actions
