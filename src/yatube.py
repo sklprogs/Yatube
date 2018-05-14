@@ -39,6 +39,13 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def blank(self,event=None):
+        self.reset_channel_gui()
+        gi.objs.menu().clear_search(Force=True)
+        gi.objs._menu.clear_url()
+        gi.objs._menu.clear_filter(Force=True)
+        gi.objs.parent().focus()
+    
     def history(self,event=None):
         urls = idb.downloaded()
         if urls:
@@ -776,6 +783,10 @@ class Commands:
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Alt-t>'
                 ,action   = self.update_trending
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-b>'
+                ,action   = self.blank
                 )
         # Menu: buttons
         self._menu.btn_sub.action = self.manage_sub
