@@ -865,6 +865,10 @@ class URL:
         self._url = self._url.replace ('http://www.youtube.com/'
                                       ,'https://www.youtube.com/'
                                       )
+        if self._url.startswith('youtube.com'):
+            self._url = 'https://www.' + self._url
+        elif self._url.startswith('youtu.be'):
+            self._url = 'https://' + self._url
         if not pattern5 in self._url:
             self._url = pattern5 + self._url
         if '/user/' in self._url or '/channel/' in self._url:
