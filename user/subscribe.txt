@@ -24,6 +24,7 @@ Parfenon	https://www.youtube.com/channel/UCbhMGG0ZievPtK8mzLH5jhQ/videos
 poloz QuakeTV	https://www.youtube.com/user/QuakemanTV/videos
 Sergey KuvaevJP	https://www.youtube.com/channel/UCixWVsMbvpmDoyR3qTsTl2A/videos
 Space Live	https://www.youtube.com/channel/UCAkUj99p6pbuoBOS7xsOVNw/videos
+SiliconValleyVoice	https://www.youtube.com/channel/UCU4EZpLc84IZMFnpp1TyiKg/videos
 Talking Animals	https://www.youtube.com/user/klaatu42/videos
 TechZone	https://www.youtube.com/channel/UCpb7cGnv0loLXzh10sKbbMg
 TheNafig	https://www.youtube.com/user/TheNafig/videos
@@ -33,23 +34,30 @@ tophype	https://www.youtube.com/user/SteelBallsStatham/videos
 tritonas01	https://www.youtube.com/channel/UCk2CXNRR5NWa9YkHoefITfQ/videos
 The Lion Whisperer	https://www.youtube.com/channel/UC_NS4MiiHAFo3CYI7fRSLtQ/videos
 varlamov	https://www.youtube.com/channel/UC101o-vQ2iOj9vr00JUlyKw/videos
+Vano	https://www.youtube.com/channel/UCRsT5Bhf2JvfhxgapJStpcQ/videos
 Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 Алексей Навальный	https://www.youtube.com/user/NavalnyRu/videos
 Арслан Энн	https://www.youtube.com/channel/UCXvjLCLrGKMsb0HutfX_KDQ/videos
 Асхаб Алибеков	https://www.youtube.com/channel/UCGOZDR25IE3X079Le0vuVtw/videos
 Арбалет	https://www.youtube.com/channel/UCvE-in6_Qbf7ACLoyD3efww/videos
 Быть Или	https://www.youtube.com/channel/UCIpvyH9GKI54X1Ww2BDnEgg/videos
+Все Нормально	https://www.youtube.com/c/vsenormalno/videos
 Видео от SoLiDa	https://www.youtube.com/user/xxxxxSoLiDxxxxx/videos
 Виталий Орехов	https://www.youtube.com/channel/UCRkQ5F-b2qU2rYE7-GfGkOA/videos
+Везде Сами	https://www.youtube.com/channel/UC_wv5MTZtq28v3HI85JgpOA/videos
+Вадим Сергин	https://www.youtube.com/channel/UCKhMk572a8A7AC8AWp8h-OA/videos
+Гасан Магомедов	https://www.youtube.com/channel/UCXOOTN0wfhWHTKPu2ARNotw/videos
 Джастин	https://www.youtube.com/channel/UCrMnWbWKMm_D0cNvzkKP1jQ/videos
 Дмитрий ПОТАПЕНКО	https://www.youtube.com/channel/UC54SBo5_usXGEoybX1ZVETQ/videos
 Думай Сам/ Думай Сейчас	https://www.youtube.com/channel/UCalD8p9-KemFd8AQfS6mmVA/videos
+Доброум TV	https://www.youtube.com/channel/UC6Le4-5GVPLYoxw3AWx6x_w/videos
 Итальянцы by Kuzno Productions	https://www.youtube.com/channel/UC82ZIpmWhgwXfwMfGc5FYoA/videos
 МЁD	https://www.youtube.com/user/emilaskerov/videos
 Максим Шевченко	https://www.youtube.com/channel/UCiUVHNJV5tjLtgWtfFASRGA/videos
 Максим Шелков	https://www.youtube.com/user/AvtoKriminalist/videos
 Мартеллиада	https://www.youtube.com/user/Martelliada/videos
 Мастерская Настроения	https://www.youtube.com/user/MasterskayaNastroeny/videos
+Мультограм	https://www.youtube.com/channel/UCs2pmwvKqCQlOyCc4WEoiqw/videos
 НИХОН	https://www.youtube.com/user/SamLIVEchanal/videos
 Научи Хорошему 2.0	https://www.youtube.com/channel/UCO6uKp-JxSdb3pO0waWkzjQ/videos
 Научи хорошему	https://www.youtube.com/user/whatisgoodru/videos
@@ -62,3 +70,4 @@ Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
 Усы Пескова	https://www.youtube.com/channel/UCNYsieni0V71jCgwkka79yQ/videos
 Царьград ТВ	https://www.youtube.com/user/tsargradtv/videos
+ЮТУБИ	https://www.youtube.com/channel/UCvXimZc_jLhc_Bo9GKX6EsQ/videos

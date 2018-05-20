@@ -871,7 +871,8 @@ class URL:
             self._url = 'https://' + self._url
         if not pattern5 in self._url:
             self._url = pattern5 + self._url
-        if '/user/' in self._url or '/channel/' in self._url:
+        if '/user/' in self._url or '/channel/' in self._url \
+        or '/c/' in self._url:
             pass
         else:
             self._url += '/user'
