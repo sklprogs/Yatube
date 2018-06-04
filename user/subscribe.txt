@@ -1,5 +1,4 @@
 Anton SKALD	https://www.youtube.com/channel/UC9ZGgqp95RHAXFm2Sq0PBPw/videos
-BBC	https://www.youtube.com/user/BBC/videos
 BRIGHT SIDE	https://www.youtube.com/channel/UC4rlAVgAK0SGk-yTfe48Qpw/videos
 BadComedian	https://www.youtube.com/user/TheBadComedian/videos
 BostonDynamics	https://www.youtube.com/user/BostonDynamics/videos
@@ -18,6 +17,7 @@ Lucas the Spider	https://www.youtube.com/channel/UCNqRS1gSJFMNPVwye1gyI_g/videos
 Longmir Teron	https://www.youtube.com/channel/UC83_9VXKZNPnkBUYerwni-A/videos
 Meduza	https://www.youtube.com/channel/UC-30BJyAAObw1irWxu6IPkw/videos
 maxman.tv	https://www.youtube.com/user/mxmantv/videos
+Magic Five	https://www.youtube.com/channel/UCEGfICV92gmM5w2t3gYfQDw/videos
 NEMAGIA	https://www.youtube.com/user/NEMAGIA/videos
 NEMAGIA-LifE	https://www.youtube.com/user/BrizgliviI1/videos
 Parfenon	https://www.youtube.com/channel/UCbhMGG0ZievPtK8mzLH5jhQ/videos
@@ -33,6 +33,7 @@ TheRichest	https://www.youtube.com/channel/UCdxi8d8qRsRyUi2ERYjYb-w/videos
 tophype	https://www.youtube.com/user/SteelBallsStatham/videos
 tritonas01	https://www.youtube.com/channel/UCk2CXNRR5NWa9YkHoefITfQ/videos
 The Lion Whisperer	https://www.youtube.com/channel/UC_NS4MiiHAFo3CYI7fRSLtQ/videos
+Ukrop News	https://www.youtube.com/channel/UC2CaM1cY5r3kENGhyVlix-Q/videos
 varlamov	https://www.youtube.com/channel/UC101o-vQ2iOj9vr00JUlyKw/videos
 Vano	https://www.youtube.com/channel/UCRsT5Bhf2JvfhxgapJStpcQ/videos
 Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
@@ -61,13 +62,18 @@ Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 НИХОН	https://www.youtube.com/user/SamLIVEchanal/videos
 Научи Хорошему 2.0	https://www.youtube.com/channel/UCO6uKp-JxSdb3pO0waWkzjQ/videos
 Научи хорошему	https://www.youtube.com/user/whatisgoodru/videos
+Настоящее Время	https://www.youtube.com/channel/UCBG57608Hukev3d0d-gvLhQ/videos
+Народная Демократия.	https://www.youtube.com/channel/UC7odJBtpx0hNpTNf-jhFRsw/videos
+Навальный LIVE	https://www.youtube.com/channel/UCgxTPTFbIbCWfTR9I2-5SeQ/videos
 Обмани Меня	https://www.youtube.com/channel/UCC4NURIvKftk2vuNUpJEoZA/videos
 Привет с Урала	https://www.youtube.com/channel/UCZYlAcdQZ0PE6IQiPk6omug/videos
+Поцреотизм	https://www.youtube.com/channel/UC0RA-KqIZy8_J3lo2UdoE3Q/videos
 Реальная журналистика	https://www.youtube.com/channel/UCgbZ5Zi0sIbwvUwiGCIom1g/videos
 Россия	https://www.youtube.com/channel/UCLSUk_DwbnEj-69pJxCLSCQ/videos
 Реальная журналистика //RealRussianNews	https://www.youtube.com/channel/UChpUzS-wzKjaT-2HPoQeLiQ/videos
 Теперь я Знаю	https://www.youtube.com/channel/UCVqJYFWsnkLEUkmmS-avyQg/videos
 Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
+Телеканал Дождь	https://www.youtube.com/channel/UCdubelOloxR3wzwJG9x8YqQ/videos
 Усы Пескова	https://www.youtube.com/channel/UCNYsieni0V71jCgwkka79yQ/videos
 Царьград ТВ	https://www.youtube.com/user/tsargradtv/videos
 ЮТУБИ	https://www.youtube.com/channel/UCvXimZc_jLhc_Bo9GKX6EsQ/videos

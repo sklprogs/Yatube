@@ -695,6 +695,11 @@ class WaitMeta:
         self.parent = parent
         self.gui()
         
+    def icon(self,path=None):
+        if not path:
+            path = icon_path
+        sg.WidgetShared.icon(self.parent,path)
+    
     def title(self,text=None):
         if not text:
             text = _('Get video info')
@@ -709,6 +714,7 @@ class WaitMeta:
                               )
         self._video = Video(parent=self.frame)
         self.title()
+        self.icon()
         
     def update(self):
         self.frame.widget.update()
