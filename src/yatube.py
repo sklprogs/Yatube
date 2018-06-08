@@ -348,7 +348,6 @@ class Commands:
             self._channel.run()
             self.reset_channel_gui()
             self.channel_gui()
-            gi.objs._channel.show()
         else:
             sh.log.append ('Commands.load_channel'
                           ,_('WARNING')

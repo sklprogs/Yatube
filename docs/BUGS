@@ -1,2 +1,4 @@
+- Middle clicks pastes URL twice into the URL field (NOT ALWAYS
+  REPRODUCIBLE)
 - Scroll to the 1st video properly
 - 'Update channels' hangs up at the end

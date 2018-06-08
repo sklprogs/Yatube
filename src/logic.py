@@ -400,12 +400,18 @@ class Video:
     def __init__(self,url,callback=None):
         self.values()
         if url:
-            if pattern1 in url:
-                self._url      = url
+            if 'youtube.com' in url:
+                self._url      = URL(url=url).video_full()
                 self._video_id = self._url.replace(pattern1,'')
             else:
                 self._video_id = url
-                self._url      = pattern1 + self._video_id
+                self._url      = URL(url=url).video_full()
+            if len(self._video_id) != 11:
+                sh.log.append ('Video.__init__'
+                              ,_('WARNING')
+                              ,_('Wrong input data: "%s"') \
+                              % self._video_id
+                              )
             self._callback = callback
         else:
             self.Success = False
@@ -844,11 +850,26 @@ class URL:
         self._url = str(self._url)
         self._url = self._url.strip()
     
+    def video_full(self):
+        if self._url:
+            self.trash()
+            self._url = self._url.replace('/embed/','/watch?v=')
+            self.prefixes()
+            if not pattern1 in self._url:
+                self._url = pattern1 + self._url
+        else:
+            sh.log.append ('URL.video_full'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        return self._url
+    
     def channel_full(self):
         if self._url:
             self.trash()
             self.prefixes()
-            self.suffixes()
+            self.prefixes_ch()
+            self.suffixes_ch()
         else:
             sh.log.append ('URL.channel_full'
                           ,_('WARNING')
@@ -869,6 +890,8 @@ class URL:
             self._url = 'https://www.' + self._url
         elif self._url.startswith('youtu.be'):
             self._url = 'https://' + self._url
+            
+    def prefixes_ch(self):
         if not pattern5 in self._url:
             self._url = pattern5 + self._url
         if '/user/' in self._url or '/channel/' in self._url \
@@ -876,8 +899,8 @@ class URL:
             pass
         else:
             self._url += '/user'
-            
-    def suffixes(self):
+        
+    def suffixes_ch(self):
         if not '/videos' in self._url:
             self._url += '/videos'
         if not pattern4 in self._url:
