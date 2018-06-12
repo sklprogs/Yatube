@@ -45,6 +45,9 @@ class Commands:
         gi.objs._menu.clear_url()
         gi.objs._menu.clear_filter(Force=True)
         gi.objs.parent().focus()
+        gi.objs._menu.opt_chl.set(_('Channels'))
+        gi.objs._menu.opt_trd.set(_('Trending'))
+        gi.objs.channel().canvas.move_top()
     
     def history(self,event=None):
         urls = idb.downloaded()
