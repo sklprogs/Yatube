@@ -644,8 +644,10 @@ class Commands:
                         self.summary()
                     elif self._menu.opt_url.choice == _('Download'):
                         self.download_video()
+                        gi.objs._progress.close()
                     elif self._menu.opt_url.choice == _('Play'):
                         self.download_video()
+                        gi.objs._progress.close()
                         self.play_video()
                     elif self._menu.opt_url.choice == _('Stream'):
                         self.stream()
