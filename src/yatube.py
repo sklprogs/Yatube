@@ -1041,57 +1041,48 @@ class Commands:
                                        )
     
     def fill_unknown(self):
-        New = False
+        unknown   = []
+        unknown_g = [] 
         for video_gui in gi.objs.channel()._videos:
             if video_gui:
                 if video_gui in self._videos:
                     video = self._videos[video_gui]
                     if not video.model.Saved:
-                        New = True
-                        break
+                        unknown.append(video)
+                        unknown_g.append(video_gui)
                 else:
                     sh.log.append ('Commands.fill_unknown'
-                                  ,_('WARNING')
+                                  ,_('ERROR')
                                   ,_('Wrong input data!')
                                   )
             else:
                 sh.log.append ('Commands.fill_unknown'
-                              ,_('WARNING')
+                              ,_('ERROR')
                               ,_('Empty input is not allowed!')
                               )
-        if New:
+        if unknown:
             gi.objs.wait().show()
-            for i in range(len(self._channel._links)):
-                video_gui = gi.objs._channel._videos[i]
-                if video_gui:
-                    if video_gui in self._videos:
-                        self._gvideo = video_gui
-                        self._video  = self._videos[self._gvideo]
-                        if not self._video.model.Saved:
-                            self._video.model.video()
-                            self._video.model.assign_online()
-                            self._video.model.image()
-                            self._video.image()
-                            self._video.model.dump()
-                            self.update_video(i)
-                            gi.objs._wait.reset (author   = self._gvideo._author
-                                                ,title    = self._gvideo._title
-                                                ,duration = self._gvideo._duration
-                                                ,image    = self._video._image
-                                                ,no       = i + 1
-                                                )
-                            gi.objs._wait.update()
-                    else:
-                        sh.log.append ('Commands.fill_unknown'
-                                      ,_('ERROR')
-                                      ,_('Wrong input data!')
-                                      )
-                else:
-                    sh.log.append ('Commands.fill_unknown'
-                                  ,_('ERROR')
-                                  ,_('Empty input is not allowed!')
-                                  )
+            for i in range(len(unknown)):
+                gi.objs._wait.title (_('Get video info') \
+                                     + ' (%d/%d)' % (i+1,len(unknown))
+                                    )
+                self._video  = unknown[i]
+                self._gvideo = unknown_g[i]
+                self._video.model.video()
+                self._video.model.assign_online()
+                self._video.model.image()
+                self._video.image()
+                self._video.model.dump()
+                self.update_video(i)
+                gi.objs._wait.reset (author   = self._gvideo._author
+                                    ,title    = self._gvideo._title
+                                    ,duration = self._gvideo._duration
+                                    ,image    = self._video._image
+                                    ,no       = i + 1
+                                    )
+                gi.objs._wait.update()
             idb.save()
+            gi.objs._wait.title()
             gi.objs._wait.close()
         else:
             sh.log.append ('Commands.fill_unknown'
