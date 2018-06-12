@@ -956,17 +956,24 @@ class Commands:
                           )
     
     def download(self,event=None):
+        new_videos = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
-                self._gvideo = video_gui
-                if self._gvideo in self._videos:
-                    self._video = self._videos[self._gvideo]
-                    self.download_video()
+                if video_gui in self._videos:
+                    new_videos.append(video_gui)
                 else:
                     sg.Message ('Commands.download'
                                ,_('ERROR')
                                ,_('Wrong input data!')
                                )
+        for i in range(len(new_videos)):
+            gi.objs._progress.title (_('Download progress') \
+                                     + ' (%d/%d)' % (i+1,len(new_videos))
+                                    )
+            self._gvideo = new_videos[i]
+            self._video = self._videos[self._gvideo]
+            self.download_video()
+        gi.objs._progress.title()
         gi.objs._progress.close()
         
     def update_channels(self,event=None):
