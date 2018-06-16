@@ -1042,14 +1042,17 @@ class Commands:
     
     def fill_unknown(self):
         unknown   = []
-        unknown_g = [] 
-        for video_gui in gi.objs.channel()._videos:
+        unknown_g = []
+        unknown_i = []
+        for i in range(len(gi.objs.channel()._videos)):
+            video_gui = gi.objs._channel._videos[i]
             if video_gui:
                 if video_gui in self._videos:
                     video = self._videos[video_gui]
                     if not video.model.Saved:
                         unknown.append(video)
                         unknown_g.append(video_gui)
+                        unknown_i.append(i)
                 else:
                     sh.log.append ('Commands.fill_unknown'
                                   ,_('ERROR')
@@ -1073,12 +1076,12 @@ class Commands:
                 self._video.model.image()
                 self._video.image()
                 self._video.model.dump()
-                self.update_video(i)
+                self.update_video(i=unknown_i[i])
                 gi.objs._wait.reset (author   = self._gvideo._author
                                     ,title    = self._gvideo._title
                                     ,duration = self._gvideo._duration
                                     ,image    = self._video._image
-                                    ,no       = i + 1
+                                    ,no       = unknown_i[i] + 1
                                     )
                 gi.objs._wait.update()
             idb.save()
