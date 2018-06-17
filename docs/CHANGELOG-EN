@@ -1,4 +1,7 @@
-
+1.3
+* Sort videos in History by download time
+* Add video and metadata loading indicators
+* Enhance URL parsing
 * Reset widgets (Alt-b)
 
 1.2

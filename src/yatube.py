@@ -155,7 +155,7 @@ class Commands:
     
     def show_new(self,event=None):
         itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
-        itime.add_days(days_delta=-1)
+        itime.add_days(days_delta=-2)
         urls = idb.new_videos (timestamp = itime.timestamp()
                               ,authors   = lg.objs.lists()._subsc_auth
                               )
