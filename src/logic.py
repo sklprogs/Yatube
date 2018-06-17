@@ -881,7 +881,7 @@ class URL:
     def trash(self):
         if self._url.endswith('/'):
             self._url = self._url[:-1]
-        self._url = self._url.replace('?disable_polymer=1','')
+        self._url = self._url.replace('?disable_polymer=1','').replace('?wmode=transparent','')
     
     def prefixes(self):
         self._url = self._url.replace ('http://www.youtube.com/'
