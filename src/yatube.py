@@ -154,7 +154,7 @@ class Commands:
                           )
     
     def show_new(self,event=None):
-        itime = sh.Time()
+        itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
         itime.add_days(days_delta=-1)
         urls = idb.new_videos (timestamp = itime.timestamp()
                               ,authors   = lg.objs.lists()._subsc_auth
@@ -384,11 +384,14 @@ class Commands:
                    
     def toggle_downloaded(self,event=None):
         if self._video and self._gvideo:
-            self._video.model.Ready = not self._video.model.Ready
+            if self._video.model._dtime:
+                self._video.model._dtime = 0
+            else:
+                self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
             idb.mark_downloaded (url   = self._video.model._video_id
-                                ,Ready = self._video.model.Ready
+                                ,dtime = self._video.model._dtime
                                 )
-            if self._video.model.Ready:
+            if self._video.model._dtime:
                 self._gvideo.gray_out()
             else:
                 self._gvideo.black_out()
@@ -850,11 +853,11 @@ class Commands:
                 # Drop all previous selections
                 self._gvideo.cbox.disable()
                 if self._menu.chb_dat.get():
-                    cond = not self._video.model.Ready and \
+                    cond = not self._video.model._dtime and \
                            not self._video.model.Block and \
                            self._date_filter()
                 else:
-                    cond = not self._video.model.Ready and \
+                    cond = not self._video.model._dtime and \
                            not self._video.model.Block
                 if cond:
                     self._gvideo.cbox.enable()
@@ -909,7 +912,10 @@ class Commands:
         gi.objs._progress.close()
         
     def mark_downloaded(self):
-        idb.mark_downloaded(url=self._video.model._video_id)
+        self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        idb.mark_downloaded (url   = self._video.model._video_id
+                            ,dtime = self._video.model._dtime
+                            )
         if self._gvideo:
             self._gvideo.cbox.disable()
             self._gvideo.gray_out()
@@ -924,11 +930,10 @@ class Commands:
             self._video.model.path()
             if self._video.model._path:
                 if os.path.exists(self._video.model._path):
-                    ''' Do this because files could be downloaded with
-                        a previous version which did not update
-                        the READY field. However, do not put this
-                        in the end because we do not want to update
-                        failed downloads.
+                    ''' Lift videos up in history (update DTIME field)
+                        even if they were already downloaded. However,
+                        do not put this in the end because we do not
+                        want to update failed downloads.
                     '''
                     self.mark_downloaded()
                 else:
@@ -1110,7 +1115,7 @@ class Commands:
                                ,duration = duration
                                ,image    = self._video._image
                                )
-            if self._video.model.Ready:
+            if self._video.model._dtime:
                 self._gvideo.gray_out()
             self.video_date_filter()
         else:

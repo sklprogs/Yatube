@@ -24,18 +24,20 @@ class DB:
                     a blocked URL from the history list.
                 '''
                 self.dbc.execute ('select URL from VIDEOS \
-                                   where READY = ? and BLOCK = ? \
-                                   order by TIMESTAMP desc limit ?'
-                                 ,(True,False,limit,)
+                                   where DTIME > ? and BLOCK = ?\
+                                   order by DTIME desc, TIMESTAMP desc \
+                                   limit ?'
+                                 ,(0,False,limit,)
                                  )
                 result = self.dbc.fetchall()
                 if result:
                     return [item[0] for item in result]
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.downloaded'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.downloaded'
@@ -55,11 +57,12 @@ class DB:
                 if result:
                     #todo: should we return a list or a tuple?
                     return [row[0] for row in result]
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.new_videos'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.new_videos'
@@ -75,8 +78,8 @@ class DB:
                          
     def _filt2(self,timestamp):
         self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
-                           where READY = ? and TIMESTAMP >= ? \
-                           order by AUTHOR,TIMESTAMP',(False,timestamp,)
+                           where DTIME = ? and TIMESTAMP >= ? \
+                           order by AUTHOR,TIMESTAMP',(0,timestamp,)
                          )
     
     def _filt3(self,timestamp):
@@ -87,8 +90,8 @@ class DB:
                          
     def _filt4(self,timestamp):
         self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
-                           where READY = ? and TIMESTAMP <= ? \
-                           order by AUTHOR,TIMESTAMP',(False,timestamp,)
+                           where DTIME = ? and TIMESTAMP <= ? \
+                           order by AUTHOR,TIMESTAMP',(0,timestamp,)
                          )
     
     def date_filter (self,timestamp
@@ -108,11 +111,12 @@ class DB:
                     else:
                         self._filt4(timestamp)
                 return self.dbc.fetchall()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.date_filter'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.date_filter'
@@ -130,11 +134,12 @@ class DB:
             try:
                 self.db  = sqlite3.connect(self._path)
                 self.dbc = self.db.cursor()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.connect'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.connect'
@@ -149,11 +154,12 @@ class DB:
                                  ,(author,)
                                  )
                 return self.dbc.fetchall()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.channel_videos'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.channel_videos'
@@ -161,17 +167,19 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
     
-    def mark_downloaded(self,url,Ready=True):
+    def mark_downloaded(self,url,dtime):
         if self.Success:
             try:
-                self.dbc.execute ('update VIDEOS set READY=? where URL=?'
-                                 ,(Ready,url,)
+                self.dbc.execute ('update VIDEOS set   DTIME = ? \
+                                                 where URL   = ?'
+                                 ,(dtime,url,)
                                  )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.mark_downloaded'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.mark_downloaded'
@@ -200,16 +208,17 @@ class DB:
                     ,IMAGE     binary  \
                     ,BLOCK     boolean \
                     ,IGNORE    boolean \
-                    ,READY     boolean \
                     ,SEARCH    text    \
                     ,TIMESTAMP float   \
+                    ,DTIME     float   \
                                                        )'
                                  )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.create_videos'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.create_videos'
@@ -224,11 +233,12 @@ class DB:
                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.add_video'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.add_video'
@@ -244,11 +254,12 @@ class DB:
                           )
             try:
                 self.db.commit()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.save'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.save'
@@ -260,8 +271,8 @@ class DB:
         if self.Success:
             self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
                                     ,DURATION,LENGTH,VIEWS,LIKES \
-                                    ,DISLIKES,RATING,IMAGE,READY,SEARCH\
-                                    ,TIMESTAMP \
+                                    ,DISLIKES,RATING,IMAGE,SEARCH\
+                                    ,TIMESTAMP,DTIME \
                               from   VIDEOS \
                               where  URL = ?',(url,))
             return self.dbc.fetchone()
@@ -275,11 +286,12 @@ class DB:
         if self.Success:
             try:
                 self.dbc.close()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.close'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.close'

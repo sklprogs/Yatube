@@ -26,7 +26,7 @@ class Commands:
     def date_filter (self,days_delta=7
                     ,Newer=True,WithReady=False
                     ):
-        itime = sh.Time()
+        itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
         itime.add_days(days_delta=-days_delta)
         timestamp = itime.timestamp()
         return idb.date_filter (timestamp = timestamp

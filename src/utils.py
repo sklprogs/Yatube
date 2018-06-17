@@ -20,14 +20,15 @@ class DB:
     def down_markw(self):
         if self.Success:
             try:
-                self.dbcw.execute ('update VIDEOS set READY=? \
-                                    where  READY=?',(False,True,)
+                self.dbcw.execute ('update VIDEOS set DTIME = ? \
+                                    where  DTIME > ?',(0,0,)
                                   )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.down_markw'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._clone
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._clone,str(e))
                             )
         else:
             sh.log.append ('DB.down_markw'
@@ -39,11 +40,12 @@ class DB:
         if self.Success:
             try:
                 self.dbw.commit()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.savew'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._clone
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._clone,str(e))
                             )
         else:
             sh.log.append ('DB.savew'
@@ -56,11 +58,12 @@ class DB:
             try:
                 self.db  = sqlite3.connect(self._path)
                 self.dbc = self.db.cursor()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.connect'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.connect'
@@ -73,11 +76,12 @@ class DB:
             try:
                 self.dbw  = sqlite3.connect(self._clone)
                 self.dbcw = self.dbw.cursor()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.connectw'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._clone
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._clone,str(e))
                             )
         else:
             sh.log.append ('DB.connectw'
@@ -88,19 +92,21 @@ class DB:
     def fetch(self):
         if self.Success:
             try:
-                # 16 columns for now
+                # 18 columns for now (for old DB)
                 self.dbc.execute ('select URL,AUTHOR,TITLE,DATE,CATEGORY\
                                          ,DESC,DURATION,LENGTH,VIEWS\
                                          ,LIKES,DISLIKES,RATING,IMAGE\
-                                         ,BLOCK,IGNORE,READY \
+                                         ,BLOCK,IGNORE,SEARCH,TIMESTAMP\
+                                         ,READY\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.fetch'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.fetch'
@@ -129,16 +135,17 @@ class DB:
                     ,IMAGE     binary  \
                     ,BLOCK     boolean \
                     ,IGNORE    boolean \
-                    ,READY     boolean \
                     ,SEARCH    text    \
                     ,TIMESTAMP float   \
+                    ,DTIME     float   \
                                                        )'
                                  )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.create_table'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._clone
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._clone,str(e))
                             )
         else:
             sh.log.append ('DB.create_table'
@@ -157,14 +164,14 @@ class DB:
                               )
                 for row in self._data:
                     try:
-                        search = row[1].lower() + ' ' + row[2].lower()
-                        itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
-                        itime._date = row[3]
-                        timestamp = itime.timestamp()
+                        if row[17]:         # READY
+                            dtime = row[16] # TIMESTAMP
+                        else:
+                            dtime = 0
                         row = (row[0],row[1],row[2],row[3],row[4],row[5]
                               ,row[6],row[7],row[8],row[9],row[10]
                               ,row[11],row[12],row[13],row[14],row[15]
-                              ,search,timestamp
+                              ,row[16],dtime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
                                             (?,?,?,?,?,?,?,?,?,?,?,?,?\
@@ -198,11 +205,12 @@ class DB:
         if self.Success:
             try:
                 self.dbc.close()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.close'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._path
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
                             )
         else:
             sh.log.append ('DB.close'
@@ -214,11 +222,12 @@ class DB:
         if self.Success:
             try:
                 self.dbcw.close()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError):
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
                 sh.objs.mes ('DB.closew'
                             ,_('WARNING')
-                            ,_('Database "%s" has failed!') % self._clone
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._clone,str(e))
                             )
         else:
             sh.log.append ('DB.closew'
@@ -255,7 +264,7 @@ class Commands:
     
     def alter(self):
         sh.File(file=self._clone).delete()
-        # Alter DB and add new columns 'SEARCH', 'TIMESTAMP'
+        # Alter DB and add a new column 'DTIME'
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )
@@ -294,4 +303,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.down_markw()
+    commands.alter()

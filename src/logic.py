@@ -422,13 +422,14 @@ class Video:
         
     def values(self):
         self.Success = True
-        self.Block   = self.Ignore = self.Ready = False
+        self.Block   = self.Ignore = False
         self._video  = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path \
-                     = self._pathsh = self._search = self._timestamp \
-                     = self._channel_url = self._page = self._dir = ''
-        self._len    = self._views = self._likes = self._dislikes = 0
+                     = self._pathsh = self._search = self._channel_url \
+                     = self._page = self._dir = ''
+        self._len    = self._views = self._likes = self._dislikes \
+                     = self._timestamp = self._dtime = 0
         self._rating = 0.0
         
     def delete(self):
@@ -575,7 +576,7 @@ class Video:
                        ,self._date,self._cat,self._desc,self._dur
                        ,self._len,self._views,self._likes,self._dislikes
                        ,self._rating,self._bytes,self.Block,self.Ignore
-                       ,self.Ready,self._search,self._timestamp
+                       ,self._search,self._timestamp,self._dtime
                        )
                 idb.add_video(data)
             else:
@@ -606,9 +607,9 @@ class Video:
                     self._dislikes  = data[9]
                     self._rating    = data[10]
                     self._bytes     = data[11]
-                    self.Ready      = data[12]
-                    self._search    = data[13]
-                    self._timestamp = data[14]
+                    self._search    = data[12]
+                    self._timestamp = data[13]
+                    self._dtime     = data[14]
                 else:
                     sh.objs.mes ('Video.assign_offline'
                                 ,_('ERROR')

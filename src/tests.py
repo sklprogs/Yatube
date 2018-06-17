@@ -69,7 +69,17 @@ def timestamp():
                  ,rows    = result
                  ).print()
     idb.close()
+    
+def dtime():
+    idb = db.DB()
+    idb.dbc.execute('select TITLE,DTIME,TIMESTAMP from VIDEOS where DTIME > ? order by DTIME desc,TIMESTAMP desc limit ?',(0,5))
+    result = idb.dbc.fetchall()
+    if result:
+        sh.Table (headers = ['TITLE','DTIME','TIMESTAMP']
+                 ,rows    = result
+                 ).print()
+    idb.close()
 
 
 if __name__ == '__main__':
-    timestamp()
+    dtime()
