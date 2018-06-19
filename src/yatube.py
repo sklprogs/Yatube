@@ -153,6 +153,16 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
     
+    def _show_new(self,urls):
+        ''' URL can be any here, even 'None', but we do not use 'None'
+                in order to be on the safe side since many classes have
+                checks against empty input in '__init__'.
+            '''
+        self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
+        self._channel._links = urls
+        self.reset_channel_gui()
+        self.channel_gui()
+    
     def show_new(self,event=None):
         itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
         itime.add_days(days_delta=-2)
@@ -160,14 +170,7 @@ class Commands:
                               ,authors   = lg.objs.lists()._subsc_auth
                               )
         if urls:
-            ''' URL can be any here, even 'None', but we do not use 'None'
-                in order to be on the safe side since many classes have
-                checks against empty input in '__init__'.
-            '''
-            self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
-            self._channel._links = urls
-            self.reset_channel_gui()
-            self.channel_gui()
+            self._show_new(urls)
         else:
             # Do not warn here since this is actually a common case
             sh.log.append ('Commands.show_new'
@@ -1032,12 +1035,12 @@ class Commands:
             idb.save()
             gi.objs._wait.title()
             gi.objs._wait.close()
+            self._show_new(urls=unknown)
         else:
             sg.Message (func    = 'Commands.update_channels'
                        ,level   = _('INFO')
                        ,message = _('No new videos!')
                        )
-        self.show_new()
         
     def update_trending (self,event=None,user=None
                         ,url=None
