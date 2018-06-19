@@ -882,6 +882,7 @@ class URL:
         if self._url.endswith('/'):
             self._url = self._url[:-1]
         self._url = self._url.replace('?disable_polymer=1','').replace('?wmode=transparent','')
+        self._url = re.sub('&list=.*','',self._url)
     
     def prefixes(self):
         self._url = self._url.replace ('http://www.youtube.com/'
