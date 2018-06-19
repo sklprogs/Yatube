@@ -16,6 +16,26 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def urls(self):
+        if self.Success:
+            try:
+                self.dbc.execute('select URL from VIDEOS')
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
+                self.Success = False
+                sh.objs.mes ('DB.urls'
+                            ,_('WARNING')
+                            ,_('Database "%s" has failed!\n\nDetails: %s')\
+                            % (self._path,str(e))
+                            )
+        else:
+            sh.log.append ('DB.urls'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def downloaded(self,limit=50):
         if self.Success:
             try:

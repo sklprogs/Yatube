@@ -984,10 +984,60 @@ class Commands:
         gi.objs._progress.close()
         
     def update_channels(self,event=None):
-        for i in range(len(lg.objs.lists()._subsc_auth)):
-            self.update_channel (author = lg.objs._lists._subsc_auth[i]
-                                ,url    = lg.objs._lists._subsc_urls[i]
-                                )
+        # Update channels
+        links    = []
+        unknown  = []
+        channels = lg.objs.lists()._subsc_urls
+        sg.objs.waitbox().reset(func_title='Commands.update_channels')
+        sg.objs._waitbox.obj.icon(gi.icon_path)
+        sg.objs._waitbox.show()
+        for i in range(len(channels)):
+            message = _('Update channels (%d/%d)') % (i+1,len(channels))
+            sg.objs._waitbox.reset (func_title = 'Commands.update_channels'
+                                   ,message    = message
+                                   )
+            sg.objs._waitbox.update()
+            channel = lg.Channel(url=channels[i])
+            channel.run()
+            links += channel._links
+        sg.objs._waitbox.close()
+        # Get new URLs
+        sh.log.append ('Commands.update_channels'
+                      ,_('DEBUG')
+                      ,_('URLs in total: %d') % len(links)
+                      )
+        urls = idb.urls()
+        unknown = [link for link in links if not link in urls]
+        # Get metadata for new URLs
+        if unknown:
+            gi.objs.wait().show()
+            for i in range(len(unknown)):
+                gi.objs._wait.title (_('Get video info') \
+                                     + ' (%d/%d)' % (i+1,len(unknown))
+                                    )
+                self._video = Video(url=unknown[i])
+                self._video.model.video()
+                self._video.model.assign_online()
+                self._video.model.image()
+                self._video.image()
+                self._video.model.dump()
+                author, title, duration = self.unsupported()
+                gi.objs._wait.reset (author   = author
+                                    ,title    = title
+                                    ,duration = duration
+                                    ,image    = self._video._image
+                                    ,no       = i + 1
+                                    )
+                gi.objs._wait.update()
+            idb.save()
+            gi.objs._wait.title()
+            gi.objs._wait.close()
+        else:
+            sg.Message (func    = 'Commands.update_channels'
+                       ,level   = _('INFO')
+                       ,message = _('No new videos!')
+                       )
+        self.show_new()
         
     def update_trending (self,event=None,user=None
                         ,url=None
@@ -1098,16 +1148,20 @@ class Commands:
                           ,_('Nothing to do!')
                           )
     
+    def unsupported(self):
+        author   = sh.Text(text=self._video.model._author).delete_unsupported()
+        title    = sh.Text(text=self._video.model._title).delete_unsupported()
+        duration = sh.Text(text=self._video.model._dur).delete_unsupported()
+        if author in lg.objs.lists()._block_auth \
+        or self._video.model._author in lg.objs._lists._block_auth:
+            author = title = _('BLOCKED')
+            self._video._image = None
+            self._video.model.Block = True
+        return(author,title,duration)
+    
     def update_video(self,i):
         if self._video:
-            author   = sh.Text(text=self._video.model._author).delete_unsupported()
-            title    = sh.Text(text=self._video.model._title).delete_unsupported()
-            duration = sh.Text(text=self._video.model._dur).delete_unsupported()
-            if author in lg.objs.lists()._block_auth \
-            or self._video.model._author in lg.objs._lists._block_auth:
-                author = title = _('BLOCKED')
-                self._video._image = None
-                self._video.model.Block = True
+            author, title, duration = self.unsupported()
             self._gvideo = gi.objs.channel()._videos[i]
             self._gvideo.reset (no       = i + 1
                                ,author   = author
