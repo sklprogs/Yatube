@@ -1,4 +1,5 @@
 1.3
+* Add an "Other" option menu
 * Refactor updating all channels
 * Sort videos in History by download time
 * Add video and metadata loading indicators
