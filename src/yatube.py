@@ -38,15 +38,57 @@ class Commands:
         self._day       = itime._day
         lg.objs.lists().reset()
         self.reset_channels()
+        
+    def toggle_selected(self,event=None):
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui.cbox.get():
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    self.toggle_downloaded()
+                else:
+                    sh.log.append ('Commands.toggle_selected'
+                                  ,_('ERROR')
+                                  ,_('Wrong input data!')
+                                  )
+    
+    def other(self,event=None):
+        choice = self._menu.opt_act.choice
+        if choice == _('Other'):
+            pass
+        elif choice == _('Show new videos'):
+            self._menu.opt_act.set(_('Other'))
+            self.show_new()
+        elif choice == _('History'):
+            self._menu.opt_act.set(_('Other'))
+            self.history()
+        elif choice == _('Welcome screen'):
+            self._menu.opt_act.set(_('Other'))
+            self.blank()
+        elif choice == _('Select all new videos'):
+            self._menu.opt_act.set(_('Other'))
+            self.select_new()
+        elif choice == _('Toggle status of selected'):
+            self._menu.opt_act.set(_('Other'))
+            self.toggle_selected()
+        elif choice == _('Delete selected'):
+            self._menu.opt_act.set(_('Other'))
+            self.delete_selected()
+        else:
+            sh.objs.mes ('Commands.other'
+                        ,_('ERROR')
+                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                        % (str(choice),';'.join(gi.other_actions))
+                        )
     
     def blank(self,event=None):
         self.reset_channel_gui()
-        gi.objs.menu().clear_search(Force=True)
-        gi.objs._menu.clear_url()
-        gi.objs._menu.clear_filter(Force=True)
+        self._menu.clear_search(Force=True)
+        self._menu.clear_url()
+        self._menu.clear_filter(Force=True)
         gi.objs.parent().focus()
-        gi.objs._menu.opt_chl.set(_('Channels'))
-        gi.objs._menu.opt_trd.set(_('Trending'))
+        self._menu.opt_chl.set(_('Channels'))
+        self._menu.opt_trd.set(_('Trending'))
         gi.objs.channel().canvas.move_top()
     
     def history(self,event=None):
@@ -802,7 +844,6 @@ class Commands:
         self._menu.btn_sub.action = self.manage_sub
         self._menu.btn_blk.action = self.manage_block
         self._menu.btn_upd.action = self.update_channels
-        self._menu.btn_all.action = self.select_new
         self._menu.btn_ytb.action = self.search_youtube
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_dld.action = self.download
@@ -825,6 +866,7 @@ class Commands:
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
         # Menu: OptionMenus
+        self._menu.opt_act.action = self.other
         self._menu.opt_dat.action = self.filter_by_date
         self._menu.opt_url.action = self.get_url
         self._menu.opt_day.reset (items   = self._days

@@ -43,6 +43,15 @@ url_items = (_('Show summary')
             ,_('Full menu')
             )
 
+other_actions = (_('Other')
+                ,_('Show new videos')
+                ,_('History')
+                ,_('Welcome screen')
+                ,_('Select all new videos')
+                ,_('Toggle status of selected')
+                ,_('Delete selected')
+                )
+
 default_entry_width = 19
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
@@ -99,9 +108,10 @@ class Menu:
                                  ,text   = _('Update subscriptions')
                                  )
         self.btn_upd.focus()
-        self.btn_all = sg.Button (parent = self.frame1
-                                 ,text   = _('Select all new videos')
-                                 )
+        self.opt_act = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = other_actions
+                                     ,default = _('Other')
+                                     )
         self.chb_dat = sg.CheckBox (parent = self.frame1
                                    ,Active = False
                                    ,side   = 'left'
@@ -749,6 +759,11 @@ objs = Objects()
 
 if __name__ == '__main__':
     sg.objs.start()
+    objs.menu().show()
+    sg.objs.end()
+    '''
+    # Simulate meta updating
+    sg.objs.start()
     import time
     wait = WaitMeta(parent=sg.objs.new_top())
     wait.show()
@@ -758,6 +773,7 @@ if __name__ == '__main__':
     time.sleep(2)
     wait.close()
     sg.objs.end()
+    '''
     '''
     # Simulate channel filling
     max_videos = 29
