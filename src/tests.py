@@ -79,7 +79,23 @@ def dtime():
                  ,rows    = result
                  ).print()
     idb.close()
+    
+def url():
+    print(lg.URL(url='https://youtu.be/vjSohj-Iclc').video_full())
+    print(lg.URL(url='https://m.youtube.com/watch?v=vjSohj-Iclc').video_full())
+    print(lg.URL(url='vjSohj-Iclc').video_full())
+    
+def invalid_urls():
+    idb = db.DB()
+    idb.dbc.execute('select URL from VIDEOS where length(URL) > 11')
+    result = idb.dbc.fetchall()
+    if result:
+        result = list(result)
+        result = [item[0] for item in result]
+        print('\n'.join(result))
+    idb.close()
 
 
 if __name__ == '__main__':
-    dtime()
+    #invalid_urls()
+    url()

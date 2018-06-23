@@ -885,13 +885,18 @@ class URL:
         self._url = re.sub('&list=.*','',self._url)
     
     def prefixes(self):
-        self._url = self._url.replace ('http://www.youtube.com/'
-                                      ,'https://www.youtube.com/'
-                                      )
         if self._url.startswith('youtube.com'):
             self._url = 'https://www.' + self._url
         elif self._url.startswith('youtu.be'):
             self._url = 'https://' + self._url
+        self._url = self._url.replace('http://','https://')
+        self._url = self._url.replace('m.youtube.com','youtube.com')
+        self._url = self._url.replace('https://youtube.com','https://www.youtube.com')
+        self._url = self._url.replace('https://youtu.be/',pattern1)
+        ''' I just saw a URL ending with this in DB. I don't know how it
+            got there. I just add it to be sure.
+        '''
+        self._url = self._url.replace('?t=118','')
             
     def prefixes_ch(self):
         if not pattern5 in self._url:

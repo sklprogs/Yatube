@@ -234,6 +234,47 @@ class DB:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+                          
+    def repair_urls(self):
+        if self.Success:
+            self.dbcw.execute('select URL from VIDEOS where length(URL) > 11')
+            result = self.dbcw.fetchall()
+            if result:
+                result = list(result)
+                result = [item[0] for item in result]
+                for item in result:
+                    old_item = item
+                    item = item.replace('ttps://www.youtube.com/watch?v=','')
+                    item = item.replace('https://youtu.be/','')
+                    item = item.replace('https://m.youtube.com/','')
+                    item = item.replace('youtube.com/watch?v=','')
+                    item = item.replace('watch?v=','')
+                    item = item.replace('?t=118','')
+                    sh.log.append ('DB.repair_urls'
+                                  ,_('INFO')
+                                  ,'"%s" -> "%s"' % (old_item,item)
+                                  )
+                    try:
+                        self.dbcw.execute ('update VIDEOS set URL = ? where URL = ?'
+                                          ,(item,old_item,)
+                                          )
+                    except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
+                        self.Success = False
+                        sh.objs.mes ('DB.repair_urls'
+                                    ,_('WARNING')
+                                    ,_('Database "%s" has failed!\n\nDetails: %s')\
+                                    % (self._clone,str(e))
+                                    )
+            else:
+                sh.log.append ('DB.repair_urls'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('DB.repair_urls'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
@@ -243,6 +284,25 @@ class Commands:
         self._path  = '/home/pete/bin/Yatube/user/yatube.db'
         self._clone = '/tmp/yatube.db'
         
+    def repair_urls(self):
+        Success = sh.File (file       = self._path
+                          ,dest       = self._clone
+                          ,AskRewrite = False
+                          ).copy()
+        if Success:
+            idb = DB (path  = self._path
+                     ,clone = self._clone
+                     )
+            idb.connectw()
+            idb.repair_urls()
+            idb.savew()
+            idb.closew()
+        else:
+            sh.log.append ('Commands.repair_urls'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def down_markw(self):
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
@@ -303,4 +363,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.alter()
+    commands.repair_urls()
