@@ -97,5 +97,4 @@ def invalid_urls():
 
 
 if __name__ == '__main__':
-    #invalid_urls()
-    url()
+    invalid_urls()

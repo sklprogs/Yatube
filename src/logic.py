@@ -400,18 +400,14 @@ class Video:
     def __init__(self,url,callback=None):
         self.values()
         if url:
-            if 'youtube.com' in url:
-                self._url      = URL(url=url).video_full()
-                self._video_id = self._url.replace(pattern1,'')
-            else:
-                self._video_id = url
-                self._url      = URL(url=url).video_full()
+            self._url      = URL(url=url).video_full()
+            self._video_id = self._url.replace(pattern1,'')
             if len(self._video_id) != 11:
-                sh.log.append ('Video.__init__'
-                              ,_('WARNING')
-                              ,_('Wrong input data: "%s"') \
-                              % self._video_id
-                              )
+                sh.objs.mes ('Video.__init__'
+                            ,_('WARNING')
+                            ,_('Wrong input data: "%s"') \
+                            % self._video_id
+                            )
             self._callback = callback
         else:
             self.Success = False
