@@ -256,7 +256,7 @@ class Menu:
         if not text:
             text = sh.List(lst1=[product,version]).space_items()
             if selected:
-                text += _(' (selected videos: %d/%d)') % (selected,total)
+                text += _(' (selected: %d/%d)') % (selected,total)
         self.parent.title(text)
     
     def gui(self):
