@@ -255,6 +255,7 @@ class Commands:
                 videos on the channel and pressed 'Shift-Del'.
             '''
             self._gvideo.cbox.disable()
+            gi.report_selection()
         if self._video:
             return self._video.model.delete()
         else:
@@ -728,14 +729,6 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
     
-    def toggle_select(self):
-        if self._menu.chb_sel.get():
-            for video in gi.objs.channel()._videos:
-                video.cbox.enable()
-        else:
-            for video in gi.objs.channel()._videos:
-                video.cbox.disable()
-                
     def set_trending(self,event=None):
         sh.log.append ('Commands.set_trending'
                       ,_('INFO')
@@ -862,7 +855,6 @@ class Commands:
                 ,action   = self.filter_view
                 )
         # Menu: checkboxes
-        self._menu.chb_sel.widget.config(command=self.toggle_select)
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
         # Menu: OptionMenus
@@ -911,6 +903,7 @@ class Commands:
                               ,_('WARNING')
                               ,_('Wrong input data!')
                               )
+        gi.report_selection()
         
     def _play_slow(self,app='/usr/bin/mplayer'):
         sh.Launch (target = self._video.model._path
@@ -964,6 +957,7 @@ class Commands:
         if self._gvideo:
             self._gvideo.cbox.disable()
             self._gvideo.gray_out()
+            gi.report_selection()
     
     def download_video(self,event=None):
         ''' In case of 'get_url', there is no GUI to be handled
@@ -1107,6 +1101,7 @@ class Commands:
         for video_gui in gi.objs.channel()._videos:
             video_gui.frame.widget.pack_forget()
         gi.objs._channel._videos = []
+        self._menu.title()
         
     def bind_context(self,event=None):
         for video_gui in gi.objs.channel()._videos:

@@ -164,6 +164,7 @@ class Menu:
         self.chb_sel = sg.CheckBox (parent = self.frame3
                                    ,Active = False
                                    ,side   = 'left'
+                                   ,action = toggle_select
                                    )
         self.btn_dld = sg.Button (parent = self.frame3
                                  ,text   = _('Download selected')
@@ -251,9 +252,11 @@ class Menu:
                 )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
-    def title(self,text=None):
+    def title(self,text=None,selected=0,total=0):
         if not text:
             text = sh.List(lst1=[product,version]).space_items()
+            if selected:
+                text += _(' (selected videos: %d/%d)') % (selected,total)
         self.parent.title(text)
     
     def gui(self):
@@ -416,21 +419,26 @@ class Video:
         self.cbox = sg.CheckBox (parent = self.frame1
                                 ,Active = False
                                 ,side   = 'left'
+                                ,action = report_selection
                                 )
                                 
-    def bindings(self):
-        for obj in self._objects:
-            sg.bind (obj      = obj
-                    ,bindings = '<ButtonRelease-1>'
-                    ,action   = self.cbox.toggle
-                    )
-    
     def gui(self):
         self.frames()
         self.checkboxes()
         self.labels()
         self.objects()
         self.bindings()
+        
+    def toggle_cbox(self,event=None):
+        self.cbox.toggle()
+        report_selection()
+    
+    def bindings(self):
+        for obj in self._objects:
+            sg.bind (obj      = obj
+                    ,bindings = '<ButtonRelease-1>'
+                    ,action   = self.toggle_cbox
+                    )
         
     def reset (self,author,title,duration
               ,image=None,no=0
@@ -754,13 +762,35 @@ class WaitMeta:
         self.parent.close()
 
 
+def report_selection(event=None):
+    count = 0
+    for video_gui in objs.channel()._videos:
+        if video_gui.cbox.get():
+            count += 1
+    objs.menu().title (selected = count
+                      ,total    = len(objs._channel._videos)
+                      )
+                      
+def toggle_select(event=None):
+    if objs.menu().chb_sel.get():
+        for video in objs.channel()._videos:
+            video.cbox.enable()
+    else:
+        for video in objs.channel()._videos:
+            video.cbox.disable()
+    report_selection()
+
+
 objs = Objects()
 
 
 if __name__ == '__main__':
+    '''
+    # Show the menu
     sg.objs.start()
     objs.menu().show()
     sg.objs.end()
+    '''
     '''
     # Simulate meta updating
     sg.objs.start()
@@ -773,7 +803,6 @@ if __name__ == '__main__':
     time.sleep(2)
     wait.close()
     sg.objs.end()
-    '''
     '''
     # Simulate channel filling
     max_videos = 29
@@ -805,7 +834,6 @@ if __name__ == '__main__':
     objs._channel.canvas.move_top()
     objs._menu.show()
     sg.objs.end()
-    '''
     '''
     # Progress bar
     sg.objs.start()
