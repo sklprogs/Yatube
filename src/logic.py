@@ -422,8 +422,8 @@ class Video:
         self._video  = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path \
-                     = self._pathsh = self._search = self._channel_url \
-                     = self._page = self._dir = ''
+                     = self._search = self._channel_url = self._page \
+                     = self._dir = self._pathsh = ''
         self._len    = self._views = self._likes = self._dislikes \
                      = self._timestamp = self._dtime = 0
         self._rating = 0.0
@@ -773,9 +773,12 @@ class Video:
                 self._path = sh.objs.pdir().add ('..','user','Youtube'
                                                 ,author,title
                                                 )
-                self._pathsh = sh.Text(text=self._path).shorten (max_len = 19
-                                                                ,FromEnd = 1
-                                                                )
+                self._pathsh = sh.Text (text = sh.Path(self._path).basename()
+                                       ,Auto = False
+                                       ).shorten (max_len = 20
+                                                 ,FromEnd = False
+                                                 ,ShowGap = True
+                                                 )
                 self._path += '.mp4'
             return self._path
         else:

@@ -13,7 +13,6 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
-
 class Commands:
     
     def __init__(self):
@@ -1013,11 +1012,11 @@ class Commands:
                                ,_('Wrong input data!')
                                )
         for i in range(len(new_videos)):
+            self._gvideo = new_videos[i]
+            self._video  = self._videos[self._gvideo]
             gi.objs._progress.title (_('Download progress') \
                                      + ' (%d/%d)' % (i+1,len(new_videos))
                                     )
-            self._gvideo = new_videos[i]
-            self._video = self._videos[self._gvideo]
             self.download_video()
         gi.objs._progress.title()
         gi.objs._progress.close()
@@ -1338,16 +1337,29 @@ class Video:
                  ):
         total    = total    / 1000000
         cur_size = cur_size / 1000000
-        rate     = int(rate)
-        eta      = int(eta)
-        gi.objs.progress()._item.text (file     = self.model._pathsh
-                                      ,cur_size = cur_size
-                                      ,total    = total
-                                      ,rate     = rate
-                                      ,eta      = eta
-                                      )
+        
         percent = round((100*cur_size)/total)
-        gi.objs._progress._item.widget['value'] = percent
+        gi.objs.progress()._item.widget['value'] = percent
+        
+        total    = int(total)
+        cur_size = int(cur_size)
+        rate     = str(int(rate))
+        eta      = str(int(eta))
+        
+        # Prevent from irritating message length changes
+        rate = sh.Text(text=rate).grow (max_len = 4
+                                       ,FromEnd = False
+                                       )
+        eta = sh.Text(text=eta).grow (max_len = 3
+                                     ,FromEnd = False
+                                     )
+        gi.objs._progress._item.text (file     = self.model._pathsh
+                                     ,cur_size = cur_size
+                                     ,total    = total
+                                     ,rate     = rate
+                                     ,eta      = eta
+                                     )
+        # This is required to fill the progress bar on-the-fly
         sg.objs.root().widget.update_idletasks()
     
     def image(self):
