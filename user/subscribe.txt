@@ -17,6 +17,7 @@ Kurzgesagt	https://www.youtube.com/user/Kurzgesagt/videos
 kamikadzedead	https://www.youtube.com/user/kamikadzedead/videos
 Lucas the Spider	https://www.youtube.com/channel/UCNqRS1gSJFMNPVwye1gyI_g/videos
 Longmir Teron	https://www.youtube.com/channel/UC83_9VXKZNPnkBUYerwni-A/videos
+Leon Kremer	https://www.youtube.com/channel/UCCAyebsTFY4626-Eb_ppwRw/videos
 Meduza	https://www.youtube.com/channel/UC-30BJyAAObw1irWxu6IPkw/videos
 maxman.tv	https://www.youtube.com/user/mxmantv/videos
 Magic Five	https://www.youtube.com/channel/UCEGfICV92gmM5w2t3gYfQDw/videos
@@ -53,6 +54,7 @@ Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 Вадим Сергин	https://www.youtube.com/channel/UCKhMk572a8A7AC8AWp8h-OA/videos
 Волшебная Россия	https://www.youtube.com/channel/UCg8V7PPXDbdTiqOV_lYG75Q/videos
 Гасан Магомедов	https://www.youtube.com/channel/UCXOOTN0wfhWHTKPu2ARNotw/videos
+Гвоздь	https://www.youtube.com/channel/UC40tXgqrKGRwpz8E84Mp20g/videos
 Джастин	https://www.youtube.com/channel/UCrMnWbWKMm_D0cNvzkKP1jQ/videos
 Дмитрий ПОТАПЕНКО	https://www.youtube.com/channel/UC54SBo5_usXGEoybX1ZVETQ/videos
 Думай Сам/ Думай Сейчас	https://www.youtube.com/channel/UCalD8p9-KemFd8AQfS6mmVA/videos
@@ -76,6 +78,7 @@ Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 Народная Демократия.	https://www.youtube.com/channel/UC7odJBtpx0hNpTNf-jhFRsw/videos
 Навальный LIVE	https://www.youtube.com/channel/UCgxTPTFbIbCWfTR9I2-5SeQ/videos
 НЕ ПЕРВЫЙ КАНАЛ	https://www.youtube.com/channel/UCDIX7PZESQ3xIjmGhxNI39A/videos
+Новости СВЕРХДЕРЖАВЫ	https://www.youtube.com/channel/UCt6nsWw2kQNszwpuuHoxBLA/videos
 Обмани Меня	https://www.youtube.com/channel/UCC4NURIvKftk2vuNUpJEoZA/videos
 Привет с Урала	https://www.youtube.com/channel/UCZYlAcdQZ0PE6IQiPk6omug/videos
 Поцреотизм	https://www.youtube.com/channel/UC0RA-KqIZy8_J3lo2UdoE3Q/videos
@@ -83,6 +86,7 @@ Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 Россия	https://www.youtube.com/channel/UCLSUk_DwbnEj-69pJxCLSCQ/videos
 Реальная журналистика //RealRussianNews	https://www.youtube.com/channel/UChpUzS-wzKjaT-2HPoQeLiQ/videos
 Радио Свобода	https://www.youtube.com/channel/UCiWMFQCGvwGSc8QWHOqcQhw/videos
+Тихий Барин	https://www.youtube.com/channel/UCXpR-KYjpSjyv8hKZoB28Zw/videos
 Теперь я Знаю	https://www.youtube.com/channel/UCVqJYFWsnkLEUkmmS-avyQg/videos
 Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
 Телеканал Дождь	https://www.youtube.com/channel/UCdubelOloxR3wzwJG9x8YqQ/videos

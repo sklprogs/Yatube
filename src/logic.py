@@ -880,7 +880,7 @@ class URL:
     def trash(self):
         if self._url.endswith('/'):
             self._url = self._url[:-1]
-        self._url = self._url.replace('?disable_polymer=1','').replace('?wmode=transparent','')
+        self._url = self._url.replace('?disable_polymer=1','').replace('?wmode=transparent','').replace('&wmode=transparent','').replace('?hl=ru_RU','').replace('&fs=1','').replace('&fs=0','')
         self._url = re.sub('&list=.*','',self._url)
     
     def prefixes(self):
