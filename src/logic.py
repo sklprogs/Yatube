@@ -187,9 +187,10 @@ class Constants:
 
 class Channel:
        
-    def __init__(self,url):
+    def __init__(self,url,CheckURL=True):
         self.values()
-        self._url = url
+        self._url     = url
+        self.CheckURL = CheckURL
         
     def warn(self):
         if not self._html:
@@ -201,13 +202,19 @@ class Channel:
                         )
     
     def url(self):
-        iurl = URL(url=self._url)
-        self._url = iurl.channel_full()
-        if not self.page():
-            self._url = self._url.replace('/user/','/channel/')
+        if self.CheckURL:
+            iurl = URL(url=self._url)
+            self._url = iurl.channel_full()
+            if not self.page():
+                self._url = self._url.replace('/user/','/channel/')
+                self.page()
+            self._channel = self._url.replace(pattern5,'').replace('channel/','').replace('user/','').replace('/videos','')
+            self.warn()
+        else:
+            self._channel = self._url
             self.page()
-        self._channel = self._url.replace(pattern5,'').replace('channel/','').replace('user/','').replace('/videos','')
-        self.warn()
+            self.warn()
+        return self._url
             
     def values(self):
         self.Success    = True
@@ -983,21 +990,22 @@ class Comments:
     
     def threads(self):
         if self.Success:
-            try:
-                self._threads = self._connect.commentThreads().list(
-                                     part       = "snippet"
-                                    ,maxResults = self._max_no
-                                    ,videoId    = self._videoid
-                                    ,textFormat = "plainText"
-                                    ,pageToken  = ''
-	  		                        ).execute()
-            except Exception as e:
-                self.Success = False
-                sh.objs.mes ('Comments.threads'
-                            ,_('WARNING')
-                            ,_('Operation has failed!\n\nDetails: %s') \
-                            % str(e)
-                            )
+            if not self._threads:
+                try:
+                    self._threads = self._connect.commentThreads().list(
+                                         part       = "snippet"
+                                        ,maxResults = self._max_no
+                                        ,videoId    = self._videoid
+                                        ,textFormat = "plainText"
+                                        ,pageToken  = ''
+                                        ).execute()
+                except Exception as e:
+                    self.Success = False
+                    sh.objs.mes ('Comments.threads'
+                                ,_('WARNING')
+                                ,_('Operation has failed!\n\nDetails: %s')\
+                                % str(e)
+                                )
             return self._threads
         else:
             sh.log.append ('Comments.threads'

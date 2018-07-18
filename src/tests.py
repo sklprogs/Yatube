@@ -83,6 +83,7 @@ def dtime():
 def url():
     print(lg.URL(url='https://youtu.be/vjSohj-Iclc').video_full())
     print(lg.URL(url='https://m.youtube.com/watch?v=vjSohj-Iclc').video_full())
+    print(lg.URL(url='https://www.youtube.com/embed/vjSohj-Iclc').video_full())
     print(lg.URL(url='vjSohj-Iclc').video_full())
     
 def invalid_urls():

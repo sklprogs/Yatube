@@ -1,9 +1,8 @@
 
-- Extract links from playlists, e.g.,
-  https://www.youtube.com/playlist?list=PLMNeTFVQZEQOk-fVeyPAd2kyqQDjhYm8w&feature=mh_lolz
+- Extract youtube URLs from any source, e.g.,
+  https://fishki.net/video/2609775-djatel-terroriziruet-zhilycov--doma.html?from=post
+  (rework lg.Links)
+- This video has been removed for violating YouTube's Terms of Service.
 - https://www.youtube.com/embed/LtrsRv6H7P8 Это видео недоступно
 - strip URL entry
 - Restore gray color after removing filters
-- Allow URLs like https://www.youtube.com/embed/R0CUk9O8Ers (supported
-  link types: https://youtu.be/gOrhQE2TsbM)
-? Store a full URL in DB

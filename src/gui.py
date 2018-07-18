@@ -36,11 +36,11 @@ context_items = (_('Show the full summary')
                 )
 
 url_items = (_('Show summary')
+            ,_('Extract links (full URL)')
             ,_('Download')
             ,_('Play')
             #,_('Stream')
             ,_('Delete')
-            ,_('Extract links')
             ,_('Full menu')
             )
 

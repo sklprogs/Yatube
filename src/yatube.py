@@ -660,14 +660,9 @@ class Commands:
         self.reset_channel_gui()
         self.channel_gui()
         
-    def get_links(self,url):
-        channel = self._channel = lg.Channel(url=url)
-        channel._channel = url
-        ''' We assume that there is no need to delete
-            unsupported characters in countries.
-        '''
-        channel.page()
-        channel.links()
+    def get_links(self,url,CheckURL=True):
+        self._channel = lg.Channel(url=url,CheckURL=CheckURL)
+        self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
                           
@@ -688,11 +683,11 @@ class Commands:
                                     ,url    = url
                                     )
             else:
-                #todo: console + GUI
-                sh.log.append ('Commands.set_channel'
-                              ,_('ERROR')
-                              ,_('Wrong input data!')
-                              )
+                sh.objs.mes ('Commands.set_channel'
+                            ,_('ERROR')
+                            ,_('Wrong input data: "%s"') \
+                            % str(self._menu.opt_chl.choice)
+                            )
         
     def get_url(self,event=None):
         result = self._menu.ent_url.get()
@@ -703,40 +698,42 @@ class Commands:
                               ,_('Nothing to do!')
                               )
             elif self._menu.opt_url.choice in gi.url_items:
-                video = Video(url=result)
-                video.get()
-                if video.model.Success:
-                    self._video = video
-                    ''' Set to 'None', otherwise, wrong GUI object will
-                        be manipulated!
-                    '''
-                    self._gvideo = None
-                    if self._menu.opt_url.choice == _('Show summary'):
-                        self.summary()
-                    elif self._menu.opt_url.choice == _('Download'):
-                        self.download_video()
-                        gi.objs._progress.close()
-                    elif self._menu.opt_url.choice == _('Play'):
-                        self.download_video()
-                        gi.objs._progress.close()
-                        self.play_video()
-                    elif self._menu.opt_url.choice == _('Stream'):
-                        self.stream()
-                    elif self._menu.opt_url.choice == _('Delete'):
-                        self.delete_video()
-                        self._menu.clear_url()
-                    elif self._menu.opt_url.choice == _('Extract links'):
-                        self.get_links(url=result)
-                    elif self._menu.opt_url.choice == _('Full menu'):
-                        gi.objs.context().title(_('Selected video'))
-                        gi.objs._context.show()
-                        choice = gi.objs._context._get
-                        self._context(choice)
+                if self._menu.opt_url.choice == _('Extract links (full URL)'):
+                    self._video = self._gvideo = None
+                    self.get_links(url=result,CheckURL=False)
                 else:
-                    sh.log.append ('Commands.get_url'
-                                  ,_('WARNING')
-                                  ,_('Operation has been canceled.')
-                                  )
+                    video = Video(url=result)
+                    video.get()
+                    if video.model.Success:
+                        self._video = video
+                        ''' Set to 'None', otherwise, wrong GUI object will
+                            be manipulated!
+                        '''
+                        self._gvideo = None
+                        if self._menu.opt_url.choice == _('Show summary'):
+                            self.summary()
+                        elif self._menu.opt_url.choice == _('Download'):
+                            self.download_video()
+                            gi.objs._progress.close()
+                        elif self._menu.opt_url.choice == _('Play'):
+                            self.download_video()
+                            gi.objs._progress.close()
+                            self.play_video()
+                        elif self._menu.opt_url.choice == _('Stream'):
+                            self.stream()
+                        elif self._menu.opt_url.choice == _('Delete'):
+                            self.delete_video()
+                            self._menu.clear_url()
+                        elif self._menu.opt_url.choice == _('Full menu'):
+                            gi.objs.context().title(_('Selected video'))
+                            gi.objs._context.show()
+                            choice = gi.objs._context._get
+                            self._context(choice)
+                    else:
+                        sh.log.append ('Commands.get_url'
+                                      ,_('WARNING')
+                                      ,_('Operation has been canceled.')
+                                      )
             else:
                 sh.objs.mes ('Commands.get_url'
                             ,_('WARNING')
