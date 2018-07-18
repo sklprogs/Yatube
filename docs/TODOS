@@ -1,4 +1,6 @@
 
+- Extract links from playlists, e.g.,
+  https://www.youtube.com/playlist?list=PLMNeTFVQZEQOk-fVeyPAd2kyqQDjhYm8w&feature=mh_lolz
 - https://www.youtube.com/embed/LtrsRv6H7P8 Это видео недоступно
 - strip URL entry
 - Restore gray color after removing filters

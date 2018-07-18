@@ -374,13 +374,8 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        self._online = self._lists = self._const = self._comments = None
+        self._online = self._lists = self._const = None
         
-    def comments(self):
-        if not self._comments:
-            self._comments = Comments()
-        return self._comments
-    
     def const(self):
         if not self._const:
             self._const = Constants()
@@ -927,26 +922,34 @@ class URL:
 
 
 
+''' Any API operation has a timeout (even 'self.connect'), so we must
+    reset the whole class each time.
+'''
 class Comments:
 
-    def __init__(self):
+    def __init__(self,videoid):
         self.values()
+        self.reset(videoid)
+        
+    def run(self):
         self.connect()
+        self.threads()
+        return self.comments()
         
     def values(self):
-        self.Success  = True
-        self._connect = None
-        self._videoid = None
+        self.Success   = True
+        self._connect  = None
+        self._threads  = None
+        self._videoid  = ''
+        self._comments = ''
         ''' https://github.com/Sunil02324/Youtube-Meta-Data-Comments-Scraper
             Default max results you can get is 100. So if a video has
             more than 100 comments we need to iterate the same function
             to get all the comments.
         '''
-        self._max_no  = 100
+        self._max_no   = 100
         
     def reset(self,videoid):
-        if self._connect:
-            self.Success = True
         if videoid:
             self._videoid = videoid
         else:
@@ -971,6 +974,7 @@ class Comments:
                                 ,_('Operation has failed!\n\nDetails: %s') \
                                 % str(e)
                                 )
+            return self._connect
         else:
             sh.log.append ('Comments.connect'
                           ,_('WARNING')
@@ -980,13 +984,13 @@ class Comments:
     def threads(self):
         if self.Success:
             try:
-                return self._connect.commentThreads().list(
-                            part       = "snippet"
-                           ,maxResults = self._max_no
-                           ,videoId    = self._videoid
-                           ,textFormat = "plainText"
-                           ,pageToken  = ''
-	  		           ).execute()
+                self._threads = self._connect.commentThreads().list(
+                                     part       = "snippet"
+                                    ,maxResults = self._max_no
+                                    ,videoId    = self._videoid
+                                    ,textFormat = "plainText"
+                                    ,pageToken  = ''
+	  		                        ).execute()
             except Exception as e:
                 self.Success = False
                 sh.objs.mes ('Comments.threads'
@@ -994,6 +998,7 @@ class Comments:
                             ,_('Operation has failed!\n\nDetails: %s') \
                             % str(e)
                             )
+            return self._threads
         else:
             sh.log.append ('Comments.threads'
                           ,_('WARNING')
@@ -1001,15 +1006,14 @@ class Comments:
                           )
                           
     def comments(self):
-        threads = self.threads()
         if self.Success:
-            result = ''
-            for item in threads["items"]:
-                comment = item["snippet"]["topLevelComment"]
-                author  = comment["snippet"]["authorDisplayName"]
-                text    = comment["snippet"]["textDisplay"]
-                result += author + ': ' + text + '\n\n'
-            return result
+            if not self._comments:
+                for item in self._threads["items"]:
+                    comment = item["snippet"]["topLevelComment"]
+                    author  = comment["snippet"]["authorDisplayName"]
+                    text    = comment["snippet"]["textDisplay"]
+                    self._comments += author + ': ' + text + '\n\n'
+            return self._comments
         else:
             sh.log.append ('Comments.comments'
                           ,_('WARNING')

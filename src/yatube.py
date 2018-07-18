@@ -40,8 +40,7 @@ class Commands:
         
     def show_comments(self,event=None):
         if self._video:
-            lg.objs.comments().reset(videoid=self._video.model._video_id)
-            text = lg.objs._comments.comments()
+            text = lg.Comments(videoid=self._video.model._video_id).run()
             if text:
                 text = sh.Text(text=text).delete_unsupported()
                 gi.objs.comments().read_only(ReadOnly=False)
