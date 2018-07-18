@@ -880,8 +880,18 @@ class URL:
     def trash(self):
         if self._url.endswith('/'):
             self._url = self._url[:-1]
-        self._url = self._url.replace('?disable_polymer=1','').replace('?wmode=transparent','').replace('&wmode=transparent','').replace('?hl=ru_RU','').replace('&fs=1','').replace('&fs=0','')
-        self._url = re.sub('&list=.*','',self._url)
+        if 'watch?v' in self._url:
+            search = sh.Search (text   = self._url
+                               ,search = '?'
+                               )
+            search.next()
+            i = search.next()
+            # 'search.i' is updated only on a successful search
+            if i and i > 0:
+                self._url = self._url[i::]
+        else:
+            self._url = re.sub('\?.*','',self._url)
+        self._url = re.sub('\&.*','',self._url)
     
     def prefixes(self):
         if self._url.startswith('youtube.com'):
@@ -892,10 +902,6 @@ class URL:
         self._url = self._url.replace('m.youtube.com','youtube.com')
         self._url = self._url.replace('https://youtube.com','https://www.youtube.com')
         self._url = self._url.replace('https://youtu.be/',pattern1)
-        ''' I just saw a URL ending with this in DB. I don't know how it
-            got there. I just add it to be sure.
-        '''
-        self._url = self._url.replace('?t=118','')
             
     def prefixes_ch(self):
         if not pattern5 in self._url:
