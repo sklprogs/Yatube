@@ -30,6 +30,7 @@ context_items = (_('Show the full summary')
                 ,_('Unsubscribe')
                 ,_('Open video URL')
                 ,_('Copy video URL')
+                ,_('Show comments')
                 ,_('Open channel URL')
                 ,_('Copy channel URL')
                 )
@@ -616,8 +617,20 @@ class Objects:
         self._def_image = self._channel = self._menu = self._parent \
                         = self._context = self._summary \
                         = self._progress = self._blacklist \
-                        = self._subscribe = self._wait = None
+                        = self._subscribe = self._wait = self._comments\
+                        = None
         
+    def comments(self):
+        if not self._comments:
+            top = sg.Top(parent=sg.objs.root())
+            sg.Geometry(parent=top).set('1024x768')
+            self._comments = sg.TextBox (parent        = top
+                                        ,SpecialReturn = True
+                                        )
+            self._comments.icon(icon_path)
+            self._comments.title(_('First 100 comments:'))
+        return self._comments
+    
     def wait(self):
         if self._wait is None:
             self._wait = WaitMeta(parent=sg.Top(parent=sg.objs.root()))

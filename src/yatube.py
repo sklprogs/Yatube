@@ -38,6 +38,28 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def show_comments(self,event=None):
+        if self._video:
+            lg.objs.comments().reset(videoid=self._video.model._video_id)
+            text = lg.objs._comments.comments()
+            if text:
+                text = sh.Text(text=text).delete_unsupported()
+                gi.objs.comments().read_only(ReadOnly=False)
+                gi.objs._comments.reset()
+                gi.objs._comments.insert(text)
+                gi.objs._comments.read_only(ReadOnly=True)
+                gi.objs._comments.show()
+            else:
+                sh.log.append ('Commands.show_comments'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Commands.show_comments'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def toggle_selected(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
@@ -595,6 +617,8 @@ class Commands:
                 self.open_video_url()
             elif choice == _('Copy video URL'):
                 self.copy_video_url()
+            elif choice == _('Show comments'):
+                self.show_comments()
             elif choice == _('Open channel URL'):
                 self.open_channel_url()
             elif choice == _('Copy channel URL'):

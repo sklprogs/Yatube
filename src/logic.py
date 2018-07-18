@@ -4,7 +4,9 @@
 import re
 import os
 import io
-import pafy   as pf
+# pip3 install --upgrade google-api-python-client
+import apiclient.discovery
+import pafy
 import shared as sh
 import db
 
@@ -372,8 +374,13 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        self._online = self._lists = self._const = None
+        self._online = self._lists = self._const = self._comments = None
         
+    def comments(self):
+        if not self._comments:
+            self._comments = Comments()
+        return self._comments
+    
     def const(self):
         if not self._const:
             self._const = Constants()
@@ -627,10 +634,10 @@ class Video:
         if self.Success:
             if not self._video:
                 try:
-                    self._video = pf.new (url   = self._video_id
-                                         ,basic = False
-                                         ,gdata = False
-                                         )
+                    self._video = pafy.new (url   = self._video_id
+                                           ,basic = False
+                                           ,gdata = False
+                                           )
                 except Exception as e:
                     self.Success = False
                     sh.objs.mes ('Video.video'
@@ -917,6 +924,97 @@ class URL:
             self._url += '/videos'
         if not pattern4 in self._url:
             self._url += pattern4
+
+
+
+class Comments:
+
+    def __init__(self):
+        self.values()
+        self.connect()
+        
+    def values(self):
+        self.Success  = True
+        self._connect = None
+        self._videoid = None
+        ''' https://github.com/Sunil02324/Youtube-Meta-Data-Comments-Scraper
+            Default max results you can get is 100. So if a video has
+            more than 100 comments we need to iterate the same function
+            to get all the comments.
+        '''
+        self._max_no  = 100
+        
+    def reset(self,videoid):
+        if self._connect:
+            self.Success = True
+        if videoid:
+            self._videoid = videoid
+        else:
+            self.Success = False
+            sh.log.append ('Comments.reset'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def connect(self):
+        if self.Success:
+            if not self._connect:
+                try:
+                    self._connect = apiclient.discovery.build \
+                                        ('youtube','v3'
+                                        ,developerKey = pafy.g.api_key
+                                        )
+                except Exception as e:
+                    self.Success = False
+                    sh.objs.mes ('Comments.connect'
+                                ,_('WARNING')
+                                ,_('Operation has failed!\n\nDetails: %s') \
+                                % str(e)
+                                )
+        else:
+            sh.log.append ('Comments.connect'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def threads(self):
+        if self.Success:
+            try:
+                return self._connect.commentThreads().list(
+                            part       = "snippet"
+                           ,maxResults = self._max_no
+                           ,videoId    = self._videoid
+                           ,textFormat = "plainText"
+                           ,pageToken  = ''
+	  		           ).execute()
+            except Exception as e:
+                self.Success = False
+                sh.objs.mes ('Comments.threads'
+                            ,_('WARNING')
+                            ,_('Operation has failed!\n\nDetails: %s') \
+                            % str(e)
+                            )
+        else:
+            sh.log.append ('Comments.threads'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def comments(self):
+        threads = self.threads()
+        if self.Success:
+            result = ''
+            for item in threads["items"]:
+                comment = item["snippet"]["topLevelComment"]
+                author  = comment["snippet"]["authorDisplayName"]
+                text    = comment["snippet"]["textDisplay"]
+                result += author + ': ' + text + '\n\n'
+            return result
+        else:
+            sh.log.append ('Comments.comments'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 objs = Objects()
