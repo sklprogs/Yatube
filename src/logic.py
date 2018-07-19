@@ -4,7 +4,7 @@
 import re
 import os
 import io
-# pip3 install --upgrade google-api-python-client
+# pip3 install google-api-python-client oauth2client google
 import apiclient.discovery
 import pafy
 import shared as sh
