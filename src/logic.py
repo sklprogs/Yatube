@@ -187,48 +187,43 @@ class Constants:
 
 class Channel:
        
-    def __init__(self,url,CheckURL=True):
-        self.values()
-        self._url     = url
-        self.CheckURL = CheckURL
+    def __init__(self,url):
+        self.reset(url=url)
         
-    def warn(self):
-        if not self._html:
-            self.Success = False
-            sh.objs.mes (func    = 'Channel.page'
-                        ,level   = _('WARNING')
-                        ,message = _('Channel "%s" does not exist!') \
-                                   % self._channel
-                        )
-    
-    def url(self):
-        if self.CheckURL:
-            iurl = URL(url=self._url)
-            self._url = iurl.channel_full()
-            if not self.page():
-                self._url = self._url.replace('/user/','/channel/')
-                self.page()
-            self._channel = self._url.replace(pattern5,'').replace('channel/','').replace('user/','').replace('/videos','')
-            self.warn()
+    def reset(self,url):
+        self.values()
+        if url:
+            self._url = url
+            if ('youtube' in self._url or 'youtu.be' in self._url) \
+            and not '?list=' in self._url \
+            and not 'results?search_query=' in self._url:
+                self._url = URL(url=self._url).channel_full()
+            elif len(self._url) == 11 and not 'https:' in self._url \
+            and not 'http:' in self._url and not 'www.' in self._url:
+                self._url = URL(url=self._url).video_full()
+            elif not self._url.startswith('http'):
+                self.Success = False
+                sh.objs.mes ('Channel.reset'
+                            ,_('WARNING')
+                            ,_('Wrong input data: "%s"') % self._url
+                            )
         else:
-            self._channel = self._url
-            self.page()
-            self.warn()
-        return self._url
-            
+            self.Success = False
+            sh.log.append ('Channel.reset'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        
     def values(self):
-        self.Success    = True
-        #todo: localize
-        self._not_found = 'Такой канал не существует.'
-        self._channel   = ''
-        self._html      = ''
-        self._text      = ''
-        self._links     = []
+        self.Success = True
+        self._url    = ''
+        self._html   = ''
+        self._links  = []
     
     def page(self):
         if self.Success:
             response = sh.Get(url=self._url).run()
-            if response and not self._not_found in response:
+            if response:
                 self._html = response
             return self._html
         else:
@@ -239,13 +234,36 @@ class Channel:
     
     def links(self):
         if self.Success:
-            result = Links(self._html)
-            result.run()
-            self._links = result._links
+            ilinks = sh.Links(self._html)
+            ilinks.poses()
+            if 'youtube' in self._url or 'youtu.be' in self._url:
+                ilinks._links = ['https://www.youtube.com' + link \
+                                 for link in ilinks._links \
+                                 if link.startswith('/watch?v=')
+                                ]
+            else:
+                ilinks.redirection()
+                ''' We should do our best here to ensure that the URL
+                    will refer to a Youtube video. There could be links
+                    to 'youtube.com', e.g., from 'account.google.com'
+                    that will not refer to videos.
+                '''
+                ilinks._links = [link for link in ilinks._links 
+                                 if 'youtu.be' in link 
+                                 or 'youtube.com/watch?v=' in link 
+                                 or 'youtube.com/embed/' in link
+                                ]
+                ilinks.valid()
+            ilinks._links = [URL(url=link).trash_v() \
+                             for link in ilinks._links
+                            ]
+            ilinks.duplicates()
+            self._links = ilinks._links
             sh.log.append ('Channel.links'
                           ,_('INFO')
                           ,_('Fetched %d links') % len(self._links)
                           )
+            return self._links
         else:
             sh.log.append ('Channel.links'
                           ,_('WARNING')
@@ -253,73 +271,10 @@ class Channel:
                           )
     
     def run(self):
-        self.url()
+        self.page()
         self.links()
+        return self._links
         
-
-
-class Links:
-    
-    def __init__(self,text):
-        self._root  = '<a href="/watch?v='
-        self._pos   = 0
-        self._links = []
-        self._text  = text
-    
-    def poses(self):
-        text = self._text
-        search = sh.Search (text   = self._text
-                           ,search = self._root
-                           )
-        loop = search.next_loop()
-        for self._pos in loop:
-            self.link()
-            
-    def link(self):
-        pos = self._pos + len(self._root)
-        if pos >= len(self._text):
-            sh.log.append ('Links.link'
-                          ,_('WARNING')
-                          ,_('Unexpected end of text!')
-                          )
-        else:
-            text = self._text[pos:]
-            try:
-                pos = text.index('"')
-                self._links.append(text[:pos])
-            except ValueError:
-                sh.log.append ('Links.link'
-                              ,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
-                              
-    def delete_suffixes(self):
-        for i in range(len(self._links)):
-            self._links[i] = re.sub ('&amp;.*'
-                                    ,''
-                                    ,self._links[i]
-                                    )
-    
-    def run(self):
-        if self._text:
-            self.poses()
-            self.delete_suffixes()
-            ''' Sometimes there are duplicate URLs on a page - we delete
-                them there. We need to preserve an original sorting so
-                do not use 'set'.
-            '''
-            i = len(self._links) - 1
-            while i >= 0:
-                ind = self._links.index(self._links[i])
-                if ind < i:
-                    del self._links[i]
-                i -= 1
-        else:
-            sh.log.append ('Links.run'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-
 
 
 class Lists:
@@ -862,6 +817,7 @@ class URL:
     def video_full(self):
         if self._url:
             self.trash()
+            self.trash_v()
             self._url = self._url.replace('/embed/','/watch?v=')
             self.prefixes()
             if not pattern1 in self._url:
@@ -889,6 +845,11 @@ class URL:
     def trash(self):
         if self._url.endswith('/'):
             self._url = self._url[:-1]
+            
+    ''' There is no need to adjust channel URLs. Using this method will
+        corrupt playlist URLs.
+    '''
+    def trash_v(self):
         if 'watch?v' in self._url:
             search = sh.Search (text   = self._url
                                ,search = '?'
@@ -901,6 +862,7 @@ class URL:
         else:
             self._url = re.sub('\?.*','',self._url)
         self._url = re.sub('\&.*','',self._url)
+        return self._url
     
     def prefixes(self):
         if self._url.startswith('youtube.com'):

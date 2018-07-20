@@ -660,8 +660,8 @@ class Commands:
         self.reset_channel_gui()
         self.channel_gui()
         
-    def get_links(self,url,CheckURL=True):
-        self._channel = lg.Channel(url=url,CheckURL=CheckURL)
+    def get_links(self,url):
+        self._channel = lg.Channel(url=url)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
@@ -698,9 +698,9 @@ class Commands:
                               ,_('Nothing to do!')
                               )
             elif self._menu.opt_url.choice in gi.url_items:
-                if self._menu.opt_url.choice == _('Extract links (full URL)'):
+                if self._menu.opt_url.choice == _('Extract links'):
                     self._video = self._gvideo = None
-                    self.get_links(url=result,CheckURL=False)
+                    self.get_links(url=result)
                 else:
                     video = Video(url=result)
                     video.get()
@@ -754,17 +754,8 @@ class Commands:
                       ,_('Switch to channel "%s"') \
                       % str(self._menu.opt_trd.choice)
                       )
-        country = 'RU'
-        if self._menu.opt_trd.choice == _('Trending'):
-            user = _('Trending') + ' - ' + _('Russia')
-        else:
-            user = _('Trending') + ' - ' + self._menu.opt_trd.choice
-            country = lg.objs.const()._countries[self._menu.opt_trd.choice]
+        country = lg.objs.const()._countries[self._menu.opt_trd.choice]
         url = 'https://www.youtube.com/feed/trending?gl=%s' % country
-        sh.log.append ('Commands.set_trending'
-                      ,_('DEBUG')
-                      ,user
-                      )
         sh.log.append ('Commands.set_trending'
                       ,_('DEBUG')
                       ,country
@@ -773,7 +764,7 @@ class Commands:
                       ,_('DEBUG')
                       ,url
                       )
-        self.update_trending(user=user,url=url)
+        self.update_trending(url=url)
         
     def search_youtube(self,event=None):
         result = self._menu.ent_src.get()
@@ -783,11 +774,7 @@ class Commands:
                                ,search_str = result
                                ,MTSpecific = False
                                ).url()
-            sh.log.append ('Commands.search_youtube'
-                          ,_('DEBUG')
-                          ,result
-                          )
-            self.get_links(url=result,CheckURL=False)
+            self.get_links(url=result)
         else:
             sh.log.append ('Commands.search_youtube'
                           ,_('WARNING')
@@ -1097,20 +1084,14 @@ class Commands:
                        ,message = _('No new videos!')
                        )
         
-    def update_trending (self,event=None,user=None
-                        ,url=None
-                        ):
-        if not user:
-            user = _('Trending') + ' - ' + _('Russia')
+    def update_trending(self,event=None,url=None):
         if not url:
             url = 'https://www.youtube.com/feed/trending?gl=RU'
         self._channel = lg.Channel(url=url)
-        self._channel._channel = user
         ''' We assume that there is no need to delete unsupported
             characters in countries.
         '''
-        self._channel.page()
-        self._channel.links()
+        self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
         

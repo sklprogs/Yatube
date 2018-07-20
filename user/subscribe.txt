@@ -15,6 +15,7 @@ itpedia	https://www.youtube.com/user/itpediachannel/videos
 Kapitan Kenguru	https://www.youtube.com/channel/UCjNCNb6dksZcedwlcmLT8TQ/videos
 Kurzgesagt	https://www.youtube.com/user/Kurzgesagt/videos
 kamikadzedead	https://www.youtube.com/user/kamikadzedead/videos
+Kazyavki	https://www.youtube.com/channel/UC4Zuro2JXvY66Uqv4Vwm-Ag/videos
 Lucas the Spider	https://www.youtube.com/channel/UCNqRS1gSJFMNPVwye1gyI_g/videos
 Longmir Teron	https://www.youtube.com/channel/UC83_9VXKZNPnkBUYerwni-A/videos
 Leon Kremer	https://www.youtube.com/channel/UCCAyebsTFY4626-Eb_ppwRw/videos
@@ -91,6 +92,7 @@ Will McDaniel	https://www.youtube.com/channel/UCYJpciSLPC7SpOsrInKShvA/videos
 Территория Шахмат	https://www.youtube.com/user/Zufar66/videos
 Телеканал Дождь	https://www.youtube.com/channel/UCdubelOloxR3wzwJG9x8YqQ/videos
 Усы Пескова	https://www.youtube.com/channel/UCNYsieni0V71jCgwkka79yQ/videos
+Усики ТВ	https://www.youtube.com/channel/UCA6XP5rgufkD43hdl2dZlyw/videos
 Царьград ТВ	https://www.youtube.com/user/tsargradtv/videos
 ЮТУБИ	https://www.youtube.com/channel/UCvXimZc_jLhc_Bo9GKX6EsQ/videos
 Я.Н.	https://www.youtube.com/channel/UCKnZDNUbmMTopvsLZtjJvIQ/videos

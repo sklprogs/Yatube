@@ -40,7 +40,7 @@ url_items = (_('Show summary')
             ,_('Play')
             #,_('Stream')
             ,_('Delete')
-            ,_('Extract links (full URL)')
+            ,_('Extract links')
             ,_('Full menu')
             )
 
