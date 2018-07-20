@@ -787,7 +787,7 @@ class Commands:
                           ,_('DEBUG')
                           ,result
                           )
-            self.get_links(url=result)
+            self.get_links(url=result,CheckURL=False)
         else:
             sh.log.append ('Commands.search_youtube'
                           ,_('WARNING')
