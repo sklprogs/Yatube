@@ -1,7 +1,4 @@
 
-- Extract youtube URLs from any source, e.g.,
-  https://fishki.net/video/2609775-djatel-terroriziruet-zhilycov--doma.html?from=post
-  (rework lg.Links)
 - This video has been removed for violating YouTube's Terms of Service.
 - https://www.youtube.com/embed/LtrsRv6H7P8 Это видео недоступно
 - strip URL entry
