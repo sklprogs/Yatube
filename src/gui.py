@@ -163,11 +163,14 @@ class Menu:
                                    ,side   = 'left'
                                    ,action = toggle_select
                                    )
-        self.btn_dld = sg.Button (parent = self.frame3
-                                 ,text   = _('Download selected')
-                                 )
         self.btn_ply = sg.Button (parent = self.frame3
                                  ,text   = _('Play')
+                                 )
+        self.btn_dld = sg.Button (parent = self.frame3
+                                 ,text   = _('Download')
+                                 )
+        self.btn_del = sg.Button (parent = self.frame3
+                                 ,text   = _('Delete')
                                  )
         self.chb_slw = sg.CheckBox (parent = self.frame3
                                    ,Active = True

@@ -851,6 +851,7 @@ class Commands:
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_dld.action = self.download
         self._menu.btn_ply.action = self.play
+        self._menu.btn_del.action = self.delete_selected
         # Menu: labels
         sg.bind (obj      = self._menu.ent_src
                 ,bindings = ['<Return>','<KP_Enter>']
