@@ -45,6 +45,8 @@ url_items = (_('Show summary')
             )
 
 other_actions = (_('Other')
+                ,_('Manage subscriptions')
+                ,_('Manage blocklist')
                 ,_('Show new videos')
                 ,_('History')
                 ,_('Welcome screen')
@@ -99,12 +101,6 @@ class Menu:
         self.ent_src.focus()
     
     def widgets(self):
-        self.btn_sub = sg.Button (parent = self.frame1
-                                 ,text   = _('Manage subscriptions')
-                                 )
-        self.btn_blk = sg.Button (parent = self.frame1
-                                 ,text   = _('Manage blocklist')
-                                 )
         self.btn_upd = sg.Button (parent = self.frame1
                                  ,text   = _('Update subscriptions')
                                  )
@@ -798,12 +794,10 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    '''
     # Show the menu
     sg.objs.start()
     objs.menu().show()
     sg.objs.end()
-    '''
     '''
     # Simulate meta updating
     sg.objs.start()
@@ -816,6 +810,7 @@ if __name__ == '__main__':
     time.sleep(2)
     wait.close()
     sg.objs.end()
+    '''
     '''
     # Simulate channel filling
     max_videos = 29
@@ -847,6 +842,7 @@ if __name__ == '__main__':
     objs._channel.canvas.move_top()
     objs._menu.show()
     sg.objs.end()
+    '''
     '''
     # Progress bar
     sg.objs.start()

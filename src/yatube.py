@@ -76,6 +76,12 @@ class Commands:
         choice = self._menu.opt_act.choice
         if choice == _('Other'):
             pass
+        elif choice == _('Manage subscriptions'):
+            self._menu.opt_act.set(_('Other'))
+            self.manage_sub()
+        elif choice == _('Manage blocklist'):
+            self._menu.opt_act.set(_('Other'))
+            self.manage_block()
         elif choice == _('Show new videos'):
             self._menu.opt_act.set(_('Other'))
             self.show_new()
@@ -840,8 +846,6 @@ class Commands:
                 ,action   = self.blank
                 )
         # Menu: buttons
-        self._menu.btn_sub.action = self.manage_sub
-        self._menu.btn_blk.action = self.manage_block
         self._menu.btn_upd.action = self.update_channels
         self._menu.btn_ytb.action = self.search_youtube
         self._menu.btn_flt.action = self.filter_view
