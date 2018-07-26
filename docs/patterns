@@ -1,7 +1,8 @@
 Supported URL patterns are:
 1) Common Youtube videos
-   - https://youtu.be/vjSohj-Iclc
+   - https://www.youtube.com/watch?v=vjSohj-Iclc
    - http://m.youtube.com/watch?v=vjSohj-Iclc
+   - https://youtu.be/vjSohj-Iclc
    - https://www.youtube.com/embed/vjSohj-Iclc
    - https://www.youtube.com/embed/1jjSSXr5J7A?hl=ru_RU
    - vjSohj-Iclc
