@@ -460,8 +460,8 @@ class Commands:
                 self._video.model._dtime = 0
             else:
                 self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-            idb.mark_downloaded (url   = self._video.model._video_id
-                                ,dtime = self._video.model._dtime
+            idb.mark_downloaded (video_id = self._video.model._video_id
+                                ,dtime    = self._video.model._dtime
                                 )
             if self._video.model._dtime:
                 self._gvideo.gray_out()
@@ -708,7 +708,8 @@ class Commands:
                     self._video = self._gvideo = None
                     self.get_links(url=result)
                 else:
-                    video = Video(url=result)
+                    video_id = lg.URL(url=result).video_id()
+                    video = Video(video_id=video_id)
                     video.get()
                     if video.model.Success:
                         self._video = video
@@ -962,8 +963,8 @@ class Commands:
         
     def mark_downloaded(self):
         self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-        idb.mark_downloaded (url   = self._video.model._video_id
-                            ,dtime = self._video.model._dtime
+        idb.mark_downloaded (video_id = self._video.model._video_id
+                            ,dtime    = self._video.model._dtime
                             )
         if self._gvideo:
             self._gvideo.cbox.disable()
@@ -1058,6 +1059,7 @@ class Commands:
                       )
         urls = idb.urls()
         unknown = [link for link in links if not link in urls]
+        
         # Get metadata for new URLs
         if unknown:
             gi.objs.wait().show()
@@ -1065,7 +1067,7 @@ class Commands:
                 gi.objs._wait.title (_('Get video info') \
                                      + ' (%d/%d)' % (i+1,len(unknown))
                                     )
-                self._video = Video(url=unknown[i])
+                self._video = Video(video_id=unknown[i])
                 self._video.model.video()
                 self._video.model.assign_online()
                 self._video.model.image()
@@ -1225,10 +1227,10 @@ class Commands:
     
     def fill_known(self):
         for i in range(len(self._channel._links)):
-            self._video = Video(url=self._channel._links[i])
+            self._video = Video(video_id=self._channel._links[i])
             self._gvideo = gi.objs._channel._videos[i]
             self._videos[self._gvideo] = self._video
-            self._video.model.Saved = idb.get_video(url=self._video.model._video_id)
+            self._video.model.Saved = idb.get_video(video_id=self._video.model._video_id)
             if self._video.model.Saved:
                 self._video.model.assign_offline(self._video.model.Saved)
                 #todo: elaborate 'Video.model.get' and delete this
@@ -1332,8 +1334,8 @@ class Commands:
 # Requires idb
 class Video:
     
-    def __init__(self,url):
-        self.model  = lg.Video (url      = url
+    def __init__(self,video_id):
+        self.model  = lg.Video (video_id = video_id
                                ,callback = self.progress
                                )
         self._image = None

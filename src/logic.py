@@ -196,7 +196,8 @@ class Channel:
             self._url = url
             if ('youtube' in self._url or 'youtu.be' in self._url) \
             and not '?list=' in self._url \
-            and not 'results?search_query=' in self._url:
+            and not 'results?search_query=' in self._url \
+            and not '?gl=' in self._url:
                 self._url = URL(url=self._url).channel_full()
             elif len(self._url) == 11 and not 'https:' in self._url \
             and not 'http:' in self._url and not 'www.' in self._url:
@@ -254,7 +255,7 @@ class Channel:
                                  or 'youtube.com/embed/' in link
                                 ]
                 ilinks.valid()
-            ilinks._links = [URL(url=link).trash_v() \
+            ilinks._links = [URL(url=link).video_id() \
                              for link in ilinks._links
                             ]
             ilinks.duplicates()
@@ -360,19 +361,21 @@ class Objects:
 # Requires idb
 class Video:
     
-    # URL is a full URL or a video ID
-    def __init__(self,url,callback=None):
+    def __init__(self,video_id,callback=None):
         self.values()
-        if url:
-            self._url      = URL(url=url).video_full()
-            self._video_id = self._url.replace(pattern1,'')
-            if len(self._video_id) != 11:
+        if video_id:
+            if len(video_id) == 11 and not 'http:' in video_id \
+            and not 'https:' in video_id and not 'www.' in video_id:
+                self._video_id = video_id
+                self._url      = URL(url=self._video_id).video_full()
+                self._callback = callback
+            else:
+                self.Success = False
                 sh.objs.mes ('Video.__init__'
                             ,_('WARNING')
                             ,_('Wrong input data: "%s"') \
-                            % self._video_id
+                            % str(video_id)
                             )
-            self._callback = callback
         else:
             self.Success = False
             sh.log.append ('Video.__init__'
@@ -636,7 +639,7 @@ class Video:
     
     def get(self):
         if self.Success:
-            self.Saved = idb.get_video(url=self._video_id)
+            self.Saved = idb.get_video(video_id=self._video_id)
             if self.Saved:
                 self.assign_offline(self.Saved)
             else:
@@ -813,6 +816,10 @@ class URL:
                              ).not_none()
         self._url = str(self._url)
         self._url = self._url.strip()
+    
+    def video_id(self):
+        self.video_full()
+        return self._url.replace(pattern1,'')
     
     def video_full(self):
         if self._url:

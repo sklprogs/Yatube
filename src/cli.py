@@ -89,7 +89,7 @@ class Commands:
         
     def channel_cli(self):
         for i in range(len(self._channel._links)):
-            video = lg.Video(url=self._channel._links[i])
+            video = lg.Video(video_id=self._channel._links[i])
             video.get()
             if video.Success:
                 self._video = video
@@ -105,14 +105,14 @@ class Commands:
     def download(self,data):
         if data:
             for row in data:
-                video = lg.Video(url=row[0])
+                video = lg.Video(video_id=row[0])
                 video.video()
                 video._author = row[1]
                 video._title  = row[2]
                 video.path()
                 video.download()
                 if video.Success:
-                    idb.mark_downloaded(url=row[0])
+                    idb.mark_downloaded(video_id=row[0])
         else:
             sh.log.append ('Commands.download'
                           ,_('WARNING')
