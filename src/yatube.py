@@ -266,10 +266,10 @@ class Commands:
             message = _('%d files have been deleted:') % len(deleted) \
                       + '\n\n' \
                       + message
-            sh.objs.mes ('Commands.delete_selected'
-                        ,_('INFO')
-                        ,message
-                        )
+            sh.log.append ('Commands.delete_selected'
+                          ,_('INFO')
+                          ,message
+                          )
     
     def delete_video(self,event=None):
         ''' Do not warn when the GUI object is not available (e.g.,
