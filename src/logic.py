@@ -235,8 +235,19 @@ class Channel:
     
     def links(self):
         if self.Success:
-            ilinks = sh.Links(self._html)
+            ilinks = sh.Links (text = self._html
+                              ,root = 'href="'
+                              )
             ilinks.poses()
+            old = list(ilinks._links)
+            ilinks = sh.Links (text = self._html
+                              ,root = 'src="'
+                              )
+            ilinks.poses()
+            ''' #note: if links from both root elements are present,
+                their order may be desynchronized.
+            '''
+            ilinks._links += old
             if 'youtube' in self._url or 'youtu.be' in self._url:
                 ilinks._links = ['https://www.youtube.com' + link \
                                  for link in ilinks._links \
