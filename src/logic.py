@@ -868,6 +868,10 @@ class URL:
         corrupt playlist URLs.
     '''
     def trash_v(self):
+        self._url = self._url.replace ('watch?feature=player_detailpage&v'
+                                      ,'watch?v'
+                                      )
+        self._url = re.sub('#t=\d+','',self._url)
         if 'watch?v' in self._url:
             search = sh.Search (text   = self._url
                                ,search = '?'
