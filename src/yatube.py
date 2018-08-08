@@ -1126,7 +1126,7 @@ class Commands:
             
     def dimensions(self):
         sg.objs.root().idle()
-        height  = gi.objs._channel.label.widget.winfo_reqheight()
+        height  = gi.objs._channel.frm_emb.widget.winfo_reqheight()
         ''' #NOTE: Extra space can be caused by a difference of
             the default and loaded pictures.
         '''

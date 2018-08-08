@@ -550,23 +550,13 @@ class Channel:
                                 ,height = self._max_y
                                 )
     
-    # Called in 'canvases'
-    def labels(self):
-        # Frames embedded into a canvas are not scrollable
-        self.label  = sg.Label (parent = self.frame1
-                               ,expand = True
-                               ,fill   = 'both'
-                               ,Close  = False
-                               ,text   = _('Videos are placed here')
-                               )
-    
     def canvases(self):
         ''' Create a canvas before an object being embedded, otherwise,
             the canvas will overlap this object.
         '''
-        self.canvas = sg.Canvas(parent=self.frame1)
-        self.labels()
-        self.canvas.embed(self.label)
+        self.canvas  = sg.Canvas(parent=self.frame1)
+        self.frm_emb = sg.Frame(parent=self.frame1)
+        self.canvas.embed(self.frm_emb)
     
     def scrollbars(self):
         sg.Scrollbar (parent     = self.frame_x
@@ -592,7 +582,7 @@ class Channel:
         
     def add(self,no=1):
         self._no = no
-        self._videos.append (Video (parent = self.label
+        self._videos.append (Video (parent = self.frm_emb
                                    ,no     = self._no
                                    )
                             )
