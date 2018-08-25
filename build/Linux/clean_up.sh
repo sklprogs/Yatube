@@ -28,4 +28,4 @@ rm {build.sh,clean_up.sh,setup.py,update_here.sh,update_finish.sh,update_yatube.
 # Do not use dots in case of '-p' key
 rmdir -p resources/locale/ru/LC_MESSAGES/ user/Youtube
 
-ls .
+ls --color=auto .

@@ -18,6 +18,7 @@ Demura Channel
 FACE
 Fly News
 GoNews
+GERASEV
 HESUS STREAM
 Hовости 24h
 Kommentarii
@@ -56,6 +57,7 @@ WylsaLive
 Диана Борисова
 Евгений Вольнов
 Ежедневные-новости
+Жгучий Перец
 ЖЕЛЕЙНЫЙ МЕДВЕДЬ ЛАКИ
 Знакомьтесь, Боб
 ИНФОРМАТИЗАЦИЯ
