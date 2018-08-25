@@ -761,7 +761,10 @@ class Commands:
                       ,_('Switch to channel "%s"') \
                       % str(self._menu.opt_trd.choice)
                       )
-        country = lg.objs.const()._countries[self._menu.opt_trd.choice]
+        if self._menu.opt_trd.choice in lg.objs.const()._countries:
+            country = lg.objs._const._countries[self._menu.opt_trd.choice]
+        else:
+            country = 'RU'
         url = 'https://www.youtube.com/feed/trending?gl=%s' % country
         sh.log.append ('Commands.set_trending'
                       ,_('DEBUG')
@@ -1094,6 +1097,8 @@ class Commands:
     def update_trending(self,event=None,url=None):
         if not url:
             url = 'https://www.youtube.com/feed/trending?gl=RU'
+            # This is needed if we use hotkeys (update an old value)
+            self._menu.opt_trd.set(_('Trending'))
         self._channel = lg.Channel(url=url)
         ''' We assume that there is no need to delete unsupported
             characters in countries.

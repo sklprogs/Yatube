@@ -19,6 +19,7 @@ FACE
 Fly News
 GoNews
 GERASEV
+Global Info
 HESUS STREAM
 Hовости 24h
 Kommentarii
@@ -83,6 +84,7 @@ WylsaLive
 Национальный общественный мониторинг
 Новости 24/365
 Октябрёнок
+Ольга Аринина
 Поззи
 Познаватель
 Политика сегодня: Россия США Украина
