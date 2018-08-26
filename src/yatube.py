@@ -920,13 +920,20 @@ class Commands:
                               )
         gi.report_selection()
         
-    def _play_slow(self,app='/usr/bin/mplayer'):
+    def _play_slow(self,app='/usr/bin/mpv'):
+        if 'mpv' in app:
+            custom_args = ['-ao','sdl','-fs','-framedrop=vo'
+                          ,'--nocorrect-pts'
+                          ]
+        elif 'mplayer' in app:
+            custom_args = ['-ao','sdl','-fs','-framedrop'
+                          ,'-nocorrect-pts'
+                          ]
+        else:
+            custom_args = []
         sh.Launch (target = self._video.model._path
                   ).app (custom_app  = app
-                        ,custom_args = ['-ao','sdl','-fs'
-                                       ,'-framedrop'
-                                       ,'-nocorrect-pts'
-                                       ]
+                        ,custom_args = custom_args
                         )
                         
     def _play_default(self):
@@ -935,10 +942,10 @@ class Commands:
     def play_video(self,event=None):
         if self._video:
             if self._menu.chb_slw.get():
-                if os.path.exists('/usr/bin/mplayer'):
+                if os.path.exists('/usr/bin/mpv'):
                     self._play_slow()
-                elif os.path.exists('/usr/bin/mpv'):
-                    self._play_slow(app='/usr/bin/mpv')
+                elif os.path.exists('/usr/bin/mplayer'):
+                    self._play_slow(app='/usr/bin/mplayer')
                 else:
                     self._play_default()
             else:
