@@ -49,10 +49,10 @@ class Commands:
                 gi.objs._comments.read_only(ReadOnly=True)
                 gi.objs._comments.show()
             else:
-                sh.log.append ('Commands.show_comments'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sg.Message ('Commands.show_comments'
+                           ,_('INFO')
+                           ,_('No comments yet!')
+                           )
         else:
             sh.log.append ('Commands.show_comments'
                           ,_('WARNING')
