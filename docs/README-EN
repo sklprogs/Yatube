@@ -3,6 +3,7 @@ The following hotkeys are supported:
 Control-w, Control-q - Quit
 Control-d - Download selected file(s)
 Control-p - Play selected file(s)
+Control-s - Stream a selected file
 Control-h, Alt-h - Show download history
 Shift-Delete - Delete selected file(s)
 Alt-b - Reset widgets

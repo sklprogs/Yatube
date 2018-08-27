@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import subprocess
 import shared    as sh
 import sharedGUI as sg
 import logic     as lg
@@ -449,10 +450,100 @@ class Commands:
                           )
     
     def stream(self,event=None):
-        sg.Message ('Commands.stream'
-                   ,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        Found = False
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui.cbox.get():
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                Found = True
+                break
+        if Found:
+            self.stream_video()
+        else:
+            sh.log.append ('Commands.stream'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def stream_video(self,event=None):
+        if self._video:
+            self._video.model.video()
+            url = self._video.model.stream()
+            if url:
+                ''' I was unable to stream anything in
+                    MPlayer 1.0rc4-4.4.7 and VLC 2.0.10, but mpv 0.6.2
+                    and VLC 2.2.7 worked.
+                '''
+                if os.path.exists('/usr/bin/mpv'):
+                    app = '/usr/bin/mpv'
+                elif os.path.exists('/usr/bin/vlc'):
+                    app = '/usr/bin/vlc'
+                elif os.path.exists('/usr/bin/mplayer'):
+                    ''' In 'mplayer' I get 'No stream found to handle
+                        url...', so I prefer VLC over Mplayer.
+                    '''
+                    app = '/usr/bin/mplayer'
+                else:
+                    app = ''
+                    sh.objs.mes ('Commands.stream_video'
+                                ,_('WARNING')
+                                ,_('Unable to find a suitable application!')
+                                )
+                if app:
+                    if self._menu.chb_slw.get():
+                        args = self._stream_slow(app)
+                    else:
+                        args = self._stream(app)
+                    if args:
+                        custom_args = [app] + args + [url]
+                    else:
+                        custom_args = [app,url]
+                    #'sh.Launch' checks the target
+                    try:
+                        subprocess.Popen(custom_args)
+                        Success = True
+                    except:
+                        sh.objs.mes ('Commands.stream_video'
+                                    ,_('ERROR')
+                                    ,_('Failed to run "%s"!') \
+                                    % str(custom_args)
+                                    )
+                        Success = False
+                    if Success:
+                        self.mark_downloaded()
+                else:
+                    sh.log.append ('Commands.stream_video'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+            else:
+                sh.log.append ('Commands.stream_video'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Commands.stream_video'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def _stream_slow(self,app):
+        if 'mpv' in app:
+            return ['-ao','sdl','-fs','-framedrop=vo'
+                   ,'-cache','8192','--cache-initial','1024'
+                   ,'--no-correct-pts'
+                   ]
+        elif 'mplayer' in app:
+            return ['-ao','sdl','-fs','-framedrop'
+                   ,'-cache','8192','-cache-min','50'
+                   ,'-nocorrect-pts'
+                   ]
+    
+    def _stream(self,app):
+        if 'mpv' in app:
+            return ['-cache','8192','--cache-initial','1024']
+        elif 'mplayer' in app:
+            return ['-cache','8192','-cache-min','50']
                    
     def toggle_downloaded(self,event=None):
         if self._video and self._gvideo:
@@ -595,7 +686,7 @@ class Commands:
                 self.download_video()
                 self.play_video()
             elif choice == _('Stream'):
-                self.stream()
+                self.stream_video()
             elif choice == _('Toggle the download status'):
                 self.toggle_downloaded()
             elif choice == _('Delete the downloaded file'):
@@ -727,7 +818,7 @@ class Commands:
                             gi.objs._progress.close()
                             self.play_video()
                         elif self._menu.opt_url.choice == _('Stream'):
-                            self.stream()
+                            self.stream_video()
                         elif self._menu.opt_url.choice == _('Delete'):
                             self.delete_video()
                             self._menu.clear_url()
@@ -830,6 +921,10 @@ class Commands:
                 ,action   = self.download
                 )
         sg.bind (obj      = self._menu.parent
+                ,bindings = '<Control-s>'
+                ,action   = self.stream
+                )
+        sg.bind (obj      = self._menu.parent
                 ,bindings = ['<Control-h>','<Alt-h>']
                 ,action   = self.history
                 )
@@ -853,6 +948,7 @@ class Commands:
         self._menu.btn_upd.action = self.update_channels
         self._menu.btn_ytb.action = self.search_youtube
         self._menu.btn_flt.action = self.filter_view
+        self._menu.btn_stm.action = self.stream
         self._menu.btn_dld.action = self.download
         self._menu.btn_ply.action = self.play
         self._menu.btn_del.action = self.delete_selected
@@ -957,25 +1053,48 @@ class Commands:
                           )
     
     def play(self,event=None):
+        new_videos = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
                 if video_gui in self._videos:
-                    self._gvideo = video_gui
-                    self._video  = self._videos[self._gvideo]
-                    self.download_video()
-                    self.play_video()
+                    new_videos.append(video_gui)
                 else:
-                    sg.Message ('Commands.play'
-                               ,_('ERROR')
-                               ,_('Wrong input data!')
-                               )
-        gi.objs._progress.close()
+                    sh.objs.mes ('Commands.play'
+                                ,_('ERROR')
+                                ,_('Wrong input data!')
+                                )
+        if new_videos:
+            for i in range(len(new_videos)):
+                self._gvideo = new_videos[i]
+                self._video  = self._videos[self._gvideo]
+                gi.objs.progress().title (_('Download progress') \
+                                         + ' (%d/%d)' % (i + 1
+                                                        ,len(new_videos)
+                                                        )
+                                         )
+                self.download_video()
+                # Download all videos, play the first one only
+                if i == 0:
+                    self.play_video()
+            gi.objs._progress.title()
+            gi.objs._progress.close()
+        else:
+            sh.log.append ('Commands.play'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
         
     def mark_downloaded(self):
-        self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-        idb.mark_downloaded (video_id = self._video.model._video_id
-                            ,dtime    = self._video.model._dtime
-                            )
+        if self._video:
+            self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            idb.mark_downloaded (video_id = self._video.model._video_id
+                                ,dtime    = self._video.model._dtime
+                                )
+        else:
+            sh.log.append ('Commands.mark_downloaded'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         if self._gvideo:
             self._gvideo.cbox.disable()
             self._gvideo.gray_out()
@@ -1034,15 +1153,23 @@ class Commands:
                                ,_('ERROR')
                                ,_('Wrong input data!')
                                )
-        for i in range(len(new_videos)):
-            self._gvideo = new_videos[i]
-            self._video  = self._videos[self._gvideo]
-            gi.objs._progress.title (_('Download progress') \
-                                     + ' (%d/%d)' % (i+1,len(new_videos))
-                                    )
-            self.download_video()
-        gi.objs._progress.title()
-        gi.objs._progress.close()
+        if new_videos:
+            for i in range(len(new_videos)):
+                self._gvideo = new_videos[i]
+                self._video  = self._videos[self._gvideo]
+                gi.objs.progress().title (_('Download progress') \
+                                         + ' (%d/%d)' % (i + 1
+                                                        ,len(new_videos)
+                                                        )
+                                         )
+                self.download_video()
+            gi.objs._progress.title()
+            gi.objs._progress.close()
+        else:
+            sh.log.append ('Commands.download'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
         
     def update_channels(self,event=None):
         # Update channels

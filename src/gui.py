@@ -19,7 +19,7 @@ version = '1.3'
 context_items = (_('Show the full summary')
                 ,_('Download')
                 ,_('Play')
-                #,_('Stream')
+                ,_('Stream')
                 ,_('Toggle the download status')
                 ,_('Delete the downloaded file')
                 ,_('Extract links')
@@ -38,7 +38,7 @@ context_items = (_('Show the full summary')
 url_items = (_('Show summary')
             ,_('Download')
             ,_('Play')
-            #,_('Stream')
+            ,_('Stream')
             ,_('Delete')
             ,_('Extract links')
             ,_('Full menu')
@@ -163,6 +163,9 @@ class Menu:
                                    ,side   = 'left'
                                    ,action = toggle_select
                                    )
+        self.btn_stm = sg.Button (parent = self.frame3
+                                 ,text   = _('Stream')
+                                 )
         self.btn_ply = sg.Button (parent = self.frame3
                                  ,text   = _('Play')
                                  )

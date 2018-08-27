@@ -1,0 +1,4 @@
+# Package names will differ, see https://pillow.readthedocs.io/en/latest/installation.html
+# (Installed by default) apt-get install zlib1g libjpeg8 python3-tk
+#apt-get install libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev libharfbuzz-dev libfribidi-dev tcl8.6-dev tk8.6-dev
+pip3 install pafy httplib2 Pillow google-api-python-client oauth2client google configparser youtube-dl

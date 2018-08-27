@@ -815,6 +815,30 @@ class Video:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+    
+    def stream(self):
+        if self.Success:
+            if self._video:
+                #todo: select quality
+                try:
+                    stream = self._video.getbest()
+                    return stream.url
+                except Exception as e:
+                    sh.objs.mes ('Video.stream'
+                                ,_('WARNING')
+                                ,_('Operation has failed!\n\nDetails: %s') \
+                                % (self._path,str(e))
+                                )
+            else:
+                sh.log.append ('Video.stream'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Video.stream'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
