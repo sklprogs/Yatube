@@ -1019,7 +1019,7 @@ class Commands:
     def _play_slow(self,app='/usr/bin/mpv'):
         if 'mpv' in app:
             custom_args = ['-ao','sdl','-fs','-framedrop=vo'
-                          ,'--nocorrect-pts'
+                          ,'--no-correct-pts'
                           ]
         elif 'mplayer' in app:
             custom_args = ['-ao','sdl','-fs','-framedrop'

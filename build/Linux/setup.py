@@ -1,9 +1,11 @@
+#!/usr/bin/python3
+
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
 # fine tuning.
 buildOptions = dict (packages = []
-                    ,includes = ['re','PIL._tkinter_finder']
+                    ,includes = ['re','PIL._tkinter_finder','hashlib']
                     ,excludes = []
                     )
 
