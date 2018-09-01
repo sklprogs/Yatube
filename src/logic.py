@@ -258,10 +258,12 @@ class Channel:
                 ''' We should do our best here to ensure that the URL
                     will refer to a Youtube video. There could be links
                     to 'youtube.com', e.g., from 'account.google.com'
-                    that will not refer to videos.
+                    that will not refer to videos. We need a slash here
+                    because there can be links like
+                    .../uploads/youtu.be-bv2OGph5Kec-330x225.jpg.
                 '''
                 ilinks._links = [link for link in ilinks._links 
-                                 if 'youtu.be' in link 
+                                 if 'youtu.be/' in link 
                                  or 'youtube.com/watch?v=' in link 
                                  or 'youtube.com/embed/' in link
                                 ]
