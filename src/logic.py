@@ -4,8 +4,8 @@
 import re
 import os
 import io
-# pip3 install google-api-python-client oauth2client google
-import apiclient.discovery
+# pip3 install google-api-python-client
+from googleapiclient.discovery import build as apiclient
 import pafy
 import shared as sh
 import db
@@ -980,10 +980,10 @@ class Comments:
         if self.Success:
             if not self._connect:
                 try:
-                    self._connect = apiclient.discovery.build \
-                                        ('youtube','v3'
-                                        ,developerKey = pafy.g.api_key
-                                        )
+                    self._connect = apiclient ('youtube','v3'
+                                              ,developerKey = pafy.g.api_key
+                                              ,cache        = MemoryCache()
+                                              )
                 except Exception as e:
                     self.Success = False
                     sh.objs.mes ('Comments.connect'
@@ -1037,6 +1037,18 @@ class Comments:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+
+
+
+# https://github.com/google/google-api-python-client/issues/325#issuecomment-274349841
+class MemoryCache:
+    _CACHE = {}
+    
+    def get(self, url):
+        return MemoryCache._CACHE.get(url)
+
+    def set(self, url, content):
+        MemoryCache._CACHE[url] = content
 
 
 objs = Objects()

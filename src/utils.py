@@ -358,9 +358,38 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
         idb.close()
+        
+    def _get_empty(self,idb):
+        idb.dbcw.execute('select AUTHOR from VIDEOS where AUTHOR=?',('',))
+        data = idb.dbcw.fetchall()
+        sh.log.append ('Commands._get_empty'
+                      ,_('INFO')
+                      ,_('%d records have been found.') % len(data)
+                      )
+    
+    def empty_author(self):
+        Success = sh.File (file       = self._path
+                          ,dest       = self._clone
+                          ,AskRewrite = False
+                          ).copy()
+        if Success:
+            idb = DB (path  = self._path
+                     ,clone = self._clone
+                     )
+            idb.connectw()
+            self._get_empty(idb)
+            idb.dbcw.execute('delete from VIDEOS where AUTHOR=?',('',))
+            self._get_empty(idb)
+            idb.savew()
+            idb.closew()
+        else:
+            sh.log.append ('Commands.repair_urls'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.repair_urls()
+    commands.empty_author()
