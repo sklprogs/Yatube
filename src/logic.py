@@ -829,7 +829,7 @@ class Video:
                     sh.objs.mes ('Video.stream'
                                 ,_('WARNING')
                                 ,_('Operation has failed!\n\nDetails: %s') \
-                                % (self._path,str(e))
+                                % str(e)
                                 )
             else:
                 sh.log.append ('Video.stream'
