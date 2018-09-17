@@ -268,6 +268,16 @@ class Channel:
                                  or 'youtube.com/embed/' in link
                                 ]
                 ilinks.valid()
+            old = list(ilinks._links)
+            ''' Previous algorithms consider a link as valid if it has
+                'youtu(be)' in its tag, and we have just ID there, so
+                this should be put after those algorithms.
+            '''
+            ilinks = sh.Links (text = self._html
+                              ,root = 'data-pe-videoid="'
+                              )
+            ilinks.poses()
+            ilinks._links += old
             ilinks._links = [URL(url=link).video_id() \
                              for link in ilinks._links
                             ]
