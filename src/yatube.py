@@ -470,18 +470,14 @@ class Commands:
             self._video.model.video()
             url = self._video.model.stream()
             if url:
-                ''' I was unable to stream anything in
-                    MPlayer 1.0rc4-4.4.7 and VLC 2.0.10, but mpv 0.6.2
-                    and VLC 2.2.7 worked.
+                ''' Consider using newer python/OS builds if you have
+                    SSL/TLS problems here.
                 '''
                 if os.path.exists('/usr/bin/mpv'):
                     app = '/usr/bin/mpv'
                 elif os.path.exists('/usr/bin/vlc'):
                     app = '/usr/bin/vlc'
                 elif os.path.exists('/usr/bin/mplayer'):
-                    ''' In 'mplayer' I get 'No stream found to handle
-                        url...', so I prefer VLC over Mplayer.
-                    '''
                     app = '/usr/bin/mplayer'
                 else:
                     app = ''
@@ -1389,6 +1385,7 @@ class Commands:
         self.bind_context()
         self.dimensions()
         gi.objs._channel.canvas.move_top()
+        gi.objs._channel.canvas.widget.xview_moveto(0)
         # Move focus away from 'ttk.Combobox' (OptionMenu)
         gi.objs._channel.canvas.focus()
     
