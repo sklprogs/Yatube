@@ -149,7 +149,7 @@ class Commands:
                                   )
                     if self._video.model._author \
                     in lg.objs._lists._subsc_auth:
-                        ind = lg.objs._lists._subsc_auth1.index(self._video.model._author)
+                        ind = lg.objs._lists._subsc_auth.index(self._video.model._author)
                         del lg.objs._lists._subsc_auth[ind]
                         del lg.objs._lists._subsc_urls[ind]
                         subscriptions = []
@@ -159,12 +159,13 @@ class Commands:
                                                  + lg.objs._lists._subsc_urls[i]
                                                  )
                         subscriptions = '\n'.join(subscriptions)
-                        if subscriptions:
-                            sh.WriteTextFile (file       = lg.objs.default()._fsubsc
-                                             ,AskRewrite = False
-                                             ).write(text=subscriptions)
-                            lg.objs._lists.reset()
-                            self.reset_channels()
+                        if not subscriptions:
+                            subscriptions = '# ' + _('Put here authors to subscribe to')
+                        sh.WriteTextFile (file       = lg.objs.default()._fsubsc
+                                         ,AskRewrite = False
+                                         ).write(text=subscriptions)
+                        lg.objs._lists.reset()
+                        self.reset_channels()
                 else:
                     sh.log.append ('Commands.unsubscribe'
                                   ,_('INFO')
@@ -195,17 +196,13 @@ class Commands:
                     lg.objs._lists._block_auth.remove(self._video.model._author)
                     blocked = lg.objs._lists._block_auth
                     blocked = '\n'.join(blocked)
-                    if blocked:
-                        sh.WriteTextFile (file       = lg.objs.default()._fblock
-                                         ,AskRewrite = False
-                                         ).write(text=blocked)
-                        lg.objs._lists.reset()
-                        self.reset_channels()
-                    else:
-                        sh.log.append ('Commands.unblock'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                    if not blocked:
+                        blocked = '# ' + _('Put here authors to be blocked')
+                    sh.WriteTextFile (file       = lg.objs.default()._fblock
+                                     ,AskRewrite = False
+                                     ).write(text=blocked)
+                    lg.objs._lists.reset()
+                    self.reset_channels()
                 else:
                     sh.log.append ('Commands.unblock'
                                   ,_('INFO')
@@ -1428,13 +1425,13 @@ class Commands:
             sh.WriteTextFile (file       = lg.objs.default()._fblock
                              ,AskRewrite = False
                              ).write(text=text)
-            lg.objs._lists.reset()
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here authors to be blocked')
             sh.WriteTextFile (file       = lg.objs.default()._fblock
                              ,AskRewrite = False
                              ).write(text=text)
+        lg.objs._lists.reset()
 
 
 

@@ -331,10 +331,10 @@ class Lists:
     def load(self):
         if self.Success:
             text = sh.ReadTextFile(file=self.idefault._fblock).get()
+            text = sh.Text(text=text).delete_comments()
             # We should allow empty files
-            if text:
-                self._block      = text
-                self._block_auth = text.splitlines()
+            self._block      = text
+            self._block_auth = text.splitlines()
             # Suppress errors on empty text
             if os.path.exists(self.idefault._fsubsc):
                 dic = sh.Dic (file     = self.idefault._fsubsc
