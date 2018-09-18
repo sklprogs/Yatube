@@ -1,4 +1,5 @@
 
+* Move the database and lists to $HOME/.config/Yatube
 * Show comments
 * Add streaming (Control-s)
 

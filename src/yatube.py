@@ -119,7 +119,7 @@ class Commands:
         gi.objs.channel().canvas.move_top()
     
     def history(self,event=None):
-        urls = idb.downloaded()
+        urls = lg.objs.db().downloaded()
         if urls:
             ''' URL can be any here, even 'None', but we do not use
                 'None' in order to be on the safe side since many
@@ -148,19 +148,19 @@ class Commands:
                                   % self._video.model._author
                                   )
                     if self._video.model._author \
-                    in lg.objs._lists._subsc_auth1:
+                    in lg.objs._lists._subsc_auth:
                         ind = lg.objs._lists._subsc_auth1.index(self._video.model._author)
-                        del lg.objs._lists._subsc_auth1[ind]
-                        del lg.objs._lists._subsc_urls1[ind]
+                        del lg.objs._lists._subsc_auth[ind]
+                        del lg.objs._lists._subsc_urls[ind]
                         subscriptions = []
-                        for i in range(len(lg.objs._lists._subsc_auth1)):
-                            subscriptions.append (lg.objs._lists._subsc_auth1[i]\
+                        for i in range(len(lg.objs._lists._subsc_auth)):
+                            subscriptions.append (lg.objs._lists._subsc_auth[i]\
                                                  + '\t' \
-                                                 + lg.objs._lists._subsc_urls1[i]
+                                                 + lg.objs._lists._subsc_urls[i]
                                                  )
                         subscriptions = '\n'.join(subscriptions)
                         if subscriptions:
-                            sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+                            sh.WriteTextFile (file       = lg.objs.default()._fsubsc
                                              ,AskRewrite = False
                                              ).write(text=subscriptions)
                             lg.objs._lists.reset()
@@ -196,7 +196,7 @@ class Commands:
                     blocked = lg.objs._lists._block_auth
                     blocked = '\n'.join(blocked)
                     if blocked:
-                        sh.WriteTextFile (file       = lg.objs._lists._fblock
+                        sh.WriteTextFile (file       = lg.objs.default()._fblock
                                          ,AskRewrite = False
                                          ).write(text=blocked)
                         lg.objs._lists.reset()
@@ -235,9 +235,9 @@ class Commands:
     def show_new(self,event=None):
         itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
         itime.add_days(days_delta=-2)
-        urls = idb.new_videos (timestamp = itime.timestamp()
-                              ,authors   = lg.objs.lists()._subsc_auth
-                              )
+        urls = lg.objs.db().new_videos (timestamp = itime.timestamp()
+                                       ,authors   = lg.objs.lists()._subsc_auth
+                                       )
         if urls:
             self._show_new(urls)
         else:
@@ -339,10 +339,10 @@ class Commands:
                                   % self._video.model._author
                                   )
                     subscriptions = []
-                    for i in range(len(lg.objs._lists._subsc_auth1)):
-                        subscriptions.append (lg.objs._lists._subsc_auth1[i]\
+                    for i in range(len(lg.objs._lists._subsc_auth)):
+                        subscriptions.append (lg.objs._lists._subsc_auth[i]\
                                              + '\t' \
-                                             + lg.objs._lists._subsc_urls1[i]
+                                             + lg.objs._lists._subsc_urls[i]
                                              )
                     subscriptions.append (self._video.model._author \
                                          + '\t' \
@@ -353,7 +353,7 @@ class Commands:
                                            )
                     subscriptions = '\n'.join(subscriptions)
                     if subscriptions:
-                        sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+                        sh.WriteTextFile (file       = lg.objs.default()._fsubsc
                                          ,AskRewrite = False
                                          ).write(text=subscriptions)
                         lg.objs._lists.reset()
@@ -397,7 +397,7 @@ class Commands:
                                      )
                     blocked = '\n'.join(blocked)
                     if blocked:
-                        sh.WriteTextFile (file       = lg.objs._lists._fblock
+                        sh.WriteTextFile (file       = lg.objs.default()._fblock
                                          ,AskRewrite = False
                                          ).write(text=blocked)
                         lg.objs._lists.reset()
@@ -547,9 +547,9 @@ class Commands:
                 self._video.model._dtime = 0
             else:
                 self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-            idb.mark_downloaded (video_id = self._video.model._video_id
-                                ,dtime    = self._video.model._dtime
-                                )
+            lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
+                                         ,dtime    = self._video.model._dtime
+                                         )
             if self._video.model._dtime:
                 self._gvideo.gray_out()
             else:
@@ -1083,9 +1083,9 @@ class Commands:
     def mark_downloaded(self):
         if self._video:
             self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-            idb.mark_downloaded (video_id = self._video.model._video_id
-                                ,dtime    = self._video.model._dtime
-                                )
+            lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
+                                         ,dtime    = self._video.model._dtime
+                                         )
         else:
             sh.log.append ('Commands.mark_downloaded'
                           ,_('WARNING')
@@ -1190,7 +1190,7 @@ class Commands:
                       ,_('DEBUG')
                       ,_('URLs in total: %d') % len(links)
                       )
-        urls = idb.urls()
+        urls = lg.objs.db().urls()
         unknown = [link for link in links if not link in urls]
         
         # Get metadata for new URLs
@@ -1214,7 +1214,7 @@ class Commands:
                                     ,no       = i + 1
                                     )
                 gi.objs._wait.update()
-            idb.save()
+            lg.objs._db.save()
             gi.objs._wait.title()
             gi.objs._wait.close()
             self._show_new(urls=unknown)
@@ -1321,7 +1321,7 @@ class Commands:
                                     ,no       = unknown_i[i] + 1
                                     )
                 gi.objs._wait.update()
-            idb.save()
+            lg.objs.db().save()
             gi.objs._wait.title()
             gi.objs._wait.close()
         else:
@@ -1365,7 +1365,7 @@ class Commands:
             self._video = Video(video_id=self._channel._links[i])
             self._gvideo = gi.objs._channel._videos[i]
             self._videos[self._gvideo] = self._video
-            self._video.model.Saved = idb.get_video(video_id=self._video.model._video_id)
+            self._video.model.Saved = lg.objs.db().get_video(video_id=self._video.model._video_id)
             if self._video.model.Saved:
                 self._video.model.assign_offline(self._video.model.Saved)
                 #todo: elaborate 'Video.model.get' and delete this
@@ -1389,7 +1389,7 @@ class Commands:
         # Move focus away from 'ttk.Combobox' (OptionMenu)
         gi.objs._channel.canvas.focus()
     
-    def manage_sub1(self):
+    def manage_sub(self):
         words = sh.Words(text=lg.objs.lists()._subsc)
         gi.objs.subscribe().reset(words=words)
         gi.objs._subscribe.insert(text=lg.objs._lists._subsc)
@@ -1401,48 +1401,18 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file       = lg.objs._lists._fsubsc
+            sh.WriteTextFile (file       = lg.objs.default()._fsubsc
                              ,AskRewrite = False
                              ).write(text=text)
         else:
-            sh.log.append ('Commands.manage_sub1'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-                             
-    def manage_sub2(self):
-        if os.path.exists(lg.objs.lists()._fsubsc2):
-            words = sh.Words(text=lg.objs._lists._subsc2)
-            gi.objs.subscribe().reset(words=words)
-            gi.objs._subscribe.insert(text=lg.objs._lists._subsc2)
-            gi.objs._subscribe.show()
-            text = gi.objs._subscribe.get()
-            if text:
-                text = text.splitlines()
-                text = sorted (text
-                              ,key = lambda x:x[0].lower()
-                              )
-                text = '\n'.join(text)
-                sh.WriteTextFile (file       = lg.objs._lists._fsubsc2
-                                 ,AskRewrite = False
-                                 ).write(text=text)
-            else:
-                sh.log.append ('Commands.manage_sub2'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Commands.manage_sub2'
-                          ,_('INFO')
-                          ,_('Nothing to do.')
-                          )
-    
-    def manage_sub(self,event=None):
-        self.manage_sub1()
-        self.manage_sub2()
+            # 'WriteTextFile' cannot write an empty text
+            text = '# ' + _('Put here authors to subscribe to')
+            sh.WriteTextFile (file       = lg.objs.default()._fsubsc
+                             ,AskRewrite = False
+                             ).write(text=text)
         lg.objs.lists().reset()
         self.reset_channels()
-        
+                             
     def manage_block(self,event=None):
         words = sh.Words(text=lg.objs.lists()._block)
         gi.objs.blacklist().reset(words=words)
@@ -1455,19 +1425,19 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file       = lg.objs._lists._fblock
+            sh.WriteTextFile (file       = lg.objs.default()._fblock
                              ,AskRewrite = False
                              ).write(text=text)
             lg.objs._lists.reset()
         else:
-            sh.log.append ('Commands.manage_block'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            # 'WriteTextFile' cannot write an empty text
+            text = '# ' + _('Put here authors to be blocked')
+            sh.WriteTextFile (file       = lg.objs.default()._fblock
+                             ,AskRewrite = False
+                             ).write(text=text)
 
 
 
-# Requires idb
 class Video:
     
     def __init__(self,video_id):
@@ -1526,11 +1496,17 @@ class Video:
 if __name__ == '__main__':
     sg.objs.start()
     sg.Geometry(parent=gi.objs.parent()).set('1024x600')
-    idb = lg.idb
-    commands = Commands()
-    commands.bindings()
-    gi.objs.progress()
-    gi.objs.menu().show()
-    idb.save()
-    idb.close()
+    lg.objs.default(product=gi.product).run()
+    if lg.objs._default.Success:
+        commands = Commands()
+        commands.bindings()
+        gi.objs.progress()
+        gi.objs.menu().show()
+        lg.objs.db().save()
+        lg.objs._db.close()
+    else:
+        sh.objs.mes ('Yatube.controller'
+                    ,_('WARNING')
+                    ,_('Unable to continue due to an invalid configuration.')
+                    )
     sg.objs.end()

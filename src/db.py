@@ -11,8 +11,10 @@ gettext.install('yatube','../resources/locale')
 
 class DB:
     
-    def __init__(self):
-        self.values()
+    def __init__(self,path='yatube.db'):
+        self.Success = True
+        self._user   = ''
+        self._path   = path
         self.connect()
         self.create_videos()
         
@@ -144,11 +146,6 @@ class DB:
                           ,_('Operation has been canceled.')
                           )
     
-    def values(self):
-        self.Success = True
-        self._user   = ''
-        self._path   = sh.objs.pdir().add('..','user','yatube.db')
-        
     def connect(self):
         if self.Success:
             try:

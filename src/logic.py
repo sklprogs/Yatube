@@ -21,7 +21,16 @@ pattern3b = '/videos'
 pattern4  = '?flow=list&sort=dd'
 pattern5  = 'https://www.youtube.com/'
 AllOS     = False
-idb       = db.DB()
+
+
+sample_subscribe = '''BostonDynamics	https://www.youtube.com/user/BostonDynamics/videos
+Brave Wilderness	https://www.youtube.com/user/BreakingTrail/videos
+Pravda GlazaRezhet	https://www.youtube.com/channel/UCgCqhDRyMH1wZBI4OOKLQ8g/videos
+Дмитрий ПОТАПЕНКО	https://www.youtube.com/channel/UC54SBo5_usXGEoybX1ZVETQ/videos
+Мохнатые Друзья	https://www.youtube.com/channel/UCqKbBJRz6SGrvUHNoZkpF2w/videos
+'''
+
+sample_block = '''Россия 24'''
 
 
 
@@ -298,70 +307,84 @@ class Channel:
         self.page()
         self.links()
         return self._links
-        
+
 
 
 class Lists:
     
     def __init__(self):
         self.values()
-        self._fblock  = sh.objs.pdir().add('..','user','block.txt')
-        self._fsubsc  = sh.objs.pdir().add('..','user','subscribe.txt')
-        self._fsubsc2 = sh.objs.pdir().add('..','user','subscribe2.txt')
         
     def reset(self):
         self.values()
+        self.idefault = objs.default()
+        self.Success  = self.idefault.Success
         self.load()
     
     def values(self):
         self._block       = ''
         self._subsc       = ''
-        self._subsc2      = ''
         self._block_auth  = []
         self._subsc_auth  = []
         self._subsc_urls  = []
-        self._subsc_auth1 = []
-        self._subsc_urls1 = []
-        self._subsc_auth2 = []
-        self._subsc_urls2 = []
     
     def load(self):
-        text = sh.ReadTextFile(file=self._fblock).get()
-        if text:
-            self._block = text
-            self._block_auth = text.splitlines()
-        dic = sh.Dic (file     = self._fsubsc
-                     ,Sortable = False
-                     )
-        if dic.Success:
-            self._subsc       = dic.text
-            self._subsc_auth1 = dic.orig
-            self._subsc_urls1 = dic.transl
-        if os.path.exists(self._fsubsc2):
-            dic = sh.Dic (file     = self._fsubsc2
-                         ,Sortable = False
-                         )
-            if dic.Success:
-                self._subsc2      = dic.text
-                self._subsc_auth2 = dic.orig
-                self._subsc_urls2 = dic.transl
-        self._subsc_auth = self._subsc_auth1 + self._subsc_auth2
-        self._subsc_urls = self._subsc_urls1 + self._subsc_urls2
-        if self._subsc_auth:
-            self._subsc_auth, self._subsc_urls = (list(x) for x \
-            in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)
-                            ,key = lambda x:x[0].lower()
-                            )
-                   )
-                                                 )
+        if self.Success:
+            text = sh.ReadTextFile(file=self.idefault._fblock).get()
+            # We should allow empty files
+            if text:
+                self._block      = text
+                self._block_auth = text.splitlines()
+            # Suppress errors on empty text
+            if os.path.exists(self.idefault._fsubsc):
+                dic = sh.Dic (file     = self.idefault._fsubsc
+                             ,Sortable = False
+                             )
+                self.Success = dic.Success
+                if self.Success:
+                    self._subsc      = dic.text
+                    self._subsc_auth = dic.orig
+                    self._subsc_urls = dic.transl
+            if self._subsc_auth:
+                self._subsc_auth, self._subsc_urls = (list(x) for x \
+                in zip (*sorted (zip (self._subsc_auth, self._subsc_urls)
+                                ,key = lambda x:x[0].lower()
+                                )
+                       )
+                                                     )
+        else:
+            sh.log.append ('Lists.load'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
 class Objects:
     
     def __init__(self):
-        self._online = self._lists = self._const = None
+        self._online = self._lists = self._const = self._default \
+                     = self._db = None
         
+    def db(self):
+        if not self._db:
+            # Do no forget to do 'objs.default().run()' in the controller
+            path = self.default(product='Yatube')._fdb
+            if self._default.Success:
+                self._db = db.DB(path=path)
+            else:
+                sh.log.append ('Objects.db'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
+                self._db = db.DB()
+        return self._db
+    
+    def default(self,product='Yatube'):
+        if not self._default:
+            self._default = DefaultConfig(product=product)
+        return self._default
+    
     def const(self):
         if not self._const:
             self._const = Constants()
@@ -381,7 +404,6 @@ class Objects:
 
 
 
-# Requires idb
 class Video:
     
     def __init__(self,video_id,callback=None):
@@ -564,7 +586,7 @@ class Video:
                        ,self._rating,self._bytes,self.Block,self.Ignore
                        ,self._search,self._timestamp,self._dtime
                        )
-                idb.add_video(data)
+                objs.db().add_video(data)
             else:
                 sh.log.append ('Video.dump'
                               ,_('INFO')
@@ -662,7 +684,7 @@ class Video:
     
     def get(self):
         if self.Success:
-            self.Saved = idb.get_video(video_id=self._video_id)
+            self.Saved = objs.db().get_video(video_id=self._video_id)
             if self.Saved:
                 self.assign_offline(self.Saved)
             else:
@@ -757,12 +779,13 @@ class Video:
                                         ).run()
                 author = sh.Text(text=author).delete_unsupported()
                 title  = sh.Text(text=title).delete_unsupported()
-                self._dir = sh.objs.pdir().add ('..','user','Youtube'
-                                               ,author
-                                               )
-                self._path = sh.objs.pdir().add ('..','user','Youtube'
-                                                ,author,title
-                                                )
+                self._dir  = objs.default().ihome.add_config ('Youtube'
+                                                             ,author
+                                                             )
+                self._path = objs._default.ihome.add_config ('Youtube'
+                                                            ,author
+                                                            ,title
+                                                            )
                 self._pathsh = sh.Text (text = sh.Path(self._path).basename()
                                        ,Auto = False
                                        ).shorten (max_len = 20
@@ -1059,6 +1082,97 @@ class MemoryCache:
 
     def set(self, url, content):
         MemoryCache._CACHE[url] = content
+
+
+
+class DefaultConfig:
+    
+    def __init__(self,product='Yatube'):
+        self.values()
+        self.ihome   = sh.Home(app_name=product)
+        self.Success = self.ihome.create_conf()
+    
+    def values(self):
+        self._fsubsc = ''
+        self._fblock = ''
+        self._fdb    = ''
+    
+    def db(self):
+        if self.Success:
+            self._fdb = self.ihome.add_config('yatube.db')
+            if self._fdb:
+                if os.path.exists(self._fdb):
+                    self.Success = sh.File(file=self._fdb).Success
+            else:
+                self.Success = False
+                sh.log.append ('DefaultConfig.db'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DefaultConfig.db'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def block(self):
+        if self.Success:
+            self._fblock = self.ihome.add_config('block.txt')
+            if self._fblock:
+                if os.path.exists(self._fblock):
+                    self.Success = sh.File(file=self._fblock).Success
+                else:
+                    iwrite = sh.WriteTextFile (file       = self._fblock
+                                              ,AskRewrite = False
+                                              )
+                    iwrite.write(sample_block)
+                    self.Success = iwrite.Success
+            else:
+                self.Success = False
+                sh.log.append ('DefaultConfig.block'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DefaultConfig.block'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def subscribe(self):
+        if self.Success:
+            self._fsubsc = self.ihome.add_config('subscribe.txt')
+            if self._fsubsc:
+                if os.path.exists(self._fsubsc):
+                    self.Success = sh.File(file=self._fsubsc).Success
+                else:
+                    iwrite = sh.WriteTextFile (file       = self._fsubsc
+                                              ,AskRewrite = False
+                                              )
+                    iwrite.write(sample_subscribe)
+                    self.Success = iwrite.Success
+            else:
+                self.Success = False
+                sh.log.append ('DefaultConfig.subscribe'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DefaultConfig.subscribe'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def run(self):
+        if self.Success:
+            self.subscribe()
+            self.block()
+            self.db()
+        else:
+            sh.log.append ('DefaultConfig.run'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 objs = Objects()
