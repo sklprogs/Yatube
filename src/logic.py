@@ -368,7 +368,6 @@ class Objects:
         
     def db(self):
         if not self._db:
-            # Do no forget to do 'objs.default().run()' in the controller
             path = self.default(product='Yatube')._fdb
             if self._default.Success:
                 self._db = db.DB(path=path)
@@ -382,7 +381,8 @@ class Objects:
     
     def default(self,product='Yatube'):
         if not self._default:
-            self._default = DefaultConfig(product=product)
+            self._default = DefaultConfig(product=product.lower())
+            self._default.run()
         return self._default
     
     def const(self):

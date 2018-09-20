@@ -1493,7 +1493,7 @@ class Video:
 if __name__ == '__main__':
     sg.objs.start()
     sg.Geometry(parent=gi.objs.parent()).set('1024x600')
-    lg.objs.default(product=gi.product).run()
+    lg.objs.default(product=gi.product)
     if lg.objs._default.Success:
         commands = Commands()
         commands.bindings()
