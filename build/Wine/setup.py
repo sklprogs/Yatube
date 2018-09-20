@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
