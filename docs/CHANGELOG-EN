@@ -1,4 +1,7 @@
 
+
+1.4
+* Create an AppImage for Linux
 * Move the database and lists to $HOME/.config/yatube
 * Show comments
 * Add streaming (Control-s)

@@ -14,7 +14,7 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 product = 'Yatube'
-version = '1.3'
+version = '1.4'
 
 context_items = (_('Show the full summary')
                 ,_('Download')
