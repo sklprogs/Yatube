@@ -1,17 +1,21 @@
 LAUNCHING APPIMAGE
 sudo apt-get install fuse
+sudo gpasswd -a YOUR_NAME fuse (if needed)
 Make sure your GLIBC version is at least 2.15. You can run ldd --version to verify this.
-chown $USER *.AppImage
+sudo chown $USER *.AppImage (if needed)
 chmod +x *.AppImage
 If you have a SSL: CERTIFICATE_VERIFY_FAILED error, do the following:
-sudo apt-get install locate ca-certificates
+sudo apt-get install slocate ca-certificates
+(check that /usr/sbin is in `echo $PATH`
+if it is not:
+export PATH=\/usr\/sbin\:$PATH)
 updatedb
 locate ca-bundle.crt
 Get the path that locate provides and do `export SSL_CERT_FILE=YOUR_PATH`. You can save it in your .bashrc.
 
 MANUALLY SETTING UP PYTHON
 # Should be installed by default
-sudo apt-get install python3 zlib1g libjpeg8 python3-tk
+sudo apt-get install python3 zlib1g libjpeg8 python3-tk appstream-util curl
 # Package names will differ, see https://pillow.readthedocs.io/en/latest/installation.html
 sudo apt-get install libtiff5-dev libjpeg62-turbo-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev libharfbuzz-dev libfribidi-dev tcl8.6-dev tk8.6-dev
 sudo pip3 install pafy httplib2 Pillow google-api-python-client oauth2client google configparser youtube-dl
