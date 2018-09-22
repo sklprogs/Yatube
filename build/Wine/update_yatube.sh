@@ -7,7 +7,7 @@ ver='3.4'
 mkdir -p ./Yatube/app
 mv ./build/exe.win32-$ver/* ./Yatube/app/
 rmdir -p build/exe.win32-$ver
-cp -r /usr/local/bin/shared_bin_win/* ./Yatube/app/
+cp -r $HOME/bin/shared_bin_win/* ./Yatube/app/
 cp $HOME/.wine/drive_c/Python34/Lib/site-packages/httplib2/socks.py ./Yatube/app/
 cp -r ./resources ./Yatube/
 cp ./Yatube.cmd ./Yatube/
