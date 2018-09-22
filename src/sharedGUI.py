@@ -1,1 +1,1 @@
-/usr/local/bin/shared/src/sharedGUI.py
+/home/pete/bin/shared/src/sharedGUI.py

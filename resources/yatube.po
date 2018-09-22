@@ -10,10 +10,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: /usr/local/bin/Yatube/src\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../src\n"
 "X-Generator: Poedit 1.8.11\n"
-"X-Poedit-SearchPath-0: /usr/local/bin/Yatube/src\n"
+"X-Poedit-SearchPath-0: .\n"
 
 #: /usr/local/bin/Yatube/src/cli.py:47 /usr/local/bin/Yatube/src/cli.py:118
 #: /usr/local/bin/Yatube/src/db.py:31 /usr/local/bin/Yatube/src/db.py:37

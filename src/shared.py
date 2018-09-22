@@ -1,1 +1,1 @@
-/usr/local/bin/shared/src/shared.py
+/home/pete/bin/shared/src/shared.py
