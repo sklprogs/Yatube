@@ -17,9 +17,9 @@ product = 'Yatube'
 version = '1.4'
 
 context_items = (_('Show the full summary')
-                ,_('Download')
-                ,_('Play')
                 ,_('Stream')
+                ,_('Play')
+                ,_('Download')
                 ,_('Toggle the download status')
                 ,_('Delete the downloaded file')
                 ,_('Extract links')
@@ -36,9 +36,9 @@ context_items = (_('Show the full summary')
                 )
 
 url_items = (_('Show summary')
-            ,_('Download')
-            ,_('Play')
             ,_('Stream')
+            ,_('Play')
+            ,_('Download')
             ,_('Delete')
             ,_('Extract links')
             ,_('Full menu')
