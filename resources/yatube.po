@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-22 14:15+0300\n"
+"POT-Creation-Date: 2018-10-06 04:40+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -15,101 +15,8 @@ msgstr ""
 "X-Generator: Poedit 1.8.11\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: cli.py:47 cli.py:118 db.py:31 db.py:37 db.py:60 db.py:66 db.py:85 db.py:91
-#: db.py:139 db.py:145 db.py:157 db.py:163 db.py:177 db.py:183 db.py:197
-#: db.py:203 db.py:236 db.py:242 db.py:256 db.py:262 db.py:277 db.py:283
-#: db.py:298 db.py:309 db.py:315 db.py:338 gui.py:757 logic.py:72 logic.py:217
-#: logic.py:223 logic.py:241 logic.py:302 logic.py:357 logic.py:376
-#: logic.py:420 logic.py:427 logic.py:455 logic.py:460 logic.py:471
-#: logic.py:477 logic.py:509 logic.py:514 logic.py:519 logic.py:524
-#: logic.py:529 logic.py:535 logic.py:557 logic.py:568 logic.py:573
-#: logic.py:597 logic.py:629 logic.py:634 logic.py:649 logic.py:656
-#: logic.py:671 logic.py:676 logic.py:681 logic.py:702 logic.py:765
-#: logic.py:799 logic.py:810 logic.py:815 logic.py:839 logic.py:845
-#: logic.py:850 logic.py:863 logic.py:869 logic.py:874 logic.py:904
-#: logic.py:917 logic.py:1008 logic.py:1023 logic.py:1030 logic.py:1048
-#: logic.py:1055 logic.py:1070 logic.py:1109 logic.py:1114 logic.py:1133
-#: logic.py:1138 logic.py:1157 logic.py:1162 logic.py:1173 shared.py:273
-#: shared.py:287 shared.py:361 shared.py:382 shared.py:427 shared.py:437
-#: shared.py:511 shared.py:517 shared.py:531 shared.py:555 shared.py:574
-#: shared.py:579 shared.py:603 shared.py:627 shared.py:674 shared.py:680
-#: shared.py:699 shared.py:711 shared.py:735 shared.py:761 shared.py:772
-#: shared.py:783 shared.py:793 shared.py:828 shared.py:846 shared.py:1011
-#: shared.py:1054 shared.py:1181 shared.py:1206 shared.py:1218 shared.py:1397
-#: shared.py:1403 shared.py:1416 shared.py:1421 shared.py:1435 shared.py:1440
-#: shared.py:1454 shared.py:1459 shared.py:1476 shared.py:1491 shared.py:1523
-#: shared.py:1539 shared.py:1556 shared.py:1561 shared.py:1598 shared.py:1605
-#: shared.py:1652 shared.py:1658 shared.py:1680 shared.py:1697 shared.py:1703
-#: shared.py:1714 shared.py:1726 shared.py:1732 shared.py:1754 shared.py:1771
-#: shared.py:1779 shared.py:1815 shared.py:1919 shared.py:1961 shared.py:1976
-#: shared.py:2015 shared.py:2021 shared.py:2035 shared.py:2071 shared.py:2088
-#: shared.py:2093 shared.py:2118 shared.py:2143 shared.py:2194 shared.py:2200
-#: shared.py:2219 shared.py:2231 shared.py:2270 shared.py:2305 shared.py:2330
-#: shared.py:2341 shared.py:2353 shared.py:2367 shared.py:2373 shared.py:2394
-#: shared.py:2421 shared.py:2436 shared.py:2459 shared.py:2516 shared.py:2543
-#: shared.py:2549 shared.py:2560 shared.py:2566 shared.py:2709 shared.py:2724
-#: shared.py:2763 shared.py:2774 shared.py:2803 shared.py:2849 shared.py:2861
-#: shared.py:2906 shared.py:2913 shared.py:2923 shared.py:2960 shared.py:2973
-#: shared.py:2995 shared.py:3033 shared.py:3267 shared.py:3286 shared.py:3326
-#: shared.py:3363 shared.py:3373 shared.py:3406 shared.py:3425 shared.py:3435
-#: shared.py:3454 shared.py:3473 shared.py:3488 shared.py:3503 shared.py:3522
-#: shared.py:3533 shared.py:3547 shared.py:3561 shared.py:3575 shared.py:3607
-#: shared.py:3613 shared.py:3619 shared.py:3640 shared.py:3646 shared.py:3663
-#: shared.py:3688 shared.py:3699 shared.py:3712 shared.py:3727 shared.py:3743
-#: shared.py:3760 shared.py:4033 shared.py:4042 shared.py:4051 shared.py:4110
-#: shared.py:4159 shared.py:4172 shared.py:4260 shared.py:4285 shared.py:4302
-#: shared.py:4308 shared.py:4326 shared.py:4331 shared.py:4351 shared.py:4372
-#: shared.py:4393 shared.py:4428 shared.py:4448 shared.py:4462 shared.py:4501
-#: shared.py:4511 shared.py:4560 shared.py:4572 shared.py:4590 sharedGUI.py:79
-#: sharedGUI.py:84 sharedGUI.py:365 sharedGUI.py:381 sharedGUI.py:392
-#: sharedGUI.py:402 sharedGUI.py:433 sharedGUI.py:455 sharedGUI.py:485
-#: sharedGUI.py:516 sharedGUI.py:531 sharedGUI.py:542 sharedGUI.py:752
-#: sharedGUI.py:763 sharedGUI.py:804 sharedGUI.py:916 sharedGUI.py:979
-#: sharedGUI.py:995 sharedGUI.py:1021 sharedGUI.py:1067 sharedGUI.py:1147
-#: sharedGUI.py:1176 sharedGUI.py:1604 sharedGUI.py:1766 sharedGUI.py:2281
-#: sharedGUI.py:2657 sharedGUI.py:2674 sharedGUI.py:2685 sharedGUI.py:2746
-#: sharedGUI.py:2751 sharedGUI.py:2796 sharedGUI.py:2821 sharedGUI.py:2984
-#: sharedGUI.py:3001 sharedGUI.py:3090 sharedGUI.py:3095 sharedGUI.py:3136
-#: sharedGUI.py:3160 sharedGUI.py:3235 sharedGUI.py:3377 sharedGUI.py:3456
-#: sharedGUI.py:3467 sharedGUI.py:3859 sharedGUI.py:3865 sharedGUI.py:3967
-#: sharedGUI.py:3993 utils.py:29 utils.py:35 utils.py:46 utils.py:52
-#: utils.py:64 utils.py:70 utils.py:82 utils.py:88 utils.py:107 utils.py:113
-#: utils.py:146 utils.py:152 utils.py:189 utils.py:195 utils.py:200
-#: utils.py:211 utils.py:217 utils.py:228 utils.py:234 utils.py:264
-#: utils.py:275 utils.py:302 utils.py:321 utils.py:357 utils.py:387
-#: yatube.py:59 yatube.py:176 yatube.py:181 yatube.py:213 yatube.py:218
-#: yatube.py:287 yatube.py:309 yatube.py:318 yatube.py:360 yatube.py:365
-#: yatube.py:370 yatube.py:404 yatube.py:409 yatube.py:414 yatube.py:426
-#: yatube.py:436 yatube.py:445 yatube.py:482 yatube.py:509 yatube.py:514
-#: yatube.py:519 yatube.py:556 yatube.py:618 yatube.py:662 yatube.py:692
-#: yatube.py:723 yatube.py:742 yatube.py:825 yatube.py:830 yatube.py:838
-#: yatube.py:874 yatube.py:897 yatube.py:1007 yatube.py:1044 yatube.py:1088
-#: yatube.py:1129 yatube.py:1134 yatube.py:1356 yatube.py:1484 yatube.py:1506
-msgid "WARNING"
-msgstr "ПРЕДУПРЕЖДЕНИЕ"
-
-#: cli.py:48 cli.py:119 gui.py:758 logic.py:224 logic.py:428 logic.py:456
-#: logic.py:472 logic.py:510 logic.py:530 logic.py:569 logic.py:630
-#: logic.py:672 logic.py:677 logic.py:811 logic.py:846 logic.py:870
-#: logic.py:905 logic.py:918 logic.py:1009 logic.py:1110 logic.py:1134
-#: logic.py:1158 shared.py:575 shared.py:1593 shared.py:1957 shared.py:2089
-#: shared.py:2710 shared.py:2907 shared.py:4034 shared.py:4111 shared.py:4309
-#: shared.py:4332 shared.py:4352 sharedGUI.py:753 sharedGUI.py:996
-#: sharedGUI.py:1745 sharedGUI.py:1767 sharedGUI.py:2985 sharedGUI.py:3096
-#: sharedGUI.py:3137 sharedGUI.py:3457 sharedGUI.py:3468 sharedGUI.py:3866
-#: utils.py:196 utils.py:358 yatube.py:60 yatube.py:177 yatube.py:182
-#: yatube.py:214 yatube.py:219 yatube.py:288 yatube.py:310 yatube.py:319
-#: yatube.py:361 yatube.py:366 yatube.py:371 yatube.py:405 yatube.py:410
-#: yatube.py:415 yatube.py:427 yatube.py:437 yatube.py:446 yatube.py:510
-#: yatube.py:515 yatube.py:520 yatube.py:557 yatube.py:619 yatube.py:663
-#: yatube.py:693 yatube.py:724 yatube.py:839 yatube.py:875 yatube.py:1045
-#: yatube.py:1089 yatube.py:1130 yatube.py:1135 yatube.py:1298 yatube.py:1357
-#: yatube.py:1485
-msgid "Empty input is not allowed!"
-msgstr "Пустые входные данные не допускаются!"
-
-#: cli.py:58 cli.py:65 cli.py:84 db.py:269 gui.py:695 logic.py:296 logic.py:592
-#: logic.py:692 logic.py:824 shared.py:315 shared.py:396 shared.py:450
+#: cli.py:56 cli.py:63 cli.py:81 db.py:214 gui.py:696 logic.py:291 logic.py:576
+#: logic.py:656 logic.py:776 shared.py:315 shared.py:396 shared.py:450
 #: shared.py:498 shared.py:802 shared.py:857 shared.py:1471 shared.py:1613
 #: shared.py:1630 shared.py:1675 shared.py:1689 shared.py:1749 shared.py:1763
 #: shared.py:1808 shared.py:1821 shared.py:1925 shared.py:1971 shared.py:2002
@@ -117,43 +24,94 @@ msgstr "Пустые входные данные не допускаются!"
 #: shared.py:2510 shared.py:2695 shared.py:2756 shared.py:2780 shared.py:2797
 #: shared.py:2811 shared.py:2842 shared.py:3000 shared.py:3311 shared.py:4087
 #: shared.py:4132 shared.py:4279 shared.py:4403 shared.py:4409 shared.py:4415
-#: shared.py:4644 sharedGUI.py:358 sharedGUI.py:468 sharedGUI.py:473
-#: sharedGUI.py:480 sharedGUI.py:498 sharedGUI.py:503 sharedGUI.py:511
-#: sharedGUI.py:1062 sharedGUI.py:1383 sharedGUI.py:1484 sharedGUI.py:1922
-#: sharedGUI.py:2262 sharedGUI.py:2275 sharedGUI.py:2672 sharedGUI.py:2685
-#: sharedGUI.py:2713 sharedGUI.py:2718 sharedGUI.py:2801 sharedGUI.py:2822
-#: sharedGUI.py:3227 sharedGUI.py:3259 sharedGUI.py:3266 sharedGUI.py:3384
-#: sharedGUI.py:4039 utils.py:160 utils.py:254 utils.py:270 utils.py:366
-#: yatube.py:54 yatube.py:135 yatube.py:146 yatube.py:171 yatube.py:192
-#: yatube.py:208 yatube.py:243 yatube.py:268 yatube.py:329 yatube.py:334
-#: yatube.py:381 yatube.py:386 yatube.py:461 yatube.py:642 yatube.py:764
-#: yatube.py:787 yatube.py:844 yatube.py:885 yatube.py:902 yatube.py:1076
-#: yatube.py:1163 yatube.py:1220 yatube.py:1326
+#: shared.py:4667 sharedGUI.py:357 sharedGUI.py:467 sharedGUI.py:472
+#: sharedGUI.py:479 sharedGUI.py:497 sharedGUI.py:502 sharedGUI.py:510
+#: sharedGUI.py:1061 sharedGUI.py:1382 sharedGUI.py:1483 sharedGUI.py:1921
+#: sharedGUI.py:2261 sharedGUI.py:2274 sharedGUI.py:2671 sharedGUI.py:2684
+#: sharedGUI.py:2712 sharedGUI.py:2717 sharedGUI.py:2800 sharedGUI.py:2821
+#: sharedGUI.py:3226 sharedGUI.py:3258 sharedGUI.py:3265 sharedGUI.py:3383
+#: sharedGUI.py:4038 utils.py:142 utils.py:223 utils.py:237 utils.py:323
+#: yatube.py:54 yatube.py:135 yatube.py:146 yatube.py:170 yatube.py:185
+#: yatube.py:200 yatube.py:229 yatube.py:253 yatube.py:308 yatube.py:312
+#: yatube.py:350 yatube.py:354 yatube.py:414 yatube.py:580 yatube.py:694
+#: yatube.py:716 yatube.py:768 yatube.py:805 yatube.py:820 yatube.py:991
+#: yatube.py:1070 yatube.py:1126 yatube.py:1230
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
-#: cli.py:59
+#: cli.py:57
 #, python-format
 msgid "There are %d new videos in total"
 msgstr "Всего %d новых видео"
 
-#: cli.py:66
+#: cli.py:64
 #, python-format
 msgid "Update channel \"%s\""
 msgstr "Обновление канала \"%s\""
 
-#: cli.py:85
+#: cli.py:82
 #, python-format
 msgid "There are %d new videos for channel \"%s\""
 msgstr "%d новых видео для канала \"%s\""
 
-#: cli.py:101 yatube.py:1336
+#: cli.py:99 yatube.py:1241
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
-#: db.py:32 db.py:61 db.py:86 db.py:140 db.py:158 db.py:178 db.py:198 db.py:237
-#: db.py:257 db.py:278 db.py:310 utils.py:30 utils.py:47 utils.py:65
-#: utils.py:83 utils.py:108 utils.py:147 utils.py:212 utils.py:229 utils.py:265
+#: db.py:24 logic.py:72 logic.py:217 logic.py:391 logic.py:435 logic.py:512
+#: logic.py:516 logic.py:520 logic.py:547 logic.py:624 logic.py:790
+#: logic.py:808 logic.py:956 logic.py:978 shared.py:273 shared.py:287
+#: shared.py:361 shared.py:382 shared.py:427 shared.py:437 shared.py:511
+#: shared.py:517 shared.py:531 shared.py:555 shared.py:574 shared.py:579
+#: shared.py:603 shared.py:627 shared.py:674 shared.py:680 shared.py:699
+#: shared.py:711 shared.py:735 shared.py:761 shared.py:772 shared.py:783
+#: shared.py:793 shared.py:828 shared.py:846 shared.py:1011 shared.py:1054
+#: shared.py:1181 shared.py:1206 shared.py:1218 shared.py:1397 shared.py:1403
+#: shared.py:1416 shared.py:1421 shared.py:1435 shared.py:1440 shared.py:1454
+#: shared.py:1459 shared.py:1476 shared.py:1491 shared.py:1523 shared.py:1539
+#: shared.py:1556 shared.py:1561 shared.py:1598 shared.py:1605 shared.py:1652
+#: shared.py:1658 shared.py:1680 shared.py:1697 shared.py:1703 shared.py:1714
+#: shared.py:1726 shared.py:1732 shared.py:1754 shared.py:1771 shared.py:1779
+#: shared.py:1815 shared.py:1919 shared.py:1961 shared.py:1976 shared.py:2015
+#: shared.py:2021 shared.py:2035 shared.py:2071 shared.py:2088 shared.py:2093
+#: shared.py:2118 shared.py:2143 shared.py:2194 shared.py:2200 shared.py:2219
+#: shared.py:2231 shared.py:2270 shared.py:2305 shared.py:2330 shared.py:2341
+#: shared.py:2353 shared.py:2367 shared.py:2373 shared.py:2394 shared.py:2421
+#: shared.py:2436 shared.py:2459 shared.py:2516 shared.py:2543 shared.py:2549
+#: shared.py:2560 shared.py:2566 shared.py:2709 shared.py:2724 shared.py:2763
+#: shared.py:2774 shared.py:2803 shared.py:2849 shared.py:2861 shared.py:2906
+#: shared.py:2913 shared.py:2923 shared.py:2960 shared.py:2973 shared.py:2995
+#: shared.py:3033 shared.py:3267 shared.py:3286 shared.py:3326 shared.py:3363
+#: shared.py:3373 shared.py:3406 shared.py:3425 shared.py:3435 shared.py:3454
+#: shared.py:3473 shared.py:3488 shared.py:3503 shared.py:3522 shared.py:3533
+#: shared.py:3547 shared.py:3561 shared.py:3575 shared.py:3607 shared.py:3613
+#: shared.py:3619 shared.py:3640 shared.py:3646 shared.py:3663 shared.py:3688
+#: shared.py:3699 shared.py:3712 shared.py:3727 shared.py:3743 shared.py:3760
+#: shared.py:4033 shared.py:4042 shared.py:4051 shared.py:4110 shared.py:4159
+#: shared.py:4172 shared.py:4260 shared.py:4285 shared.py:4302 shared.py:4308
+#: shared.py:4326 shared.py:4331 shared.py:4351 shared.py:4372 shared.py:4393
+#: shared.py:4428 shared.py:4448 shared.py:4462 shared.py:4501 shared.py:4511
+#: shared.py:4560 shared.py:4572 shared.py:4590 shared.py:4639 shared.py:4645
+#: sharedGUI.py:78 sharedGUI.py:83 sharedGUI.py:364 sharedGUI.py:380
+#: sharedGUI.py:391 sharedGUI.py:401 sharedGUI.py:432 sharedGUI.py:454
+#: sharedGUI.py:484 sharedGUI.py:515 sharedGUI.py:530 sharedGUI.py:541
+#: sharedGUI.py:751 sharedGUI.py:762 sharedGUI.py:803 sharedGUI.py:915
+#: sharedGUI.py:978 sharedGUI.py:994 sharedGUI.py:1020 sharedGUI.py:1066
+#: sharedGUI.py:1146 sharedGUI.py:1175 sharedGUI.py:1603 sharedGUI.py:1765
+#: sharedGUI.py:2280 sharedGUI.py:2656 sharedGUI.py:2673 sharedGUI.py:2684
+#: sharedGUI.py:2745 sharedGUI.py:2750 sharedGUI.py:2795 sharedGUI.py:2820
+#: sharedGUI.py:2983 sharedGUI.py:3000 sharedGUI.py:3089 sharedGUI.py:3094
+#: sharedGUI.py:3135 sharedGUI.py:3159 sharedGUI.py:3234 sharedGUI.py:3376
+#: sharedGUI.py:3455 sharedGUI.py:3466 sharedGUI.py:3858 sharedGUI.py:3864
+#: sharedGUI.py:3966 sharedGUI.py:3992 utils.py:29 utils.py:43 utils.py:58
+#: utils.py:73 utils.py:95 utils.py:131 utils.py:170 utils.py:186 utils.py:200
+#: utils.py:232 yatube.py:435 yatube.py:672 yatube.py:755 yatube.py:762
+#: yatube.py:816 yatube.py:925 yatube.py:1430
+msgid "WARNING"
+msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+#: db.py:25 utils.py:30 utils.py:44 utils.py:59 utils.py:74 utils.py:96
+#: utils.py:132 utils.py:187 utils.py:201 utils.py:233
 #, python-format
 msgid ""
 "Database \"%s\" has failed!\n"
@@ -164,344 +122,314 @@ msgstr ""
 "\n"
 "Подробности: %s"
 
-#: db.py:38 db.py:67 db.py:92 db.py:146 db.py:164 db.py:184 db.py:204 db.py:243
-#: db.py:263 db.py:284 db.py:299 db.py:316 db.py:339 logic.py:242 logic.py:303
-#: logic.py:358 logic.py:461 logic.py:478 logic.py:536 logic.py:574
-#: logic.py:598 logic.py:635 logic.py:657 logic.py:682 logic.py:703
-#: logic.py:766 logic.py:800 logic.py:816 logic.py:851 logic.py:875
-#: logic.py:1031 logic.py:1056 logic.py:1071 logic.py:1115 logic.py:1139
-#: logic.py:1163 logic.py:1174 shared.py:274 shared.py:288 shared.py:362
-#: shared.py:383 shared.py:518 shared.py:580 shared.py:604 shared.py:628
-#: shared.py:681 shared.py:700 shared.py:712 shared.py:762 shared.py:773
-#: shared.py:784 shared.py:794 shared.py:829 shared.py:1404 shared.py:1422
-#: shared.py:1441 shared.py:1460 shared.py:1477 shared.py:1492 shared.py:1540
-#: shared.py:1562 shared.py:1659 shared.py:1681 shared.py:1704 shared.py:1715
-#: shared.py:1733 shared.py:1755 shared.py:1780 shared.py:1920 shared.py:1962
-#: shared.py:1977 shared.py:2022 shared.py:2094 shared.py:2119 shared.py:2144
-#: shared.py:2201 shared.py:2220 shared.py:2232 shared.py:2271 shared.py:2331
-#: shared.py:2342 shared.py:2354 shared.py:2374 shared.py:2395 shared.py:2422
-#: shared.py:2437 shared.py:2460 shared.py:2517 shared.py:2550 shared.py:2567
-#: shared.py:2775 shared.py:2850 shared.py:2862 shared.py:2914 shared.py:2924
-#: shared.py:2961 shared.py:2974 shared.py:3034 shared.py:3327 shared.py:3364
-#: shared.py:3374 shared.py:3407 shared.py:3426 shared.py:3436 shared.py:3455
-#: shared.py:3474 shared.py:3489 shared.py:3504 shared.py:3523 shared.py:3534
-#: shared.py:3548 shared.py:3562 shared.py:3576 shared.py:3620 shared.py:3647
-#: shared.py:3664 shared.py:3700 shared.py:3713 shared.py:3728 shared.py:3744
-#: shared.py:3761 shared.py:4160 shared.py:4173 shared.py:4373 shared.py:4394
-#: shared.py:4429 shared.py:4449 shared.py:4463 shared.py:4561 shared.py:4573
-#: shared.py:4591 sharedGUI.py:366 sharedGUI.py:382 sharedGUI.py:393
-#: sharedGUI.py:403 sharedGUI.py:434 sharedGUI.py:456 sharedGUI.py:486
-#: sharedGUI.py:517 sharedGUI.py:532 sharedGUI.py:543 sharedGUI.py:2703
-#: sharedGUI.py:2719 sharedGUI.py:2736 sharedGUI.py:2752 sharedGUI.py:3968
-#: sharedGUI.py:3994 utils.py:36 utils.py:53 utils.py:71 utils.py:89
-#: utils.py:114 utils.py:153 utils.py:201 utils.py:218 utils.py:235
-#: utils.py:276 utils.py:303 utils.py:322 utils.py:388 yatube.py:826
-msgid "Operation has been canceled."
-msgstr "Операция отменена."
-
-#: db.py:270
+#: db.py:215
 #, python-format
 msgid "Save \"%s\""
 msgstr "Сохранение \"%s\""
 
-#: gui.py:19 yatube.py:674
+#: gui.py:19 yatube.py:611
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
-#: gui.py:20 gui.py:39 gui.py:173 yatube.py:676 yatube.py:806
-msgid "Download"
-msgstr "Загрузить"
-
-#: gui.py:21 gui.py:40 gui.py:170 yatube.py:678 yatube.py:809
-msgid "Play"
-msgstr "Воспроизвести"
-
-#: gui.py:22 gui.py:41 gui.py:167 yatube.py:681 yatube.py:813
+#: gui.py:20 gui.py:39 gui.py:168 yatube.py:618 yatube.py:742
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: gui.py:23 yatube.py:683
+#: gui.py:21 gui.py:40 gui.py:171 yatube.py:615 yatube.py:738
+msgid "Play"
+msgstr "Воспроизвести"
+
+#: gui.py:22 gui.py:41 gui.py:174 yatube.py:613 yatube.py:735
+msgid "Download"
+msgstr "Загрузить"
+
+#: gui.py:23 yatube.py:620
 msgid "Toggle the download status"
 msgstr "Переключить статус загрузки"
 
-#: gui.py:24 yatube.py:685
+#: gui.py:24 yatube.py:622
 msgid "Delete the downloaded file"
 msgstr "Удалить загруженный файл"
 
-#: gui.py:25 gui.py:43 yatube.py:687 yatube.py:791
+#: gui.py:25 gui.py:43 yatube.py:624 yatube.py:720
 msgid "Extract links"
 msgstr "Извлечь ссылки"
 
-#: gui.py:26 yatube.py:695
+#: gui.py:26 yatube.py:629
 msgid "Load this channel"
 msgstr "Загрузить этот канал"
 
-#: gui.py:27 yatube.py:697
+#: gui.py:27 yatube.py:631
 msgid "Block this channel"
 msgstr "Блокировать этот канал"
 
-#: gui.py:28 yatube.py:699
+#: gui.py:28 yatube.py:633
 msgid "Unblock"
 msgstr "Разблокировать"
 
-#: gui.py:29 yatube.py:701
+#: gui.py:29 yatube.py:635
 msgid "Subscribe to this channel"
 msgstr "Подписаться на этот канал"
 
-#: gui.py:30 yatube.py:703
+#: gui.py:30 yatube.py:637
 msgid "Unsubscribe"
 msgstr "Отписаться"
 
-#: gui.py:31 yatube.py:705
+#: gui.py:31 yatube.py:639
 msgid "Open video URL"
 msgstr "Открыть URL видео"
 
-#: gui.py:32 yatube.py:707
+#: gui.py:32 yatube.py:641
 msgid "Copy video URL"
 msgstr "Копировать URL видео"
 
-#: gui.py:33 yatube.py:709
+#: gui.py:33 yatube.py:643
 msgid "Show comments"
 msgstr "Показать комментарии"
 
-#: gui.py:34 yatube.py:711
+#: gui.py:34 yatube.py:645
 msgid "Open channel URL"
 msgstr "Открыть URL канала"
 
-#: gui.py:35 yatube.py:713
+#: gui.py:35 yatube.py:647
 msgid "Copy channel URL"
 msgstr "Копировать URL канала"
 
-#: gui.py:38 yatube.py:804
+#: gui.py:38 yatube.py:733
 msgid "Show summary"
 msgstr "Показать сводку"
 
-#: gui.py:42 gui.py:176 yatube.py:815
+#: gui.py:42 gui.py:177 yatube.py:744
 msgid "Delete"
 msgstr "Удалить"
 
-#: gui.py:44 yatube.py:818
+#: gui.py:44 yatube.py:747
 msgid "Full menu"
 msgstr "Полное меню"
 
-#: gui.py:47 gui.py:110 yatube.py:78 yatube.py:81 yatube.py:84 yatube.py:87
-#: yatube.py:90 yatube.py:93 yatube.py:96 yatube.py:99 yatube.py:102
+#: gui.py:47 gui.py:111 yatube.py:76 yatube.py:79 yatube.py:82 yatube.py:85
+#: yatube.py:88 yatube.py:91 yatube.py:94 yatube.py:97 yatube.py:100
+#: yatube.py:103
 msgid "Other"
 msgstr "Другое"
 
-#: gui.py:48 yatube.py:80
+#: gui.py:48 yatube.py:78
 msgid "Manage subscriptions"
 msgstr "Подписка на каналы"
 
-#: gui.py:49 yatube.py:83
-msgid "Manage blocklist"
-msgstr "Блокировка каналов"
+#: gui.py:49 yatube.py:81
+msgid "Manage blocked authors"
+msgstr "Заблокированные авторы"
 
-#: gui.py:50 yatube.py:86
+#: gui.py:50 yatube.py:84
+msgid "Manage blocked words"
+msgstr "Заблокированные слова"
+
+#: gui.py:51 yatube.py:87
 msgid "Show new videos"
 msgstr "Показать новые видео"
 
-#: gui.py:51 yatube.py:89
+#: gui.py:52 yatube.py:90
 msgid "History"
 msgstr "История"
 
-#: gui.py:52 yatube.py:92
+#: gui.py:53 yatube.py:93
 msgid "Welcome screen"
 msgstr "Начальный экран"
 
-#: gui.py:53 yatube.py:95
+#: gui.py:54 yatube.py:96
 msgid "Select all new videos"
 msgstr "Выбрать все новые видео"
 
-#: gui.py:54 yatube.py:98
+#: gui.py:55 yatube.py:99
 msgid "Toggle status of selected"
 msgstr "Переключить статус выбранного"
 
-#: gui.py:55 yatube.py:101
+#: gui.py:56 yatube.py:102
 msgid "Delete selected"
 msgstr "Удалить выбранное"
 
-#: gui.py:91 gui.py:157 yatube.py:883
+#: gui.py:92 gui.py:158 yatube.py:804
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
-#: gui.py:98 gui.py:133 yatube.py:865
+#: gui.py:99 gui.py:134 yatube.py:788
 msgid "Search Youtube"
 msgstr "Поиск в Youtube"
 
-#: gui.py:105
+#: gui.py:106
 msgid "Update subscriptions"
 msgstr "Обновить подписки"
 
-#: gui.py:117 gui.py:120 yatube.py:600
+#: gui.py:118 gui.py:121 yatube.py:541
 msgid "Newer than"
 msgstr "Новее"
 
-#: gui.py:118
+#: gui.py:119
 msgid "Older than"
 msgstr "Старше"
 
-#: gui.py:135
+#: gui.py:136
 msgid "Search"
 msgstr "Найти"
 
-#: gui.py:145 yatube.py:785
+#: gui.py:146 yatube.py:715
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
-#: gui.py:159
+#: gui.py:160
 msgid "Filter"
 msgstr "Применить"
 
-#: gui.py:183
+#: gui.py:184
 msgid "Slow PC"
 msgstr "Медленный ПК"
 
-#: gui.py:262
+#: gui.py:263
 #, python-format
 msgid " (selected: %d/%d)"
 msgstr " (выбрано: %d/%d)"
 
-#: gui.py:334 gui.py:745 logic.py:709
+#: gui.py:335 gui.py:746 logic.py:671
 msgid "Author"
 msgstr "Автор"
 
-#: gui.py:335 gui.py:745 logic.py:713
+#: gui.py:336 gui.py:746 logic.py:675
 msgid "Title"
 msgstr "Заголовок"
 
-#: gui.py:336 gui.py:746 logic.py:729
+#: gui.py:337 gui.py:747 logic.py:691
 msgid "Duration"
 msgstr "Продолжительность"
 
-#: gui.py:369 gui.py:458
+#: gui.py:370 gui.py:459
 #, python-format
 msgid "#%d"
 msgstr "№%d"
 
-#: gui.py:381
+#: gui.py:382
 msgid "Image"
 msgstr "Изображение"
 
-#: gui.py:388
+#: gui.py:389
 msgid "Author:"
 msgstr "Автор:"
 
-#: gui.py:393 gui.py:404 gui.py:415
+#: gui.py:394 gui.py:405 gui.py:416
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: gui.py:399 sharedGUI.py:280 sharedGUI.py:1001 sharedGUI.py:2895
-#: sharedGUI.py:2906 sharedGUI.py:3355
+#: gui.py:400 sharedGUI.py:279 sharedGUI.py:1000 sharedGUI.py:2894
+#: sharedGUI.py:2905 sharedGUI.py:3354
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: gui.py:410
+#: gui.py:411
 msgid "Duration:"
 msgstr "Продолжительность:"
 
-#: gui.py:481 logic.py:503 shared.py:197 shared.py:2630 shared.py:3198
-#: shared.py:3601 shared.py:3926 shared.py:3958 sharedGUI.py:1015
-#: sharedGUI.py:1056 sharedGUI.py:1599 sharedGUI.py:2981 sharedGUI.py:3011
-#: sharedGUI.py:3982 sharedGUI.py:3987 yatube.py:854 yatube.py:858
-#: yatube.py:1187 yatube.py:1267
+#: gui.py:482 logic.py:505 shared.py:197 shared.py:2630 shared.py:3198
+#: shared.py:3601 shared.py:3926 shared.py:3958 sharedGUI.py:1014
+#: sharedGUI.py:1055 sharedGUI.py:1598 sharedGUI.py:2980 sharedGUI.py:3010
+#: sharedGUI.py:3981 sharedGUI.py:3986 yatube.py:777 yatube.py:780
+#: yatube.py:1094 yatube.py:1173
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
-#: gui.py:482
+#: gui.py:483
 #, python-format
 msgid "Scroll to %d"
 msgstr "Прокрутка до %d"
 
-#: gui.py:623
+#: gui.py:624
 msgid "First 100 comments:"
 msgstr "Первые 100 комментариев:"
 
-#: gui.py:639
+#: gui.py:640
 msgid "Edit subscriptions:"
 msgstr "Отредактируйте подписки:"
 
-#: gui.py:650
+#: gui.py:651
 msgid "Edit the blacklist:"
 msgstr "Отредактируйте черный список"
 
-#: gui.py:666
+#: gui.py:667
 msgid "Full summary:"
 msgstr "Полная сводка:"
 
-#: gui.py:677
+#: gui.py:678
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: gui.py:696
+#: gui.py:697
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
-#: gui.py:728 yatube.py:1197 yatube.py:1303
+#: gui.py:729 yatube.py:1104 yatube.py:1208
 msgid "Get video info"
 msgstr "Получение информации о видео"
 
-#: gui.py:736
+#: gui.py:737
 msgid "Loading metadata. Please wait..."
 msgstr "Загрузка метаданных. Пожалуйста, подождите..."
 
-#: logic.py:57 shared.py:1498 yatube.py:569
+#: logic.py:57 shared.py:1498 yatube.py:510
 msgid "Jan"
 msgstr "янв"
 
-#: logic.py:57 shared.py:1500 yatube.py:571
+#: logic.py:57 shared.py:1500 yatube.py:512
 msgid "Feb"
 msgstr "фев"
 
-#: logic.py:57 shared.py:1502 yatube.py:573
+#: logic.py:57 shared.py:1502 yatube.py:514
 msgid "Mar"
 msgstr "мар"
 
-#: logic.py:57 shared.py:1504 yatube.py:575
+#: logic.py:57 shared.py:1504 yatube.py:516
 msgid "Apr"
 msgstr "апр"
 
-#: logic.py:57 shared.py:1506 yatube.py:577
+#: logic.py:57 shared.py:1506 yatube.py:518
 msgid "May"
 msgstr "май"
 
-#: logic.py:58 shared.py:1508 yatube.py:579
+#: logic.py:58 shared.py:1508 yatube.py:520
 msgid "Jun"
 msgstr "июн"
 
-#: logic.py:58 shared.py:1510 yatube.py:581
+#: logic.py:58 shared.py:1510 yatube.py:522
 msgid "Jul"
 msgstr "июл"
 
-#: logic.py:58 shared.py:1512 yatube.py:583
+#: logic.py:58 shared.py:1512 yatube.py:524
 msgid "Aug"
 msgstr "авг"
 
-#: logic.py:58 shared.py:1514 yatube.py:585
+#: logic.py:58 shared.py:1514 yatube.py:526
 msgid "Sep"
 msgstr "сен"
 
-#: logic.py:58 shared.py:1516 yatube.py:587
+#: logic.py:58 shared.py:1516 yatube.py:528
 msgid "Oct"
 msgstr "окт"
 
-#: logic.py:59 shared.py:1518 yatube.py:589
+#: logic.py:59 shared.py:1518 yatube.py:530
 msgid "Nov"
 msgstr "ноя"
 
-#: logic.py:59 shared.py:1520 yatube.py:591
+#: logic.py:59 shared.py:1520 yatube.py:532
 msgid "Dec"
 msgstr "дек"
 
-#: logic.py:73 logic.py:377 logic.py:515 logic.py:520 logic.py:525
+#: logic.py:73 logic.py:392 logic.py:513 logic.py:517 logic.py:521
 #: shared.py:532 shared.py:743 shared.py:847 shared.py:1524 shared.py:2036
 #: shared.py:2725 shared.py:2804 shared.py:3689 shared.py:4327 shared.py:4512
-#: sharedGUI.py:41 sharedGUI.py:421 sharedGUI.py:2268 sharedGUI.py:2287
-#: sharedGUI.py:2309 sharedGUI.py:2316 sharedGUI.py:2330 sharedGUI.py:2342
-#: sharedGUI.py:2353 sharedGUI.py:2362 sharedGUI.py:2373 sharedGUI.py:2468
-#: sharedGUI.py:3091 sharedGUI.py:3161 sharedGUI.py:3428 sharedGUI.py:3860
-#: yatube.py:73 yatube.py:260 yatube.py:638 yatube.py:743 yatube.py:898
-#: yatube.py:1008 yatube.py:1057 yatube.py:1147 yatube.py:1293
+#: sharedGUI.py:40 sharedGUI.py:420 sharedGUI.py:2267 sharedGUI.py:2286
+#: sharedGUI.py:2308 sharedGUI.py:2315 sharedGUI.py:2329 sharedGUI.py:2341
+#: sharedGUI.py:2352 sharedGUI.py:2361 sharedGUI.py:2372 sharedGUI.py:2467
+#: sharedGUI.py:3090 sharedGUI.py:3160 sharedGUI.py:3427 sharedGUI.py:3859
+#: yatube.py:70 yatube.py:246 yatube.py:577 yatube.py:673 yatube.py:817
+#: yatube.py:926 yatube.py:973 yatube.py:1055 yatube.py:1199
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -865,22 +793,22 @@ msgstr "Йемен"
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: logic.py:191 yatube.py:118 yatube.py:981 yatube.py:1228
+#: logic.py:191 yatube.py:118 yatube.py:899 yatube.py:1134
 msgid "Trending"
 msgstr "Популярное"
 
-#: logic.py:218 logic.py:421 shared.py:2306 shared.py:3608 shared.py:3614
-#: sharedGUI.py:35 sharedGUI.py:1962 sharedGUI.py:2017 yatube.py:778
+#: logic.py:218 logic.py:436 shared.py:2306 shared.py:3608 shared.py:3614
+#: sharedGUI.py:34 sharedGUI.py:1961 sharedGUI.py:2016 yatube.py:707
 #, python-format
 msgid "Wrong input data: \"%s\""
 msgstr "Недопустимые входные данные: \"%s\""
 
-#: logic.py:297
+#: logic.py:292
 #, python-format
 msgid "Fetched %d links"
 msgstr "Получено %d ссылок"
 
-#: logic.py:558
+#: logic.py:548
 #, python-format
 msgid ""
 "Third party module has failed!\n"
@@ -891,12 +819,12 @@ msgstr ""
 "\n"
 "Детали: %s"
 
-#: logic.py:593 shared.py:2798 shared.py:2843 sharedGUI.py:3378
-#: sharedGUI.py:3385 yatube.py:643
+#: logic.py:577 shared.py:2798 shared.py:2843 sharedGUI.py:3377
+#: sharedGUI.py:3384 yatube.py:581
 msgid "Nothing to do."
 msgstr "Действие не требуется."
 
-#: logic.py:623 shared.py:209 shared.py:215 shared.py:224 shared.py:233
+#: logic.py:604 shared.py:209 shared.py:215 shared.py:224 shared.py:233
 #: shared.py:242 shared.py:304 shared.py:325 shared.py:334 shared.py:353
 #: shared.py:374 shared.py:428 shared.py:438 shared.py:595 shared.py:619
 #: shared.py:729 shared.py:742 shared.py:821 shared.py:862 shared.py:1592
@@ -904,35 +832,35 @@ msgstr "Действие не требуется."
 #: shared.py:1837 shared.py:1938 shared.py:1944 shared.py:1956 shared.py:2110
 #: shared.py:2135 shared.py:2259 shared.py:2445 shared.py:2473 shared.py:2620
 #: shared.py:2787 shared.py:2822 shared.py:2955 shared.py:3027 shared.py:4366
-#: shared.py:4387 shared.py:4442 sharedGUI.py:28 sharedGUI.py:34
-#: sharedGUI.py:40 sharedGUI.py:60 sharedGUI.py:143 sharedGUI.py:148
-#: sharedGUI.py:167 sharedGUI.py:182 sharedGUI.py:193 sharedGUI.py:208
-#: sharedGUI.py:224 sharedGUI.py:230 sharedGUI.py:420 sharedGUI.py:832
-#: sharedGUI.py:845 sharedGUI.py:854 sharedGUI.py:863 sharedGUI.py:881
-#: sharedGUI.py:898 sharedGUI.py:905 sharedGUI.py:968 sharedGUI.py:1476
-#: sharedGUI.py:1744 sharedGUI.py:1761 sharedGUI.py:1948 sharedGUI.py:1961
-#: sharedGUI.py:2016 sharedGUI.py:2141 sharedGUI.py:2267 sharedGUI.py:2286
-#: sharedGUI.py:2303 sharedGUI.py:2308 sharedGUI.py:2315 sharedGUI.py:2329
-#: sharedGUI.py:2341 sharedGUI.py:2352 sharedGUI.py:2361 sharedGUI.py:2372
-#: sharedGUI.py:2404 sharedGUI.py:2409 sharedGUI.py:2467 sharedGUI.py:2567
-#: sharedGUI.py:2669 sharedGUI.py:2676 sharedGUI.py:2682 sharedGUI.py:2686
-#: sharedGUI.py:2697 sharedGUI.py:2702 sharedGUI.py:2811 sharedGUI.py:2818
-#: sharedGUI.py:2821 sharedGUI.py:2941 sharedGUI.py:2966 sharedGUI.py:2973
-#: sharedGUI.py:2978 sharedGUI.py:2994 sharedGUI.py:3006 sharedGUI.py:3243
-#: sharedGUI.py:3274 sharedGUI.py:3427 sharedGUI.py:3871 sharedGUI.py:3954
-#: yatube.py:72 yatube.py:106 yatube.py:259 yatube.py:500 yatube.py:637
-#: yatube.py:717 yatube.py:777 yatube.py:1056 yatube.py:1146 yatube.py:1292
-#: yatube.py:1297
+#: shared.py:4387 shared.py:4442 sharedGUI.py:27 sharedGUI.py:33
+#: sharedGUI.py:39 sharedGUI.py:59 sharedGUI.py:142 sharedGUI.py:147
+#: sharedGUI.py:166 sharedGUI.py:181 sharedGUI.py:192 sharedGUI.py:207
+#: sharedGUI.py:223 sharedGUI.py:229 sharedGUI.py:419 sharedGUI.py:831
+#: sharedGUI.py:844 sharedGUI.py:853 sharedGUI.py:862 sharedGUI.py:880
+#: sharedGUI.py:897 sharedGUI.py:904 sharedGUI.py:967 sharedGUI.py:1475
+#: sharedGUI.py:1743 sharedGUI.py:1760 sharedGUI.py:1947 sharedGUI.py:1960
+#: sharedGUI.py:2015 sharedGUI.py:2140 sharedGUI.py:2266 sharedGUI.py:2285
+#: sharedGUI.py:2302 sharedGUI.py:2307 sharedGUI.py:2314 sharedGUI.py:2328
+#: sharedGUI.py:2340 sharedGUI.py:2351 sharedGUI.py:2360 sharedGUI.py:2371
+#: sharedGUI.py:2403 sharedGUI.py:2408 sharedGUI.py:2466 sharedGUI.py:2566
+#: sharedGUI.py:2668 sharedGUI.py:2675 sharedGUI.py:2681 sharedGUI.py:2685
+#: sharedGUI.py:2696 sharedGUI.py:2701 sharedGUI.py:2810 sharedGUI.py:2817
+#: sharedGUI.py:2820 sharedGUI.py:2940 sharedGUI.py:2965 sharedGUI.py:2972
+#: sharedGUI.py:2977 sharedGUI.py:2993 sharedGUI.py:3005 sharedGUI.py:3242
+#: sharedGUI.py:3273 sharedGUI.py:3426 sharedGUI.py:3870 sharedGUI.py:3953
+#: yatube.py:69 yatube.py:106 yatube.py:245 yatube.py:452 yatube.py:576
+#: yatube.py:650 yatube.py:706 yatube.py:972 yatube.py:1054 yatube.py:1198
+#: yatube.py:1202
 msgid "ERROR"
 msgstr "ОШИБКА"
 
-#: logic.py:624 shared.py:596 shared.py:620 shared.py:2111 shared.py:2136
-#: shared.py:4367 shared.py:4388 shared.py:4443 sharedGUI.py:85
+#: logic.py:605 shared.py:596 shared.py:620 shared.py:2111 shared.py:2136
+#: shared.py:4367 shared.py:4388 shared.py:4443 sharedGUI.py:84
 #, python-format
 msgid "The condition \"%s\" is not observed!"
 msgstr "Условие \"%s\" не выполнено!"
 
-#: logic.py:650
+#: logic.py:625
 #, python-format
 msgid ""
 "Error adding \"%s\"!\n"
@@ -943,53 +871,53 @@ msgstr ""
 "\n"
 "Детали: %s"
 
-#: logic.py:693
+#: logic.py:657
 #, python-format
 msgid "Get new video info: %s"
 msgstr "Загрузка информации о новом видео: %s"
 
-#: logic.py:717
+#: logic.py:679
 msgid "Date"
 msgstr "Дата"
 
-#: logic.py:721
+#: logic.py:683
 msgid "Category"
 msgstr "Категория"
 
-#: logic.py:725
+#: logic.py:687
 msgid "Description"
 msgstr "Описание"
 
-#: logic.py:733
+#: logic.py:695
 msgid "Length"
 msgstr "Длина"
 
-#: logic.py:737
+#: logic.py:699
 msgid "Views"
 msgstr "Просмотров"
 
-#: logic.py:741
+#: logic.py:703
 msgid "Likes"
 msgstr "Нравится"
 
-#: logic.py:745
+#: logic.py:707
 msgid "Dislikes"
 msgstr "Не нравится"
 
-#: logic.py:749
+#: logic.py:711
 msgid "Rating"
 msgstr "Рейтинг"
 
-#: logic.py:755
+#: logic.py:717
 msgid "Small video picture URL"
 msgstr "Адрес маленького изображения"
 
-#: logic.py:825
+#: logic.py:777
 #, python-format
 msgid "Download \"%s\""
 msgstr "Загрузка \"%s\""
 
-#: logic.py:840
+#: logic.py:791
 #, python-format
 msgid ""
 "Failed to download \"%s\"!\n"
@@ -1000,7 +928,7 @@ msgstr ""
 "\n"
 "Детали: %s"
 
-#: logic.py:864 logic.py:1024 logic.py:1049
+#: logic.py:809 logic.py:957 logic.py:979
 #, python-format
 msgid ""
 "Operation has failed!\n"
@@ -1011,9 +939,14 @@ msgstr ""
 "\n"
 "Подробности: %s"
 
-#: shared.py:160 sharedGUI.py:2678 sharedGUI.py:2686 sharedGUI.py:2729
-#: sharedGUI.py:2735 sharedGUI.py:2806 sharedGUI.py:2822 sharedGUI.py:2864
-#: sharedGUI.py:2870 sharedGUI.py:3251
+#: logic.py:1050 yatube.py:1356
+msgid "Put here words to block in titles (case is ignored)"
+msgstr ""
+"Вставьте сюда слова из заголовков для блокировки (регистр игнорируется)"
+
+#: shared.py:160 sharedGUI.py:2677 sharedGUI.py:2685 sharedGUI.py:2728
+#: sharedGUI.py:2734 sharedGUI.py:2805 sharedGUI.py:2821 sharedGUI.py:2863
+#: sharedGUI.py:2869 sharedGUI.py:3250
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
@@ -1027,14 +960,14 @@ msgstr "ВНИМАНИЕ: Перезаписать файл \"%s\"?"
 msgid "Custom arguments: \"%s\""
 msgstr "Дополнительные параметры: \"%s\""
 
-#: shared.py:210 shared.py:3028 yatube.py:501
+#: shared.py:210 shared.py:3028 yatube.py:453
 #, python-format
 msgid "Failed to run \"%s\"!"
 msgstr "Не удалось запустить \"%s\"!"
 
 #: shared.py:216 shared.py:305 shared.py:354 shared.py:375 shared.py:730
-#: shared.py:1838 shared.py:3268 shared.py:3287 sharedGUI.py:1068
-#: sharedGUI.py:2410 sharedGUI.py:2670
+#: shared.py:1838 shared.py:3268 shared.py:3287 sharedGUI.py:1067
+#: sharedGUI.py:2409 sharedGUI.py:2669
 msgid "Not enough input data!"
 msgstr "Недостаточно входных данных!"
 
@@ -1046,6 +979,32 @@ msgstr ""
 "Не удается открыть файл во внешней программе. Возможно, Вам стоит проверить "
 "ассоциации файлов."
 
+#: shared.py:274 shared.py:288 shared.py:362 shared.py:383 shared.py:518
+#: shared.py:580 shared.py:604 shared.py:628 shared.py:681 shared.py:700
+#: shared.py:712 shared.py:762 shared.py:773 shared.py:784 shared.py:794
+#: shared.py:829 shared.py:1404 shared.py:1422 shared.py:1441 shared.py:1460
+#: shared.py:1477 shared.py:1492 shared.py:1540 shared.py:1562 shared.py:1659
+#: shared.py:1681 shared.py:1704 shared.py:1715 shared.py:1733 shared.py:1755
+#: shared.py:1780 shared.py:1920 shared.py:1962 shared.py:1977 shared.py:2022
+#: shared.py:2094 shared.py:2119 shared.py:2144 shared.py:2201 shared.py:2220
+#: shared.py:2232 shared.py:2271 shared.py:2331 shared.py:2342 shared.py:2354
+#: shared.py:2374 shared.py:2395 shared.py:2422 shared.py:2437 shared.py:2460
+#: shared.py:2517 shared.py:2550 shared.py:2567 shared.py:2775 shared.py:2850
+#: shared.py:2862 shared.py:2914 shared.py:2924 shared.py:2961 shared.py:2974
+#: shared.py:3034 shared.py:3327 shared.py:3364 shared.py:3374 shared.py:3407
+#: shared.py:3426 shared.py:3436 shared.py:3455 shared.py:3474 shared.py:3489
+#: shared.py:3504 shared.py:3523 shared.py:3534 shared.py:3548 shared.py:3562
+#: shared.py:3576 shared.py:3620 shared.py:3647 shared.py:3664 shared.py:3700
+#: shared.py:3713 shared.py:3728 shared.py:3744 shared.py:3761 shared.py:4160
+#: shared.py:4173 shared.py:4373 shared.py:4394 shared.py:4429 shared.py:4449
+#: shared.py:4463 shared.py:4561 shared.py:4573 shared.py:4591 shared.py:4640
+#: sharedGUI.py:365 sharedGUI.py:381 sharedGUI.py:392 sharedGUI.py:402
+#: sharedGUI.py:433 sharedGUI.py:455 sharedGUI.py:485 sharedGUI.py:516
+#: sharedGUI.py:531 sharedGUI.py:542 sharedGUI.py:2702 sharedGUI.py:2718
+#: sharedGUI.py:2735 sharedGUI.py:2751 sharedGUI.py:3967 sharedGUI.py:3993
+msgid "Operation has been canceled."
+msgstr "Операция отменена."
+
 #: shared.py:316 shared.py:1926
 #, python-format
 msgid "Write file \"%s\""
@@ -1056,9 +1015,9 @@ msgstr "Запись файла \"%s\""
 msgid "Unable to write file \"%s\"!"
 msgstr "Не удается записать файл \"%s\"!"
 
-#: shared.py:335 shared.py:1945 sharedGUI.py:1477 sharedGUI.py:1949
-#: sharedGUI.py:2683 sharedGUI.py:2819 sharedGUI.py:3872 sharedGUI.py:3955
-#: yatube.py:107 yatube.py:718 yatube.py:831
+#: shared.py:335 shared.py:1945 sharedGUI.py:1476 sharedGUI.py:1948
+#: sharedGUI.py:2682 sharedGUI.py:2818 sharedGUI.py:3871 sharedGUI.py:3954
+#: yatube.py:107 yatube.py:651 yatube.py:756
 #, python-format
 msgid ""
 "An unknown mode \"%s\"!\n"
@@ -1088,7 +1047,16 @@ msgstr "Файл \"%s\" не подлежит сортировке!"
 msgid "Dictionary \"%s\": Incorrect line #%d: \"%s\"!"
 msgstr "Словарь \"%s\": Неправильная строка №%d: \"%s\"!"
 
-#: shared.py:736 shared.py:1599 sharedGUI.py:225
+#: shared.py:575 shared.py:1593 shared.py:1957 shared.py:2089 shared.py:2710
+#: shared.py:2907 shared.py:4034 shared.py:4111 shared.py:4309 shared.py:4332
+#: shared.py:4352 shared.py:4646 sharedGUI.py:752 sharedGUI.py:995
+#: sharedGUI.py:1744 sharedGUI.py:1766 sharedGUI.py:2984 sharedGUI.py:3095
+#: sharedGUI.py:3136 sharedGUI.py:3456 sharedGUI.py:3467 sharedGUI.py:3865
+#: yatube.py:763 yatube.py:1203
+msgid "Empty input is not allowed!"
+msgstr "Пустые входные данные не допускаются!"
+
+#: shared.py:736 shared.py:1599 sharedGUI.py:224
 #, python-format
 msgid "File \"%s\" has not been found!"
 msgstr "Файл \"%s\" не найден!"
@@ -1153,7 +1121,7 @@ msgstr "Обратите внимание: указанная дата - пон�
 msgid "The object \"%s\" is not a file!"
 msgstr "Объект \"%s\" не является файлом!"
 
-#: shared.py:1614 shared.py:2466 utils.py:161
+#: shared.py:1614 shared.py:2466 utils.py:143
 #, python-format
 msgid "Copy \"%s\" to \"%s\""
 msgstr "Копирование \"%s\" в \"%s\""
@@ -1402,326 +1370,326 @@ msgstr "Слева ориентиров нет!"
 msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
-#: shared.py:4645 sharedGUI.py:1384 sharedGUI.py:1923 sharedGUI.py:4040
-#: utils.py:271 yatube.py:136 yatube.py:172 yatube.py:209 yatube.py:244
-#: yatube.py:330 yatube.py:382 yatube.py:462 yatube.py:788 yatube.py:903
-#: yatube.py:1077 yatube.py:1164 yatube.py:1327
+#: shared.py:4668 sharedGUI.py:1383 sharedGUI.py:1922 sharedGUI.py:4039
+#: utils.py:238 yatube.py:136 yatube.py:171 yatube.py:201 yatube.py:230
+#: yatube.py:309 yatube.py:351 yatube.py:415 yatube.py:717 yatube.py:821
+#: yatube.py:992 yatube.py:1071 yatube.py:1231
 msgid "Nothing to do!"
 msgstr "Действие не требуется."
 
-#: sharedGUI.py:29
+#: sharedGUI.py:28
 #, python-format
 msgid "Failed to enable key combination \"%s\"!"
 msgstr "Не удалось задействовать сочетание клавиш \"%s\"!"
 
-#: sharedGUI.py:47
+#: sharedGUI.py:46
 msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
-#: sharedGUI.py:48 sharedGUI.py:49
+#: sharedGUI.py:47 sharedGUI.py:48
 msgid "Web-page"
 msgstr "Веб-страница"
 
-#: sharedGUI.py:50
+#: sharedGUI.py:49
 msgid "All files"
 msgstr "Все файлы"
 
-#: sharedGUI.py:55
+#: sharedGUI.py:54
 msgid "Save As:"
 msgstr "Сохранить как:"
 
-#: sharedGUI.py:61
+#: sharedGUI.py:60
 msgid "Failed to select a file!"
 msgstr "Не удалось выбрать файл!"
 
-#: sharedGUI.py:80
+#: sharedGUI.py:79
 #, python-format
 msgid "An unknown color \"%s\"!"
 msgstr "Неизвестный цвет \"%s\"!"
 
-#: sharedGUI.py:139 sharedGUI.py:144
+#: sharedGUI.py:138 sharedGUI.py:143
 msgid "Failed to insert the text!"
 msgstr "Не удалось вставить текст!"
 
-#: sharedGUI.py:149 sharedGUI.py:168 sharedGUI.py:183 sharedGUI.py:194
-#: sharedGUI.py:209 sharedGUI.py:231
+#: sharedGUI.py:148 sharedGUI.py:167 sharedGUI.py:182 sharedGUI.py:193
+#: sharedGUI.py:208 sharedGUI.py:230
 #, python-format
 msgid "A logic error: unknown object type: \"%s\"!"
 msgstr "Логическая ошибка: неизвестный тип объекта: \"%s\"!"
 
-#: sharedGUI.py:188
+#: sharedGUI.py:187
 msgid "Text:"
 msgstr "Текст:"
 
-#: sharedGUI.py:203 sharedGUI.py:637 sharedGUI.py:638 sharedGUI.py:1106
-#: sharedGUI.py:1107 sharedGUI.py:1684 sharedGUI.py:1685
+#: sharedGUI.py:202 sharedGUI.py:636 sharedGUI.py:637 sharedGUI.py:1105
+#: sharedGUI.py:1106 sharedGUI.py:1683 sharedGUI.py:1684
 msgid "Quit"
 msgstr "Выйти"
 
-#: sharedGUI.py:205
+#: sharedGUI.py:204
 msgid "Save and close"
 msgstr "Запомнить и выйти"
 
-#: sharedGUI.py:323
+#: sharedGUI.py:322
 msgid "Find:"
 msgstr "Найти:"
 
-#: sharedGUI.py:359 sharedGUI.py:481 sharedGUI.py:512
+#: sharedGUI.py:358 sharedGUI.py:480 sharedGUI.py:511
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: sharedGUI.py:469 sharedGUI.py:499
+#: sharedGUI.py:468 sharedGUI.py:498
 msgid "Only one match has been found!"
 msgstr "Найдено 1 совпадение!"
 
-#: sharedGUI.py:474
+#: sharedGUI.py:473
 msgid "No more matches, continuing from the top!"
 msgstr "Совпадений больше нет, поиск продолжен с начала!"
 
-#: sharedGUI.py:504
+#: sharedGUI.py:503
 msgid "No more matches, continuing from the bottom!"
 msgstr "Совпадений больше нет, поиск продолжен с конца!"
 
-#: sharedGUI.py:764 sharedGUI.py:917 sharedGUI.py:1148 sharedGUI.py:1177
-#: sharedGUI.py:2974 sharedGUI.py:3002
+#: sharedGUI.py:763 sharedGUI.py:916 sharedGUI.py:1147 sharedGUI.py:1176
+#: sharedGUI.py:2973 sharedGUI.py:3001
 msgid "The parent has already been destroyed."
 msgstr "Родительский виджет уже был разрушен."
 
-#: sharedGUI.py:805
+#: sharedGUI.py:804
 #, python-format
 msgid "Failed to remove the tag %s in the widget %s in positions %s-%s!"
 msgstr "Не удалось удалить тэг %s в виджете %s для позиций %s-%s!"
 
-#: sharedGUI.py:817
+#: sharedGUI.py:816
 msgid "DEBUG-ERROR"
 msgstr "ОШИБКА ПРИ ОТЛАДКЕ"
 
-#: sharedGUI.py:818 sharedGUI.py:906
+#: sharedGUI.py:817 sharedGUI.py:905
 #, python-format
 msgid "Element \"%s\" has not been found in fragment \"%s\"!"
 msgstr "Элемент \"%s\" не был найден во фрагменте \"%s\"!"
 
-#: sharedGUI.py:833
+#: sharedGUI.py:832
 #, python-format
 msgid "Failed to add tag \"%s\" for positions %s-%s!"
 msgstr "Не удалось добавить тэг \"%s\" для позиций %s-%s!"
 
-#: sharedGUI.py:846
+#: sharedGUI.py:845
 #, python-format
 msgid "Failed to configure tag \"%s\" to have the background of color \"%s\"!"
 msgstr "Не удалось назначить тэгу \"%s\" фон \"%s\"!"
 
-#: sharedGUI.py:855
+#: sharedGUI.py:854
 #, python-format
 msgid "Failed to configure tag \"%s\" to have the foreground of color \"%s\"!"
 msgstr "Не удалось назначить тэгу \"%s\" цвет \"%s\"!"
 
-#: sharedGUI.py:864
+#: sharedGUI.py:863
 #, python-format
 msgid "Failed to configure tag \"%s\" to have the font \"%s\"!"
 msgstr "Не удалось назначить тэгу \"%s\" шрифт \"%s\"!"
 
-#: sharedGUI.py:882
+#: sharedGUI.py:881
 #, python-format
 msgid "Failed to insert mark \"%s\" in position \"%s\"!"
 msgstr "Не удается вставить метку \"%s\" для позиции \"%s\"!"
 
-#: sharedGUI.py:899
+#: sharedGUI.py:898
 #, python-format
 msgid "Failed to remove mark \"%s\"!"
 msgstr "Не удалось удалить метку \"%s\"!"
 
-#: sharedGUI.py:969 sharedGUI.py:980
+#: sharedGUI.py:968 sharedGUI.py:979
 #, python-format
 msgid "Failed to shift screen to label \"%s\"!"
 msgstr "Не удалось сдвинуть экран до метки \"%s\"!"
 
-#: sharedGUI.py:1016
+#: sharedGUI.py:1015
 #, python-format
 msgid "Got position: \"%s\""
 msgstr "Получена позиция: \"%s\""
 
-#: sharedGUI.py:1022
+#: sharedGUI.py:1021
 msgid "Cannot return a cursor position!"
 msgstr "Не удалось вернуть позицию курсора!"
 
-#: sharedGUI.py:1057
+#: sharedGUI.py:1056
 #, python-format
 msgid "%d tags to assign"
 msgstr "Создание %d тэгов"
 
-#: sharedGUI.py:1063
+#: sharedGUI.py:1062
 msgid "Spelling seems to be correct."
 msgstr "Ошибок правописания не обнаружено."
 
-#: sharedGUI.py:1485
+#: sharedGUI.py:1484
 #, python-format
 msgid "Set the geometry to \"%dx%d+%d+%d\""
 msgstr "Изменение геометрии виджета на \"%dx%d+%d+%d\""
 
-#: sharedGUI.py:1600
+#: sharedGUI.py:1599
 #, python-format
 msgid "Remove item #%d"
 msgstr "Удаление элемента №%d"
 
-#: sharedGUI.py:1605
+#: sharedGUI.py:1604
 #, python-format
 msgid "No item #%d!"
 msgstr "Элемент №%d отсутствует!"
 
-#: sharedGUI.py:1762
+#: sharedGUI.py:1761
 #, python-format
 msgid "Item \"%s\" is not in list!"
 msgstr "Элемент \"%s\" не в списке!"
 
-#: sharedGUI.py:2142
+#: sharedGUI.py:2141
 msgid "Failed to return selection in the Tkinter widget!"
 msgstr "Не удается вернуть диапазон выделения в виджете Tkinter!"
 
-#: sharedGUI.py:2200
+#: sharedGUI.py:2199
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
-#: sharedGUI.py:2263
+#: sharedGUI.py:2262
 #, python-format
 msgid "Save geometry: %s"
 msgstr "Сохранение геометрии: %s"
 
-#: sharedGUI.py:2276
+#: sharedGUI.py:2275
 #, python-format
 msgid "Restore geometry: %s"
 msgstr "Восстановление геометрии: %s"
 
-#: sharedGUI.py:2282
+#: sharedGUI.py:2281
 msgid "Failed to restore geometry!"
 msgstr "Не удалось восстановить геометрию!"
 
-#: sharedGUI.py:2304
+#: sharedGUI.py:2303
 msgid "Failed to change window properties!"
 msgstr "Не удалось изменить свойства окна!"
 
-#: sharedGUI.py:2405
+#: sharedGUI.py:2404
 msgid "Failed to get the window handle!"
 msgstr "Не удалось получить дескриптор окна!"
 
-#: sharedGUI.py:2433 sharedGUI.py:2492 sharedGUI.py:2495
+#: sharedGUI.py:2432 sharedGUI.py:2491 sharedGUI.py:2494
 msgid "Please wait..."
 msgstr "Подождите..."
 
-#: sharedGUI.py:2568
+#: sharedGUI.py:2567
 #, python-format
 msgid "Wrong font: \"%s\"!"
 msgstr "Неправильный шрифт: \"%s\"!"
 
-#: sharedGUI.py:2658 sharedGUI.py:2898 sharedGUI.py:2906
+#: sharedGUI.py:2657 sharedGUI.py:2897 sharedGUI.py:2905
 msgid "Message"
 msgstr "Сообщение"
 
-#: sharedGUI.py:2676
+#: sharedGUI.py:2675
 msgid "CRITICAL"
 msgstr "КРИТИЧЕСКАЯ ОШИБКА"
 
-#: sharedGUI.py:2865
+#: sharedGUI.py:2864
 msgid "Yes"
 msgstr "Да"
 
-#: sharedGUI.py:2866
+#: sharedGUI.py:2865
 msgid "No"
 msgstr "Нет"
 
-#: sharedGUI.py:2869
+#: sharedGUI.py:2868
 msgid "Cancel"
 msgstr "Отмена"
 
-#: sharedGUI.py:2873 sharedGUI.py:2887
+#: sharedGUI.py:2872 sharedGUI.py:2886
 msgid "Accept and close"
 msgstr "Принять и закрыть"
 
-#: sharedGUI.py:2881
+#: sharedGUI.py:2880
 msgid "Reject and close"
 msgstr "Отказаться и закрыть"
 
-#: sharedGUI.py:2942
+#: sharedGUI.py:2941
 #, python-format
 msgid "Picture \"%s\" was not found!"
 msgstr "Изображение \"%s\" не найдено!"
 
-#: sharedGUI.py:2967
+#: sharedGUI.py:2966
 msgid "A clipboard error has occurred!"
 msgstr "Ошибка буфера обмена!"
 
-#: sharedGUI.py:2979 sharedGUI.py:3007
+#: sharedGUI.py:2978 sharedGUI.py:3006
 msgid "An unknown error has occurred."
 msgstr "Произошла неизвестная ошибка."
 
-#: sharedGUI.py:2995
+#: sharedGUI.py:2994
 msgid "Failed to paste the clipboard contents!"
 msgstr "Ошибка вставки из буфера обмена."
 
-#: sharedGUI.py:3228
+#: sharedGUI.py:3227
 #, python-format
 msgid "Add %s"
 msgstr "Добавить %s"
 
-#: sharedGUI.py:3267
+#: sharedGUI.py:3266
 #, python-format
 msgid "Close %d objs"
 msgstr "Закрыть %d объектов"
 
-#: sharedGUI.py:3275
+#: sharedGUI.py:3274
 #, python-format
 msgid "Widget \"%s\" does not have a \"close\" action!"
 msgstr "У виджета \"%s\" нет действия \"close\"!"
 
-#: sharedGUI.py:3532
+#: sharedGUI.py:3531
 msgid "Compare texts:"
 msgstr "Сравните тексты:"
 
-#: sharedGUI.py:3672
+#: sharedGUI.py:3671
 #, python-format
 msgid "File: \"%s\"; %d/%d MB; Rate: %s kbps; ETA: %ss"
 msgstr "Файл: \"%s\"; %d/%d Мб; Скорость: %s Кб/с; Осталось: %sс"
 
-#: sharedGUI.py:3716 yatube.py:1063 yatube.py:1153
+#: sharedGUI.py:3715 yatube.py:979 yatube.py:1061
 msgid "Download progress"
 msgstr "Ход загрузок"
 
-#: sharedGUI.py:3983
+#: sharedGUI.py:3982
 #, python-format
 msgid "Widget 1 geometry: %dx%d+%d+%d"
 msgstr "Геометрия виджета 1: %dx%d+%d+%d"
 
-#: sharedGUI.py:3988
+#: sharedGUI.py:3987
 #, python-format
 msgid "Widget 2 geometry: %dx%d+%d+%d"
 msgstr "Геометрия виджета 2: %dx%d+%d+%d"
 
-#: sharedGUI.py:4026
+#: sharedGUI.py:4025
 msgid "Select files:"
 msgstr "Выберите файлы:"
 
-#: sharedGUI.py:4054
+#: sharedGUI.py:4053
 msgid "Toggle all"
 msgstr "Переключить все"
 
-#: sharedGUI.py:4055
+#: sharedGUI.py:4054
 msgid "Mark/unmark all checkboxes"
 msgstr "Переключить все галки"
 
-#: sharedGUI.py:4060
+#: sharedGUI.py:4059
 msgid "Close"
 msgstr "Закрыть"
 
-#: sharedGUI.py:4061
+#: sharedGUI.py:4060
 msgid "Close this window"
 msgstr "Закрыть это окно"
 
-#: utils.py:190
+#: utils.py:171
 #, python-format
 msgid "Database \"%s\" has failed!"
 msgstr "Ошибка базы данных \"%s\"!"
 
-#: utils.py:367
+#: utils.py:324
 #, python-format
 msgid "%d records have been found."
 msgstr "Найдено %d записей."
@@ -1730,7 +1698,7 @@ msgstr "Найдено %d записей."
 msgid "No comments yet!"
 msgstr "Комментариев пока нет!"
 
-#: yatube.py:117 yatube.py:292 yatube.py:299 yatube.py:760 yatube.py:985
+#: yatube.py:117 yatube.py:275 yatube.py:282 yatube.py:691 yatube.py:903
 msgid "Channels"
 msgstr "Каналы"
 
@@ -1739,79 +1707,82 @@ msgstr "Каналы"
 msgid "Unsubscribe from channel \"%s\""
 msgstr "Отписка от канала \"%s\""
 
-#: yatube.py:163 yatube.py:1406
+#: yatube.py:163 yatube.py:1309
 msgid "Put here authors to subscribe to"
 msgstr "Вставьте сюда авторов, на которых нужно подписаться"
 
-#: yatube.py:193
+#: yatube.py:186
 #, python-format
 msgid "Unblock channel \"%s\""
 msgstr "Разблокировка канала \"%s\""
 
-#: yatube.py:200 yatube.py:1430
+#: yatube.py:193 yatube.py:1333
 msgid "Put here authors to be blocked"
 msgstr "Вставьте сюда авторов, которых нужно заблокировать"
 
-#: yatube.py:264
+#: yatube.py:250
 #, python-format
 msgid "%d files have been deleted:"
 msgstr "Удалено %d файлов:"
 
-#: yatube.py:335
+#: yatube.py:313
 #, python-format
 msgid "Subscribe to channel \"%s\""
 msgstr "Подписка на канал \"%s\""
 
-#: yatube.py:387
+#: yatube.py:355
 #, python-format
 msgid "Block channel \"%s\""
 msgstr "Блокировка канала \"%s\""
 
-#: yatube.py:483
+#: yatube.py:436
 msgid "Unable to find a suitable application!"
 msgstr "Не удалось найти подходящее приложение!"
 
-#: yatube.py:735
+#: yatube.py:666
 #, python-format
 msgid "Video #%d:"
 msgstr "Видео №%d:"
 
-#: yatube.py:765 yatube.py:845
+#: yatube.py:695 yatube.py:769
 #, python-format
 msgid "Switch to channel \"%s\""
 msgstr "Переключение на канал \"%s\""
 
-#: yatube.py:819
+#: yatube.py:748
 msgid "Selected video"
 msgstr "Выбранное видео"
 
-#: yatube.py:886
+#: yatube.py:806
 #, python-format
 msgid "Filter by \"%s\""
 msgstr "Применение фильтра \"%s\""
 
-#: yatube.py:1176
+#: yatube.py:1084
 #, python-format
 msgid "Update channels (%d/%d)"
 msgstr "Обновление каналов (%d/%d)"
 
-#: yatube.py:1188
+#: yatube.py:1095
 #, python-format
 msgid "URLs in total: %d"
 msgstr "Общее число URL: %d"
 
-#: yatube.py:1221
+#: yatube.py:1127
 msgid "No new videos!"
 msgstr "Нет новых видео!"
 
-#: yatube.py:1268
+#: yatube.py:1174
 #, python-format
 msgid "Widget must be at least %d pixels in height"
 msgstr "Виджет должен быть минимум %d пикселей в высоту"
 
-#: yatube.py:1507
+#: yatube.py:1431
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
+
+#~ msgid "Manage blocklist"
+#~ msgstr "Блокировка каналов"
 
 #~ msgid "Not implemented yet!"
 #~ msgstr "Еще не реализовано!"
