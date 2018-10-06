@@ -58,9 +58,10 @@ class Commands:
         f = 'yatube.Commands.save_url'
         author = self._menu.opt_chl.choice
         if hasattr(self._channel,'_url'):
-            url = self._channel._url
+            url   = self._channel._url
+            links = self._channel._links
             if author and url:
-                lg.objs.channels().add(author,url)
+                lg.objs.channels().add(author,url,links)
             else:
                 sh.com.empty(f)
         elif lg.objs.channels()._urls:

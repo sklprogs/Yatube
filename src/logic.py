@@ -296,8 +296,17 @@ class Channel:
             sh.com.cancel(f)
     
     def run(self):
-        self.page()
-        self.links()
+        f = 'logic.Channel.run'
+        history_links = objs.channels().links(url=self._url)
+        if history_links:
+            self._links = history_links
+            sh.log.append (f,_('INFO')
+                          ,_('%d links have been loaded from memory.') \
+                          % len(self._links)
+                          )
+        else:
+            self.page()
+            self.links()
         return self._links
 
 
@@ -1115,19 +1124,25 @@ class ChannelHistory:
     def __init__(self):
         self.values()
     
+    def links(self,url):
+        if url in self._urls:
+            return self._links[self._urls.index(url)]
+    
     def values(self):
         self._no      = 0
         self._authors = []
         self._urls    = []
+        self._links   = []
     
     def reset(self):
         self.values()
     
-    def add(self,author,url):
+    def add(self,author,url,links):
         if not url in self._urls:
             self._authors.append(author)
             self._urls.append(url)
             self._no = len(self._urls) - 1
+            self._links.append(links)
     
     def inc(self):
         if self._no == len(self._urls) - 1:
