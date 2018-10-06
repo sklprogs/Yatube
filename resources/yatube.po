@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-06 09:33+0300\n"
+"POT-Creation-Date: 2018-10-07 02:37+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -34,9 +34,9 @@ msgstr ""
 #: utils.py:223 utils.py:237 utils.py:323 yatube.py:75 yatube.py:111
 #: yatube.py:195 yatube.py:206 yatube.py:230 yatube.py:245 yatube.py:260
 #: yatube.py:289 yatube.py:313 yatube.py:368 yatube.py:372 yatube.py:410
-#: yatube.py:414 yatube.py:474 yatube.py:640 yatube.py:754 yatube.py:776
-#: yatube.py:828 yatube.py:865 yatube.py:880 yatube.py:1053 yatube.py:1132
-#: yatube.py:1188 yatube.py:1294
+#: yatube.py:414 yatube.py:474 yatube.py:640 yatube.py:759 yatube.py:781
+#: yatube.py:833 yatube.py:870 yatube.py:885 yatube.py:1058 yatube.py:1137
+#: yatube.py:1193 yatube.py:1305 yatube.py:1346
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
@@ -55,7 +55,7 @@ msgstr "Обновление канала \"%s\""
 msgid "There are %d new videos for channel \"%s\""
 msgstr "%d новых видео для канала \"%s\""
 
-#: cli.py:99 yatube.py:1305
+#: cli.py:99 yatube.py:1317
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
@@ -106,8 +106,8 @@ msgstr "ЗАБЛОКИРОВАНО"
 #: sharedGUI.py:3455 sharedGUI.py:3466 sharedGUI.py:3858 sharedGUI.py:3864
 #: sharedGUI.py:3966 sharedGUI.py:3992 utils.py:29 utils.py:43 utils.py:58
 #: utils.py:73 utils.py:95 utils.py:131 utils.py:170 utils.py:186 utils.py:200
-#: utils.py:232 yatube.py:495 yatube.py:732 yatube.py:815 yatube.py:822
-#: yatube.py:876 yatube.py:987 yatube.py:1494
+#: utils.py:232 yatube.py:495 yatube.py:732 yatube.py:820 yatube.py:827
+#: yatube.py:881 yatube.py:992 yatube.py:1520
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
@@ -132,15 +132,15 @@ msgstr "Сохранение \"%s\""
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
-#: gui.py:20 gui.py:39 gui.py:174 yatube.py:678 yatube.py:802
+#: gui.py:20 gui.py:39 gui.py:174 yatube.py:678 yatube.py:807
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: gui.py:21 gui.py:40 gui.py:177 yatube.py:675 yatube.py:798
+#: gui.py:21 gui.py:40 gui.py:177 yatube.py:675 yatube.py:803
 msgid "Play"
 msgstr "Воспроизвести"
 
-#: gui.py:22 gui.py:41 gui.py:180 yatube.py:673 yatube.py:795
+#: gui.py:22 gui.py:41 gui.py:180 yatube.py:673 yatube.py:800
 msgid "Download"
 msgstr "Загрузить"
 
@@ -152,7 +152,7 @@ msgstr "Переключить статус загрузки"
 msgid "Delete the downloaded file"
 msgstr "Удалить загруженный файл"
 
-#: gui.py:25 gui.py:43 yatube.py:684 yatube.py:780
+#: gui.py:25 gui.py:43 yatube.py:684 yatube.py:785
 msgid "Extract links"
 msgstr "Извлечь ссылки"
 
@@ -196,15 +196,15 @@ msgstr "Открыть URL канала"
 msgid "Copy channel URL"
 msgstr "Копировать URL канала"
 
-#: gui.py:38 yatube.py:793
+#: gui.py:38 yatube.py:798
 msgid "Show summary"
 msgstr "Показать сводку"
 
-#: gui.py:42 gui.py:183 yatube.py:804
+#: gui.py:42 gui.py:183 yatube.py:809
 msgid "Delete"
 msgstr "Удалить"
 
-#: gui.py:44 yatube.py:807
+#: gui.py:44 yatube.py:812
 msgid "Full menu"
 msgstr "Полное меню"
 
@@ -250,11 +250,11 @@ msgstr "Переключить статус выбранного"
 msgid "Delete selected"
 msgstr "Удалить выбранное"
 
-#: gui.py:92 gui.py:164 yatube.py:864
+#: gui.py:92 gui.py:164 yatube.py:869
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
-#: gui.py:99 gui.py:140 yatube.py:848
+#: gui.py:99 gui.py:140 yatube.py:853
 msgid "Search Youtube"
 msgstr "Поиск в Youtube"
 
@@ -282,7 +282,7 @@ msgstr "Старше"
 msgid "Search"
 msgstr "Найти"
 
-#: gui.py:152 yatube.py:775
+#: gui.py:152 yatube.py:780
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
@@ -340,8 +340,8 @@ msgstr "Продолжительность:"
 #: gui.py:488 logic.py:519 shared.py:197 shared.py:2630 shared.py:3198
 #: shared.py:3601 shared.py:3926 shared.py:3958 sharedGUI.py:1014
 #: sharedGUI.py:1055 sharedGUI.py:1598 sharedGUI.py:2980 sharedGUI.py:3010
-#: sharedGUI.py:3981 sharedGUI.py:3986 yatube.py:837 yatube.py:840
-#: yatube.py:1156 yatube.py:1237
+#: sharedGUI.py:3981 sharedGUI.py:3986 yatube.py:842 yatube.py:845
+#: yatube.py:1161 yatube.py:1246
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
@@ -374,7 +374,7 @@ msgstr "Выберите действие:"
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
-#: gui.py:735 yatube.py:1166 yatube.py:1272
+#: gui.py:735 yatube.py:1171 yatube.py:1283
 msgid "Get video info"
 msgstr "Получение информации о видео"
 
@@ -438,7 +438,7 @@ msgstr "дек"
 #: sharedGUI.py:2352 sharedGUI.py:2361 sharedGUI.py:2372 sharedGUI.py:2467
 #: sharedGUI.py:3090 sharedGUI.py:3160 sharedGUI.py:3427 sharedGUI.py:3859
 #: yatube.py:69 yatube.py:127 yatube.py:306 yatube.py:637 yatube.py:733
-#: yatube.py:877 yatube.py:988 yatube.py:1035 yatube.py:1117 yatube.py:1263
+#: yatube.py:882 yatube.py:993 yatube.py:1040 yatube.py:1122 yatube.py:1274
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -802,12 +802,12 @@ msgstr "Йемен"
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: logic.py:191 yatube.py:178 yatube.py:961 yatube.py:1196
+#: logic.py:191 yatube.py:178 yatube.py:966 yatube.py:1201
 msgid "Trending"
 msgstr "Популярное"
 
 #: logic.py:218 logic.py:450 shared.py:2306 shared.py:3608 shared.py:3614
-#: sharedGUI.py:34 sharedGUI.py:1961 sharedGUI.py:2016 yatube.py:767
+#: sharedGUI.py:34 sharedGUI.py:1961 sharedGUI.py:2016 yatube.py:772
 #, python-format
 msgid "Wrong input data: \"%s\""
 msgstr "Недопустимые входные данные: \"%s\""
@@ -863,8 +863,8 @@ msgstr "Действие не требуется."
 #: sharedGUI.py:2972 sharedGUI.py:2977 sharedGUI.py:2993 sharedGUI.py:3005
 #: sharedGUI.py:3242 sharedGUI.py:3273 sharedGUI.py:3426 sharedGUI.py:3870
 #: sharedGUI.py:3953 yatube.py:68 yatube.py:126 yatube.py:163 yatube.py:305
-#: yatube.py:512 yatube.py:636 yatube.py:710 yatube.py:766 yatube.py:1034
-#: yatube.py:1116 yatube.py:1262 yatube.py:1266
+#: yatube.py:512 yatube.py:636 yatube.py:710 yatube.py:771 yatube.py:1039
+#: yatube.py:1121 yatube.py:1273 yatube.py:1277
 msgid "ERROR"
 msgstr "ОШИБКА"
 
@@ -954,7 +954,7 @@ msgstr ""
 "\n"
 "Подробности: %s"
 
-#: logic.py:1064 yatube.py:1420
+#: logic.py:1064 yatube.py:1446
 msgid "Put here words to block in titles (case is ignored)"
 msgstr ""
 "Вставьте сюда слова из заголовков для блокировки (регистр игнорируется)"
@@ -962,8 +962,8 @@ msgstr ""
 #: logic.py:1169 logic.py:1191 shared.py:4668 sharedGUI.py:1383
 #: sharedGUI.py:1922 sharedGUI.py:4039 utils.py:238 yatube.py:76 yatube.py:196
 #: yatube.py:231 yatube.py:261 yatube.py:290 yatube.py:369 yatube.py:411
-#: yatube.py:475 yatube.py:777 yatube.py:881 yatube.py:1054 yatube.py:1133
-#: yatube.py:1295
+#: yatube.py:475 yatube.py:782 yatube.py:886 yatube.py:1059 yatube.py:1138
+#: yatube.py:1306
 msgid "Nothing to do!"
 msgstr "Действие не требуется."
 
@@ -1040,7 +1040,7 @@ msgstr "Не удается записать файл \"%s\"!"
 
 #: shared.py:335 shared.py:1945 sharedGUI.py:1476 sharedGUI.py:1948
 #: sharedGUI.py:2682 sharedGUI.py:2818 sharedGUI.py:3871 sharedGUI.py:3954
-#: yatube.py:164 yatube.py:711 yatube.py:816
+#: yatube.py:164 yatube.py:711 yatube.py:821
 #, python-format
 msgid ""
 "An unknown mode \"%s\"!\n"
@@ -1075,7 +1075,7 @@ msgstr "Словарь \"%s\": Неправильная строка №%d: \"%s
 #: shared.py:4352 shared.py:4646 sharedGUI.py:752 sharedGUI.py:995
 #: sharedGUI.py:1744 sharedGUI.py:1766 sharedGUI.py:2984 sharedGUI.py:3095
 #: sharedGUI.py:3136 sharedGUI.py:3456 sharedGUI.py:3467 sharedGUI.py:3865
-#: yatube.py:823 yatube.py:1267
+#: yatube.py:828 yatube.py:1278
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
@@ -1666,7 +1666,7 @@ msgstr "Сравните тексты:"
 msgid "File: \"%s\"; %d/%d MB; Rate: %s kbps; ETA: %ss"
 msgstr "Файл: \"%s\"; %d/%d Мб; Скорость: %s Кб/с; Осталось: %sс"
 
-#: sharedGUI.py:3715 yatube.py:1041 yatube.py:1123
+#: sharedGUI.py:3715 yatube.py:1046 yatube.py:1128
 msgid "Download progress"
 msgstr "Ход загрузок"
 
@@ -1714,7 +1714,7 @@ msgstr "Найдено %d записей."
 msgid "No comments yet!"
 msgstr "Комментариев пока нет!"
 
-#: yatube.py:177 yatube.py:335 yatube.py:342 yatube.py:751 yatube.py:965
+#: yatube.py:177 yatube.py:335 yatube.py:342 yatube.py:756 yatube.py:970
 msgid "Channels"
 msgstr "Каналы"
 
@@ -1723,7 +1723,7 @@ msgstr "Каналы"
 msgid "Unsubscribe from channel \"%s\""
 msgstr "Отписка от канала \"%s\""
 
-#: yatube.py:223 yatube.py:1373
+#: yatube.py:223 yatube.py:1399
 msgid "Put here authors to subscribe to"
 msgstr "Вставьте сюда авторов, на которых нужно подписаться"
 
@@ -1732,7 +1732,7 @@ msgstr "Вставьте сюда авторов, на которых нужно
 msgid "Unblock channel \"%s\""
 msgstr "Разблокировка канала \"%s\""
 
-#: yatube.py:253 yatube.py:1397
+#: yatube.py:253 yatube.py:1423
 msgid "Put here authors to be blocked"
 msgstr "Вставьте сюда авторов, которых нужно заблокировать"
 
@@ -1760,40 +1760,45 @@ msgstr "Не удалось найти подходящее приложение
 msgid "Video #%d:"
 msgstr "Видео №%d:"
 
-#: yatube.py:755 yatube.py:829
+#: yatube.py:760 yatube.py:834
 #, python-format
 msgid "Switch to channel \"%s\""
 msgstr "Переключение на канал \"%s\""
 
-#: yatube.py:808
+#: yatube.py:813
 msgid "Selected video"
 msgstr "Выбранное видео"
 
-#: yatube.py:866
+#: yatube.py:871
 #, python-format
 msgid "Filter by \"%s\""
 msgstr "Применение фильтра \"%s\""
 
-#: yatube.py:1146
+#: yatube.py:1151
 #, python-format
 msgid "Update channels (%d/%d)"
 msgstr "Обновление каналов (%d/%d)"
 
-#: yatube.py:1157
+#: yatube.py:1162
 #, python-format
 msgid "URLs in total: %d"
 msgstr "Общее число URL: %d"
 
-#: yatube.py:1189
+#: yatube.py:1194
 msgid "No new videos!"
 msgstr "Нет новых видео!"
 
-#: yatube.py:1238
+#: yatube.py:1247
 #, python-format
 msgid "Widget must be at least %d pixels in height"
 msgstr "Виджет должен быть минимум %d пикселей в высоту"
 
-#: yatube.py:1495
+#: yatube.py:1347
+#, python-format
+msgid "%d/%d links are already stored in DB."
+msgstr "%d/%d ссылок уже хранятся в БД."
+
+#: yatube.py:1521
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
 
