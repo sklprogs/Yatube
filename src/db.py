@@ -11,7 +11,7 @@ gettext.install('yatube','../resources/locale')
 
 class DB:
     
-    def __init__(self,path='yatube.db'):
+    def __init__(self,path):
         self.Success = True
         self._user   = ''
         self._path   = path
@@ -222,15 +222,51 @@ class DB:
             sh.com.cancel(f)
                           
     def get_video(self,video_id):
+        ''' This is very slow (~0,28s per a video => ~3s per a channel).
+            Use 'self.get_videos' for a batch.
+        '''
         f = 'db.DB.get_video'
         if self.Success:
-            self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
-                                    ,DURATION,LENGTH,VIEWS,LIKES \
-                                    ,DISLIKES,RATING,IMAGE,SEARCH\
-                                    ,TIMESTAMP,DTIME \
-                              from   VIDEOS \
-                              where  URL = ?',(video_id,))
+            self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
+                                     ,DURATION,LENGTH,VIEWS,LIKES \
+                                     ,DISLIKES,RATING,IMAGE,SEARCH\
+                                     ,TIMESTAMP,DTIME \
+                               from   VIDEOS \
+                               where  URL = ?',(video_id,)
+                             )
             return self.dbc.fetchone()
+        else:
+            sh.com.cancel(f)
+    
+    def get_videos(self,urls):
+        ''' For some reason, sqlite skips unknown URLs (no empty
+            tuples), so we need to return URL as well in order not to
+            mix up results.
+        '''
+        f = 'db.DB.get_videos'
+        if self.Success:
+            self.dbc.execute ('select URL,AUTHOR,TITLE,DATE,CATEGORY\
+                                     ,DESC,DURATION,LENGTH,VIEWS,LIKES \
+                                     ,DISLIKES,RATING,IMAGE,SEARCH\
+                                     ,TIMESTAMP,DTIME \
+                               from   VIDEOS \
+                               where  URL in %s' % str(tuple(urls))
+                             )
+            result = self.dbc.fetchall()
+            # The data are fetched in a mixed order
+            if result:
+                data = []
+                for url in urls:
+                    Found = False
+                    for item in result:
+                        if item[0] == url:
+                            Found = True
+                            break
+                    if Found:
+                        data.append(item[1:])
+                    else:
+                        data.append(())
+                return data
         else:
             sh.com.cancel(f)
 
@@ -267,7 +303,8 @@ class DB:
 
 
 if __name__ == '__main__':
-    idb = DB()
+    path = sh.Home('yatube').add_config('yatube.db')
+    idb = DB(path)
     urls = idb.downloaded()
     urls = list(urls)
     for i in range(len(urls)):

@@ -98,4 +98,52 @@ def invalid_urls():
 
 
 if __name__ == '__main__':
-    invalid_urls()
+    f = 'tests.__main__'
+    '''
+    urls = ['OFP5rzaOCfw','taRRpqX0CmA','MYXjO5TJqjw','f2gX4K5AndM'
+           ,'vDP804SHKGg','jJfXOpQuxU4','E8QB5oxtoYE','9ZWmJcAi_OI'
+           ,'WVNlMYYY-XX','c_2baGSBlxg','WVNlMBpS-eE'
+           ]
+    '''
+    urls = ('WVNlMYYY-XX','WVNlMBpS-eE')
+    path = sh.Home('yatube').add_config('yatube.db')
+    #invalid_urls()
+    idb = db.DB(path)
+    '''
+    idb.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY,DESC,DURATION\
+                            ,LENGTH,VIEWS,LIKES,DISLIKES,RATING,IMAGE\
+                            ,SEARCH,TIMESTAMP,DTIME from VIDEOS \
+                      where URL = ?',(video_id,)
+                    )
+    '''
+    '''
+    idb.dbc.execute ('select TITLE from VIDEOS where URL like ?'
+                    ,('%' + ','.join(urls) + '%',)
+                    )
+    '''
+    idb.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS where URL in %s' % str(tuple(urls))
+                    )
+    result = idb.dbc.fetchall()
+    if result:
+        #result = [item[0] for item in result]
+        #print('\n'.join(result))
+        print(result)
+        '''
+        authors = [item[0] for item in result]
+        titles  = [item[1] for item in result]
+        dates   = [item[2] for item in result]
+        mes = ''
+        for i in range(len(authors)):
+            mes += '%d: %s; ' % (i,authors[i])
+        mes += '\n'
+        for i in range(len(titles)):
+            mes += '%d: %s; ' % (i,titles[i])
+        mes += '\n'
+        for i in range(len(dates)):
+            mes += '%d: %s; ' % (i,dates[i])
+        mes += '\n'
+        print(mes)
+        '''
+    else:
+        sh.com.empty(f)
+    idb.close()

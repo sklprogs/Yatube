@@ -734,11 +734,16 @@ class Commands:
                               )
     
     def update_channel(self,author,url):
+        f = 'logic.Commands.update_channel'
+        # This includes downloading a web-page
+        timer = sh.Timer(f)
+        timer.start()
         self._menu.opt_chl.set(author)
         self._channel = lg.Channel(url=url)
         self._channel.run()
         self.reset_channel_gui()
         self.channel_gui()
+        timer.end()
         
     def get_links(self,url):
         self._channel = lg.Channel(url=url)
@@ -1221,10 +1226,14 @@ class Commands:
                         )
         
     def fill_default(self):
+        f = 'yatube.Commands.fill_default'
+        #timer = sh.Timer(f)
+        #timer.start()
         #todo: Operation takes ~1,72s - speed this up (?)
         gi.objs.channel(parent=gi.objs.menu().framev)
         for i in range(len(self._channel._links)):
             gi.objs._channel.add(no=i)
+        #timer.end()
             
     def dimensions(self):
         f = 'yatube.Commands.dimensions'
@@ -1246,6 +1255,8 @@ class Commands:
     
     def fill_unknown(self):
         f = 'yatube.Commands.fill_unknown'
+        #timer = sh.Timer(f)
+        #timer.start()
         unknown   = []
         unknown_g = []
         unknown_i = []
@@ -1294,6 +1305,7 @@ class Commands:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
+        #timer.end()
     
     def unsupported(self):
         author   = sh.Text(text=self._video.model._author).delete_unsupported()
@@ -1325,17 +1337,30 @@ class Commands:
             sh.com.empty(f)
     
     def fill_known(self):
-        for i in range(len(self._channel._links)):
-            self._video = Video(video_id=self._channel._links[i])
-            self._gvideo = gi.objs._channel._videos[i]
-            self._videos[self._gvideo] = self._video
-            self._video.model.Saved = lg.objs.db().get_video(video_id=self._video.model._video_id)
-            if self._video.model.Saved:
-                self._video.model.assign_offline(self._video.model.Saved)
-                #todo: elaborate 'Video.model.get' and delete this
-                self._video.image()
-                self.update_video(i)
-    
+        f = 'yatube.Commands.fill_known'
+        #timer = sh.Timer(f)
+        #timer.start()
+        result = lg.objs.db().get_videos(urls=self._channel._links)
+        if result:
+            matches = [item[0] for item in result if item]
+            sh.log.append (f,_('INFO')
+                          ,_('%d/%d links are already stored in DB.')\
+                          % (len(matches),len(self._channel._links))
+                          )
+            for i in range(len(self._channel._links)):
+                self._video = Video(video_id=self._channel._links[i])
+                self._gvideo = gi.objs._channel._videos[i]
+                self._videos[self._gvideo] = self._video
+                if result[i]:
+                    self._video.model.Saved = result[i]
+                    self._video.model.assign_offline(self._video.model.Saved)
+                    #todo: elaborate 'Video.model.get' and delete this
+                    self._video.image()
+                    self.update_video(i)
+        else:
+            sh.com.empty(f)
+        #timer.end()
+            
     def channel_gui(self):
         self.fill_default()
         self.fill_known()
@@ -1346,6 +1371,7 @@ class Commands:
         '''
         sg.objs.root().idle()
         self.fill_unknown()
+        # Using the canvas is fast, no need to time this
         self.bind_context()
         self.dimensions()
         gi.objs._channel.canvas.move_top()
