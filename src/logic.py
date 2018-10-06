@@ -379,7 +379,7 @@ class Objects:
     
     def __init__(self):
         self._online = self._lists = self._const = self._default \
-                     = self._db = None
+                     = self._db = self._channels = None
         
     def db(self):
         f = 'logic.Objects.db'
@@ -416,6 +416,11 @@ class Objects:
         if not self._lists:
             self._lists = Lists()
         return self._lists
+    
+    def channels(self):
+        if not self._channels:
+            self._channels = ChannelHistory()
+        return self._channels
 
 
 
@@ -1102,6 +1107,84 @@ class DefaultConfig:
             self.db()
         else:
             sh.com.cancel(f)
+
+
+
+class ChannelHistory:
+    
+    def __init__(self):
+        self.values()
+    
+    def values(self):
+        self._no      = 0
+        self._authors = []
+        self._urls    = []
+    
+    def reset(self):
+        self.values()
+    
+    def add(self,author,url):
+        if not url in self._urls:
+            self._authors.append(author)
+            self._urls.append(url)
+            self._no = len(self._urls) - 1
+    
+    def inc(self):
+        if self._no == len(self._urls) - 1:
+            self._no = 0
+        elif self._urls:
+            self._no += 1
+    
+    def dec(self):
+        if self._no == 0:
+            if self._urls:
+                self._no = len(self._urls) - 1
+        else:
+            self._no -= 1
+    
+    def prev(self):
+        f = 'logic.ChannelHistory.prev'
+        self.dec()
+        cond1 = self._no == 0 and len(self._authors) == 0 \
+                              and len(self._urls) == 0
+        cond2 = 0 <= self._no < len(self._authors) \
+            and 0 <= self._no < len(self._urls)
+        if cond1:
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+        elif cond2:
+            return (self._authors[self._no]
+                   ,self._urls[self._no]
+                   )
+        else:
+            min_val = min(len(self._authors),len(self._urls))
+            sh.objs.mes (f,_('ERROR')
+                        ,_('The condition "%s" is not observed!') \
+                        % '%d <= %d < %d' % (0,self._no,min_val)
+                        )
+    
+    def next(self):
+        f = 'logic.ChannelHistory.next'
+        self.inc()
+        cond1 = self._no == 0 and len(self._authors) == 0 \
+                              and len(self._urls) == 0
+        cond2 = 0 <= self._no < len(self._authors) \
+            and 0 <= self._no < len(self._urls)
+        if cond1:
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+        elif cond2:
+            return (self._authors[self._no]
+                   ,self._urls[self._no]
+                   )
+        else:
+            min_val = min(len(self._authors),len(self._urls))
+            sh.objs.mes (f,_('ERROR')
+                        ,_('The condition "%s" is not observed!') \
+                        % '%d <= %d < %d' % (0,self._no,min_val)
+                        )
 
 
 objs = Objects()

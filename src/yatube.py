@@ -39,6 +39,62 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def update_buttons(self,event=None):
+        if lg.objs.lists()._subsc_auth:
+            self._menu.btn_upd.active()
+        else:
+            self._menu.btn_upd.inactive()
+        if lg.objs.channels()._no == 0:
+            self._menu.btn_prv.inactive()
+        else:
+            self._menu.btn_prv.active()
+        if lg.objs._channels._no == len(lg.objs._channels._urls) - 1 \
+        or len(lg.objs._channels._urls) == 0:
+            self._menu.btn_nxt.inactive()
+        else:
+            self._menu.btn_nxt.active()
+    
+    def save_url(self,event=None):
+        f = 'yatube.Commands.save_url'
+        author = self._menu.opt_chl.choice
+        if hasattr(self._channel,'_url'):
+            url = self._channel._url
+            if author and url:
+                lg.objs.channels().add(author,url)
+            else:
+                sh.com.empty(f)
+        elif lg.objs.channels()._urls:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Wrong input data!')
+                        )
+        else:
+            ''' The user may call resetting the screen right after
+                starting the program.
+            '''
+            sh.log.append (f,_('INFO')
+                        ,_('Nothing to do!')
+                        )
+    
+    def prev_url(self,event=None):
+        f = 'yatube.Commands.prev_url'
+        result = lg.objs.channels().prev()
+        if result:
+            self.update_channel (author = result[0]
+                                ,url    = result[1]
+                                )
+        else:
+            sh.com.empty(f)
+    
+    def next_url(self,event=None):
+        f = 'yatube.Commands.next_url'
+        result = lg.objs.channels().next()
+        if result:
+            self.update_channel (author = result[0]
+                                ,url    = result[1]
+                                )
+        else:
+            sh.com.empty(f)
+    
     def show_comments(self,event=None):
         f = 'yatube.Commands.show_comments'
         if self._video:
@@ -109,6 +165,9 @@ class Commands:
                         )
     
     def blank(self,event=None):
+        if self._channel:
+            self._channel._url = ''
+        lg.objs.channels().reset()
         self.reset_channel_gui()
         self._menu.clear_search(Force=True)
         self._menu.clear_url()
@@ -857,6 +916,8 @@ class Commands:
                 )
         # Menu: buttons
         self._menu.btn_upd.action = self.update_channels
+        self._menu.btn_prv.action = self.prev_url
+        self._menu.btn_nxt.action = self.next_url
         self._menu.btn_ytb.action = self.search_youtube
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_stm.action = self.stream
@@ -1147,6 +1208,8 @@ class Commands:
             video_gui.frame.widget.pack_forget()
         gi.objs._channel._videos = []
         self._menu.title()
+        self.save_url()
+        self.update_buttons()
         
     def bind_context(self,event=None):
         for video_gui in gi.objs.channel()._videos:

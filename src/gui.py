@@ -106,6 +106,12 @@ class Menu:
                                  ,text   = _('Update subscriptions')
                                  )
         self.btn_upd.focus()
+        self.btn_prv = sg.Button (parent = self.frame1
+                                 ,text   = _('Backward')
+                                 )
+        self.btn_nxt = sg.Button (parent = self.frame1
+                                 ,text   = _('Forward')
+                                 )
         self.opt_act = sg.OptionMenu (parent  = self.frame1
                                      ,items   = other_actions
                                      ,default = _('Other')
