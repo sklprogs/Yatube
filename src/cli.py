@@ -35,6 +35,7 @@ class Commands:
                                )
         
     def report(self,data):
+        f = 'cli.Commands.report'
         if data:
             data = [(row[1],row[2],row[3]) for row in data]
             sh.Table (headers = ['AUTHOR','TITLE','DATE']
@@ -43,26 +44,23 @@ class Commands:
                      ,MaxRows = 50
                      ).print()
         else:
-            sh.log.append ('Commands.report'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def update_channels(self):
+        f = 'cli.Commands.update_channels'
         delta = 0
         for i in range(len(lg.objs.lists()._subsc_auth)):
             delta += self.update_channel (author = lg.objs._lists._subsc_auth[i]
                                          ,url    = lg.objs._lists._subsc_urls[i]
                                          )
-        sh.log.append ('Commands.update_channels'
-                      ,_('INFO')
+        sh.log.append (f,_('INFO')
                       ,_('There are %d new videos in total') % delta
                       )
                                 
     def update_channel(self,author,url):
+        f = 'cli.Commands.update_channel'
         author = str(author)
-        sh.log.append ('Commands.update_channel'
-                      ,_('INFO')
+        sh.log.append (f,_('INFO')
                       ,_('Update channel "%s"') % author
                       )
         old_urls = idb.channel_videos(author=author)
@@ -70,18 +68,17 @@ class Commands:
         self._channel.run()
         self.channel_cli()
         new_urls = idb.channel_videos(author=author)
-        old_urls = sh.Input (title = 'Commands.update_channel'
+        old_urls = sh.Input (title = f
                             ,value = old_urls
                             ).list()
-        new_urls = sh.Input (title = 'Commands.update_channel'
+        new_urls = sh.Input (title = f
                             ,value = new_urls
                             ).list()
         delta_urls = []
         for url in new_urls:
             if not url in old_urls:
                 delta_urls.append(url)
-        sh.log.append ('Commands.update_channel'
-                      ,_('INFO')
+        sh.log.append (f,_('INFO')
                       ,_('There are %d new videos for channel "%s"') \
                       % (len(delta_urls),author)
                       )
@@ -97,12 +94,14 @@ class Commands:
                 title     = sh.Text(text=self._video._title).delete_unsupported()
                 duration  = sh.Text(text=self._video._dur).delete_unsupported()
                 if author in lg.objs.lists()._block_auth \
-                or self._video._author in lg.objs._lists._block_auth:
+                or self._video._author in lg.objs._lists._block_auth \
+                or lg.objs._lists.match_blocked_word(title+self._video._title):
                     author = title = _('BLOCKED')
                     self._video.Block = True
         idb.save()
         
     def download(self,data):
+        f = 'cli.Commands.download'
         if data:
             for row in data:
                 video = lg.Video(video_id=row[0])
@@ -114,10 +113,7 @@ class Commands:
                 if video.Success:
                     idb.mark_downloaded(video_id=row[0])
         else:
-            sh.log.append ('Commands.download'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
 
 if __name__ == '__main__':

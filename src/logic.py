@@ -61,15 +61,15 @@ class Time:
         return self._months
         
     def years(self):
+        f = 'logic.Time.years'
         # Year of Youtube birth
         first_year = 2005
         last_year  = self.itime.year()
-        last_year  = sh.Input (title = 'Time.years'
+        last_year  = sh.Input (title = f
                               ,value = last_year
                               ).integer()
         if not last_year > first_year:
-            sh.log.append ('Time.years'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
             last_year = 2018
@@ -200,6 +200,7 @@ class Channel:
         self.reset(url=url)
         
     def reset(self,url):
+        f = 'logic.Channel.reset'
         self.values()
         if url:
             self._url = url
@@ -213,16 +214,12 @@ class Channel:
                 self._url = URL(url=self._url).video_full()
             elif not self._url.startswith('http'):
                 self.Success = False
-                sh.objs.mes ('Channel.reset'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Wrong input data: "%s"') % self._url
                             )
         else:
             self.Success = False
-            sh.log.append ('Channel.reset'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def values(self):
         self.Success = True
@@ -231,18 +228,17 @@ class Channel:
         self._links  = []
     
     def page(self):
+        f = 'logic.Channel.page'
         if self.Success:
             response = sh.Get(url=self._url).run()
             if response:
                 self._html = response
             return self._html
         else:
-            sh.log.append ('Channel.page'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def links(self):
+        f = 'logic.Channel.links'
         if self.Success:
             ilinks = sh.Links (text = self._html
                               ,root = 'href="'
@@ -292,16 +288,12 @@ class Channel:
                             ]
             ilinks.duplicates()
             self._links = ilinks._links
-            sh.log.append ('Channel.links'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Fetched %d links') % len(self._links)
                           )
             return self._links
         else:
-            sh.log.append ('Channel.links'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def run(self):
         self.page()
@@ -344,6 +336,7 @@ class Lists:
             sh.com.cancel(f)
     
     def load(self):
+        f = 'logic.Lists.load'
         if self.Success:
             # Blocked authors
             text = sh.ReadTextFile(file=self.idefault._fblock).get()
@@ -378,10 +371,7 @@ class Lists:
                        )
                                                      )
         else:
-            sh.log.append ('Lists.load'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -392,13 +382,13 @@ class Objects:
                      = self._db = None
         
     def db(self):
+        f = 'logic.Objects.db'
         if not self._db:
             path = self.default(product='Yatube')._fdb
             if self._default.Success:
                 self._db = db.DB(path=path)
             else:
-                sh.log.append ('Objects.db'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
                 self._db = db.DB()
@@ -432,6 +422,7 @@ class Objects:
 class Video:
     
     def __init__(self,video_id,callback=None):
+        f = 'logic.Video.__init__'
         self.values()
         if video_id:
             if len(video_id) == 11 and not 'http:' in video_id \
@@ -441,17 +432,13 @@ class Video:
                 self._callback = callback
             else:
                 self.Success = False
-                sh.objs.mes ('Video.__init__'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Wrong input data: "%s"') \
                             % str(video_id)
                             )
         else:
             self.Success = False
-            sh.log.append ('Video.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def values(self):
         self.Success = True
@@ -466,6 +453,7 @@ class Video:
         self._rating = 0.0
         
     def delete(self):
+        f = 'logic.Video.delete'
         if self.Success:
             if self.path():
                 # Do not warn about missing files
@@ -476,34 +464,24 @@ class Video:
                         idir.delete()
                     return Success
             else:
-                sh.log.append ('Video.delete'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.delete'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def page(self):
+        f = 'logic.Video.page'
         if self.Success:
             if not self._page:
                 if self._url:
                     self._page = sh.Get(url=self._url).run()
                 else:
-                    sh.log.append ('Video.page'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             return self._page
         else:
-            sh.log.append ('Video.page'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def channel_url(self):
+        f = 'logic.Video.channel_url'
         if self.Success:
             if not self._channel_url:
                 if self.page():
@@ -524,44 +502,32 @@ class Video:
                                     self._channel_url = pattern3a \
                                                         + url \
                                                         + pattern3b
-                                    sh.log.append ('Video.channel_url'
-                                                  ,_('DEBUG')
+                                    sh.log.append (f,_('DEBUG')
                                                   ,self._channel_url
                                                   )
                                     return self._channel_url
                                 else:
-                                    sh.log.append ('Video.channel_url'
-                                                  ,_('WARNING')
-                                                  ,_('Empty input is not allowed!')
-                                                  )
+                                    sh.com.empty(f)
                             else:
-                                sh.log.append ('Video.channel_url'
-                                              ,_('WARNING')
+                                sh.log.append (f,_('WARNING')
                                               ,_('Wrong input data!')
                                               )
                         else:
-                            sh.log.append ('Video.channel_url'
-                                          ,_('WARNING')
+                            sh.log.append (f,_('WARNING')
                                           ,_('Wrong input data!')
                                           )
                     else:
-                        sh.log.append ('Video.channel_url'
-                                      ,_('WARNING')
+                        sh.log.append (f,_('WARNING')
                                       ,_('Wrong input data!')
                                       )
                 else:
-                    sh.log.append ('Video.channel_url'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             return self._channel_url
         else:
-            sh.log.append ('Video.channel_url'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def assign_online(self):
+        f = 'logic.Video.assign_online'
         if self.Success:
             if self._video:
                 try:
@@ -578,8 +544,7 @@ class Video:
                     self._rating    = self._video.rating
                 # Youtube says...
                 except Exception as e:
-                    sh.objs.mes ('Video.assign_online'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Third party module has failed!\n\nDetails: %s') \
                                 % str(e)
                                 )
@@ -589,17 +554,12 @@ class Video:
                 itime._date     = self._date
                 self._timestamp = itime.timestamp()
             else:
-                sh.log.append ('Video.assign_online'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.assign_online'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def dump(self):
+        f = 'logic.Video.dump'
         if self.Success:
             ''' Do no write default data.
                 Do not forget to commit where necessary.
@@ -613,17 +573,14 @@ class Video:
                        )
                 objs.db().add_video(data)
             else:
-                sh.log.append ('Video.dump'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do.')
                               )
         else:
-            sh.log.append ('Video.dump'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def assign_offline(self,data):
+        f = 'logic.Video.assign_offline'
         if self.Success:
             if data:
                 data_len = 15
@@ -644,23 +601,17 @@ class Video:
                     self._timestamp = data[13]
                     self._dtime     = data[14]
                 else:
-                    sh.objs.mes ('Video.assign_offline'
-                                ,_('ERROR')
+                    sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!') \
                                 % '%d >= %d' % (len(data),data_len)
                                 )
             else:
-                sh.log.append ('Video.assign_offline'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.assign_offline'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def video(self):
+        f = 'logic.Video.video'
         if self.Success:
             if not self._video:
                 try:
@@ -670,19 +621,16 @@ class Video:
                                            )
                 except Exception as e:
                     self.Success = False
-                    sh.objs.mes ('Video.video'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Error adding "%s"!\n\nDetails: %s')\
                                 % (self._url,str(e))
                                 )
             return self._video
         else:
-            sh.log.append ('Video.video'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def image(self):
+        f = 'logic.Video.image'
         if self.Success:
             if self._video:
                 image = sh.Get (url      = self._video.thumb
@@ -692,29 +640,20 @@ class Video:
                 if image:
                     self._bytes = image
                 else:
-                    sh.log.append ('Video.image'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Video.image'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.image'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def get(self):
+        f = 'logic.Video.get'
         if self.Success:
             self.Saved = objs.db().get_video(video_id=self._video_id)
             if self.Saved:
                 self.assign_offline(self.Saved)
             else:
-                sh.log.append ('Video.get'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Get new video info: %s') \
                               % str(self._video_id)
                               )
@@ -723,12 +662,10 @@ class Video:
                 self.image()
                 self.dump()
         else:
-            sh.log.append ('Video.get'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def summary(self):
+        f = 'logic.Video.summary'
         if self.Success:
             tmp = io.StringIO()
             tmp.write(_('Author'))
@@ -786,12 +723,10 @@ class Video:
             tmp.close()
             return result
         else:
-            sh.log.append ('Video.summary'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def path(self):
+        f = 'logic.Video.path'
         if self.Success:
             if not self._path:
                 author = sh.FixBaseName (basename = self._author
@@ -820,33 +755,25 @@ class Video:
                 self._path += '.mp4'
             return self._path
         else:
-            sh.log.append ('Video.path'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def make_dir(self):
+        f = 'logic.Video.make_dir'
         if self.Success:
             if self._dir:
                 self.Success = sh.Path(path=self._dir).create()
             else:
                 self.Success = False
-                sh.log.append ('Video.make_dir'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.make_dir'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def download(self):
+        f = 'logic.Video.download'
         self.make_dir()
         if self.Success:
             if self._video and self._path:
-                sh.log.append ('Video.download'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Download "%s"') % self._path
                               )
                 #todo: select format & quality
@@ -860,23 +787,17 @@ class Video:
                     # Tell other functions the operation was a success
                     return True
                 except Exception as e:
-                    sh.objs.mes ('Video.download'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Failed to download "%s"!\n\nDetails: %s') \
                                 % (self._path,str(e))
                                 )
             else:
-                sh.log.append ('Video.download'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.download'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def stream(self):
+        f = 'logic.Video.stream'
         if self.Success:
             if self._video:
                 #todo: select quality
@@ -884,21 +805,14 @@ class Video:
                     stream = self._video.getbest()
                     return stream.url
                 except Exception as e:
-                    sh.objs.mes ('Video.stream'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Operation has failed!\n\nDetails: %s') \
                                 % str(e)
                                 )
             else:
-                sh.log.append ('Video.stream'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Video.stream'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -917,6 +831,7 @@ class URL:
         return self._url.replace(pattern1,'')
     
     def video_full(self):
+        f = 'logic.URL.video_full'
         if self._url:
             self.trash()
             self.trash_v()
@@ -925,23 +840,18 @@ class URL:
             if not pattern1 in self._url:
                 self._url = pattern1 + self._url
         else:
-            sh.log.append ('URL.video_full'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         return self._url
     
     def channel_full(self):
+        f = 'logic.URL.channel_full'
         if self._url:
             self.trash()
             self.prefixes()
             self.prefixes_ch()
             self.suffixes_ch()
         else:
-            sh.log.append ('URL.channel_full'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         return self._url
         
     def trash(self):
@@ -1025,16 +935,15 @@ class Comments:
         self._max_no   = 100
         
     def reset(self,videoid):
+        f = 'logic.Comments.reset'
         if videoid:
             self._videoid = videoid
         else:
             self.Success = False
-            sh.log.append ('Comments.reset'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def connect(self):
+        f = 'logic.Comments.connect'
         if self.Success:
             if not self._connect:
                 try:
@@ -1044,19 +953,16 @@ class Comments:
                                               )
                 except Exception as e:
                     self.Success = False
-                    sh.objs.mes ('Comments.connect'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Operation has failed!\n\nDetails: %s') \
                                 % str(e)
                                 )
             return self._connect
         else:
-            sh.log.append ('Comments.connect'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def threads(self):
+        f = 'logic.Comments.threads'
         if self.Success:
             if not self._threads:
                 try:
@@ -1069,19 +975,16 @@ class Comments:
                                         ).execute()
                 except Exception as e:
                     self.Success = False
-                    sh.objs.mes ('Comments.threads'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Operation has failed!\n\nDetails: %s')\
                                 % str(e)
                                 )
             return self._threads
         else:
-            sh.log.append ('Comments.threads'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def comments(self):
+        f = 'logic.Comments.comments'
         if self.Success:
             if not self._comments:
                 for item in self._threads["items"]:
@@ -1091,10 +994,7 @@ class Comments:
                     self._comments += author + ': ' + text + '\n\n'
             return self._comments
         else:
-            sh.log.append ('Comments.comments'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -1124,6 +1024,7 @@ class DefaultConfig:
         self._fdb     = ''
     
     def db(self):
+        f = 'logic.DefaultConfig.db'
         if self.Success:
             self._fdb = self.ihome.add_config('yatube.db')
             if self._fdb:
@@ -1131,15 +1032,9 @@ class DefaultConfig:
                     self.Success = sh.File(file=self._fdb).Success
             else:
                 self.Success = False
-                sh.log.append ('DefaultConfig.db'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DefaultConfig.db'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def block_words(self):
         f = 'logic.DefaultConfig.block_words'
@@ -1161,6 +1056,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def block_channels(self):
+        f = 'logic.DefaultConfig.block_channels'
         if self.Success:
             self._fblock = self.ihome.add_config('block channels.txt')
             if self._fblock:
@@ -1174,17 +1070,12 @@ class DefaultConfig:
                     self.Success = iwrite.Success
             else:
                 self.Success = False
-                sh.log.append ('DefaultConfig.block_channels'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DefaultConfig.block_channels'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def subscribe(self):
+        f = 'logic.DefaultConfig.subscribe'
         if self.Success:
             self._fsubsc = self.ihome.add_config('subscribe.txt')
             if self._fsubsc:
@@ -1198,27 +1089,19 @@ class DefaultConfig:
                     self.Success = iwrite.Success
             else:
                 self.Success = False
-                sh.log.append ('DefaultConfig.subscribe'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DefaultConfig.subscribe'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def run(self):
+        f = 'logic.DefaultConfig.run'
         if self.Success:
             self.subscribe()
             self.block_channels()
             self.block_words()
             self.db()
         else:
-            sh.log.append ('DefaultConfig.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 objs = Objects()

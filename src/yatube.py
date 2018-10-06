@@ -40,6 +40,7 @@ class Commands:
         self.reset_channels()
         
     def show_comments(self,event=None):
+        f = 'yatube.Commands.show_comments'
         if self._video:
             text = lg.Comments(videoid=self._video.model._video_id).run()
             if text:
@@ -50,17 +51,14 @@ class Commands:
                 gi.objs._comments.read_only(ReadOnly=True)
                 gi.objs._comments.show()
             else:
-                sg.Message ('Commands.show_comments'
-                           ,_('INFO')
+                sg.Message (f,_('INFO')
                            ,_('No comments yet!')
                            )
         else:
-            sh.log.append ('Commands.show_comments'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def toggle_selected(self,event=None):
+        f = 'yatube.Commands.toggle_selected'
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
                 if video_gui in self._videos:
@@ -68,12 +66,12 @@ class Commands:
                     self._video  = self._videos[self._gvideo]
                     self.toggle_downloaded()
                 else:
-                    sh.log.append ('Commands.toggle_selected'
-                                  ,_('ERROR')
+                    sh.log.append (f,_('ERROR')
                                   ,_('Wrong input data!')
                                   )
     
     def other(self,event=None):
+        f = 'yatube.Commands.other'
         choice = self._menu.opt_act.choice
         if choice == _('Other'):
             pass
@@ -105,8 +103,7 @@ class Commands:
             self._menu.opt_act.set(_('Other'))
             self.delete_selected()
         else:
-            sh.objs.mes ('Commands.other'
-                        ,_('ERROR')
+            sh.objs.mes (f,_('ERROR')
                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                         % (str(choice),';'.join(gi.other_actions))
                         )
@@ -122,6 +119,7 @@ class Commands:
         gi.objs.channel().canvas.move_top()
     
     def history(self,event=None):
+        f = 'yatube.Commands.history'
         urls = lg.objs.db().downloaded()
         if urls:
             ''' URL can be any here, even 'None', but we do not use
@@ -134,19 +132,18 @@ class Commands:
             self.channel_gui()
         else:
             # Do not warn here since this is actually a common case
-            sh.log.append ('Commands.history'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
     
     def unsubscribe(self,event=None):
+        f = 'yatube.Commands.unsubscribe'
         if self._video and self._video.model.channel_url():
             self._video.model.video()
             if self._video.model._author:
                 if self._video.model._author \
                 in lg.objs.lists()._subsc_auth:
-                    sh.log.append ('Commands.unsubscribe'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Unsubscribe from channel "%s"') \
                                   % self._video.model._author
                                   )
@@ -170,29 +167,22 @@ class Commands:
                         lg.objs._lists.reset()
                         self.reset_channels()
                 else:
-                    sh.log.append ('Commands.unsubscribe'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Nothing to do!')
                                   )
             else:
-                sh.log.append ('Commands.unsubscribe'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Commands.unsubscribe'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def unblock(self,event=None):
+        f = 'yatube.Commands.unblock'
         if self._video:
             self._video.model.video()
             if self._video.model._author:
                 if self._video.model._author \
                 in lg.objs.lists()._block_auth:
-                    sh.log.append ('Commands.unblock'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Unblock channel "%s"') \
                                   % self._video.model._author
                                   )
@@ -207,20 +197,13 @@ class Commands:
                     lg.objs._lists.reset()
                     self.reset_channels()
                 else:
-                    sh.log.append ('Commands.unblock'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Nothing to do!')
                                   )
             else:
-                sh.log.append ('Commands.unblock'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Commands.unblock'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def _show_new(self,urls):
         ''' URL can be any here, even 'None', but we do not use 'None'
@@ -233,6 +216,7 @@ class Commands:
         self.channel_gui()
     
     def show_new(self,event=None):
+        f = 'yatube.Commands.show_new'
         itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
         itime.add_days(days_delta=-2)
         urls = lg.objs.db().new_videos (timestamp = itime.timestamp()
@@ -242,13 +226,13 @@ class Commands:
             self._show_new(urls)
         else:
             # Do not warn here since this is actually a common case
-            sh.log.append ('Commands.show_new'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
     
     # GUI-only
     def delete_selected(self,event=None):
+        f = 'yatube.Commands.delete_selected'
         deleted = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
@@ -258,8 +242,7 @@ class Commands:
                     if self.delete_video():
                         deleted.append(self._video.model.path())
                 else:
-                    sh.log.append ('Commands.delete_selected'
-                                  ,_('ERROR')
+                    sh.log.append (f,_('ERROR')
                                   ,_('Wrong input data!')
                                   )
         if deleted:
@@ -267,12 +250,12 @@ class Commands:
             message = _('%d files have been deleted:') % len(deleted) \
                       + '\n\n' \
                       + message
-            sh.log.append ('Commands.delete_selected'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,message
                           )
     
     def delete_video(self,event=None):
+        f = 'yatube.Commands.delete_video'
         ''' Do not warn when the GUI object is not available (e.g.,
             performing deletion through OptionMenu.
         '''
@@ -286,10 +269,7 @@ class Commands:
         if self._video:
             return self._video.model.delete()
         else:
-            sh.log.append ('Commands.delete_video'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def reset_channels(self,event=None):
         default_channels = [_('Channels')]
@@ -304,37 +284,32 @@ class Commands:
                                  )
     
     def open_video_url(self,event=None):
+        f = 'yatube.Commands.open_video_url'
         if self._video and self._video.model._url:
             lg.objs.online()._url = self._video.model._url
             lg.objs._online.browse()
         else:
-            sh.log.append ('Commands.open_video_url'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                    
     def copy_video_url(self,event=None):
+        f = 'yatube.Commands.copy_video_url'
         if self._video and self._video.model._url:
             sg.Clipboard().copy(text=self._video.model._url)
         else:
-            sh.log.append ('Commands.copy_video_url'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def subscribe(self,event=None):
+        f = 'yatube.Commands.subscribe'
         if self._video and self._video.model.channel_url():
             self._video.model.video()
             if self._video.model._author:
                 if self._video.model._author \
                 in lg.objs.lists()._subsc_auth:
-                    sh.log.append ('Commands.subscribe'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Nothing to do!')
                                   )
                 else:
-                    sh.log.append ('Commands.subscribe'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Subscribe to channel "%s"') \
                                   % self._video.model._author
                                   )
@@ -359,34 +334,24 @@ class Commands:
                         lg.objs._lists.reset()
                         self.reset_channels()
                     else:
-                        sh.log.append ('Commands.subscribe'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
             else:
-                sh.log.append ('Commands.subscribe'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Commands.subscribe'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def block(self,event=None):
+        f = 'yatube.Commands.block'
         if self._video:
             self._video.model.video()
             if self._video.model._author:
                 if self._video.model._author \
                 in lg.objs.lists()._block_auth:
-                    sh.log.append ('Commands.block'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Nothing to do!')
                                   )
                 else:
-                    sh.log.append ('Commands.block'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,_('Block channel "%s"') \
                                   % self._video.model._author
                                   )
@@ -403,53 +368,39 @@ class Commands:
                         lg.objs._lists.reset()
                         self.reset_channels()
                     else:
-                        sh.log.append ('Commands.block'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
             else:
-                sh.log.append ('Commands.block'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Commands.block'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                    
     def load_channel(self,event=None):
+        f = 'yatube.Commands.load_channel'
         if self._video and self._video.model.channel_url():
             self._channel = lg.Channel(url=self._video.model._channel_url)
             self._channel.run()
             self.reset_channel_gui()
             self.channel_gui()
         else:
-            sh.log.append ('Commands.load_channel'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def open_channel_url(self,event=None):
+        f = 'yatube.Commands.open_channel_url'
         if self._video and self._video.model.channel_url():
             lg.objs.online()._url = self._video.model._channel_url
             lg.objs._online.browse()
         else:
-            sh.log.append ('Commands.open_channel_url'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def copy_channel_url(self,event=None):
+        f = 'yatube.Commands.copy_channel_url'
         if self._video and self._video.model.channel_url():
             sg.Clipboard().copy(text=self._video.model._channel_url)
         else:
-            sh.log.append ('Commands.copy_channel_url'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def stream(self,event=None):
+        f = 'yatube.Commands.stream'
         Found = False
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
@@ -460,12 +411,12 @@ class Commands:
         if Found:
             self.stream_video()
         else:
-            sh.log.append ('Commands.stream'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
     
     def stream_video(self,event=None):
+        f = 'yatube.Commands.stream_video'
         if self._video:
             self._video.model.video()
             url = self._video.model.stream()
@@ -481,8 +432,7 @@ class Commands:
                     app = '/usr/bin/mplayer'
                 else:
                     app = ''
-                    sh.objs.mes ('Commands.stream_video'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Unable to find a suitable application!')
                                 )
                 if app:
@@ -499,8 +449,7 @@ class Commands:
                         subprocess.Popen(custom_args)
                         Success = True
                     except:
-                        sh.objs.mes ('Commands.stream_video'
-                                    ,_('ERROR')
+                        sh.objs.mes (f,_('ERROR')
                                     ,_('Failed to run "%s"!') \
                                     % str(custom_args)
                                     )
@@ -508,20 +457,11 @@ class Commands:
                     if Success:
                         self.mark_downloaded()
                 else:
-                    sh.log.append ('Commands.stream_video'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Commands.stream_video'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Commands.stream_video'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def _stream_slow(self,app):
         if 'mpv' in app:
@@ -542,6 +482,7 @@ class Commands:
             return ['-cache','8192','-cache-min','50']
                    
     def toggle_downloaded(self,event=None):
+        f = 'yatube.Commands.toggle_downloaded'
         if self._video and self._gvideo:
             if self._video.model._dtime:
                 self._video.model._dtime = 0
@@ -555,10 +496,7 @@ class Commands:
             else:
                 self._gvideo.black_out()
         else:
-            sh.log.append ('Commands.toggle_downloaded'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def reset_date_filter(self,event=None):
         self._timestamp = None
@@ -612,17 +550,16 @@ class Commands:
         should not be called externally in other cases.
     '''
     def video_date_filter(self,event=None):
+        f = 'yatube.Commands.video_date_filter'
         if self._video and self._gvideo and self._video.model._timestamp:
             if self._menu.chb_dat.get():
                 if self._date_filter():
                     self._gvideo.red_out()
         else:
-            sh.log.append ('Commands.video_date_filter'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def filter_by_date(self,event=None):
+        f = 'yatube.Commands.filter_by_date'
         # Do not allow to update channel GUI when no channels are loaded
         if gi.objs._channel:
             for video_gui in gi.objs._channel._videos:
@@ -636,17 +573,16 @@ class Commands:
                         if self._date_filter():
                             self._gvideo.red_out()
                     else:
-                        sh.objs.mes ('Commands.filter_by_date'
-                                    ,_('ERROR')
+                        sh.objs.mes (f,_('ERROR')
                                     ,_('Wrong input data!')
                                     )
         else:
-            sh.log.append ('Commands.filter_by_date'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do.')
                           )
     
     def get_widget(self,event=None):
+        f = 'yatube.Commands.get_widget'
         if event:
             ''' Widgets must be in a string format to be compared
                 (otherwise, we will have, for example,
@@ -661,10 +597,7 @@ class Commands:
                         self._gvideo = video_gui
                         return self._gvideo
         else:
-            sh.log.append ('Commands.get_widget'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def summary(self,event=None):
         if self._video:
@@ -673,6 +606,7 @@ class Commands:
         gi.objs._summary.show()
     
     def _context(self,choice,event=None):
+        f = 'yatube.Commands._context'
         if choice:
             if choice == _('Show the full summary'):
                 self.summary()
@@ -691,10 +625,7 @@ class Commands:
                 if self._video.model._url:
                     self.get_links(url=self._video.model._url)
                 else:
-                    sh.log.append ('Commands._context'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             elif choice == _('Load this channel'):
                 self.load_channel()
             elif choice == _('Block this channel'):
@@ -716,18 +647,15 @@ class Commands:
             elif choice == _('Copy channel URL'):
                 self.copy_channel_url()
             else:
-                sh.objs.mes ('Commands._context'
-                            ,_('ERROR')
+                sh.objs.mes (f,_('ERROR')
                             ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                             % (str(choice),';'.join(gi.context_items))
                             )
         else:
-            sh.log.append ('Commands._context'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def context(self,event=None):
+        f = 'yatube.Commands.context'
         # 'event' will be 'tuple' if it is a callback from 'Button.click'
         if isinstance(event,tuple):
             event = event[0]
@@ -741,8 +669,7 @@ class Commands:
                 choice = gi.objs._context._get
                 self._context(choice)
             else:
-                sh.log.append ('Commands.context'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
     
@@ -760,11 +687,11 @@ class Commands:
         self.channel_gui()
                           
     def set_channel(self,event=None):
+        f = 'yatube.Commands.set_channel'
         if self._menu.opt_chl.choice == _('Channels'):
             self.show_new()
         else:
-            sh.log.append ('Commands.set_channel'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Switch to channel "%s"') \
                           % str(self._menu.opt_chl.choice)
                           )
@@ -776,18 +703,17 @@ class Commands:
                                     ,url    = url
                                     )
             else:
-                sh.objs.mes ('Commands.set_channel'
-                            ,_('ERROR')
+                sh.objs.mes (f,_('ERROR')
                             ,_('Wrong input data: "%s"') \
                             % str(self._menu.opt_chl.choice)
                             )
         
     def get_url(self,event=None):
+        f = 'yatube.Commands.get_url'
         result = self._menu.ent_url.get()
         if result:
             if result == _('Paste URL here'):
-                sh.log.append ('Commands.get_url'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
                               )
             elif self._menu.opt_url.choice in gi.url_items:
@@ -824,27 +750,22 @@ class Commands:
                             choice = gi.objs._context._get
                             self._context(choice)
                     else:
-                        sh.log.append ('Commands.get_url'
-                                      ,_('WARNING')
-                                      ,_('Operation has been canceled.')
-                                      )
+                        sh.com.cancel(f)
             else:
-                sh.objs.mes ('Commands.get_url'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                             % (str(self._menu.opt_url.choice)
                               ,';'.join(gi.url_items)
                               )
                             )
         else:
-            sh.log.append ('Commands.get_url'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
     
     def set_trending(self,event=None):
-        sh.log.append ('Commands.set_trending'
-                      ,_('INFO')
+        f = 'yatube.Commands.set_trending'
+        sh.log.append (f,_('INFO')
                       ,_('Switch to channel "%s"') \
                       % str(self._menu.opt_trd.choice)
                       )
@@ -853,17 +774,16 @@ class Commands:
         else:
             country = 'RU'
         url = 'https://www.youtube.com/feed/trending?gl=%s' % country
-        sh.log.append ('Commands.set_trending'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,country
                       )
-        sh.log.append ('Commands.set_trending'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,url
                       )
         self.update_trending(url=url)
         
     def search_youtube(self,event=None):
+        f = 'yatube.Commands.search_youtube'
         result = self._menu.ent_src.get()
         if result and result != _('Search Youtube'):
             root_url = 'https://www.youtube.com/results?search_query=%s'
@@ -873,19 +793,16 @@ class Commands:
                                ).url()
             self.get_links(url=result)
         else:
-            sh.log.append ('Commands.search_youtube'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def filter_view(self,event=None):
+        f = 'yatube.Commands.filter_view'
         # Remove previous filter; drop selection if no filter is given
         for video_gui in gi.objs.channel()._videos:
             video_gui.black_out()
         result = self._menu.ent_flt.get()
         if result and result != _('Filter this view'):
-            sh.log.append ('Commands.filter_view'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Filter by "%s"') % result
                           )
             result = result.lower()
@@ -896,13 +813,11 @@ class Commands:
                     if result in self._video.model._search:
                         self._gvideo.red_out()
                 else:
-                    sh.log.append ('Commands.filter_view'
-                                  ,_('WARNING')
+                    sh.log.append (f,_('WARNING')
                                   ,_('Wrong input data!')
                                   )
         else:
-            sh.log.append ('Commands.filter_view'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
     
@@ -990,6 +905,7 @@ class Commands:
                                  )
         
     def select_new(self,event=None):
+        f = 'yatube.Commands.select_new'
         for video_gui in gi.objs.channel()._videos:
             if video_gui in self._videos:
                 self._gvideo = video_gui
@@ -1006,8 +922,7 @@ class Commands:
                 if cond:
                     self._gvideo.cbox.enable()
             else:
-                sh.log.append ('Commands.select_new'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
         gi.report_selection()
@@ -1032,6 +947,7 @@ class Commands:
         sh.Launch(target=self._video.model._path).default()
 
     def play_video(self,event=None):
+        f = 'yatube.Commands.play_video'
         if self._video:
             if self._menu.chb_slw.get():
                 if os.path.exists('/usr/bin/mpv'):
@@ -1043,20 +959,17 @@ class Commands:
             else:
                 self._play_default()
         else:
-            sh.log.append ('Commands.play_video'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def play(self,event=None):
+        f = 'yatube.Commands.play'
         new_videos = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
                 if video_gui in self._videos:
                     new_videos.append(video_gui)
                 else:
-                    sh.objs.mes ('Commands.play'
-                                ,_('ERROR')
+                    sh.objs.mes (f,_('ERROR')
                                 ,_('Wrong input data!')
                                 )
         if new_videos:
@@ -1075,28 +988,26 @@ class Commands:
             gi.objs._progress.title()
             gi.objs._progress.close()
         else:
-            sh.log.append ('Commands.play'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
         
     def mark_downloaded(self):
+        f = 'yatube.Commands.mark_downloaded'
         if self._video:
             self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
             lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
                                          ,dtime    = self._video.model._dtime
                                          )
         else:
-            sh.log.append ('Commands.mark_downloaded'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         if self._gvideo:
             self._gvideo.cbox.disable()
             self._gvideo.gray_out()
             gi.report_selection()
     
     def download_video(self,event=None):
+        f = 'yatube.Commands.download_video'
         ''' In case of 'get_url', there is no GUI to be handled
             ('self._gvideo' must be set to 'None'), so we do not force
             'self._gvideo' check here.
@@ -1128,25 +1039,19 @@ class Commands:
                     if self._video.model.download():
                         self.mark_downloaded()
             else:
-                sh.log.append ('Commands.download_video'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Commands.download_video'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def download(self,event=None):
+        f = 'yatube.Commands.download'
         new_videos = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
                 if video_gui in self._videos:
                     new_videos.append(video_gui)
                 else:
-                    sg.Message ('Commands.download'
-                               ,_('ERROR')
+                    sg.Message (f,_('ERROR')
                                ,_('Wrong input data!')
                                )
         if new_videos:
@@ -1162,22 +1067,22 @@ class Commands:
             gi.objs._progress.title()
             gi.objs._progress.close()
         else:
-            sh.log.append ('Commands.download'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
         
     def update_channels(self,event=None):
+        f = 'yatube.Commands.update_channels'
         # Update channels
         links    = []
         unknown  = []
         channels = lg.objs.lists()._subsc_urls
-        sg.objs.waitbox().reset(func_title='Commands.update_channels')
+        sg.objs.waitbox().reset(func_title=f)
         sg.objs._waitbox.obj.icon(gi.icon_path)
         sg.objs._waitbox.show()
         for i in range(len(channels)):
             message = _('Update channels (%d/%d)') % (i+1,len(channels))
-            sg.objs._waitbox.reset (func_title = 'Commands.update_channels'
+            sg.objs._waitbox.reset (func_title = f
                                    ,message    = message
                                    )
             sg.objs._waitbox.update()
@@ -1186,8 +1091,7 @@ class Commands:
             links += channel._links
         sg.objs._waitbox.close()
         # Get new URLs
-        sh.log.append ('Commands.update_channels'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('URLs in total: %d') % len(links)
                       )
         urls = lg.objs.db().urls()
@@ -1219,9 +1123,8 @@ class Commands:
             gi.objs._wait.close()
             self._show_new(urls=unknown)
         else:
-            sg.Message (func    = 'Commands.update_channels'
-                       ,level   = _('INFO')
-                       ,message = _('No new videos!')
+            sg.Message (f,_('INFO')
+                       ,_('No new videos!')
                        )
         
     def update_trending(self,event=None,url=None):
@@ -1260,14 +1163,14 @@ class Commands:
             gi.objs._channel.add(no=i)
             
     def dimensions(self):
+        f = 'yatube.Commands.dimensions'
         sg.objs.root().idle()
         height  = gi.objs._channel.frm_emb.widget.winfo_reqheight()
         ''' #NOTE: Extra space can be caused by a difference of
             the default and loaded pictures.
         '''
         #height = len(self._channel._links) * 112.133333333
-        sh.log.append ('Commands.channel_gui'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('Widget must be at least %d pixels in height')\
                       % height
                       )
@@ -1278,6 +1181,7 @@ class Commands:
                                        )
     
     def fill_unknown(self):
+        f = 'yatube.Commands.fill_unknown'
         unknown   = []
         unknown_g = []
         unknown_i = []
@@ -1291,13 +1195,11 @@ class Commands:
                         unknown_g.append(video_gui)
                         unknown_i.append(i)
                 else:
-                    sh.log.append ('Commands.fill_unknown'
-                                  ,_('ERROR')
+                    sh.log.append (f,_('ERROR')
                                   ,_('Wrong input data!')
                                   )
             else:
-                sh.log.append ('Commands.fill_unknown'
-                              ,_('ERROR')
+                sh.log.append (f,_('ERROR')
                               ,_('Empty input is not allowed!')
                               )
         if unknown:
@@ -1325,8 +1227,7 @@ class Commands:
             gi.objs._wait.title()
             gi.objs._wait.close()
         else:
-            sh.log.append ('Commands.fill_unknown'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
     
@@ -1343,6 +1244,7 @@ class Commands:
         return(author,title,duration)
     
     def update_video(self,i):
+        f = 'yatube.Commands.update_video'
         if self._video:
             author, title, duration = self.unsupported()
             self._gvideo = gi.objs.channel()._videos[i]
@@ -1356,10 +1258,7 @@ class Commands:
                 self._gvideo.gray_out()
             self.video_date_filter()
         else:
-            sh.log.append ('Commands.update_video'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def fill_known(self):
         for i in range(len(self._channel._links)):
@@ -1501,16 +1400,14 @@ class Video:
         sg.objs.root().widget.update_idletasks()
     
     def image(self):
+        f = 'yatube.Video.image'
         if self.model._bytes:
             img = sg.Image()
             img._bytes = self.model._bytes
             img.loader()
             self._image = img.image()
         else:
-            sh.log.append ('Video.image'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def get(self):
         self.model.get()
@@ -1518,6 +1415,7 @@ class Video:
 
 
 if __name__ == '__main__':
+    f = 'yatube.__main__'
     sg.objs.start()
     sg.Geometry(parent=gi.objs.parent()).set('1024x600')
     lg.objs.default(product=gi.product)
@@ -1529,8 +1427,7 @@ if __name__ == '__main__':
         lg.objs.db().save()
         lg.objs._db.close()
     else:
-        sh.objs.mes ('Yatube.controller'
-                    ,_('WARNING')
+        sh.objs.mes (f,_('WARNING')
                     ,_('Unable to continue due to an invalid configuration.')
                     )
     sg.objs.end()

@@ -18,7 +18,16 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def fail(self,func,error):
+        self.Success = False
+        sh.objs.mes (func
+                    ,_('WARNING')
+                    ,_('Database "%s" has failed!\n\nDetails: %s') \
+                    % (self._path,str(error))
+                    )
+    
     def urls(self):
+        f = 'db.DB.urls'
         if self.Success:
             try:
                 self.dbc.execute('select URL from VIDEOS')
@@ -26,19 +35,12 @@ class DB:
                 if result:
                     return [item[0] for item in result]
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.urls'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.urls'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def downloaded(self,limit=50):
+        f = 'db.DB.downloaded'
         if self.Success:
             try:
                 ''' #todo: use BLOCK field. We do not have a list of
@@ -55,19 +57,12 @@ class DB:
                 if result:
                     return [item[0] for item in result]
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.downloaded'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.downloaded'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def new_videos(self,timestamp,authors):
+        f = 'db.DB.new_videos'
         if self.Success:
             try:
                 query = 'select   URL from VIDEOS \
@@ -80,17 +75,9 @@ class DB:
                     #todo: should we return a list or a tuple?
                     return [row[0] for row in result]
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.new_videos'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.new_videos'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def _filt1(self,timestamp):
         self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
@@ -119,6 +106,7 @@ class DB:
     def date_filter (self,timestamp
                     ,Newer=True,WithReady=False
                     ):
+        f = 'db.DB.date_filter'
         if self.Success:
             #todo (?): BLOCK, IGNORE
             try:
@@ -134,37 +122,23 @@ class DB:
                         self._filt4(timestamp)
                 return self.dbc.fetchall()
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.date_filter'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.date_filter'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def connect(self):
+        f = 'db.DB.connect'
         if self.Success:
             try:
                 self.db  = sqlite3.connect(self._path)
                 self.dbc = self.db.cursor()
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.connect'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.connect'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def channel_videos(self,author):
+        f = 'db.DB.channel_videos'
         if self.Success:
             try:
                 self.dbc.execute ('select URL from VIDEOS where AUTHOR=?'
@@ -172,19 +146,12 @@ class DB:
                                  )
                 return self.dbc.fetchall()
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.channel_videos'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.channel_videos'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def mark_downloaded(self,video_id,dtime):
+        f = 'db.DB.mark_downloaded'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   DTIME = ? \
@@ -192,19 +159,12 @@ class DB:
                                  ,(dtime,video_id,)
                                  )
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.mark_downloaded'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.mark_downloaded'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def create_videos(self):
+        f = 'db.DB.create_videos'
         if self.Success:
             try:
                 # 18 columns by now
@@ -231,19 +191,12 @@ class DB:
                                                        )'
                                  )
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.create_videos'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.create_videos'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def add_video(self,data):
+        f = 'db.DB.add_video'
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
@@ -251,40 +204,25 @@ class DB:
                                  ,data
                                  )
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.add_video'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.add_video'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def save(self):
+        f = 'db.DB.save'
         if self.Success:
-            sh.log.append ('DB.save'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Save "%s"') % self._path
                           )
             try:
                 self.db.commit()
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.save'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.save'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def get_video(self,video_id):
+        f = 'db.DB.get_video'
         if self.Success:
             self.dbc.execute('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
                                     ,DURATION,LENGTH,VIEWS,LIKES \
@@ -294,31 +232,22 @@ class DB:
                               where  URL = ?',(video_id,))
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.get_video'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
     def close(self):
+        f = 'db.DB.close'
         if self.Success:
             try:
                 self.dbc.close()
             except Exception as e:
-                self.Success = False
-                sh.objs.mes ('DB.close'
-                            ,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+                self.fail(f,e)
         else:
-            sh.log.append ('DB.close'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def print (self,Selected=False,Shorten=False
               ,MaxRow=20,MaxRows=20
               ):
+        f = 'db.DB.print'
         if self.Success:
             ''' 'self.dbc.description' is 'None' without performing 
                 'select' first
@@ -334,10 +263,7 @@ class DB:
                      ,MaxRows = MaxRows
                      ).print()
         else:
-            sh.log.append ('DB.print'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 if __name__ == '__main__':

@@ -476,10 +476,10 @@ class Channel:
         self.gui()
         
     def scroll(self,i):
+        f = 'gui.Channel.scroll'
         #fix: seems that another unit type is required
         value = i*112.133333333
-        sh.log.append ('Channel.scroll'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('Scroll to %d') % value
                       )
         self.canvas.scroll(y=value)
@@ -690,10 +690,10 @@ class Objects:
         return self._def_image
 
     def channel(self,parent=None):
+        f = 'gui.Objects.channel'
         if not self._channel:
             if parent is None:
-                sh.log.append ('Objects.channel'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Set the default parent.')
                               )
                 parent = self.menu().framev
@@ -746,6 +746,7 @@ class WaitMeta:
     def reset (self,author=_('Author'),title=_('Title')
               ,duration=_('Duration'),image=None,no=0
               ):
+        f = 'gui.WaitMeta.reset'
         if self._video:
             self._video.reset (author   = author
                               ,title    = title
@@ -754,10 +755,7 @@ class WaitMeta:
                               ,no       = no
                               )
         else:
-            sh.log.append ('WaitMeta.reset'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.cancel(f)
         
     def show(self):
         self.parent.show(Lock=False)

@@ -18,6 +18,7 @@ class DB:
         self.Success = self._clone and sh.File(file=self._path).Success
     
     def down_markw(self):
+        f = 'utils.DB.down_markw'
         if self.Success:
             try:
                 self.dbcw.execute ('update VIDEOS set DTIME = ? \
@@ -25,71 +26,59 @@ class DB:
                                   )
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.down_markw'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._clone,str(e))
                             )
         else:
-            sh.log.append ('DB.down_markw'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def savew(self):
+        f = 'utils.DB.savew'
         if self.Success:
             try:
                 self.dbw.commit()
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.savew'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._clone,str(e))
                             )
         else:
-            sh.log.append ('DB.savew'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def connect(self):
+        f = 'utils.DB.connect'
         if self.Success:
             try:
                 self.db  = sqlite3.connect(self._path)
                 self.dbc = self.db.cursor()
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.connect'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._path,str(e))
                             )
         else:
-            sh.log.append ('DB.connect'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def connectw(self):
+        f = 'utils.DB.connectw'
         if self.Success:
             try:
                 self.dbw  = sqlite3.connect(self._clone)
                 self.dbcw = self.dbw.cursor()
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.connectw'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._clone,str(e))
                             )
         else:
-            sh.log.append ('DB.connectw'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def fetch(self):
+        f = 'utils.DB.fetch'
         if self.Success:
             try:
                 # 18 columns for now (for old DB)
@@ -103,18 +92,15 @@ class DB:
                 self._data = self.dbc.fetchall()
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.fetch'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._path,str(e))
                             )
         else:
-            sh.log.append ('DB.fetch'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def create_table(self):
+        f = 'utils.DB.create_table'
         if self.Success:
             try:
                 # 18 columns by now
@@ -142,22 +128,18 @@ class DB:
                                  )
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.create_table'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._clone,str(e))
                             )
         else:
-            sh.log.append ('DB.create_table'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def fill(self):
+        f = 'utils.DB.fill'
         if self.Success:
             if self._data:
-                sh.log.append ('DB.fill'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Copy "%s" to "%s"') % (self._path
                                                         ,self._clone
                                                         )
@@ -185,57 +167,45 @@ class DB:
                         self.Success = False
                 # This must be out of the loop
                 if not self.Success:
-                    sh.objs.mes ('DB.fill'
-                                ,_('WARNING')
+                    sh.objs.mes (f,_('WARNING')
                                 ,_('Database "%s" has failed!') \
                                 % self._clone
                                 )
             else:
-                sh.log.append ('DB.fill'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DB.fill'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def close(self):
+        f = 'utils.DB.close'
         if self.Success:
             try:
                 self.dbc.close()
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.close'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._path,str(e))
                             )
         else:
-            sh.log.append ('DB.close'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def closew(self):
+        f = 'utils.DB.closew'
         if self.Success:
             try:
                 self.dbcw.close()
             except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                 self.Success = False
-                sh.objs.mes ('DB.closew'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Database "%s" has failed!\n\nDetails: %s')\
                             % (self._clone,str(e))
                             )
         else:
-            sh.log.append ('DB.closew'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def repair_urls(self):
+        f = 'utils.DB.repair_urls'
         if self.Success:
             self.dbcw.execute('select URL from VIDEOS where length(URL) > 11')
             result = self.dbcw.fetchall()
@@ -250,8 +220,7 @@ class DB:
                     item = item.replace('youtube.com/watch?v=','')
                     item = item.replace('watch?v=','')
                     item = item.replace('?t=118','')
-                    sh.log.append ('DB.repair_urls'
-                                  ,_('INFO')
+                    sh.log.append (f,_('INFO')
                                   ,'"%s" -> "%s"' % (old_item,item)
                                   )
                     try:
@@ -260,21 +229,16 @@ class DB:
                                           )
                     except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
                         self.Success = False
-                        sh.objs.mes ('DB.repair_urls'
-                                    ,_('WARNING')
+                        sh.objs.mes (f,_('WARNING')
                                     ,_('Database "%s" has failed!\n\nDetails: %s')\
                                     % (self._clone,str(e))
                                     )
             else:
-                sh.log.append ('DB.repair_urls'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
                               )
         else:
-            sh.log.append ('DB.repair_urls'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -285,6 +249,7 @@ class Commands:
         self._clone = '/tmp/yatube.db'
         
     def repair_urls(self):
+        f = 'utils.Commands.repair_urls'
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
                           ,AskRewrite = False
@@ -298,12 +263,10 @@ class Commands:
             idb.savew()
             idb.closew()
         else:
-            sh.log.append ('Commands.repair_urls'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def down_markw(self):
+        f = 'utils.Commands.down_markw'
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
                           ,AskRewrite = False
@@ -317,10 +280,7 @@ class Commands:
             idb.savew()
             idb.closew()
         else:
-            sh.log.append ('Commands.down_markw'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def alter(self):
         sh.File(file=self._clone).delete()
@@ -338,6 +298,7 @@ class Commands:
         idb.closew()
         
     def read_random(self):
+        f = 'utils.Commands.read_random'
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )
@@ -353,21 +314,18 @@ class Commands:
             print('Search: "%s"'    % str(data[2]))
             print('Timestamp: "%s"' % str(data[3]))
         else:
-            sh.log.append ('Commands.read_random'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         idb.close()
         
     def _get_empty(self,idb):
         idb.dbcw.execute('select AUTHOR from VIDEOS where AUTHOR=?',('',))
         data = idb.dbcw.fetchall()
-        sh.log.append ('Commands._get_empty'
-                      ,_('INFO')
+        sh.log.append (f,_('INFO')
                       ,_('%d records have been found.') % len(data)
                       )
     
     def empty_author(self):
+        f = 'utils.Commands.empty_author'
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
                           ,AskRewrite = False
@@ -383,10 +341,7 @@ class Commands:
             idb.savew()
             idb.closew()
         else:
-            sh.log.append ('Commands.repair_urls'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 if __name__ == '__main__':
