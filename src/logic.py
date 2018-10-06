@@ -323,18 +323,43 @@ class Lists:
     
     def values(self):
         self._block       = ''
+        self._blockw      = ''
         self._subsc       = ''
         self._block_auth  = []
+        self._block_words = []
         self._subsc_auth  = []
         self._subsc_urls  = []
     
+    def match_blocked_word(self,word):
+        f = 'logic.Lists.match_blocked_word'
+        if self.Success:
+            word = word.lower()
+            for item in self._block_words:
+                ''' Contents of 'self._block_words' should already be
+                    lower-cased.
+                '''
+                if item in word:
+                    return True
+        else:
+            sh.com.cancel(f)
+    
     def load(self):
         if self.Success:
+            # Blocked authors
             text = sh.ReadTextFile(file=self.idefault._fblock).get()
             text = sh.Text(text=text).delete_comments()
             # We should allow empty files
             self._block      = text
             self._block_auth = text.splitlines()
+            # Blocked words
+            text = sh.ReadTextFile(file=self.idefault._fblockw).get()
+            text = sh.Text(text=text).delete_comments()
+            # We should allow empty files
+            self._blockw      = text
+            self._block_words = text.splitlines()
+            self._block_words = [item.lower() for item \
+                                 in self._block_words
+                                ]
             # Suppress errors on empty text
             if os.path.exists(self.idefault._fsubsc):
                 dic = sh.Dic (file     = self.idefault._fsubsc
@@ -1093,9 +1118,10 @@ class DefaultConfig:
         self.Success = self.ihome.create_conf()
     
     def values(self):
-        self._fsubsc = ''
-        self._fblock = ''
-        self._fdb    = ''
+        self._fsubsc  = ''
+        self._fblock  = ''
+        self._fblockw = ''
+        self._fdb     = ''
     
     def db(self):
         if self.Success:
@@ -1115,9 +1141,28 @@ class DefaultConfig:
                           ,_('Operation has been canceled.')
                           )
     
-    def block(self):
+    def block_words(self):
+        f = 'logic.DefaultConfig.block_words'
         if self.Success:
-            self._fblock = self.ihome.add_config('block.txt')
+            self._fblockw = self.ihome.add_config('block words.txt')
+            if self._fblockw:
+                if os.path.exists(self._fblockw):
+                    self.Success = sh.File(file=self._fblockw).Success
+                else:
+                    iwrite = sh.WriteTextFile (file       = self._fblockw
+                                              ,AskRewrite = False
+                                              )
+                    iwrite.write('# ' + _('Put here words to block in titles (case is ignored)'))
+                    self.Success = iwrite.Success
+            else:
+                self.Success = False
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def block_channels(self):
+        if self.Success:
+            self._fblock = self.ihome.add_config('block channels.txt')
             if self._fblock:
                 if os.path.exists(self._fblock):
                     self.Success = sh.File(file=self._fblock).Success
@@ -1129,12 +1174,12 @@ class DefaultConfig:
                     self.Success = iwrite.Success
             else:
                 self.Success = False
-                sh.log.append ('DefaultConfig.block'
+                sh.log.append ('DefaultConfig.block_channels'
                               ,_('WARNING')
                               ,_('Empty input is not allowed!')
                               )
         else:
-            sh.log.append ('DefaultConfig.block'
+            sh.log.append ('DefaultConfig.block_channels'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
@@ -1166,7 +1211,8 @@ class DefaultConfig:
     def run(self):
         if self.Success:
             self.subscribe()
-            self.block()
+            self.block_channels()
+            self.block_words()
             self.db()
         else:
             sh.log.append ('DefaultConfig.run'

@@ -80,9 +80,12 @@ class Commands:
         elif choice == _('Manage subscriptions'):
             self._menu.opt_act.set(_('Other'))
             self.manage_sub()
-        elif choice == _('Manage blocklist'):
+        elif choice == _('Manage blocked authors'):
             self._menu.opt_act.set(_('Other'))
-            self.manage_block()
+            self.manage_blocked_authors()
+        elif choice == _('Manage blocked words'):
+            self._menu.opt_act.set(_('Other'))
+            self.manage_blocked_words()
         elif choice == _('Show new videos'):
             self._menu.opt_act.set(_('Other'))
             self.show_new()
@@ -1332,7 +1335,8 @@ class Commands:
         title    = sh.Text(text=self._video.model._title).delete_unsupported()
         duration = sh.Text(text=self._video.model._dur).delete_unsupported()
         if author in lg.objs.lists()._block_auth \
-        or self._video.model._author in lg.objs._lists._block_auth:
+        or self._video.model._author in lg.objs._lists._block_auth \
+        or lg.objs._lists.match_blocked_word(title+self._video.model._title):
             author = title = _('BLOCKED')
             self._video._image = None
             self._video.model.Block = True
@@ -1410,7 +1414,7 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
                              
-    def manage_block(self,event=None):
+    def manage_blocked_authors(self,event=None):
         words = sh.Words(text=lg.objs.lists()._block)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._block)
@@ -1429,6 +1433,29 @@ class Commands:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here authors to be blocked')
             sh.WriteTextFile (file       = lg.objs.default()._fblock
+                             ,AskRewrite = False
+                             ).write(text=text)
+        lg.objs._lists.reset()
+    
+    def manage_blocked_words(self,event=None):
+        words = sh.Words(text=lg.objs.lists()._blockw)
+        gi.objs.blacklist().reset(words=words)
+        gi.objs._blacklist.insert(text=lg.objs._lists._blockw)
+        gi.objs._blacklist.show()
+        text = gi.objs._blacklist.get()
+        if text:
+            text = text.splitlines()
+            text = sorted (text
+                          ,key = lambda x:x[0].lower()
+                          )
+            text = '\n'.join(text)
+            sh.WriteTextFile (file       = lg.objs.default()._fblockw
+                             ,AskRewrite = False
+                             ).write(text=text)
+        else:
+            # 'WriteTextFile' cannot write an empty text
+            text = '# ' + _('Put here words to block in titles (case is ignored)')
+            sh.WriteTextFile (file       = lg.objs.default()._fblockw
                              ,AskRewrite = False
                              ).write(text=text)
         lg.objs._lists.reset()
