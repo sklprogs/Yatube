@@ -1,7 +1,8 @@
 
+* Add a tooltip for too long titles
 * Speed up loading videos from DB
 * Navigate channels forward/backward
-* Block words in titles
+* Block words in titles (case-insensitive)
 
 1.4
 * Create an AppImage for Linux

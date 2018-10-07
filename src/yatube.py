@@ -1244,6 +1244,9 @@ class Commands:
         gi.objs.channel(parent=gi.objs.menu().framev)
         for i in range(len(self._channel._links)):
             gi.objs._channel.add(no=i)
+            self._video  = Video(video_id=self._channel._links[i])
+            self._gvideo = gi.objs._channel._videos[i]
+            self._videos[self._gvideo] = self._video
         #timer.end()
             
     def dimensions(self):
@@ -1359,9 +1362,8 @@ class Commands:
                           % (len(matches),len(self._channel._links))
                           )
             for i in range(len(self._channel._links)):
-                self._video = Video(video_id=self._channel._links[i])
                 self._gvideo = gi.objs._channel._videos[i]
-                self._videos[self._gvideo] = self._video
+                self._video  = self._videos[self._gvideo]
                 if result[i]:
                     self._video.model.Saved = result[i]
                     self._video.model.assign_offline(self._video.model.Saved)
