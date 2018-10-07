@@ -1,4 +1,6 @@
 
+- yatube.Commands.tooltips: Calculate 'hint_width' and max title length
+  on the basis of 'req_width'
 - This video has been removed for violating YouTube's Terms of Service.
 - https://www.youtube.com/embed/LtrsRv6H7P8 Это видео недоступно
 - Restore gray color after removing filters

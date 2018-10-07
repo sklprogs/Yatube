@@ -828,7 +828,7 @@ if __name__ == '__main__':
                         )
     sg.objs.root().idle()
     # height = 112.133333333
-    height = objs._channel.label.widget.winfo_reqheight()
+    height = objs._channel.frame.widget.winfo_reqheight()
     sh.log.append ('gui.__main__'
                   ,_('DEBUG')
                   ,_('Widget must be at least %d pixels in height') \

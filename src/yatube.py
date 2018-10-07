@@ -39,6 +39,17 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def tooltips(self):
+        for video_gui in gi.objs.channel()._videos:
+            # Unsupported characters are already deleted
+            if len(video_gui._title) > 60:
+                sg.ToolTip (obj        = video_gui.frame
+                           ,text       = video_gui._title
+                           ,hint_width = 900
+                           ,hint_dir   = 'top'
+                           ,hint_font  = 'Serif 10'
+                           )
+    
     def update_buttons(self,event=None):
         if lg.objs.lists()._subsc_auth:
             self._menu.btn_upd.active()
@@ -1227,9 +1238,9 @@ class Commands:
         
     def fill_default(self):
         f = 'yatube.Commands.fill_default'
+        # Operation takes ~0,7s but there seems nothing to speed up
         #timer = sh.Timer(f)
         #timer.start()
-        #todo: Operation takes ~1,72s - speed this up (?)
         gi.objs.channel(parent=gi.objs.menu().framev)
         for i in range(len(self._channel._links)):
             gi.objs._channel.add(no=i)
@@ -1378,6 +1389,7 @@ class Commands:
         gi.objs._channel.canvas.widget.xview_moveto(0)
         # Move focus away from 'ttk.Combobox' (OptionMenu)
         gi.objs._channel.canvas.focus()
+        self.tooltips()
     
     def manage_sub(self):
         words = sh.Words(text=lg.objs.lists()._subsc)
