@@ -106,16 +106,27 @@ class Menu:
                                  ,text   = _('Update subscriptions')
                                  )
         self.btn_upd.focus()
+        self.opt_act = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = other_actions
+                                     ,default = _('Other')
+                                     )
         self.btn_prv = sg.Button (parent = self.frame1
                                  ,text   = _('Backward')
                                  )
         self.btn_nxt = sg.Button (parent = self.frame1
                                  ,text   = _('Forward')
                                  )
-        self.opt_act = sg.OptionMenu (parent  = self.frame1
-                                     ,items   = other_actions
-                                     ,default = _('Other')
+        self.lbl_wrp = sg.Label (parent = self.frame1
+                                ,side   = 'left'
+                                ,text   = _('Page:')
+                                ,font   = 'Sans 10'
+                                ,Close  = False
+                                )
+        self.opt_wrp = sg.OptionMenu (parent = self.frame1
+                                     ,anchor = 'w'
+                                     ,Combo  = True
                                      )
+        self.opt_wrp.widget.config(width=4)
         self.chb_dat = sg.CheckBox (parent = self.frame1
                                    ,Active = False
                                    ,side   = 'left'

@@ -25,6 +25,7 @@ class Commands:
         self._timestamp = None
         self.FirstVideo = True
         self._menu      = gi.objs.menu()
+        self._wrap      = lg.Wrap()
         itime           = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
@@ -39,6 +40,56 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def set_wrap(self,event=None):
+        f = 'yatube.Commands.set_wrap'
+        if str(self._menu.opt_wrp.choice).isdigit():
+            self._wrap.set_no(int(self._menu.opt_wrp.choice)-1)
+            cut = self._wrap.cut()
+            if cut:
+                if hasattr(self._channel,'_url'):
+                    url = self._channel._url
+                    self._channel = lg.Channel(url=url)
+                    self._channel._links = cut
+                    self.reset_channel_gui()
+                    self.channel_gui()
+                else:
+                    ''' The present procedure cannot be used before
+                        the very first channel loading, so we assume
+                        a logic error here.
+                    '''
+                    sh.objs.mes (f,_('ERROR')
+                                ,_('Wrong input data!')
+                                )
+            else:
+                sh.com.empty(f)
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Wrong input data: "%s"') \
+                        % str(self._menu.opt_wrp.choice)
+                        )
+    
+    def update_wrap(self):
+        f = 'yatube.Commands.update_wrap'
+        self._menu.opt_wrp.disable()
+        if self._channel:
+            if hasattr(self._channel,'_links'):
+                #todo: del limit
+                self._wrap.reset(urls=self._channel._links,limit=10)
+                self._menu.opt_wrp.enable()
+                items = []
+                for i in range(self._wrap._max+1):
+                    items.append(i+1)
+                self._menu.opt_wrp.reset (items   = items
+                                         ,default = self._wrap._no + 1
+                                         ,action  = self.set_wrap
+                                         )
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data!')
+                            )
+        else:
+            sh.com.empty(f)
+    
     def tooltips(self):
         for video_gui in gi.objs.channel()._videos:
             # Unsupported characters are already deleted
@@ -52,18 +103,18 @@ class Commands:
     
     def update_buttons(self,event=None):
         if lg.objs.lists()._subsc_auth:
-            self._menu.btn_upd.active()
+            self._menu.btn_upd.enable()
         else:
-            self._menu.btn_upd.inactive()
+            self._menu.btn_upd.disable()
         if lg.objs.channels()._no == 0:
-            self._menu.btn_prv.inactive()
+            self._menu.btn_prv.disable()
         else:
-            self._menu.btn_prv.active()
+            self._menu.btn_prv.enable()
         if lg.objs._channels._no == len(lg.objs._channels._urls) - 1 \
         or len(lg.objs._channels._urls) == 0:
-            self._menu.btn_nxt.inactive()
+            self._menu.btn_nxt.disable()
         else:
-            self._menu.btn_nxt.active()
+            self._menu.btn_nxt.enable()
     
     def save_url(self,event=None):
         f = 'yatube.Commands.save_url'
@@ -188,6 +239,7 @@ class Commands:
         self._menu.opt_chl.set(_('Channels'))
         self._menu.opt_trd.set(_('Trending'))
         gi.objs.channel().canvas.move_top()
+        self.post_update()
     
     def history(self,event=None):
         f = 'yatube.Commands.history'
@@ -1226,7 +1278,10 @@ class Commands:
         gi.objs._channel._videos = []
         self._menu.title()
         self.save_url()
+    
+    def post_update(self):
         self.update_buttons()
+        self.update_wrap()
         
     def bind_context(self,event=None):
         for video_gui in gi.objs.channel()._videos:
@@ -1392,6 +1447,7 @@ class Commands:
         # Move focus away from 'ttk.Combobox' (OptionMenu)
         gi.objs._channel.canvas.focus()
         self.tooltips()
+        self.post_update()
     
     def manage_sub(self):
         words = sh.Words(text=lg.objs.lists()._subsc)
@@ -1526,6 +1582,7 @@ if __name__ == '__main__':
     if lg.objs._default.Success:
         commands = Commands()
         commands.bindings()
+        commands.post_update()
         gi.objs.progress()
         gi.objs.menu().show()
         lg.objs.db().save()

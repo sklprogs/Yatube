@@ -7,7 +7,8 @@ import io
 # pip3 install google-api-python-client
 from googleapiclient.discovery import build as apiclient
 import pafy
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 import db
 
 import gettext, gettext_windows
@@ -31,6 +32,71 @@ Pravda GlazaRezhet	https://www.youtube.com/channel/UCgCqhDRyMH1wZBI4OOKLQ8g/vide
 '''
 
 sample_block = '''Россия 24'''
+
+
+
+class Wrap:
+    
+    def __init__(self):
+        self.values()
+    
+    def reset(self,urls=[],limit=100):
+        f = 'logic.Wrap.reset'
+        self.values()
+        if urls:
+            self._urls  = urls
+            self._limit = limit
+            self._max   = len(self._urls) // self._limit
+        else:
+            sh.com.empty(f)
+    
+    def values(self):
+        self._urls  = []
+        self._no    = 0
+        self._max   = 0
+        self._limit = 100
+    
+    def inc(self):
+        if self._no == self._max:
+            self._no = 0
+        elif self._max:
+            self._no += 1
+    
+    def dec(self):
+        if self._no == 0:
+            if self._max:
+                self._no = self._max
+        else:
+            self._no -= 1
+    
+    def set_no(self,no=0):
+        f = 'logic.Wrap.set_no'
+        if self._max:
+            if str(no).isdigit():
+                if 0 <= no <= self._max:
+                    self._no = no
+                else:
+                    sh.objs.mes (f,_('ERROR')
+                                ,_('The condition "%s" is not observed!')\
+                                % '%d <= %d <= %d' % (0,no,self._max)
+                                )
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data: "%s"') % str(no)
+                            )
+        else:
+            sh.com.cancel(f)
+    
+    def cut(self):
+        f = 'logic.Wrap.cut'
+        if self._urls:
+            cut1 = self._no * self._limit
+            cut2 = cut1 + self._limit
+            # Exceeding the length will not cause an error
+            return self._urls[cut1:cut2]
+        else:
+            sh.com.cancel(f)
+        
 
 
 
@@ -1206,6 +1272,19 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    url = 'http://www.youtube.com/user/AvtoKriminalist/videos'
-    links = Links(sh.Get(url).run())
-    links.run()
+    urls = ['Начало с.0'
+           ,'Середина с.0'
+           ,'Конец с.0'
+           ,'Начало с.1'
+           ,'Середина с.1'
+           ,'Конец с.1'
+           ,'Начало с.2'
+           ,'Середина с.2'
+           ,'Конец с.2'
+           ,'Начало с.3'
+           ]
+    wrap = Wrap()
+    wrap.reset(urls,limit=3)
+    wrap.inc()
+    wrap.dec()
+    print(wrap.cut())
