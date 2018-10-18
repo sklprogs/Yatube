@@ -1222,7 +1222,7 @@ class Commands:
         self._video = self._gvideo = None
         # Clears the old Channel widget
         for video_gui in gi.objs.channel()._videos:
-            video_gui.frame.widget.pack_forget()
+            video_gui.frame.widget.destroy()
         gi.objs._channel._videos = []
         self._menu.title()
         self.save_url()
