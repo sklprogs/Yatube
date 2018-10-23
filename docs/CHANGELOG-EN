@@ -1,4 +1,5 @@
 
+* Wrap channels
 * Add a tooltip for too long titles
 * Navigate channels forward/backward
 * Block words in titles (case-insensitive)
