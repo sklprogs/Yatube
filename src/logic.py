@@ -15,6 +15,8 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
+max_videos = 100
+
 pattern1  = 'https://www.youtube.com/watch?v='
 pattern2  = '<meta itemprop="channelId" content="'
 pattern3a = 'https://www.youtube.com/channel/'
@@ -38,49 +40,62 @@ sample_block = '''Россия 24'''
 class Wrap:
     
     def __init__(self):
+        self._no = 0
         self.values()
     
-    def reset(self,urls=[],limit=100):
+    def reset(self,urls=[]):
         f = 'logic.Wrap.reset'
         self.values()
         if urls:
-            self._urls  = urls
-            self._limit = limit
-            self._max   = len(self._urls) // self._limit
+            self._urls = urls
+            self._max  = len(self._urls) // max_videos
+            if self._no >= len(self._urls):
+                self._no = 0
         else:
+            self.Success = False
             sh.com.empty(f)
     
     def values(self):
-        self._urls  = []
-        self._no    = 0
-        self._max   = 0
-        self._limit = 100
+        self._urls   = []
+        self._max    = 0
+        self._cut    = []
+        self.Success = True
     
     def inc(self):
-        if self._no == self._max:
-            self._no = 0
-        elif self._max:
-            self._no += 1
+        f = 'logic.Wrap.inc'
+        if self.Success:
+            if self._no == self._max:
+                self._no = 0
+            elif self._max:
+                self._no += 1
+        else:
+            sh.com.cancel(f)
     
     def dec(self):
-        if self._no == 0:
-            if self._max:
-                self._no = self._max
+        f = 'logic.Wrap.dec'
+        if self.Success:
+            if self._no == 0:
+                if self._max:
+                    self._no = self._max
+            else:
+                self._no -= 1
         else:
-            self._no -= 1
+            sh.com.cancel(f)
     
     def set_no(self,no=0):
         f = 'logic.Wrap.set_no'
-        if self._max:
+        if self.Success:
             if str(no).isdigit():
                 if 0 <= no <= self._max:
                     self._no = no
                 else:
+                    self.Success = False
                     sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!')\
                                 % '%d <= %d <= %d' % (0,no,self._max)
                                 )
             else:
+                self.Success = False
                 sh.objs.mes (f,_('ERROR')
                             ,_('Wrong input data: "%s"') % str(no)
                             )
@@ -89,11 +104,13 @@ class Wrap:
     
     def cut(self):
         f = 'logic.Wrap.cut'
-        if self._urls:
-            cut1 = self._no * self._limit
-            cut2 = cut1 + self._limit
-            # Exceeding the length will not cause an error
-            return self._urls[cut1:cut2]
+        if self.Success:
+            if not self._cut:
+                cut1 = self._no * max_videos
+                cut2 = cut1 + max_videos
+                # Exceeding the length will not cause an error
+                self._cut = self._urls[cut1:cut2]
+            return self._cut
         else:
             sh.com.cancel(f)
         
@@ -262,27 +279,39 @@ class Constants:
 
 class Channel:
        
-    def __init__(self,url):
-        self.reset(url=url)
+    def __init__(self):
+        self.values()
         
-    def reset(self,url):
+    def url(self):
+        f = 'logic.Channel.url'
+        if self.Success:
+            if self._url:
+                if ('youtube' in self._url or 'youtu.be' in self._url) \
+                and not '?list=' in self._url \
+                and not 'results?search_query=' in self._url \
+                and not '?gl=' in self._url:
+                    self._url = URL(url=self._url).channel_full()
+                elif len(self._url) == 11 and not 'https:' in self._url \
+                and not 'http:' in self._url and not 'www.' in self._url:
+                    self._url = URL(url=self._url).video_full()
+                elif not self._url.startswith('http'):
+                    self.Success = False
+                    sh.objs.mes (f,_('WARNING')
+                                ,_('Wrong input data: "%s"') % self._url
+                                )
+            else:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.com.cancel(f)
+    
+    def reset(self,url='',urls=[]):
         f = 'logic.Channel.reset'
         self.values()
-        if url:
-            self._url = url
-            if ('youtube' in self._url or 'youtu.be' in self._url) \
-            and not '?list=' in self._url \
-            and not 'results?search_query=' in self._url \
-            and not '?gl=' in self._url:
-                self._url = URL(url=self._url).channel_full()
-            elif len(self._url) == 11 and not 'https:' in self._url \
-            and not 'http:' in self._url and not 'www.' in self._url:
-                self._url = URL(url=self._url).video_full()
-            elif not self._url.startswith('http'):
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Wrong input data: "%s"') % self._url
-                            )
+        if url or urls:
+            self._url  = url
+            self._urls = urls
         else:
             self.Success = False
             sh.com.empty(f)
@@ -291,89 +320,89 @@ class Channel:
         self.Success = True
         self._url    = ''
         self._html   = ''
-        self._links  = []
+        self._urls   = []
     
     def page(self):
         f = 'logic.Channel.page'
         if self.Success:
-            response = sh.Get(url=self._url).run()
-            if response:
-                self._html = response
-            return self._html
+            if self._html or self._urls:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                response = sh.Get(url=self._url).run()
+                if response:
+                    self._html = response
         else:
             sh.com.cancel(f)
     
-    def links(self):
-        f = 'logic.Channel.links'
+    def urls(self):
+        f = 'logic.Channel.urls'
         if self.Success:
-            ilinks = sh.Links (text = self._html
-                              ,root = 'href="'
+            if self._urls:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
                               )
-            ilinks.poses()
-            old = list(ilinks._links)
-            ilinks = sh.Links (text = self._html
-                              ,root = 'src="'
-                              )
-            ilinks.poses()
-            ''' #note: if links from both root elements are present,
-                their order may be desynchronized.
-            '''
-            ilinks._links += old
-            if 'youtube' in self._url or 'youtu.be' in self._url:
-                ilinks._links = ['https://www.youtube.com' + link \
-                                 for link in ilinks._links \
-                                 if link.startswith('/watch?v=')
-                                ]
             else:
-                ilinks.redirection()
-                ''' We should do our best here to ensure that the URL
-                    will refer to a Youtube video. There could be links
-                    to 'youtube.com', e.g., from 'account.google.com'
-                    that will not refer to videos. We need a slash here
-                    because there can be links like
-                    .../uploads/youtu.be-bv2OGph5Kec-330x225.jpg.
+                ilinks = sh.Links (text = self._html
+                                  ,root = 'href="'
+                                  )
+                ilinks.poses()
+                old = list(ilinks._links)
+                ilinks = sh.Links (text = self._html
+                                  ,root = 'src="'
+                                  )
+                ilinks.poses()
+                ''' #note: if links from both root elements are present,
+                    their order may be desynchronized.
                 '''
-                ilinks._links = [link for link in ilinks._links 
-                                 if 'youtu.be/' in link 
-                                 or 'youtube.com/watch?v=' in link 
-                                 or 'youtube.com/embed/' in link
+                ilinks._links += old
+                if 'youtube' in self._url or 'youtu.be' in self._url:
+                    ilinks._links = ['https://www.youtube.com' + link \
+                                     for link in ilinks._links \
+                                     if link.startswith('/watch?v=')
+                                    ]
+                else:
+                    ilinks.redirection()
+                    ''' We should do our best here to ensure that the URL
+                        will refer to a Youtube video. There could be links
+                        to 'youtube.com', e.g., from 'account.google.com'
+                        that will not refer to videos. We need a slash here
+                        because there can be links like
+                        .../uploads/youtu.be-bv2OGph5Kec-330x225.jpg.
+                    '''
+                    ilinks._links = [link for link in ilinks._links 
+                                     if 'youtu.be/' in link 
+                                     or 'youtube.com/watch?v=' in link 
+                                     or 'youtube.com/embed/' in link
+                                    ]
+                    ilinks.valid()
+                old = list(ilinks._links)
+                ''' Previous algorithms consider a link as valid if it has
+                    'youtu(be)' in its tag, and we have just ID there, so
+                    this should be put after those algorithms.
+                '''
+                ilinks = sh.Links (text = self._html
+                                  ,root = 'data-pe-videoid="'
+                                  )
+                ilinks.poses()
+                ilinks._links += old
+                ilinks._links = [URL(url=link).video_id() \
+                                 for link in ilinks._links
                                 ]
-                ilinks.valid()
-            old = list(ilinks._links)
-            ''' Previous algorithms consider a link as valid if it has
-                'youtu(be)' in its tag, and we have just ID there, so
-                this should be put after those algorithms.
-            '''
-            ilinks = sh.Links (text = self._html
-                              ,root = 'data-pe-videoid="'
+                ilinks.duplicates()
+                self._urls = ilinks._links
+                sh.log.append (f,_('INFO')
+                              ,_('Fetched %d links') % len(self._urls)
                               )
-            ilinks.poses()
-            ilinks._links += old
-            ilinks._links = [URL(url=link).video_id() \
-                             for link in ilinks._links
-                            ]
-            ilinks.duplicates()
-            self._links = ilinks._links
-            sh.log.append (f,_('INFO')
-                          ,_('Fetched %d links') % len(self._links)
-                          )
-            return self._links
         else:
             sh.com.cancel(f)
     
     def run(self):
-        f = 'logic.Channel.run'
-        history_links = objs.channels().links(url=self._url)
-        if history_links:
-            self._links = history_links
-            sh.log.append (f,_('INFO')
-                          ,_('%d links have been loaded from memory.') \
-                          % len(self._links)
-                          )
-        else:
-            self.page()
-            self.links()
-        return self._links
+        self.url()
+        self.page()
+        self.urls()
+        return self._urls
 
 
 
@@ -454,8 +483,19 @@ class Objects:
     
     def __init__(self):
         self._online = self._lists = self._const = self._default \
-                     = self._db = self._channels = None
+                     = self._db = self._channels = self._channel \
+                     = self._wrap = None
         
+    def wrap(self):
+        if not self._wrap:
+            self._wrap = Wrap()
+        return self._wrap
+    
+    def channel(self):
+        if not self._channel:
+            self._channel = Channel()
+        return self._channel
+    
     def db(self):
         f = 'logic.Objects.db'
         if not self._db:
@@ -1190,25 +1230,23 @@ class ChannelHistory:
     def __init__(self):
         self.values()
     
-    def links(self,url):
-        if url in self._urls:
-            return self._links[self._urls.index(url)]
-    
     def values(self):
         self._no      = 0
         self._authors = []
         self._urls    = []
-        self._links   = []
     
     def reset(self):
         self.values()
     
-    def add(self,author,url,links):
-        if not url in self._urls:
-            self._authors.append(author)
-            self._urls.append(url)
-            self._no = len(self._urls) - 1
-            self._links.append(links)
+    def add(self,author,urls):
+        f = 'logic.ChannelHistory.add'
+        if author and urls:
+            if not urls in self._urls:
+                self._authors.append(author)
+                self._urls.append(urls)
+                self._no = len(self._urls) - 1
+        else:
+            sh.com.empty(f)
     
     def inc(self):
         if self._no == len(self._urls) - 1:

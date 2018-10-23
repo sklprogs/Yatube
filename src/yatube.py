@@ -14,6 +14,7 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+
 class Commands:
     
     def __init__(self):
@@ -21,11 +22,9 @@ class Commands:
         self._videos    = {}
         self._video     = None
         self._gvideo    = None
-        self._channel   = None
         self._timestamp = None
         self.FirstVideo = True
         self._menu      = gi.objs.menu()
-        self._wrap      = lg.Wrap()
         itime           = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.years()
@@ -40,55 +39,47 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def load_view(self):
+        self.reset_channel_gui()
+        self.channel_gui()
+        self.update_widgets()
+    
     def set_wrap(self,event=None):
+        ''' This updates logic based on GUI. To update GUI based on
+            logic, use 'self.update_wrap'.
+        '''
         f = 'yatube.Commands.set_wrap'
+        if str(self._menu.opt_max.choice).isdigit():
+            lg.max_videos = int(self._menu.opt_max.choice)
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Wrong input data: "%s"') \
+                        % str(self._menu.opt_max.choice)
+                        )
         if str(self._menu.opt_wrp.choice).isdigit():
-            self._wrap.set_no(int(self._menu.opt_wrp.choice)-1)
-            cut = self._wrap.cut()
-            if cut:
-                if hasattr(self._channel,'_url'):
-                    url = self._channel._url
-                    self._channel = lg.Channel(url=url)
-                    self._channel._links = cut
-                    self.reset_channel_gui()
-                    self.channel_gui()
-                else:
-                    ''' The present procedure cannot be used before
-                        the very first channel loading, so we assume
-                        a logic error here.
-                    '''
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Wrong input data!')
-                                )
-            else:
-                sh.com.empty(f)
+            lg.objs.wrap().set_no(int(self._menu.opt_wrp.choice)-1)
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('Wrong input data: "%s"') \
                         % str(self._menu.opt_wrp.choice)
                         )
+        self.load_view()
     
     def update_wrap(self):
+        ''' This updates GUI based on logic. To update logic based on
+            GUI, use 'self.set_wrap'.
+        '''
         f = 'yatube.Commands.update_wrap'
-        self._menu.opt_wrp.disable()
-        if self._channel:
-            if hasattr(self._channel,'_links'):
-                #todo: del limit
-                self._wrap.reset(urls=self._channel._links,limit=10)
-                self._menu.opt_wrp.enable()
-                items = []
-                for i in range(self._wrap._max+1):
-                    items.append(i+1)
-                self._menu.opt_wrp.reset (items   = items
-                                         ,default = self._wrap._no + 1
-                                         ,action  = self.set_wrap
-                                         )
-            else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
+        if lg.objs.channel()._urls:
+            self._menu.opt_wrp.enable()
+            items = []
+            for i in range(lg.objs.wrap()._max+1):
+                items.append(i+1)
+            self._menu.opt_wrp.reset (items   = items
+                                     ,default = lg.objs._wrap._no + 1
+                                     )
         else:
-            sh.com.empty(f)
+            self._menu.opt_wrp.disable()
     
     def tooltips(self):
         for video_gui in gi.objs.channel()._videos:
@@ -106,44 +97,23 @@ class Commands:
             self._menu.btn_upd.enable()
         else:
             self._menu.btn_upd.disable()
-        if lg.objs.channels()._no == 0:
-            self._menu.btn_prv.disable()
-        else:
-            self._menu.btn_prv.enable()
-        if lg.objs._channels._no == len(lg.objs._channels._urls) - 1 \
-        or len(lg.objs._channels._urls) == 0:
-            self._menu.btn_nxt.disable()
-        else:
-            self._menu.btn_nxt.enable()
+            
+    def update_widgets(self,event=None):
+        self.update_buttons()
+        self.update_wrap()
     
     def save_url(self,event=None):
         f = 'yatube.Commands.save_url'
-        author = self._menu.opt_chl.choice
-        if hasattr(self._channel,'_url'):
-            url   = self._channel._url
-            links = self._channel._links
-            if author and url:
-                lg.objs.channels().add(author,url,links)
-            else:
-                sh.com.empty(f)
-        elif lg.objs.channels()._urls:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Wrong input data!')
-                        )
-        else:
-            ''' The user may call resetting the screen right after
-                starting the program.
-            '''
-            sh.log.append (f,_('INFO')
-                        ,_('Nothing to do!')
-                        )
+        lg.objs.channels().add (author = self._menu.opt_chl.choice
+                               ,urls   = lg.objs.channel()._urls
+                               )
     
     def prev_url(self,event=None):
         f = 'yatube.Commands.prev_url'
         result = lg.objs.channels().prev()
         if result:
             self.update_channel (author = result[0]
-                                ,url    = result[1]
+                                ,urls   = result[1]
                                 )
         else:
             sh.com.empty(f)
@@ -153,7 +123,7 @@ class Commands:
         result = lg.objs.channels().next()
         if result:
             self.update_channel (author = result[0]
-                                ,url    = result[1]
+                                ,urls   = result[1]
                                 )
         else:
             sh.com.empty(f)
@@ -228,8 +198,8 @@ class Commands:
                         )
     
     def blank(self,event=None):
-        if self._channel:
-            self._channel._url = ''
+        # 'lg.objs.channel().reset' requires non-empty values at input
+        lg.objs.channel().values()
         lg.objs.channels().reset()
         self.reset_channel_gui()
         self._menu.clear_search(Force=True)
@@ -239,20 +209,15 @@ class Commands:
         self._menu.opt_chl.set(_('Channels'))
         self._menu.opt_trd.set(_('Trending'))
         gi.objs.channel().canvas.move_top()
-        self.post_update()
+        self.update_widgets()
     
     def history(self,event=None):
         f = 'yatube.Commands.history'
         urls = lg.objs.db().downloaded()
         if urls:
-            ''' URL can be any here, even 'None', but we do not use
-                'None' in order to be on the safe side since many
-                classes have checks against empty input in '__init__'.
-            '''
-            self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
-            self._channel._links = urls
-            self.reset_channel_gui()
-            self.channel_gui()
+            lg.objs.channel().reset(urls=urls)
+            lg.objs._channel.run()
+            self.load_view()
         else:
             # Do not warn here since this is actually a common case
             sh.log.append (f,_('INFO')
@@ -329,14 +294,9 @@ class Commands:
             sh.com.empty(f)
     
     def _show_new(self,urls):
-        ''' URL can be any here, even 'None', but we do not use 'None'
-                in order to be on the safe side since many classes have
-                checks against empty input in '__init__'.
-            '''
-        self._channel = lg.Channel(url='https://www.youtube.com/feed/trending?gl=RU')
-        self._channel._links = urls
-        self.reset_channel_gui()
-        self.channel_gui()
+        lg.objs.channel().reset(urls=urls)
+        lg.objs._channel.run()
+        self.load_view()
     
     def show_new(self,event=None):
         f = 'yatube.Commands.show_new'
@@ -500,10 +460,9 @@ class Commands:
     def load_channel(self,event=None):
         f = 'yatube.Commands.load_channel'
         if self._video and self._video.model.channel_url():
-            self._channel = lg.Channel(url=self._video.model._channel_url)
-            self._channel.run()
-            self.reset_channel_gui()
-            self.channel_gui()
+            lg.objs.channel().reset(url=self._video.model._channel_url)
+            lg.objs._channel.run()
+            self.load_view()
         else:
             sh.com.empty(f)
     
@@ -796,23 +755,26 @@ class Commands:
                               ,_('Wrong input data!')
                               )
     
-    def update_channel(self,author,url):
+    def update_channel (self,event=None,author=''
+                       ,url='',urls=[]
+                       ):
         f = 'logic.Commands.update_channel'
         # This includes downloading a web-page
         timer = sh.Timer(f)
         timer.start()
-        self._menu.opt_chl.set(author)
-        self._channel = lg.Channel(url=url)
-        self._channel.run()
-        self.reset_channel_gui()
-        self.channel_gui()
+        if author:
+            self._menu.opt_chl.set(author)
+        lg.objs.channel().reset (url  = url
+                                ,urls = urls
+                                )
+        lg.objs._channel.run()
+        self.load_view()
         timer.end()
         
     def get_links(self,url):
-        self._channel = lg.Channel(url=url)
-        self._channel.run()
-        self.reset_channel_gui()
-        self.channel_gui()
+        lg.objs.channel().reset(url=url)
+        lg.objs._channel.run()
+        self.load_view()
                           
     def set_channel(self,event=None):
         f = 'yatube.Commands.set_channel'
@@ -984,16 +946,20 @@ class Commands:
                 ,action   = self.blank
                 )
         # Menu: buttons
-        self._menu.btn_upd.action = self.update_channels
-        self._menu.btn_prv.action = self.prev_url
-        self._menu.btn_nxt.action = self.next_url
-        self._menu.btn_ytb.action = self.search_youtube
-        self._menu.btn_flt.action = self.filter_view
-        self._menu.btn_stm.action = self.stream
-        self._menu.btn_dld.action = self.download
-        self._menu.btn_ply.action = self.play
         self._menu.btn_del.action = self.delete_selected
+        self._menu.btn_dld.action = self.download
+        self._menu.btn_flt.action = self.filter_view
+        self._menu.btn_nxt.action = self.next_url
+        self._menu.btn_ply.action = self.play
+        self._menu.btn_prv.action = self.prev_url
+        self._menu.btn_stm.action = self.stream
+        self._menu.btn_upd.action = self.update_channels
+        self._menu.btn_ytb.action = self.search_youtube
         # Menu: labels
+        sg.bind (obj      = self._menu.ent_flt
+                ,bindings = ['<Return>','<KP_Enter>']
+                ,action   = self.filter_view
+                )
         sg.bind (obj      = self._menu.ent_src
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.search_youtube
@@ -1002,36 +968,34 @@ class Commands:
                 ,bindings = ['<Return>','<KP_Enter>']
                 ,action   = self.get_url
                 )
-        sg.bind (obj      = self._menu.ent_flt
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.filter_view
-                )
         # Menu: checkboxes
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
         # Menu: OptionMenus
         self._menu.opt_act.action = self.other
+        self._menu.opt_chl.reset (items   = self._channels
+                                 ,default = _('Channels')
+                                 ,action  = self.set_channel
+                                 )
         self._menu.opt_dat.action = self.filter_by_date
-        self._menu.opt_url.action = self.get_url
         self._menu.opt_day.reset (items   = self._days
                                  ,default = self._day
                                  ,action  = self.reset_date_filter
                                  )
+        self._menu.opt_max.action = self.set_wrap
         self._menu.opt_mth.reset (items   = self._months
                                  ,default = self._month
-                                 ,action  = self.reset_date_filter
-                                 )
-        self._menu.opt_yrs.reset (items   = self._years
-                                 ,default = self._year
                                  ,action  = self.reset_date_filter
                                  )
         self._menu.opt_trd.reset (items   = lg.objs.const()._trending
                                  ,default = _('Trending')
                                  ,action  = self.set_trending
                                  )
-        self._menu.opt_chl.reset (items   = self._channels
-                                 ,default = _('Channels')
-                                 ,action  = self.set_channel
+        self._menu.opt_url.action = self.get_url
+        self._menu.opt_wrp.action = self.set_wrap
+        self._menu.opt_yrs.reset (items   = self._years
+                                 ,default = self._year
+                                 ,action  = self.reset_date_filter
                                  )
         
     def select_new(self,event=None):
@@ -1216,9 +1180,9 @@ class Commands:
                                    ,message    = message
                                    )
             sg.objs._waitbox.update()
-            channel = lg.Channel(url=channels[i])
-            channel.run()
-            links += channel._links
+            lg.objs.channel().reset(url=channels[i])
+            lg.objs._channel.run()
+            links += channel._urls
         sg.objs._waitbox.close()
         # Get new URLs
         sh.log.append (f,_('DEBUG')
@@ -1262,13 +1226,9 @@ class Commands:
             url = 'https://www.youtube.com/feed/trending?gl=RU'
             # This is needed if we use hotkeys (update an old value)
             self._menu.opt_trd.set(_('Trending'))
-        self._channel = lg.Channel(url=url)
-        ''' We assume that there is no need to delete unsupported
-            characters in countries.
-        '''
-        self._channel.run()
-        self.reset_channel_gui()
-        self.channel_gui()
+        lg.objs.channel().reset(url=url)
+        lg.objs._channel.run()
+        self.load_view()
         
     def reset_channel_gui(self):
         self._video = self._gvideo = None
@@ -1279,10 +1239,6 @@ class Commands:
         self._menu.title()
         self.save_url()
     
-    def post_update(self):
-        self.update_buttons()
-        self.update_wrap()
-        
     def bind_context(self,event=None):
         for video_gui in gi.objs.channel()._videos:
             for obj in video_gui._objects:
@@ -1297,11 +1253,14 @@ class Commands:
         #timer = sh.Timer(f)
         #timer.start()
         gi.objs.channel(parent=gi.objs.menu().framev)
-        for i in range(len(self._channel._links)):
-            gi.objs._channel.add(no=i)
-            self._video  = Video(video_id=self._channel._links[i])
-            self._gvideo = gi.objs._channel._videos[i]
-            self._videos[self._gvideo] = self._video
+        if lg.objs.wrap().cut():
+            for i in range(len(lg.objs._wrap._cut)):
+                gi.objs._channel.add(no=i)
+                self._video  = Video(video_id=lg.objs._wrap._cut[i])
+                self._gvideo = gi.objs._channel._videos[i]
+                self._videos[self._gvideo] = self._video
+        else:
+            sh.com.empty(f)
         #timer.end()
             
     def dimensions(self):
@@ -1311,7 +1270,7 @@ class Commands:
         ''' #NOTE: Extra space can be caused by a difference of
             the default and loaded pictures.
         '''
-        #height = len(self._channel._links) * 112.133333333
+        #height = len(lg.objs.channel()._urls) * 112.133333333
         sh.log.append (f,_('DEBUG')
                       ,_('Widget must be at least %d pixels in height')\
                       % height
@@ -1409,27 +1368,31 @@ class Commands:
         f = 'yatube.Commands.fill_known'
         #timer = sh.Timer(f)
         #timer.start()
-        result = lg.objs.db().get_videos(urls=self._channel._links)
-        if result:
-            matches = [item[0] for item in result if item]
-            sh.log.append (f,_('INFO')
-                          ,_('%d/%d links are already stored in DB.')\
-                          % (len(matches),len(self._channel._links))
-                          )
-            for i in range(len(self._channel._links)):
-                self._gvideo = gi.objs._channel._videos[i]
-                self._video  = self._videos[self._gvideo]
-                if result[i]:
-                    self._video.model.Saved = result[i]
-                    self._video.model.assign_offline(self._video.model.Saved)
-                    #todo: elaborate 'Video.model.get' and delete this
-                    self._video.image()
-                    self.update_video(i)
+        if lg.objs.wrap().cut():
+            result = lg.objs.db().get_videos(urls=lg.objs._wrap._cut)
+            if result:
+                matches = [item[0] for item in result if item]
+                sh.log.append (f,_('INFO')
+                              ,_('%d/%d links are already stored in DB.')\
+                              % (len(matches),len(lg.objs._wrap._cut))
+                              )
+                for i in range(len(lg.objs._wrap._cut)):
+                    self._gvideo = gi.objs._channel._videos[i]
+                    self._video  = self._videos[self._gvideo]
+                    if result[i]:
+                        self._video.model.Saved = result[i]
+                        self._video.model.assign_offline(self._video.model.Saved)
+                        #todo: elaborate 'Video.model.get' and delete this
+                        self._video.image()
+                        self.update_video(i)
+            else:
+                sh.com.empty(f)
         else:
             sh.com.empty(f)
         #timer.end()
             
     def channel_gui(self):
+        lg.objs.wrap().reset(urls=lg.objs.channel()._urls)
         self.fill_default()
         self.fill_known()
         ''' The less we use GUI update, the faster will be the program.
@@ -1447,7 +1410,7 @@ class Commands:
         # Move focus away from 'ttk.Combobox' (OptionMenu)
         gi.objs._channel.canvas.focus()
         self.tooltips()
-        self.post_update()
+        self.update_widgets()
     
     def manage_sub(self):
         words = sh.Words(text=lg.objs.lists()._subsc)
@@ -1582,7 +1545,7 @@ if __name__ == '__main__':
     if lg.objs._default.Success:
         commands = Commands()
         commands.bindings()
-        commands.post_update()
+        commands.update_widgets()
         gi.objs.progress()
         gi.objs.menu().show()
         lg.objs.db().save()

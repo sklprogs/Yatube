@@ -116,6 +116,16 @@ class Menu:
         self.btn_nxt = sg.Button (parent = self.frame1
                                  ,text   = _('Forward')
                                  )
+        self.lbl_max = sg.Label (parent = self.frame1
+                                ,side   = 'left'
+                                ,text   = _('Max videos:')
+                                ,font   = 'Sans 10'
+                                ,Close  = False
+                                )
+        self.opt_max = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = (5,10,15,30,50,100)
+                                     ,default = 100
+                                     )
         self.lbl_wrp = sg.Label (parent = self.frame1
                                 ,side   = 'left'
                                 ,text   = _('Page:')
