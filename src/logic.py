@@ -48,7 +48,10 @@ class Wrap:
         self.values()
         if urls:
             self._urls = urls
-            self._max  = len(self._urls) // max_videos
+            floor = len(self._urls) // max_videos
+            if len(self._urls) / max_videos > floor:
+                floor += 1
+            self._max = floor - 1
             if self._no >= len(self._urls):
                 self._no = 0
         else:
@@ -312,6 +315,11 @@ class Channel:
         if url or urls:
             self._url  = url
             self._urls = urls
+            ''' Since we change a channel, there can be a different
+                number of pages. Thus, we need to set page # to 0 each
+                time we load the new channel.
+            '''
+            objs.wrap().set_no()
         else:
             self.Success = False
             sh.com.empty(f)

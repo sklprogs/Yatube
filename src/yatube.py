@@ -44,18 +44,20 @@ class Commands:
         self.channel_gui()
         self.update_widgets()
     
-    def set_wrap(self,event=None):
-        ''' This updates logic based on GUI. To update GUI based on
-            logic, use 'self.update_wrap'.
-        '''
-        f = 'yatube.Commands.set_wrap'
+    def set_max_videos(self,event=None):
+        f = 'yatube.Commands.set_max_videos'
         if str(self._menu.opt_max.choice).isdigit():
             lg.max_videos = int(self._menu.opt_max.choice)
+            lg.objs.wrap().set_no()
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('Wrong input data: "%s"') \
                         % str(self._menu.opt_max.choice)
                         )
+        self.load_view()
+    
+    def set_page(self,event=None):
+        f = 'yatube.Commands.set_page'
         if str(self._menu.opt_wrp.choice).isdigit():
             lg.objs.wrap().set_no(int(self._menu.opt_wrp.choice)-1)
         else:
@@ -67,7 +69,7 @@ class Commands:
     
     def update_wrap(self):
         ''' This updates GUI based on logic. To update logic based on
-            GUI, use 'self.set_wrap'.
+            GUI, use either 'self.set_page' or 'self.set_max_videos'.
         '''
         f = 'yatube.Commands.update_wrap'
         if lg.objs.channel()._urls:
@@ -982,7 +984,7 @@ class Commands:
                                  ,default = self._day
                                  ,action  = self.reset_date_filter
                                  )
-        self._menu.opt_max.action = self.set_wrap
+        self._menu.opt_max.action = self.set_max_videos
         self._menu.opt_mth.reset (items   = self._months
                                  ,default = self._month
                                  ,action  = self.reset_date_filter
@@ -992,7 +994,7 @@ class Commands:
                                  ,action  = self.set_trending
                                  )
         self._menu.opt_url.action = self.get_url
-        self._menu.opt_wrp.action = self.set_wrap
+        self._menu.opt_wrp.action = self.set_page
         self._menu.opt_yrs.reset (items   = self._years
                                  ,default = self._year
                                  ,action  = self.reset_date_filter
