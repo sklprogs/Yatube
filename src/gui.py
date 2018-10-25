@@ -124,7 +124,7 @@ class Menu:
                                 )
         self.opt_max = sg.OptionMenu (parent  = self.frame1
                                      ,items   = (5,10,15,30,50,100)
-                                     ,default = 100
+                                     ,default = 30
                                      )
         self.lbl_wrp = sg.Label (parent = self.frame1
                                 ,side   = 'left'

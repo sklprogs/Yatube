@@ -39,20 +39,24 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def downloaded(self,limit=50):
+    def downloaded(self,limit=0):
         f = 'db.DB.downloaded'
         if self.Success:
             try:
-                ''' #todo: use BLOCK field. We do not have a list of
-                    blocked URLs, thus, we cannot easily remove
-                    a blocked URL from the history list.
-                '''
-                self.dbc.execute ('select URL from VIDEOS \
-                                   where DTIME > ? and BLOCK = ?\
-                                   order by DTIME desc, TIMESTAMP desc \
-                                   limit ?'
-                                 ,(0,False,limit,)
-                                 )
+                if limit:
+                    self.dbc.execute ('select   URL from VIDEOS \
+                                       where    DTIME > ? \
+                                       order by DTIME desc, \
+                                                TIMESTAMP desc limit ?'
+                                     ,(0,limit,)
+                                     )
+                else:
+                    self.dbc.execute ('select   URL from VIDEOS \
+                                       where    DTIME > ? \
+                                       order by DTIME desc, \
+                                                TIMESTAMP desc'
+                                     ,(0,)
+                                     )
                 result = self.dbc.fetchall()
                 if result:
                     return [item[0] for item in result]
@@ -167,7 +171,7 @@ class DB:
         f = 'db.DB.create_videos'
         if self.Success:
             try:
-                # 18 columns by now
+                # 20 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
                      URL       text    \
@@ -188,6 +192,8 @@ class DB:
                     ,SEARCH    text    \
                     ,TIMESTAMP float   \
                     ,DTIME     float   \
+                    ,FAV       boolean \
+                    ,LATER     boolean \
                                                        )'
                                  )
             except Exception as e:

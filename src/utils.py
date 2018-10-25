@@ -17,6 +17,20 @@ class DB:
         self._clone  = clone
         self.Success = self._clone and sh.File(file=self._path).Success
     
+    def fail(self,f,e):
+        self.Success = False
+        sh.objs.mes (f,_('WARNING')
+                    ,_('Database "%s" has failed!\n\nDetails: %s') \
+                    % (self._path,str(e))
+                    )
+    
+    def fail_clone(self,f,e):
+        self.Success = False
+        sh.objs.mes (f,_('WARNING')
+                    ,_('Database "%s" has failed!\n\nDetails: %s') \
+                    % (self._clone,str(e))
+                    )
+    
     def down_markw(self):
         f = 'utils.DB.down_markw'
         if self.Success:
@@ -24,12 +38,8 @@ class DB:
                 self.dbcw.execute ('update VIDEOS set DTIME = ? \
                                     where  DTIME > ?',(0,0,)
                                   )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._clone,str(e))
-                            )
+            except Exception as e:
+                self.fail_clone(f,e)
         else:
             sh.com.cancel(f)
     
@@ -38,12 +48,8 @@ class DB:
         if self.Success:
             try:
                 self.dbw.commit()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._clone,str(e))
-                            )
+            except Exception as e:
+                self.fail_clone(f,e)
         else:
             sh.com.cancel(f)
         
@@ -53,12 +59,8 @@ class DB:
             try:
                 self.db  = sqlite3.connect(self._path)
                 self.dbc = self.db.cursor()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+            except Exception as e:
+                self.fail(f,e)
         else:
             sh.com.cancel(f)
                           
@@ -68,12 +70,8 @@ class DB:
             try:
                 self.dbw  = sqlite3.connect(self._clone)
                 self.dbcw = self.dbw.cursor()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._clone,str(e))
-                            )
+            except Exception as e:
+                self.fail_clone(f,e)
         else:
             sh.com.cancel(f)
     
@@ -86,16 +84,12 @@ class DB:
                                          ,DESC,DURATION,LENGTH,VIEWS\
                                          ,LIKES,DISLIKES,RATING,IMAGE\
                                          ,BLOCK,IGNORE,SEARCH,TIMESTAMP\
-                                         ,READY\
+                                         ,DTIME\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+            except Exception as e:
+                self.fail(f,e)
         else:
             sh.com.cancel(f)
     
@@ -103,7 +97,7 @@ class DB:
         f = 'utils.DB.create_table'
         if self.Success:
             try:
-                # 18 columns by now
+                # 20 columns by now
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      URL       text    \
@@ -124,14 +118,12 @@ class DB:
                     ,SEARCH    text    \
                     ,TIMESTAMP float   \
                     ,DTIME     float   \
-                                                       )'
+                    ,FAV       boolean \
+                    ,LATER     boolean \
+                                         )'
                                  )
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._clone,str(e))
-                            )
+            except Exception as e:
+                self.fail_clone(f,e)
         else:
             sh.com.cancel(f)
     
@@ -146,18 +138,16 @@ class DB:
                               )
                 for row in self._data:
                     try:
-                        if row[17]:         # READY
-                            dtime = row[16] # TIMESTAMP
-                        else:
-                            dtime = 0
+                        fav   = False
+                        later = False
                         row = (row[0],row[1],row[2],row[3],row[4],row[5]
                               ,row[6],row[7],row[8],row[9],row[10]
                               ,row[11],row[12],row[13],row[14],row[15]
-                              ,row[16],dtime
+                              ,row[16],row[17],fav,later
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
                                             (?,?,?,?,?,?,?,?,?,?,?,?,?\
-                                            ,?,?,?,?,?\
+                                            ,?,?,?,?,?,?,?\
                                             )'
                                           ,row
                                           )
@@ -181,12 +171,8 @@ class DB:
         if self.Success:
             try:
                 self.dbc.close()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._path,str(e))
-                            )
+            except Exception as e:
+                self.fail(f,e)
         else:
             sh.com.cancel(f)
                           
@@ -195,12 +181,8 @@ class DB:
         if self.Success:
             try:
                 self.dbcw.close()
-            except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Database "%s" has failed!\n\nDetails: %s')\
-                            % (self._clone,str(e))
-                            )
+            except Exception as e:
+                self.fail_clone(f,e)
         else:
             sh.com.cancel(f)
                           
@@ -227,12 +209,8 @@ class DB:
                         self.dbcw.execute ('update VIDEOS set URL = ? where URL = ?'
                                           ,(item,old_item,)
                                           )
-                    except (sqlite3.DatabaseError,sqlite3.OperationalError) as e:
-                        self.Success = False
-                        sh.objs.mes (f,_('WARNING')
-                                    ,_('Database "%s" has failed!\n\nDetails: %s')\
-                                    % (self._clone,str(e))
-                                    )
+                    except Exception as e:
+                        self.fail_clone(f,e)
             else:
                 sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
@@ -245,7 +223,7 @@ class DB:
 class Commands:
     
     def __init__(self):
-        self._path  = '/home/pete/bin/Yatube/user/yatube.db'
+        self._path  = '/home/pete/.config/yatube/yatube.db'
         self._clone = '/tmp/yatube.db'
         
     def repair_urls(self):
@@ -347,4 +325,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.empty_author()
+    commands.alter()
