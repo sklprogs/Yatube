@@ -1035,11 +1035,10 @@ class URL:
 
 
 
-''' Any API operation has a timeout (even 'self.connect'), so we must
-    reset the whole class each time.
-'''
 class Comments:
-
+    ''' Any API operation has a timeout (even 'self.connect'), so we
+        must reset the whole class each time.
+    '''
     def __init__(self,videoid):
         self.values()
         self.reset(videoid)
@@ -1102,11 +1101,17 @@ class Comments:
                                         ,pageToken  = ''
                                         ).execute()
                 except Exception as e:
+                    e = str(e)
                     self.Success = False
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Operation has failed!\n\nDetails: %s')\
-                                % str(e)
-                                )
+                    if 'has disabled comments' in e:
+                        sh.objs.mes (f,_('INFO')
+                                    ,_('Comments are disabled for this video.')
+                                    )
+                    else:
+                        sh.objs.mes (f,_('WARNING')
+                                    ,_('Operation has failed!\n\nDetails: %s')\
+                                    % e
+                                    )
             return self._threads
         else:
             sh.com.cancel(f)

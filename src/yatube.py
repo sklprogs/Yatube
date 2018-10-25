@@ -133,7 +133,8 @@ class Commands:
     def show_comments(self,event=None):
         f = 'yatube.Commands.show_comments'
         if self._video:
-            text = lg.Comments(videoid=self._video.model._video_id).run()
+            icomments = lg.Comments(videoid=self._video.model._video_id)
+            text = icomments.run()
             if text:
                 text = sh.Text(text=text).delete_unsupported()
                 gi.objs.comments().read_only(ReadOnly=False)
@@ -141,7 +142,7 @@ class Commands:
                 gi.objs._comments.insert(text)
                 gi.objs._comments.read_only(ReadOnly=True)
                 gi.objs._comments.show()
-            else:
+            elif icomments.Success:
                 sg.Message (f,_('INFO')
                            ,_('No comments yet!')
                            )
