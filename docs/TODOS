@@ -1,4 +1,5 @@
 
+- Delete image URL from summary
 - yatube.Commands.tooltips: Calculate 'hint_width' and max title length
   on the basis of 'req_width'
 - This video has been removed for violating YouTube's Terms of Service.

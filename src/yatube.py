@@ -1208,11 +1208,18 @@ class Commands:
                 self._video.image()
                 self._video.model.dump()
                 author, title, duration = self.unsupported()
+                if self._gvideo:
+                    no = self._gvideo._no
+                else:
+                    no = 1
+                    sh.objs.mes (f,_('ERROR')
+                                ,_('Wrong input data!')
+                                )
                 gi.objs._wait.reset (author   = author
                                     ,title    = title
                                     ,duration = duration
                                     ,image    = self._video._image
-                                    ,no       = i + 1
+                                    ,no       = no
                                     )
                 gi.objs._wait.update()
             lg.objs._db.save()
@@ -1327,7 +1334,7 @@ class Commands:
                                     ,title    = self._gvideo._title
                                     ,duration = self._gvideo._duration
                                     ,image    = self._video._image
-                                    ,no       = unknown_i[i]
+                                    ,no       = self._gvideo._no
                                     )
                 gi.objs._wait.update()
             lg.objs.db().save()
@@ -1356,8 +1363,7 @@ class Commands:
         if self._video:
             author, title, duration = self.unsupported()
             self._gvideo = gi.objs.channel()._videos[i]
-            self._gvideo.reset (no       = self._gvideo._no
-                               ,author   = author
+            self._gvideo.reset (author   = author
                                ,title    = title
                                ,duration = duration
                                ,image    = self._video._image

@@ -1,4 +1,7 @@
 
+- There could be a problem when using 'db.get_videos' for videos 
+  with brackets in titles. Reproduce: load history, set max videos to 5
+  and go to the final page.
 - Too high speed when streaming: jt0GkEMqaYI
 - Do not delete commented lines when rewriting subscribe.txt & block.txt
 - Middle clicks pastes URL twice into the URL field (NOT ALWAYS

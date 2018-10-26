@@ -235,14 +235,17 @@ class DB:
         '''
         f = 'db.DB.get_video'
         if self.Success:
-            self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
-                                     ,DURATION,LENGTH,VIEWS,LIKES \
-                                     ,DISLIKES,RATING,IMAGE,SEARCH\
-                                     ,TIMESTAMP,DTIME \
-                               from   VIDEOS \
-                               where  URL = ?',(video_id,)
-                             )
-            return self.dbc.fetchone()
+            try:
+                self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
+                                         ,DURATION,LENGTH,VIEWS,LIKES \
+                                         ,DISLIKES,RATING,IMAGE,SEARCH\
+                                         ,TIMESTAMP,DTIME \
+                                   from   VIDEOS \
+                                   where  URL = ?',(video_id,)
+                                 )
+                return self.dbc.fetchone()
+            except Exception as e:
+                self.fail(f,e)
         else:
             sh.com.cancel(f)
     

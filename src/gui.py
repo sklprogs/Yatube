@@ -328,7 +328,7 @@ class Menu:
 
 class Video:
     
-    def __init__(self,parent,no=0):
+    def __init__(self,parent,no=1):
         # 'no' does not involve logic, it's merely a part of GUI
         self._no    = no
         self.parent = parent
@@ -475,11 +475,16 @@ class Video:
     def reset (self,author,title,duration
               ,image=None,no=0
               ):
-        self._no       = no
         self._author   = author
         self._title    = title
         self._duration = duration
         self._image    = image
+        ''' 'no' normally remains unmodified, so we check the input
+            so we don't have to set 'no' again and again each time
+            'self.reset' is called.
+        '''
+        if no:
+            self._no = no
         '''
         #note #todo For some reason, using 'widget.config' or 
         'Label.text' resets config options here.
@@ -772,10 +777,14 @@ class WaitMeta:
         self.frame.widget.update()
         
     def reset (self,author=_('Author'),title=_('Title')
-              ,duration=_('Duration'),image=None,no=0
+              ,duration=_('Duration'),image=None,no=1
               ):
         f = 'gui.WaitMeta.reset'
         if self._video:
+            ''' Though 'no' is already set when creating 'gui.Video',
+                we reset this value here in order not to meddle with it
+                in 'self.gui'.
+            '''
             self._video.reset (author   = author
                               ,title    = title
                               ,duration = duration
@@ -828,7 +837,7 @@ if __name__ == '__main__':
     wait = WaitMeta(parent=sg.objs.new_top())
     wait.show()
     time.sleep(2)
-    wait.reset(no=2,author=_('BLOCKED'))
+    wait.reset(author=_('BLOCKED'))
     wait.update()
     time.sleep(2)
     wait.close()
@@ -843,8 +852,7 @@ if __name__ == '__main__':
     for i in range(max_videos):
         objs._channel.add(no=i+1)
         video_gui = objs._channel._videos[-1]
-        video_gui.reset (no       = i + 1
-                        ,author   = 'Author (%d)' % (i + 1)
+        video_gui.reset (author   = 'Author (%d)' % (i + 1)
                         ,title    = 'Title (%d)'  % (i + 1)
                         ,duration = 60 * (i + 1)
                         )
