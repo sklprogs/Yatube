@@ -570,7 +570,7 @@ class Video:
         
     def values(self):
         self.Success = True
-        self.Block   = self.Ignore = False
+        self.Block   = self.Ignore = self.Fav = self.Later = False
         self._video  = self._bytes = self.Saved = None
         self._author = self._title = self._date = self._cat \
                      = self._desc = self._dur = self._path \
@@ -698,6 +698,7 @@ class Video:
                        ,self._len,self._views,self._likes,self._dislikes
                        ,self._rating,self._bytes,self.Block,self.Ignore
                        ,self._search,self._timestamp,self._dtime
+                       ,self.Fav,self.Later
                        )
                 objs.db().add_video(data)
             else:

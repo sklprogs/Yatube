@@ -1257,8 +1257,9 @@ class Commands:
         #timer.start()
         gi.objs.channel(parent=gi.objs.menu().framev)
         if lg.objs.wrap().cut():
+            delta = lg.objs._wrap._no * lg.max_videos
             for i in range(len(lg.objs._wrap._cut)):
-                gi.objs._channel.add(no=i)
+                gi.objs._channel.add(no=delta+i+1)
                 self._video  = Video(video_id=lg.objs._wrap._cut[i])
                 self._gvideo = gi.objs._channel._videos[i]
                 self._videos[self._gvideo] = self._video
@@ -1326,7 +1327,7 @@ class Commands:
                                     ,title    = self._gvideo._title
                                     ,duration = self._gvideo._duration
                                     ,image    = self._video._image
-                                    ,no       = unknown_i[i] + 1
+                                    ,no       = unknown_i[i]
                                     )
                 gi.objs._wait.update()
             lg.objs.db().save()
@@ -1355,7 +1356,7 @@ class Commands:
         if self._video:
             author, title, duration = self.unsupported()
             self._gvideo = gi.objs.channel()._videos[i]
-            self._gvideo.reset (no       = i + 1
+            self._gvideo.reset (no       = self._gvideo._no
                                ,author   = author
                                ,title    = title
                                ,duration = duration

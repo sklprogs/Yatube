@@ -206,7 +206,9 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
+                                   ,?,? \
+                                   )'
                                  ,data
                                  )
             except Exception as e:
