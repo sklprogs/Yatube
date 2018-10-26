@@ -296,6 +296,7 @@ class Commands:
         idb.close()
         
     def _get_empty(self,idb):
+        f = 'utils.Commands._get_empty'
         idb.dbcw.execute('select AUTHOR from VIDEOS where AUTHOR=?',('',))
         data = idb.dbcw.fetchall()
         sh.log.append (f,_('INFO')
@@ -325,4 +326,5 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.alter()
+    commands.repair_urls()
+    commands.empty_author()

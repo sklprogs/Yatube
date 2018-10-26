@@ -394,10 +394,11 @@ class Video:
             current video labels are the same.
         '''
         self.label1 = sg.Label (parent = self.frame1
-                               ,text   = _('#%d') % self._no
+                               ,text   = str(self._no)
                                ,side   = 'right'
                                ,anchor = 'w'
                                ,Close  = False
+                               ,font   = 'Mono 10'
                                ,width  = 4
                                )
         ''' 'image' argument must be specified even when the label
@@ -483,7 +484,7 @@ class Video:
         #note #todo For some reason, using 'widget.config' or 
         'Label.text' resets config options here.
         '''
-        self.label1._text = _('#%d') % self._no
+        self.label1._text = str(self._no)
         self.label1.reset()
         self.label4._text = self._author
         self.label4.reset()

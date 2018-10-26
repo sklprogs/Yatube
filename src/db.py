@@ -253,28 +253,37 @@ class DB:
         '''
         f = 'db.DB.get_videos'
         if self.Success:
-            self.dbc.execute ('select URL,AUTHOR,TITLE,DATE,CATEGORY\
-                                     ,DESC,DURATION,LENGTH,VIEWS,LIKES \
-                                     ,DISLIKES,RATING,IMAGE,SEARCH\
-                                     ,TIMESTAMP,DTIME \
-                               from   VIDEOS \
-                               where  URL in %s' % str(tuple(urls))
-                             )
-            result = self.dbc.fetchall()
-            # The data are fetched in a mixed order
-            if result:
-                data = []
-                for url in urls:
-                    Found = False
-                    for item in result:
-                        if item[0] == url:
-                            Found = True
-                            break
-                    if Found:
-                        data.append(item[1:])
-                    else:
-                        data.append(())
-                return data
+            if urls:
+                try:
+                    self.dbc.execute ('select URL,AUTHOR,TITLE,DATE\
+                                             ,CATEGORY,DESC,DURATION\
+                                             ,LENGTH,VIEWS,LIKES\
+                                             ,DISLIKES,RATING,IMAGE\
+                                             ,SEARCH,TIMESTAMP,DTIME\
+                                       from   VIDEOS \
+                                       where  URL in %s' \
+                                     % str(tuple(urls))
+                                     )
+                    result = self.dbc.fetchall()
+                except Exception as e:
+                    result = None
+                    self.fail(f,e)
+                # The data are fetched in a mixed order
+                if result:
+                    data = []
+                    for url in urls:
+                        Found = False
+                        for item in result:
+                            if item[0] == url:
+                                Found = True
+                                break
+                        if Found:
+                            data.append(item[1:])
+                        else:
+                            data.append(())
+                    return data
+            else:
+                sh.com.empty(f)
         else:
             sh.com.cancel(f)
 
