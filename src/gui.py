@@ -53,6 +53,7 @@ other_actions = (_('Other')
                 ,_('Welcome screen')
                 ,_('Select all new videos')
                 ,_('Toggle status of selected')
+                ,_('Toggle favorite status')
                 ,_('Delete selected')
                 )
 

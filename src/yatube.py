@@ -39,6 +39,29 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def toggle_starred(self,event=None):
+        f = 'yatube.Commands.toggle_starred'
+        if self._video:
+            Starred = True if self._video.model.Fav else False
+            lg.objs.db().mark_starred (video_id = self._video.model._video_id
+                                      ,Starred  = Starred
+                                      )
+        else:
+            sh.com.empty(f)
+    
+    def toggle_starred_selected(self,event=None):
+        f = 'yatube.Commands.toggle_starred_selected'
+        for video_gui in gi.objs.channel()._videos:
+            if video_gui.cbox.get():
+                if video_gui in self._videos:
+                    self._gvideo = video_gui
+                    self._video  = self._videos[self._gvideo]
+                    self.toggle_starred()
+                else:
+                    sh.log.append (f,_('ERROR')
+                                  ,_('Wrong input data!')
+                                  )
+    
     def load_view(self):
         self.reset_channel_gui()
         self.channel_gui()
@@ -191,6 +214,9 @@ class Commands:
         elif choice == _('Toggle status of selected'):
             self._menu.opt_act.set(_('Other'))
             self.toggle_selected()
+        elif choice == _('Toggle favorite status'):
+            self._menu.opt_act.set(_('Other'))
+            self.toggle_starred_selected()
         elif choice == _('Delete selected'):
             self._menu.opt_act.set(_('Other'))
             self.delete_selected()

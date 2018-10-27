@@ -18,6 +18,19 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def mark_starred(self,video_id,Starred=True):
+        f = 'db.DB.mark_starred'
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set   FAV = ? \
+                                                 where URL = ?'
+                                 ,(Starred,video_id,)
+                                 )
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def fail(self,func,error):
         self.Success = False
         sh.objs.mes (func
