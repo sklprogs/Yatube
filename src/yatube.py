@@ -39,6 +39,22 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def prev_page(self,event=None):
+        f = 'yatube.Commands.prev_page'
+        if lg.objs.wrap().Success:
+            lg.objs._wrap.dec()
+            self.load_view()
+        else:
+            sh.com.cancel(f)
+    
+    def next_page(self,event=None):
+        f = 'yatube.Commands.next_page'
+        if lg.objs.wrap().Success:
+            lg.objs._wrap.inc()
+            self.load_view()
+        else:
+            sh.com.cancel(f)
+    
     def watchlist(self,event=None):
         f = 'yatube.Commands.watchlist'
         urls = lg.objs.db().watchlist()
@@ -1098,6 +1114,14 @@ class Commands:
     
     def bindings(self):
         # Menu: main window
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-Left>'
+                ,action   = self.prev_page
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-Right>'
+                ,action   = self.next_page
+                )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-Left>'
                 ,action   = self.prev_url

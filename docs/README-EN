@@ -5,8 +5,12 @@ Control-d - Download selected file(s)
 Control-p - Play selected file(s)
 Control-s - Stream a selected file
 Control-h, Alt-h - Show download history
+Control-Left - Go to a previous channel
+Control-Right - Go to a next channel
 Shift-Delete - Delete selected file(s)
 Alt-b - Reset widgets
 Alt-c - Show new videos
 Alt-t - Show Trending
+Alt-Left - Go to a previous page
+Alt-Right - Go to a next page
 Escape (on the main window) - Minimize
