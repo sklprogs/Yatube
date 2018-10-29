@@ -39,28 +39,186 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
-    def toggle_starred(self,event=None):
-        f = 'yatube.Commands.toggle_starred'
+    def watchlist(self,event=None):
+        f = 'yatube.Commands.watchlist'
+        urls = lg.objs.db().watchlist()
+        if urls:
+            lg.objs.channel().reset(urls=urls)
+            lg.objs._channel.run()
+            self.load_view()
+        else:
+            # Do not warn here since this is actually a common case
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def starred(self,event=None):
+        f = 'yatube.Commands.starred'
+        urls = lg.objs.db().starred()
+        if urls:
+            lg.objs.channel().reset(urls=urls)
+            lg.objs._channel.run()
+            self.load_view()
+        else:
+            # Do not warn here since this is actually a common case
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def remove_from_watchlist(self,event=None):
+        f = 'yatube.Commands.remove_from_watchlist'
         if self._video:
-            Starred = True if self._video.model.Fav else False
-            lg.objs.db().mark_starred (video_id = self._video.model._video_id
-                                      ,Starred  = Starred
-                                      )
+            lg.objs.db().mark_later (video_id = self._video.model._video_id
+                                    ,Later    = False
+                                    )
+            self.unselect()
         else:
             sh.com.empty(f)
     
-    def toggle_starred_selected(self,event=None):
-        f = 'yatube.Commands.toggle_starred_selected'
+    def add2watchlist(self,event=None):
+        f = 'yatube.Commands.add2watchlist'
+        if self._video:
+            lg.objs.db().mark_later (video_id = self._video.model._video_id
+                                    ,Later    = True
+                                    )
+            self.unselect()
+        else:
+            sh.com.empty(f)
+    
+    def sel_add2watchlist(self,event=None):
+        f = 'yatube.Commands.sel_add2watchlist'
+        selection = self.selection()
+        if selection:
+            for video_gui in selection:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                self.add2watchlist()
+        else:
+            sh.com.empty(f)
+    
+    def sel_remove_from_watchlist(self,event=None):
+        f = 'yatube.Commands.sel_remove_from_watchlist'
+        selection = self.selection()
+        if selection:
+            for video_gui in selection:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                self.remove_from_watchlist()
+        else:
+            sh.com.empty(f)
+    
+    def unselect(self,event=None):
+        f = 'yatube.Commands.unselect'
+        if self._gvideo:
+            self._gvideo.cbox.disable()
+            gi.report_selection()
+        else:
+            sh.com.empty(f)
+    
+    def sel_unstar(self,event=None):
+        f = 'yatube.Commands.sel_unstar'
+        selection = self.selection()
+        if selection:
+            for video_gui in selection:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                self.unstar()
+        else:
+            sh.com.empty(f)
+    
+    def unstar(self,event=None):
+        f = 'yatube.Commands.unstar'
+        if self._video:
+            lg.objs.db().mark_starred (video_id = self._video.model._video_id
+                                      ,Starred  = False
+                                      )
+            self.unselect()
+        else:
+            sh.com.empty(f)
+    
+    def star(self,event=None):
+        f = 'yatube.Commands.star'
+        if self._video:
+            lg.objs.db().mark_starred (video_id = self._video.model._video_id
+                                      ,Starred  = True
+                                      )
+            self.unselect()
+        else:
+            sh.com.empty(f)
+            
+    def sel_star(self,event=None):
+        f = 'yatube.Commands.sel_star'
+        selection = self.selection()
+        if selection:
+            for video_gui in selection:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                self.star()
+        else:
+            sh.com.empty(f)
+    
+    def sel_mark_not_watched(self,event=None):
+        f = 'yatube.Commands.sel_mark_not_watched'
+        selection = self.selection()
+        if selection:
+            for video_gui in selection:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                self.mark_not_watched()
+        else:
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def sel_mark_watched(self,event=None):
+        f = 'yatube.Commands.sel_mark_watched'
+        selection = self.selection()
+        if selection:
+            for video_gui in selection:
+                self._gvideo = video_gui
+                self._video  = self._videos[self._gvideo]
+                self.mark_watched()
+        else:
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def mark_not_watched(self,event=None):
+        f = 'yatube.Commands.mark_not_watched'
+        if self._video and self._gvideo:
+            self._video.model._dtime = 0
+            lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
+                                         ,dtime    = self._video.model._dtime
+                                         )
+            self._gvideo.black_out()
+            self.unselect()
+        else:
+            sh.com.empty(f)
+    
+    def mark_watched(self,event=None):
+        f = 'yatube.Commands.mark_watched'
+        if self._video and self._gvideo:
+            self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
+                                         ,dtime    = self._video.model._dtime
+                                         )
+            self._gvideo.gray_out()
+            self.unselect()
+        else:
+            sh.com.empty(f)
+    
+    def selection(self,event=None):
+        f = 'yatube.Commands.selection'
+        selected = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
                 if video_gui in self._videos:
-                    self._gvideo = video_gui
-                    self._video  = self._videos[self._gvideo]
-                    self.toggle_starred()
+                    selected.append(video_gui)
                 else:
                     sh.log.append (f,_('ERROR')
                                   ,_('Wrong input data!')
                                   )
+        return selected
     
     def load_view(self):
         self.reset_channel_gui()
@@ -172,19 +330,6 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def toggle_selected(self,event=None):
-        f = 'yatube.Commands.toggle_selected'
-        for video_gui in gi.objs.channel()._videos:
-            if video_gui.cbox.get():
-                if video_gui in self._videos:
-                    self._gvideo = video_gui
-                    self._video  = self._videos[self._gvideo]
-                    self.toggle_downloaded()
-                else:
-                    sh.log.append (f,_('ERROR')
-                                  ,_('Wrong input data!')
-                                  )
-    
     def other(self,event=None):
         f = 'yatube.Commands.other'
         choice = self._menu.opt_act.choice
@@ -205,21 +350,39 @@ class Commands:
         elif choice == _('History'):
             self._menu.opt_act.set(_('Other'))
             self.history()
+        elif choice == _('Favorites'):
+            self._menu.opt_act.set(_('Other'))
+            self.starred()
+        elif choice == _('Watchlist'):
+            self._menu.opt_act.set(_('Other'))
+            self.watchlist()
         elif choice == _('Welcome screen'):
             self._menu.opt_act.set(_('Other'))
             self.blank()
         elif choice == _('Select all new videos'):
             self._menu.opt_act.set(_('Other'))
             self.select_new()
-        elif choice == _('Toggle status of selected'):
+        elif choice == _('Mark as watched'):
             self._menu.opt_act.set(_('Other'))
-            self.toggle_selected()
-        elif choice == _('Toggle favorite status'):
+            self.sel_mark_watched()
+        elif choice == _('Mark as not watched'):
             self._menu.opt_act.set(_('Other'))
-            self.toggle_starred_selected()
+            self.sel_mark_not_watched()
+        elif choice == _('Add to favorites'):
+            self._menu.opt_act.set(_('Other'))
+            self.sel_star()
+        elif choice == _('Remove from favorites'):
+            self._menu.opt_act.set(_('Other'))
+            self.sel_unstar()
         elif choice == _('Delete selected'):
             self._menu.opt_act.set(_('Other'))
             self.delete_selected()
+        elif choice == _('Add to watchlist'):
+            self._menu.opt_act.set(_('Other'))
+            self.sel_add2watchlist()
+        elif choice == _('Remove from watchlist'):
+            self._menu.opt_act.set(_('Other'))
+            self.sel_remove_from_watchlist()
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
@@ -592,23 +755,6 @@ class Commands:
         elif 'mplayer' in app:
             return ['-cache','8192','-cache-min','50']
                    
-    def toggle_downloaded(self,event=None):
-        f = 'yatube.Commands.toggle_downloaded'
-        if self._video and self._gvideo:
-            if self._video.model._dtime:
-                self._video.model._dtime = 0
-            else:
-                self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-            lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
-                                         ,dtime    = self._video.model._dtime
-                                         )
-            if self._video.model._dtime:
-                self._gvideo.gray_out()
-            else:
-                self._gvideo.black_out()
-        else:
-            sh.com.empty(f)
-    
     def reset_date_filter(self,event=None):
         self._timestamp = None
         self.filter_by_date()
@@ -728,8 +874,18 @@ class Commands:
                 self.play_video()
             elif choice == _('Stream'):
                 self.stream_video()
-            elif choice == _('Toggle the download status'):
-                self.toggle_downloaded()
+            elif choice == _('Mark as watched'):
+                self.mark_watched()
+            elif choice == _('Mark as not watched'):
+                self.mark_not_watched()
+            elif choice == _('Add to favorites'):
+                self.star()
+            elif choice == _('Remove from favorites'):
+                self.unstar()
+            elif choice == _('Add to watchlist'):
+                self.add2watchlist()
+            elif choice == _('Remove from watchlist'):
+                self.remove_from_watchlist()
             elif choice == _('Delete the downloaded file'):
                 self.delete_video()
             elif choice == _('Extract links'):
@@ -1086,22 +1242,14 @@ class Commands:
     
     def play(self,event=None):
         f = 'yatube.Commands.play'
-        new_videos = []
-        for video_gui in gi.objs.channel()._videos:
-            if video_gui.cbox.get():
-                if video_gui in self._videos:
-                    new_videos.append(video_gui)
-                else:
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Wrong input data!')
-                                )
-        if new_videos:
-            for i in range(len(new_videos)):
-                self._gvideo = new_videos[i]
+        selection = self.selection()
+        if selection:
+            for i in range(len(selection)):
+                self._gvideo = selection[i]
                 self._video  = self._videos[self._gvideo]
                 gi.objs.progress().title (_('Download progress') \
                                          + ' (%d/%d)' % (i + 1
-                                                        ,len(new_videos)
+                                                        ,len(selection)
                                                         )
                                          )
                 self.download_video()
@@ -1168,22 +1316,14 @@ class Commands:
     
     def download(self,event=None):
         f = 'yatube.Commands.download'
-        new_videos = []
-        for video_gui in gi.objs.channel()._videos:
-            if video_gui.cbox.get():
-                if video_gui in self._videos:
-                    new_videos.append(video_gui)
-                else:
-                    sg.Message (f,_('ERROR')
-                               ,_('Wrong input data!')
-                               )
-        if new_videos:
-            for i in range(len(new_videos)):
-                self._gvideo = new_videos[i]
+        selection = self.selection()
+        if selection:
+            for i in range(len(selection)):
+                self._gvideo = selection[i]
                 self._video  = self._videos[self._gvideo]
                 gi.objs.progress().title (_('Download progress') \
                                          + ' (%d/%d)' % (i + 1
-                                                        ,len(new_videos)
+                                                        ,len(selection)
                                                         )
                                          )
                 self.download_video()

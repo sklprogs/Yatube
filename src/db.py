@@ -18,6 +18,54 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def mark_later(self,video_id,Later=True):
+        f = 'db.DB.mark_later'
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set   LATER = ? \
+                                                 where URL   = ?'
+                                 ,(Later,video_id,)
+                                 )
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def watchlist(self):
+        f = 'db.DB.watchlist'
+        if self.Success:
+            try:
+                self.dbc.execute ('select   URL from VIDEOS \
+                                   where    LATER = ? \
+                                   order by TIMESTAMP desc'
+                                 ,(True,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def starred(self):
+        f = 'db.DB.starred'
+        if self.Success:
+            try:
+                self.dbc.execute ('select   URL from VIDEOS \
+                                   where    FAV = ? \
+                                   order by DTIME desc, \
+                                            TIMESTAMP desc'
+                                 ,(True,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def mark_starred(self,video_id,Starred=True):
         f = 'db.DB.mark_starred'
         if self.Success:
@@ -52,24 +100,16 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def downloaded(self,limit=0):
+    def downloaded(self):
         f = 'db.DB.downloaded'
         if self.Success:
             try:
-                if limit:
-                    self.dbc.execute ('select   URL from VIDEOS \
-                                       where    DTIME > ? \
-                                       order by DTIME desc, \
-                                                TIMESTAMP desc limit ?'
-                                     ,(0,limit,)
-                                     )
-                else:
-                    self.dbc.execute ('select   URL from VIDEOS \
-                                       where    DTIME > ? \
-                                       order by DTIME desc, \
-                                                TIMESTAMP desc'
-                                     ,(0,)
-                                     )
+                self.dbc.execute ('select   URL from VIDEOS \
+                                   where    DTIME > ? \
+                                   order by DTIME desc, \
+                                            TIMESTAMP desc'
+                                 ,(0,)
+                                 )
                 result = self.dbc.fetchall()
                 if result:
                     return [item[0] for item in result]
