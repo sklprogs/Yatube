@@ -1099,6 +1099,14 @@ class Commands:
     def bindings(self):
         # Menu: main window
         sg.bind (obj      = self._menu.parent
+                ,bindings = '<Control-Left>'
+                ,action   = self.prev_url
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Control-Right>'
+                ,action   = self.next_url
+                )
+        sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-p>'
                 ,action   = self.play
                 )
@@ -1113,6 +1121,14 @@ class Commands:
         sg.bind (obj      = self._menu.parent
                 ,bindings = ['<Control-h>','<Alt-h>']
                 ,action   = self.history
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-w>'
+                ,action   = self.watchlist
+                )
+        sg.bind (obj      = self._menu.parent
+                ,bindings = '<Alt-f>'
+                ,action   = self.starred
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Shift-Delete>'
