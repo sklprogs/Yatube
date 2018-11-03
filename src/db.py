@@ -306,10 +306,10 @@ class DB:
         f = 'db.DB.get_video'
         if self.Success:
             try:
-                self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY,DESC \
-                                         ,DURATION,LENGTH,VIEWS,LIKES \
-                                         ,DISLIKES,RATING,IMAGE,SEARCH\
-                                         ,TIMESTAMP,DTIME \
+                self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY \
+                                         ,DESC,DURATION,LENGTH,VIEWS \
+                                         ,LIKES,DISLIKES,RATING,IMAGE \
+                                         ,SEARCH,TIMESTAMP,DTIME \
                                    from   VIDEOS \
                                    where  URL = ?',(video_id,)
                                  )
@@ -328,15 +328,13 @@ class DB:
         if self.Success:
             if urls:
                 try:
-                    self.dbc.execute ('select URL,AUTHOR,TITLE,DATE\
-                                             ,CATEGORY,DESC,DURATION\
-                                             ,LENGTH,VIEWS,LIKES\
-                                             ,DISLIKES,RATING,IMAGE\
-                                             ,SEARCH,TIMESTAMP,DTIME\
-                                       from   VIDEOS \
-                                       where  URL in %s' \
-                                     % str(tuple(urls))
-                                     )
+                    query = 'select URL,AUTHOR,TITLE,DATE,CATEGORY,DESC\
+                                   ,DURATION,LENGTH,VIEWS,LIKES\
+                                   ,DISLIKES,RATING,IMAGE,SEARCH\
+                                   ,TIMESTAMP,DTIME\
+                             from   VIDEOS where  URL in (%s)' \
+                            % ','.join('?'*len(urls))
+                    self.dbc.execute(query,urls)
                     result = self.dbc.fetchall()
                 except Exception as e:
                     result = None

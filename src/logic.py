@@ -15,7 +15,7 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-max_videos = 30
+max_videos = 5
 
 pattern1  = 'https://www.youtube.com/watch?v='
 pattern2  = '<meta itemprop="channelId" content="'

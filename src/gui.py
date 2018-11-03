@@ -49,25 +49,36 @@ url_items = (_('Show summary')
             ,_('Full menu')
             )
 
-other_actions = (_('Other')
-                ,_('Manage subscriptions')
-                ,_('Manage blocked authors')
-                ,_('Manage blocked words')
-                ,_('History')
-                ,_('Show new videos')
-                ,_('Feed')
-                ,_('Favorites')
-                ,_('Watchlist')
-                ,_('Welcome screen')
-                ,_('Select all new videos')
-                ,_('Mark as watched')
-                ,_('Mark as not watched')
-                ,_('Add to favorites')
-                ,_('Remove from favorites')
-                ,_('Add to watchlist')
-                ,_('Remove from watchlist')
-                ,_('Delete selected')
-                )
+update_items = (_('Update')
+               ,_('Subscriptions')
+               ,_('Links')
+               )
+
+view_items = (_('View')
+             ,_('History')
+             ,_('All feed')
+             ,_('Subscriptions')
+             ,_('Favorites')
+             ,_('Watchlist')
+             ,_('Welcome screen')
+             )
+
+selection_items = (_('Selection')
+                  ,_('Select all new videos')
+                  ,_('Mark as watched')
+                  ,_('Mark as not watched')
+                  ,_('Add to favorites')
+                  ,_('Remove from favorites')
+                  ,_('Add to watchlist')
+                  ,_('Remove from watchlist')
+                  ,_('Delete selected')
+                  )
+
+edit_items = (_('Edit')
+             ,_('Subscriptions')
+             ,_('Blocked authors')
+             ,_('Blocked words')
+             )
 
 default_entry_width = 19
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
@@ -114,37 +125,58 @@ class Menu:
         self.ent_src.widget.config(fg='black',font='Serif 10')
         self.ent_src.focus()
     
+    def tooltips(self):
+        sg.ToolTip (obj        = self.opt_max
+                   ,text       = _('Videos per page')
+                   ,hint_width = 150
+                   ,hint_dir   = 'bottom'
+                   )
+        sg.ToolTip (obj        = self.opt_wrp
+                   ,text       = _('Page #')
+                   ,hint_width = 150
+                   ,hint_dir   = 'bottom'
+                   )
+    
     def widgets(self):
-        self.btn_upd = sg.Button (parent = self.frame1
-                                 ,text   = _('Update subscriptions')
-                                 )
-        self.btn_upd.focus()
-        self.opt_act = sg.OptionMenu (parent  = self.frame1
-                                     ,items   = other_actions
-                                     ,default = _('Other')
+        self.opt_upd = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = update_items
+                                     ,default = _('Update')
                                      )
-        self.btn_prv = sg.Button (parent = self.frame1
-                                 ,text   = _('Backward')
+        self.opt_viw = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = view_items
+                                     ,default = _('View')
+                                     )
+        self.opt_sel = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = selection_items
+                                     ,default = _('Selection')
+                                     )
+        self.opt_edt = sg.OptionMenu (parent  = self.frame1
+                                     ,items   = edit_items
+                                     ,default = _('Edit')
+                                     )
+        self.btn_prv = sg.Button (parent   = self.frame1
+                                 ,text     = _('←')
+                                 ,hint     = _('Go to the previous channel')
+                                 ,hint_dir = 'bottom'
                                  )
-        self.btn_nxt = sg.Button (parent = self.frame1
-                                 ,text   = _('Forward')
+        self.btn_nxt = sg.Button (parent   = self.frame1
+                                 ,text     = _('→')
+                                 ,hint     = _('Go to the next channel')
+                                 ,hint_dir = 'bottom'
                                  )
-        self.lbl_max = sg.Label (parent = self.frame1
-                                ,side   = 'left'
-                                ,text   = _('Max videos:')
-                                ,font   = 'Sans 10'
-                                ,Close  = False
-                                )
+        self.btn_ppg = sg.Button (parent   = self.frame1
+                                 ,text     = _('‹')
+                                 ,hint     = _('Go to the previous page')
+                                 ,hint_dir = 'bottom'
+                                 )
+        self.btn_npg = sg.Button (parent   = self.frame1
+                                 ,text     = _('›')
+                                 ,hint     = _('Go to the next page')
+                                 ,hint_dir = 'bottom'
+                                 )
         self.opt_max = sg.OptionMenu (parent  = self.frame1
                                      ,items   = (5,10,15,30,50,100)
-                                     ,default = 30
                                      )
-        self.lbl_wrp = sg.Label (parent = self.frame1
-                                ,side   = 'left'
-                                ,text   = _('Page:')
-                                ,font   = 'Sans 10'
-                                ,Close  = False
-                                )
         self.opt_wrp = sg.OptionMenu (parent = self.frame1
                                      ,anchor = 'w'
                                      ,Combo  = True
@@ -307,6 +339,7 @@ class Menu:
         self.widget = self.parent.widget
         self.frames()
         self.widgets()
+        self.tooltips()
         self.icon()
         self.title()
         self.bindings()

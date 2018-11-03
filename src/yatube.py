@@ -39,6 +39,12 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def reload_channel(self,event=None):
+        f = 'yatube.Commands.reload_channel'
+        sg.Message (f,_('INFO')
+                   ,_('Not implemented yet!')
+                   )
+    
     def feed(self,event=None):
         f = 'yatube.Commands.feed'
         urls = lg.objs.db().feed()
@@ -302,10 +308,9 @@ class Commands:
                            )
     
     def update_buttons(self,event=None):
-        if lg.objs.lists()._subsc_auth:
-            self._menu.btn_upd.enable()
-        else:
-            self._menu.btn_upd.disable()
+        #todo: implement
+        #if lg.objs.lists()._subsc_auth:
+        pass
             
     def update_widgets(self,event=None):
         self.update_buttons()
@@ -356,66 +361,109 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def other(self,event=None):
-        f = 'yatube.Commands.other'
-        choice = self._menu.opt_act.choice
-        if choice == _('Other'):
+    def menu_update(self,event=None):
+        f = 'yatube.Commands.menu_update'
+        default = _('Update')
+        choice  = self._menu.opt_upd.choice
+        if choice == default:
             pass
-        elif choice == _('Manage subscriptions'):
-            self._menu.opt_act.set(_('Other'))
-            self.manage_sub()
-        elif choice == _('Manage blocked authors'):
-            self._menu.opt_act.set(_('Other'))
-            self.manage_blocked_authors()
-        elif choice == _('Manage blocked words'):
-            self._menu.opt_act.set(_('Other'))
-            self.manage_blocked_words()
+        elif choice == _('Subscriptions'):
+            self._menu.opt_upd.set(default)
+            self.update_channels()
+        elif choice == _('Links'):
+            self._menu.opt_upd.set(default)
+            self.reload_channel()
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                        % (str(choice),';'.join(gi.update_items))
+                        )
+    
+    def menu_view(self,event=None):
+        f = 'yatube.Commands.menu_view'
+        default = _('View')
+        choice  = self._menu.opt_viw.choice
+        if choice == default:
+            pass
         elif choice == _('History'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_viw.set(default)
             self.history()
-        elif choice == _('Show new videos'):
-            self._menu.opt_act.set(_('Other'))
-            self.show_new()
-        elif choice == _('Feed'):
-            self._menu.opt_act.set(_('Other'))
+        elif choice == _('All feed'):
+            self._menu.opt_viw.set(default)
             self.feed()
+        elif choice == _('Subscriptions'):
+            self._menu.opt_viw.set(default)
+            self.show_new()
         elif choice == _('Favorites'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_viw.set(default)
             self.starred()
         elif choice == _('Watchlist'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_viw.set(default)
             self.watchlist()
         elif choice == _('Welcome screen'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_viw.set(default)
             self.blank()
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                        % (str(choice),';'.join(gi.view_items))
+                        )
+    
+    def menu_edit(self,event=None):
+        f = 'yatube.Commands.menu_edit'
+        default = _('Edit')
+        choice  = self._menu.opt_edt.choice
+        if choice == default:
+            pass
+        elif choice == _('Subscriptions'):
+            self._menu.opt_edt.set(default)
+            self.manage_sub()
+        elif choice == _('Blocked authors'):
+            self._menu.opt_edt.set(default)
+            self.manage_blocked_authors()
+        elif choice == _('Blocked words'):
+            self._menu.opt_edt.set(default)
+            self.manage_blocked_words()
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                        % (str(choice),';'.join(gi.edit_items))
+                        )
+    
+    def menu_selection(self,event=None):
+        f = 'yatube.Commands.menu_selection'
+        default = _('Selection')
+        choice  = self._menu.opt_sel.choice
+        if choice == default:
+            pass
         elif choice == _('Select all new videos'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.select_new()
         elif choice == _('Mark as watched'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.sel_mark_watched()
         elif choice == _('Mark as not watched'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.sel_mark_not_watched()
         elif choice == _('Add to favorites'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.sel_star()
         elif choice == _('Remove from favorites'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.sel_unstar()
         elif choice == _('Delete selected'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.delete_selected()
         elif choice == _('Add to watchlist'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.sel_add2watchlist()
         elif choice == _('Remove from watchlist'):
-            self._menu.opt_act.set(_('Other'))
+            self._menu.opt_sel.set(default)
             self.sel_remove_from_watchlist()
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(choice),';'.join(gi.other_actions))
+                        % (str(choice),';'.join(gi.selection_items))
                         )
     
     def blank(self,event=None):
@@ -514,20 +562,17 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def _show_new(self,urls):
-        lg.objs.channel().reset(urls=urls)
-        lg.objs._channel.run()
-        self.load_view()
-    
     def show_new(self,event=None):
         f = 'yatube.Commands.show_new'
         itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
-        itime.add_days(days_delta=-2)
+        itime.add_days(days_delta=-3)
         urls = lg.objs.db().new_videos (timestamp = itime.timestamp()
                                        ,authors   = lg.objs.lists()._subsc_auth
                                        )
         if urls:
-            self._show_new(urls)
+            lg.objs.channel().reset(urls=urls)
+            lg.objs._channel.run()
+            self.load_view()
         else:
             # Do not warn here since this is actually a common case
             sh.log.append (f,_('INFO')
@@ -1187,11 +1232,12 @@ class Commands:
         self._menu.btn_del.action = self.delete_selected
         self._menu.btn_dld.action = self.download
         self._menu.btn_flt.action = self.filter_view
+        self._menu.btn_npg.action = self.next_page
         self._menu.btn_nxt.action = self.next_url
         self._menu.btn_ply.action = self.play
+        self._menu.btn_ppg.action = self.prev_page
         self._menu.btn_prv.action = self.prev_url
         self._menu.btn_stm.action = self.stream
-        self._menu.btn_upd.action = self.update_channels
         self._menu.btn_ytb.action = self.search_youtube
         # Menu: labels
         sg.bind (obj      = self._menu.ent_flt
@@ -1210,7 +1256,10 @@ class Commands:
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
         # Menu: OptionMenus
-        self._menu.opt_act.action = self.other
+        self._menu.opt_upd.action = self.menu_update
+        self._menu.opt_viw.action = self.menu_view
+        self._menu.opt_sel.action = self.menu_selection
+        self._menu.opt_edt.action = self.menu_edit
         self._menu.opt_chl.reset (items   = self._channels
                                  ,default = _('Channels')
                                  ,action  = self.set_channel
@@ -1404,7 +1453,7 @@ class Commands:
             sg.objs._waitbox.update()
             lg.objs.channel().reset(url=channels[i])
             lg.objs._channel.run()
-            links += channel._urls
+            links += lg.objs._channel._urls
         sg.objs._waitbox.close()
         # Get new URLs
         sh.log.append (f,_('DEBUG')
@@ -1415,36 +1464,9 @@ class Commands:
         
         # Get metadata for new URLs
         if unknown:
-            gi.objs.wait().show()
-            for i in range(len(unknown)):
-                gi.objs._wait.title (_('Get video info') \
-                                     + ' (%d/%d)' % (i+1,len(unknown))
-                                    )
-                self._video = Video(video_id=unknown[i])
-                self._video.model.video()
-                self._video.model.assign_online()
-                self._video.model.image()
-                self._video.image()
-                self._video.model.dump()
-                author, title, duration = self.unsupported()
-                if self._gvideo:
-                    no = self._gvideo._no
-                else:
-                    no = 1
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Wrong input data!')
-                                )
-                gi.objs._wait.reset (author   = author
-                                    ,title    = title
-                                    ,duration = duration
-                                    ,image    = self._video._image
-                                    ,no       = no
-                                    )
-                gi.objs._wait.update()
-            lg.objs._db.save()
-            gi.objs._wait.title()
-            gi.objs._wait.close()
-            self._show_new(urls=unknown)
+            lg.objs.channel().reset(urls=unknown)
+            lg.objs._channel.run()
+            self.load_view()
         else:
             sg.Message (f,_('INFO')
                        ,_('No new videos!')

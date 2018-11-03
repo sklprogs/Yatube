@@ -1,4 +1,5 @@
 
+- Make numbers fit for very long output ("All feed")
 - Delete image URL from summary
 - yatube.Commands.tooltips: Calculate 'hint_width' and max title length
   on the basis of 'req_width'
