@@ -39,6 +39,16 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def feed(self,event=None):
+        f = 'yatube.Commands.feed'
+        urls = lg.objs.db().feed()
+        if urls:
+            lg.objs.channel().reset(urls=urls)
+            lg.objs._channel.run()
+            self.load_view()
+        else:
+            sh.com.empty(f)
+    
     def prev_page(self,event=None):
         f = 'yatube.Commands.prev_page'
         if lg.objs.wrap().Success:
@@ -360,12 +370,15 @@ class Commands:
         elif choice == _('Manage blocked words'):
             self._menu.opt_act.set(_('Other'))
             self.manage_blocked_words()
-        elif choice == _('Show new videos'):
-            self._menu.opt_act.set(_('Other'))
-            self.show_new()
         elif choice == _('History'):
             self._menu.opt_act.set(_('Other'))
             self.history()
+        elif choice == _('Show new videos'):
+            self._menu.opt_act.set(_('Other'))
+            self.show_new()
+        elif choice == _('Feed'):
+            self._menu.opt_act.set(_('Other'))
+            self.feed()
         elif choice == _('Favorites'):
             self._menu.opt_act.set(_('Other'))
             self.starred()

@@ -18,6 +18,23 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def feed(self):
+        f = 'db.DB.feed'
+        if self.Success:
+            try:
+                self.dbc.execute ('select   URL from VIDEOS \
+                                   where    IGNORE = ? \
+                                   order by TIMESTAMP desc'
+                                 ,(False,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def mark_later(self,video_id,Later=True):
         f = 'db.DB.mark_later'
         if self.Success:

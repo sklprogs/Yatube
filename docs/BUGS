@@ -2,7 +2,7 @@
 - There could be a problem when using 'db.get_videos' if there is only
   1 video per a view. Reproduce: load history, set max videos to 5
   and go to the final page.
-- Too high speed when streaming: jt0GkEMqaYI
+- Too high speed when streaming: jt0GkEMqaYI, 0lKfIgPm2n4
 - Do not delete commented lines when rewriting subscribe.txt & block.txt
 - Middle clicks pastes URL twice into the URL field (NOT ALWAYS
   REPRODUCIBLE)
