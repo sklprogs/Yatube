@@ -309,7 +309,8 @@ class DB:
                 self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY \
                                          ,DESC,DURATION,LENGTH,VIEWS \
                                          ,LIKES,DISLIKES,RATING,IMAGE \
-                                         ,SEARCH,TIMESTAMP,DTIME \
+                                         ,SEARCH,TIMESTAMP,DTIME,FAV \
+                                         ,LATER,BLOCK \
                                    from   VIDEOS \
                                    where  URL = ?',(video_id,)
                                  )

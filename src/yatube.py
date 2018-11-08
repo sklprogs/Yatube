@@ -39,6 +39,51 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
         
+    def update_context(self):
+        f = 'yatube.Commands.update_context'
+        if self._video:
+            items = list(gi.context_items)
+            data = lg.objs.db().get_video(self._video.model._video_id)
+            if data:
+                if data[14]:
+                    items.remove(_('Mark as watched'))
+                else:
+                    items.remove(_('Mark as not watched'))
+                if data[15]:
+                    items.remove(_('Add to favorites'))
+                else:
+                    items.remove(_('Remove from favorites'))
+                if data[16]:
+                    items.remove(_('Add to watchlist'))
+                else:
+                    items.remove(_('Remove from watchlist'))
+                if data[17]:
+                    items.remove(_('Block this channel'))
+                else:
+                    items.remove(_('Unblock'))
+            else:
+                sh.com.empty(f)
+            self._video.model.video()
+            self._video.model.path()
+            if self._video.model._path:
+                if os.path.exists(self._video.model._path):
+                    items.remove(_('Download'))
+                else:
+                    items.remove(_('Delete the downloaded file'))
+            else:
+                sh.com.empty(f)
+            if self._video.model._author:
+                if self._video.model._author \
+                in lg.objs.lists()._subsc_auth:
+                    items.remove(_('Subscribe to this channel'))
+                else:
+                    items.remove(_('Unsubscribe'))
+            else:
+                sh.com.empty(f)
+            return items
+        else:
+            sh.com.empty(f)
+    
     def reload_channel(self,event=None):
         f = 'yatube.Commands.reload_channel'
         sg.Message (f,_('INFO')
@@ -1006,6 +1051,10 @@ class Commands:
                 self._video = self._videos[self._gvideo]
                 message = _('Video #%d:') % self._gvideo._no
                 gi.objs.context().title(message)
+                items = self.update_context()
+                if not items:
+                    items = gi.context_items
+                gi.objs._context.reset(lst=items)
                 gi.objs._context.show()
                 choice = gi.objs._context._get
                 self._context(choice)
