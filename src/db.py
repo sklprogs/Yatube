@@ -35,13 +35,13 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def mark_later(self,video_id,Later=True):
+    def mark_later(self,video_id,ltime=0):
         f = 'db.DB.mark_later'
         if self.Success:
             try:
-                self.dbc.execute ('update VIDEOS set   LATER = ? \
+                self.dbc.execute ('update VIDEOS set   LTIME = ? \
                                                  where URL   = ?'
-                                 ,(Later,video_id,)
+                                 ,(ltime,video_id,)
                                  )
             except Exception as e:
                 self.fail(f,e)
@@ -53,9 +53,8 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('select   URL from VIDEOS \
-                                   where    LATER = ? \
-                                   order by TIMESTAMP desc'
-                                 ,(True,)
+                                   where    LTIME > 0 \
+                                   order by LTIME desc,TIMESTAMP desc'
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -70,10 +69,9 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('select   URL from VIDEOS \
-                                   where    FAV = ? \
-                                   order by DTIME desc, \
+                                   where    FTIME > 0 \
+                                   order by FTIME desc, \
                                             TIMESTAMP desc'
-                                 ,(True,)
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -83,13 +81,13 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def mark_starred(self,video_id,Starred=True):
+    def mark_starred(self,video_id,ftime=0):
         f = 'db.DB.mark_starred'
         if self.Success:
             try:
-                self.dbc.execute ('update VIDEOS set   FAV = ? \
-                                                 where URL = ?'
-                                 ,(Starred,video_id,)
+                self.dbc.execute ('update VIDEOS set   FTIME = ? \
+                                                 where URL   = ?'
+                                 ,(ftime,video_id,)
                                  )
             except Exception as e:
                 self.fail(f,e)
@@ -262,8 +260,8 @@ class DB:
                     ,SEARCH    text    \
                     ,TIMESTAMP float   \
                     ,DTIME     float   \
-                    ,FAV       boolean \
-                    ,LATER     boolean \
+                    ,FTIME     float   \
+                    ,LTIME     float   \
                                                        )'
                                  )
             except Exception as e:
@@ -309,8 +307,8 @@ class DB:
                 self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY \
                                          ,DESC,DURATION,LENGTH,VIEWS \
                                          ,LIKES,DISLIKES,RATING,IMAGE \
-                                         ,SEARCH,TIMESTAMP,DTIME,FAV \
-                                         ,LATER,BLOCK \
+                                         ,SEARCH,TIMESTAMP,DTIME,FTIME \
+                                         ,LTIME,BLOCK \
                                    from   VIDEOS \
                                    where  URL = ?',(video_id,)
                                  )

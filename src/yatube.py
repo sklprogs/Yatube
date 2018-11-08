@@ -146,7 +146,7 @@ class Commands:
         f = 'yatube.Commands.remove_from_watchlist'
         if self._video:
             lg.objs.db().mark_later (video_id = self._video.model._video_id
-                                    ,Later    = False
+                                    ,ltime    = 0
                                     )
             self.unselect()
         else:
@@ -156,7 +156,7 @@ class Commands:
         f = 'yatube.Commands.add2watchlist'
         if self._video:
             lg.objs.db().mark_later (video_id = self._video.model._video_id
-                                    ,Later    = True
+                                    ,ltime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                     )
             self.unselect()
         else:
@@ -207,7 +207,7 @@ class Commands:
         f = 'yatube.Commands.unstar'
         if self._video:
             lg.objs.db().mark_starred (video_id = self._video.model._video_id
-                                      ,Starred  = False
+                                      ,ftime    = 0
                                       )
             self.unselect()
         else:
@@ -217,7 +217,7 @@ class Commands:
         f = 'yatube.Commands.star'
         if self._video:
             lg.objs.db().mark_starred (video_id = self._video.model._video_id
-                                      ,Starred  = True
+                                      ,ftime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                       )
             self.unselect()
         else:
@@ -1421,6 +1421,7 @@ class Commands:
             lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
                                          ,dtime    = self._video.model._dtime
                                          )
+            self.remove_from_watchlist()
         else:
             sh.com.empty(f)
         if self._gvideo:

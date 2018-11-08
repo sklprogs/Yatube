@@ -79,12 +79,12 @@ class DB:
         f = 'utils.DB.fetch'
         if self.Success:
             try:
-                # 18 columns for now (for old DB)
+                # 20 columns for now (for old DB)
                 self.dbc.execute ('select URL,AUTHOR,TITLE,DATE,CATEGORY\
                                          ,DESC,DURATION,LENGTH,VIEWS\
                                          ,LIKES,DISLIKES,RATING,IMAGE\
                                          ,BLOCK,IGNORE,SEARCH,TIMESTAMP\
-                                         ,DTIME\
+                                         ,DTIME,FAV,LATER\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
@@ -118,8 +118,8 @@ class DB:
                     ,SEARCH    text    \
                     ,TIMESTAMP float   \
                     ,DTIME     float   \
-                    ,FAV       boolean \
-                    ,LATER     boolean \
+                    ,FTIME     float   \
+                    ,LTIME     float   \
                                          )'
                                  )
             except Exception as e:
@@ -138,8 +138,15 @@ class DB:
                               )
                 for row in self._data:
                     try:
-                        fav   = False
-                        later = False
+                        timestamp = sh.Time().timestamp()
+                        if row[18]:
+                            fav = timestamp
+                        else:
+                            fav = 0
+                        if row[19]:
+                            later = timestamp
+                        else:
+                            later = 0
                         row = (row[0],row[1],row[2],row[3],row[4],row[5]
                               ,row[6],row[7],row[8],row[9],row[10]
                               ,row[11],row[12],row[13],row[14],row[15]
@@ -326,5 +333,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.repair_urls()
-    commands.empty_author()
+    commands.alter()
