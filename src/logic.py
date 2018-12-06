@@ -673,7 +673,7 @@ class Video:
                 # Youtube says...
                 except Exception as e:
                     sh.objs.mes (f,_('WARNING')
-                                ,_('Third party module has failed!\n\nDetails: %s') \
+                                ,_('Third-party module has failed!\n\nDetails: %s') \
                                 % str(e)
                                 )
                 self._search    = self._author.lower() + ' ' \
