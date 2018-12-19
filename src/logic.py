@@ -44,7 +44,7 @@ class Wrap:
         self.values()
     
     def reset(self,urls=[]):
-        f = 'logic.Wrap.reset'
+        f = '[Yatube] logic.Wrap.reset'
         self.values()
         if urls:
             self._urls = urls
@@ -65,7 +65,7 @@ class Wrap:
         self.Success = True
     
     def inc(self):
-        f = 'logic.Wrap.inc'
+        f = '[Yatube] logic.Wrap.inc'
         if self.Success:
             if self._no == self._max:
                 self._no = 0
@@ -75,7 +75,7 @@ class Wrap:
             sh.com.cancel(f)
     
     def dec(self):
-        f = 'logic.Wrap.dec'
+        f = '[Yatube] logic.Wrap.dec'
         if self.Success:
             if self._no == 0:
                 if self._max:
@@ -86,7 +86,7 @@ class Wrap:
             sh.com.cancel(f)
     
     def set_no(self,no=0):
-        f = 'logic.Wrap.set_no'
+        f = '[Yatube] logic.Wrap.set_no'
         if self.Success:
             if str(no).isdigit():
                 if 0 <= no <= self._max:
@@ -106,7 +106,7 @@ class Wrap:
             sh.com.cancel(f)
     
     def cut(self):
-        f = 'logic.Wrap.cut'
+        f = '[Yatube] logic.Wrap.cut'
         if self.Success:
             if not self._cut:
                 cut1 = self._no * max_videos
@@ -147,7 +147,7 @@ class Time:
         return self._months
         
     def years(self):
-        f = 'logic.Time.years'
+        f = '[Yatube] logic.Time.years'
         # Year of Youtube birth
         first_year = 2005
         last_year  = self.itime.year()
@@ -286,7 +286,7 @@ class Channel:
         self.values()
         
     def url(self):
-        f = 'logic.Channel.url'
+        f = '[Yatube] logic.Channel.url'
         if self.Success:
             if self._url:
                 if ('youtube' in self._url or 'youtu.be' in self._url) \
@@ -310,7 +310,7 @@ class Channel:
             sh.com.cancel(f)
     
     def reset(self,url='',urls=[]):
-        f = 'logic.Channel.reset'
+        f = '[Yatube] logic.Channel.reset'
         self.values()
         if url or urls:
             self._url  = url
@@ -331,7 +331,7 @@ class Channel:
         self._urls   = []
     
     def page(self):
-        f = 'logic.Channel.page'
+        f = '[Yatube] logic.Channel.page'
         if self.Success:
             if self._html or self._urls:
                 sh.log.append (f,_('INFO')
@@ -345,7 +345,7 @@ class Channel:
             sh.com.cancel(f)
     
     def urls(self):
-        f = 'logic.Channel.urls'
+        f = '[Yatube] logic.Channel.urls'
         if self.Success:
             if self._urls:
                 sh.log.append (f,_('INFO')
@@ -435,7 +435,7 @@ class Lists:
         self._subsc_urls  = []
     
     def match_blocked_word(self,word):
-        f = 'logic.Lists.match_blocked_word'
+        f = '[Yatube] logic.Lists.match_blocked_word'
         if self.Success:
             word = word.lower()
             for item in self._block_words:
@@ -448,7 +448,7 @@ class Lists:
             sh.com.cancel(f)
     
     def load(self):
-        f = 'logic.Lists.load'
+        f = '[Yatube] logic.Lists.load'
         if self.Success:
             # Blocked authors
             text = sh.ReadTextFile(file=self.idefault._fblock).get()
@@ -505,9 +505,9 @@ class Objects:
         return self._channel
     
     def db(self):
-        f = 'logic.Objects.db'
+        f = '[Yatube] logic.Objects.db'
         if not self._db:
-            path = self.default(product='Yatube')._fdb
+            path = self.default(product='yatube')._fdb
             if self._default.Success:
                 self._db = db.DB(path=path)
             else:
@@ -517,9 +517,9 @@ class Objects:
                 self._db = db.DB()
         return self._db
     
-    def default(self,product='Yatube'):
+    def default(self,product='yatube'):
         if not self._default:
-            self._default = DefaultConfig(product=product.lower())
+            self._default = DefaultConfig(product='yatube')
             self._default.run()
         return self._default
     
@@ -550,7 +550,7 @@ class Objects:
 class Video:
     
     def __init__(self,video_id,callback=None):
-        f = 'logic.Video.__init__'
+        f = '[Yatube] logic.Video.__init__'
         self.values()
         if video_id:
             if len(video_id) == 11 and not 'http:' in video_id \
@@ -581,7 +581,7 @@ class Video:
         self._rating = 0.0
         
     def delete(self):
-        f = 'logic.Video.delete'
+        f = '[Yatube] logic.Video.delete'
         if self.Success:
             if self.path():
                 # Do not warn about missing files
@@ -597,7 +597,7 @@ class Video:
             sh.com.cancel(f)
     
     def page(self):
-        f = 'logic.Video.page'
+        f = '[Yatube] logic.Video.page'
         if self.Success:
             if not self._page:
                 if self._url:
@@ -609,7 +609,7 @@ class Video:
             sh.com.cancel(f)
     
     def channel_url(self):
-        f = 'logic.Video.channel_url'
+        f = '[Yatube] logic.Video.channel_url'
         if self.Success:
             if not self._channel_url:
                 if self.page():
@@ -655,7 +655,7 @@ class Video:
             sh.com.cancel(f)
     
     def assign_online(self):
-        f = 'logic.Video.assign_online'
+        f = '[Yatube] logic.Video.assign_online'
         if self.Success:
             if self._video:
                 try:
@@ -687,7 +687,7 @@ class Video:
             sh.com.cancel(f)
                           
     def dump(self):
-        f = 'logic.Video.dump'
+        f = '[Yatube] logic.Video.dump'
         if self.Success:
             ''' Do no write default data.
                 Do not forget to commit where necessary.
@@ -709,7 +709,7 @@ class Video:
             sh.com.cancel(f)
         
     def assign_offline(self,data):
-        f = 'logic.Video.assign_offline'
+        f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
                 data_len = 15
@@ -740,7 +740,7 @@ class Video:
             sh.com.cancel(f)
         
     def video(self):
-        f = 'logic.Video.video'
+        f = '[Yatube] logic.Video.video'
         if self.Success:
             if not self._video:
                 try:
@@ -759,7 +759,7 @@ class Video:
             sh.com.cancel(f)
     
     def image(self):
-        f = 'logic.Video.image'
+        f = '[Yatube] logic.Video.image'
         if self.Success:
             if self._video:
                 image = sh.Get (url      = self._video.thumb
@@ -776,7 +776,7 @@ class Video:
             sh.com.cancel(f)
     
     def get(self):
-        f = 'logic.Video.get'
+        f = '[Yatube] logic.Video.get'
         if self.Success:
             self.Saved = objs.db().get_video(video_id=self._video_id)
             if self.Saved:
@@ -794,7 +794,7 @@ class Video:
             sh.com.cancel(f)
     
     def summary(self):
-        f = 'logic.Video.summary'
+        f = '[Yatube] logic.Video.summary'
         if self.Success:
             tmp = io.StringIO()
             tmp.write(_('Author'))
@@ -849,7 +849,7 @@ class Video:
             sh.com.cancel(f)
         
     def path(self):
-        f = 'logic.Video.path'
+        f = '[Yatube] logic.Video.path'
         if self.Success:
             if not self._path:
                 author = sh.FixBaseName (basename = self._author
@@ -881,7 +881,7 @@ class Video:
             sh.com.cancel(f)
     
     def make_dir(self):
-        f = 'logic.Video.make_dir'
+        f = '[Yatube] logic.Video.make_dir'
         if self.Success:
             if self._dir:
                 self.Success = sh.Path(path=self._dir).create()
@@ -892,7 +892,7 @@ class Video:
             sh.com.cancel(f)
     
     def download(self):
-        f = 'logic.Video.download'
+        f = '[Yatube] logic.Video.download'
         self.make_dir()
         if self.Success:
             if self._video and self._path:
@@ -920,7 +920,7 @@ class Video:
             sh.com.cancel(f)
     
     def stream(self):
-        f = 'logic.Video.stream'
+        f = '[Yatube] logic.Video.stream'
         if self.Success:
             if self._video:
                 #todo: select quality
@@ -954,7 +954,7 @@ class URL:
         return self._url.replace(pattern1,'')
     
     def video_full(self):
-        f = 'logic.URL.video_full'
+        f = '[Yatube] logic.URL.video_full'
         if self._url:
             self.trash()
             self.trash_v()
@@ -967,7 +967,7 @@ class URL:
         return self._url
     
     def channel_full(self):
-        f = 'logic.URL.channel_full'
+        f = '[Yatube] logic.URL.channel_full'
         if self._url:
             self.trash()
             self.prefixes()
@@ -1057,7 +1057,7 @@ class Comments:
         self._max_no   = 100
         
     def reset(self,videoid):
-        f = 'logic.Comments.reset'
+        f = '[Yatube] logic.Comments.reset'
         if videoid:
             self._videoid = videoid
         else:
@@ -1065,7 +1065,7 @@ class Comments:
             sh.com.empty(f)
     
     def connect(self):
-        f = 'logic.Comments.connect'
+        f = '[Yatube] logic.Comments.connect'
         if self.Success:
             if not self._connect:
                 try:
@@ -1084,7 +1084,7 @@ class Comments:
             sh.com.cancel(f)
     
     def threads(self):
-        f = 'logic.Comments.threads'
+        f = '[Yatube] logic.Comments.threads'
         if self.Success:
             if not self._threads:
                 try:
@@ -1112,7 +1112,7 @@ class Comments:
             sh.com.cancel(f)
                           
     def comments(self):
-        f = 'logic.Comments.comments'
+        f = '[Yatube] logic.Comments.comments'
         if self.Success:
             if not self._comments:
                 for item in self._threads["items"]:
@@ -1140,7 +1140,7 @@ class MemoryCache:
 
 class DefaultConfig:
     
-    def __init__(self,product='Yatube'):
+    def __init__(self,product='yatube'):
         self.values()
         self.ihome   = sh.Home(app_name=product)
         self.Success = self.ihome.create_conf()
@@ -1152,7 +1152,7 @@ class DefaultConfig:
         self._fdb     = ''
     
     def db(self):
-        f = 'logic.DefaultConfig.db'
+        f = '[Yatube] logic.DefaultConfig.db'
         if self.Success:
             self._fdb = self.ihome.add_config('yatube.db')
             if self._fdb:
@@ -1165,7 +1165,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def block_words(self):
-        f = 'logic.DefaultConfig.block_words'
+        f = '[Yatube] logic.DefaultConfig.block_words'
         if self.Success:
             self._fblockw = self.ihome.add_config('block words.txt')
             if self._fblockw:
@@ -1184,7 +1184,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def block_channels(self):
-        f = 'logic.DefaultConfig.block_channels'
+        f = '[Yatube] logic.DefaultConfig.block_channels'
         if self.Success:
             self._fblock = self.ihome.add_config('block channels.txt')
             if self._fblock:
@@ -1203,7 +1203,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def subscribe(self):
-        f = 'logic.DefaultConfig.subscribe'
+        f = '[Yatube] logic.DefaultConfig.subscribe'
         if self.Success:
             self._fsubsc = self.ihome.add_config('subscribe.txt')
             if self._fsubsc:
@@ -1222,7 +1222,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def run(self):
-        f = 'logic.DefaultConfig.run'
+        f = '[Yatube] logic.DefaultConfig.run'
         if self.Success:
             self.subscribe()
             self.block_channels()
@@ -1247,7 +1247,7 @@ class ChannelHistory:
         self.values()
     
     def add(self,author,urls):
-        f = 'logic.ChannelHistory.add'
+        f = '[Yatube] logic.ChannelHistory.add'
         if author and urls:
             if not urls in self._urls:
                 self._authors.append(author)
@@ -1270,7 +1270,7 @@ class ChannelHistory:
             self._no -= 1
     
     def prev(self):
-        f = 'logic.ChannelHistory.prev'
+        f = '[Yatube] logic.ChannelHistory.prev'
         self.dec()
         cond1 = self._no == 0 and len(self._authors) == 0 \
                               and len(self._urls) == 0
@@ -1292,7 +1292,7 @@ class ChannelHistory:
                         )
     
     def next(self):
-        f = 'logic.ChannelHistory.next'
+        f = '[Yatube] logic.ChannelHistory.next'
         self.inc()
         cond1 = self._no == 0 and len(self._authors) == 0 \
                               and len(self._urls) == 0

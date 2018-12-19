@@ -40,7 +40,7 @@ class Commands:
         self.reset_channels()
         
     def update_context(self):
-        f = 'yatube.Commands.update_context'
+        f = '[Yatube] yatube.Commands.update_context'
         if self._video:
             items = list(gi.context_items)
             data = lg.objs.db().get_video(self._video.model._video_id)
@@ -85,13 +85,13 @@ class Commands:
             sh.com.empty(f)
     
     def reload_channel(self,event=None):
-        f = 'yatube.Commands.reload_channel'
+        f = '[Yatube] yatube.Commands.reload_channel'
         sg.Message (f,_('INFO')
                    ,_('Not implemented yet!')
                    )
     
     def feed(self,event=None):
-        f = 'yatube.Commands.feed'
+        f = '[Yatube] yatube.Commands.feed'
         urls = lg.objs.db().feed()
         if urls:
             lg.objs.channel().reset(urls=urls)
@@ -101,7 +101,7 @@ class Commands:
             sh.com.empty(f)
     
     def prev_page(self,event=None):
-        f = 'yatube.Commands.prev_page'
+        f = '[Yatube] yatube.Commands.prev_page'
         if lg.objs.wrap().Success:
             lg.objs._wrap.dec()
             self.load_view()
@@ -109,7 +109,7 @@ class Commands:
             sh.com.cancel(f)
     
     def next_page(self,event=None):
-        f = 'yatube.Commands.next_page'
+        f = '[Yatube] yatube.Commands.next_page'
         if lg.objs.wrap().Success:
             lg.objs._wrap.inc()
             self.load_view()
@@ -117,7 +117,7 @@ class Commands:
             sh.com.cancel(f)
     
     def watchlist(self,event=None):
-        f = 'yatube.Commands.watchlist'
+        f = '[Yatube] yatube.Commands.watchlist'
         urls = lg.objs.db().watchlist()
         if urls:
             lg.objs.channel().reset(urls=urls)
@@ -130,7 +130,7 @@ class Commands:
                           )
     
     def starred(self,event=None):
-        f = 'yatube.Commands.starred'
+        f = '[Yatube] yatube.Commands.starred'
         urls = lg.objs.db().starred()
         if urls:
             lg.objs.channel().reset(urls=urls)
@@ -143,7 +143,7 @@ class Commands:
                           )
     
     def remove_from_watchlist(self,event=None):
-        f = 'yatube.Commands.remove_from_watchlist'
+        f = '[Yatube] yatube.Commands.remove_from_watchlist'
         if self._video:
             lg.objs.db().mark_later (video_id = self._video.model._video_id
                                     ,ltime    = 0
@@ -153,7 +153,7 @@ class Commands:
             sh.com.empty(f)
     
     def add2watchlist(self,event=None):
-        f = 'yatube.Commands.add2watchlist'
+        f = '[Yatube] yatube.Commands.add2watchlist'
         if self._video:
             lg.objs.db().mark_later (video_id = self._video.model._video_id
                                     ,ltime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
@@ -163,7 +163,7 @@ class Commands:
             sh.com.empty(f)
     
     def sel_add2watchlist(self,event=None):
-        f = 'yatube.Commands.sel_add2watchlist'
+        f = '[Yatube] yatube.Commands.sel_add2watchlist'
         selection = self.selection()
         if selection:
             for video_gui in selection:
@@ -174,7 +174,7 @@ class Commands:
             sh.com.empty(f)
     
     def sel_remove_from_watchlist(self,event=None):
-        f = 'yatube.Commands.sel_remove_from_watchlist'
+        f = '[Yatube] yatube.Commands.sel_remove_from_watchlist'
         selection = self.selection()
         if selection:
             for video_gui in selection:
@@ -185,7 +185,7 @@ class Commands:
             sh.com.empty(f)
     
     def unselect(self,event=None):
-        f = 'yatube.Commands.unselect'
+        f = '[Yatube] yatube.Commands.unselect'
         if self._gvideo:
             self._gvideo.cbox.disable()
             gi.report_selection()
@@ -193,7 +193,7 @@ class Commands:
             sh.com.empty(f)
     
     def sel_unstar(self,event=None):
-        f = 'yatube.Commands.sel_unstar'
+        f = '[Yatube] yatube.Commands.sel_unstar'
         selection = self.selection()
         if selection:
             for video_gui in selection:
@@ -204,7 +204,7 @@ class Commands:
             sh.com.empty(f)
     
     def unstar(self,event=None):
-        f = 'yatube.Commands.unstar'
+        f = '[Yatube] yatube.Commands.unstar'
         if self._video:
             lg.objs.db().mark_starred (video_id = self._video.model._video_id
                                       ,ftime    = 0
@@ -214,7 +214,7 @@ class Commands:
             sh.com.empty(f)
     
     def star(self,event=None):
-        f = 'yatube.Commands.star'
+        f = '[Yatube] yatube.Commands.star'
         if self._video:
             lg.objs.db().mark_starred (video_id = self._video.model._video_id
                                       ,ftime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
@@ -224,7 +224,7 @@ class Commands:
             sh.com.empty(f)
             
     def sel_star(self,event=None):
-        f = 'yatube.Commands.sel_star'
+        f = '[Yatube] yatube.Commands.sel_star'
         selection = self.selection()
         if selection:
             for video_gui in selection:
@@ -235,7 +235,7 @@ class Commands:
             sh.com.empty(f)
     
     def sel_mark_not_watched(self,event=None):
-        f = 'yatube.Commands.sel_mark_not_watched'
+        f = '[Yatube] yatube.Commands.sel_mark_not_watched'
         selection = self.selection()
         if selection:
             for video_gui in selection:
@@ -248,7 +248,7 @@ class Commands:
                           )
     
     def sel_mark_watched(self,event=None):
-        f = 'yatube.Commands.sel_mark_watched'
+        f = '[Yatube] yatube.Commands.sel_mark_watched'
         selection = self.selection()
         if selection:
             for video_gui in selection:
@@ -261,7 +261,7 @@ class Commands:
                           )
     
     def mark_not_watched(self,event=None):
-        f = 'yatube.Commands.mark_not_watched'
+        f = '[Yatube] yatube.Commands.mark_not_watched'
         if self._video and self._gvideo:
             self._video.model._dtime = 0
             lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
@@ -273,7 +273,7 @@ class Commands:
             sh.com.empty(f)
     
     def mark_watched(self,event=None):
-        f = 'yatube.Commands.mark_watched'
+        f = '[Yatube] yatube.Commands.mark_watched'
         if self._video and self._gvideo:
             self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
             lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
@@ -285,7 +285,7 @@ class Commands:
             sh.com.empty(f)
     
     def selection(self,event=None):
-        f = 'yatube.Commands.selection'
+        f = '[Yatube] yatube.Commands.selection'
         selected = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
@@ -303,7 +303,7 @@ class Commands:
         self.update_widgets()
     
     def set_max_videos(self,event=None):
-        f = 'yatube.Commands.set_max_videos'
+        f = '[Yatube] yatube.Commands.set_max_videos'
         if str(self._menu.opt_max.choice).isdigit():
             lg.max_videos = int(self._menu.opt_max.choice)
             lg.objs.wrap().set_no()
@@ -315,7 +315,7 @@ class Commands:
         self.load_view()
     
     def set_page(self,event=None):
-        f = 'yatube.Commands.set_page'
+        f = '[Yatube] yatube.Commands.set_page'
         if str(self._menu.opt_wrp.choice).isdigit():
             lg.objs.wrap().set_no(int(self._menu.opt_wrp.choice)-1)
         else:
@@ -329,7 +329,7 @@ class Commands:
         ''' This updates GUI based on logic. To update logic based on
             GUI, use either 'self.set_page' or 'self.set_max_videos'.
         '''
-        f = 'yatube.Commands.update_wrap'
+        f = '[Yatube] yatube.Commands.update_wrap'
         if lg.objs.channel()._urls:
             self._menu.opt_wrp.enable()
             items = []
@@ -362,13 +362,13 @@ class Commands:
         self.update_wrap()
     
     def save_url(self,event=None):
-        f = 'yatube.Commands.save_url'
+        f = '[Yatube] yatube.Commands.save_url'
         lg.objs.channels().add (author = self._menu.opt_chl.choice
                                ,urls   = lg.objs.channel()._urls
                                )
     
     def prev_url(self,event=None):
-        f = 'yatube.Commands.prev_url'
+        f = '[Yatube] yatube.Commands.prev_url'
         result = lg.objs.channels().prev()
         if result:
             self.update_channel (author = result[0]
@@ -378,7 +378,7 @@ class Commands:
             sh.com.empty(f)
     
     def next_url(self,event=None):
-        f = 'yatube.Commands.next_url'
+        f = '[Yatube] yatube.Commands.next_url'
         result = lg.objs.channels().next()
         if result:
             self.update_channel (author = result[0]
@@ -388,7 +388,7 @@ class Commands:
             sh.com.empty(f)
     
     def show_comments(self,event=None):
-        f = 'yatube.Commands.show_comments'
+        f = '[Yatube] yatube.Commands.show_comments'
         if self._video:
             icomments = lg.Comments(videoid=self._video.model._video_id)
             text = icomments.run()
@@ -407,7 +407,7 @@ class Commands:
             sh.com.empty(f)
     
     def menu_update(self,event=None):
-        f = 'yatube.Commands.menu_update'
+        f = '[Yatube] yatube.Commands.menu_update'
         default = _('Update')
         choice  = self._menu.opt_upd.choice
         if choice == default:
@@ -425,7 +425,7 @@ class Commands:
                         )
     
     def menu_view(self,event=None):
-        f = 'yatube.Commands.menu_view'
+        f = '[Yatube] yatube.Commands.menu_view'
         default = _('View')
         choice  = self._menu.opt_viw.choice
         if choice == default:
@@ -455,7 +455,7 @@ class Commands:
                         )
     
     def menu_edit(self,event=None):
-        f = 'yatube.Commands.menu_edit'
+        f = '[Yatube] yatube.Commands.menu_edit'
         default = _('Edit')
         choice  = self._menu.opt_edt.choice
         if choice == default:
@@ -476,7 +476,7 @@ class Commands:
                         )
     
     def menu_selection(self,event=None):
-        f = 'yatube.Commands.menu_selection'
+        f = '[Yatube] yatube.Commands.menu_selection'
         default = _('Selection')
         choice  = self._menu.opt_sel.choice
         if choice == default:
@@ -526,7 +526,7 @@ class Commands:
         self.update_widgets()
     
     def history(self,event=None):
-        f = 'yatube.Commands.history'
+        f = '[Yatube] yatube.Commands.history'
         urls = lg.objs.db().downloaded()
         if urls:
             lg.objs.channel().reset(urls=urls)
@@ -539,7 +539,7 @@ class Commands:
                           )
     
     def unsubscribe(self,event=None):
-        f = 'yatube.Commands.unsubscribe'
+        f = '[Yatube] yatube.Commands.unsubscribe'
         if self._video and self._video.model.channel_url():
             self._video.model.video()
             if self._video.model._author:
@@ -578,7 +578,7 @@ class Commands:
             sh.com.empty(f)
     
     def unblock(self,event=None):
-        f = 'yatube.Commands.unblock'
+        f = '[Yatube] yatube.Commands.unblock'
         if self._video:
             self._video.model.video()
             if self._video.model._author:
@@ -608,7 +608,7 @@ class Commands:
             sh.com.empty(f)
     
     def show_new(self,event=None):
-        f = 'yatube.Commands.show_new'
+        f = '[Yatube] yatube.Commands.show_new'
         itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
         itime.add_days(days_delta=-3)
         urls = lg.objs.db().new_videos (timestamp = itime.timestamp()
@@ -626,7 +626,7 @@ class Commands:
     
     # GUI-only
     def delete_selected(self,event=None):
-        f = 'yatube.Commands.delete_selected'
+        f = '[Yatube] yatube.Commands.delete_selected'
         deleted = []
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
@@ -649,7 +649,7 @@ class Commands:
                           )
     
     def delete_video(self,event=None):
-        f = 'yatube.Commands.delete_video'
+        f = '[Yatube] yatube.Commands.delete_video'
         ''' Do not warn when the GUI object is not available (e.g.,
             performing deletion through OptionMenu.
         '''
@@ -678,7 +678,7 @@ class Commands:
                                  )
     
     def open_video_url(self,event=None):
-        f = 'yatube.Commands.open_video_url'
+        f = '[Yatube] yatube.Commands.open_video_url'
         if self._video and self._video.model._url:
             lg.objs.online()._url = self._video.model._url
             lg.objs._online.browse()
@@ -686,14 +686,14 @@ class Commands:
             sh.com.empty(f)
                    
     def copy_video_url(self,event=None):
-        f = 'yatube.Commands.copy_video_url'
+        f = '[Yatube] yatube.Commands.copy_video_url'
         if self._video and self._video.model._url:
             sg.Clipboard().copy(text=self._video.model._url)
         else:
             sh.com.empty(f)
     
     def subscribe(self,event=None):
-        f = 'yatube.Commands.subscribe'
+        f = '[Yatube] yatube.Commands.subscribe'
         if self._video and self._video.model.channel_url():
             self._video.model.video()
             if self._video.model._author:
@@ -735,7 +735,7 @@ class Commands:
             sh.com.empty(f)
     
     def block(self,event=None):
-        f = 'yatube.Commands.block'
+        f = '[Yatube] yatube.Commands.block'
         if self._video:
             self._video.model.video()
             if self._video.model._author:
@@ -769,7 +769,7 @@ class Commands:
             sh.com.empty(f)
                    
     def load_channel(self,event=None):
-        f = 'yatube.Commands.load_channel'
+        f = '[Yatube] yatube.Commands.load_channel'
         if self._video and self._video.model.channel_url():
             lg.objs.channel().reset(url=self._video.model._channel_url)
             lg.objs._channel.run()
@@ -778,7 +778,7 @@ class Commands:
             sh.com.empty(f)
     
     def open_channel_url(self,event=None):
-        f = 'yatube.Commands.open_channel_url'
+        f = '[Yatube] yatube.Commands.open_channel_url'
         if self._video and self._video.model.channel_url():
             lg.objs.online()._url = self._video.model._channel_url
             lg.objs._online.browse()
@@ -786,14 +786,14 @@ class Commands:
             sh.com.empty(f)
 
     def copy_channel_url(self,event=None):
-        f = 'yatube.Commands.copy_channel_url'
+        f = '[Yatube] yatube.Commands.copy_channel_url'
         if self._video and self._video.model.channel_url():
             sg.Clipboard().copy(text=self._video.model._channel_url)
         else:
             sh.com.empty(f)
     
     def stream(self,event=None):
-        f = 'yatube.Commands.stream'
+        f = '[Yatube] yatube.Commands.stream'
         Found = False
         for video_gui in gi.objs.channel()._videos:
             if video_gui.cbox.get():
@@ -809,7 +809,7 @@ class Commands:
                           )
     
     def stream_video(self,event=None):
-        f = 'yatube.Commands.stream_video'
+        f = '[Yatube] yatube.Commands.stream_video'
         if self._video:
             self._video.model.video()
             url = self._video.model.stream()
@@ -926,7 +926,7 @@ class Commands:
         should not be called externally in other cases.
     '''
     def video_date_filter(self,event=None):
-        f = 'yatube.Commands.video_date_filter'
+        f = '[Yatube] yatube.Commands.video_date_filter'
         if self._video and self._gvideo and self._video.model._timestamp:
             if self._menu.chb_dat.get():
                 if self._date_filter():
@@ -935,7 +935,7 @@ class Commands:
             sh.com.empty(f)
     
     def filter_by_date(self,event=None):
-        f = 'yatube.Commands.filter_by_date'
+        f = '[Yatube] yatube.Commands.filter_by_date'
         # Do not allow to update channel GUI when no channels are loaded
         if gi.objs._channel:
             for video_gui in gi.objs._channel._videos:
@@ -958,7 +958,7 @@ class Commands:
                           )
     
     def get_widget(self,event=None):
-        f = 'yatube.Commands.get_widget'
+        f = '[Yatube] yatube.Commands.get_widget'
         if event:
             ''' Widgets must be in a string format to be compared
                 (otherwise, we will have, for example,
@@ -982,7 +982,7 @@ class Commands:
         gi.objs._summary.show()
     
     def _context(self,choice,event=None):
-        f = 'yatube.Commands._context'
+        f = '[Yatube] yatube.Commands._context'
         if choice:
             if choice == _('Show the full summary'):
                 self.summary()
@@ -1041,7 +1041,7 @@ class Commands:
             sh.com.empty(f)
     
     def context(self,event=None):
-        f = 'yatube.Commands.context'
+        f = '[Yatube] yatube.Commands.context'
         # 'event' will be 'tuple' if it is a callback from 'Button.click'
         if isinstance(event,tuple):
             event = event[0]
@@ -1066,7 +1066,7 @@ class Commands:
     def update_channel (self,event=None,author=''
                        ,url='',urls=[]
                        ):
-        f = 'logic.Commands.update_channel'
+        f = '[Yatube] logic.Commands.update_channel'
         # This includes downloading a web-page
         timer = sh.Timer(f)
         timer.start()
@@ -1085,7 +1085,7 @@ class Commands:
         self.load_view()
                           
     def set_channel(self,event=None):
-        f = 'yatube.Commands.set_channel'
+        f = '[Yatube] yatube.Commands.set_channel'
         if self._menu.opt_chl.choice == _('Channels'):
             self.show_new()
         else:
@@ -1107,7 +1107,7 @@ class Commands:
                             )
         
     def get_url(self,event=None):
-        f = 'yatube.Commands.get_url'
+        f = '[Yatube] yatube.Commands.get_url'
         result = self._menu.ent_url.get()
         if result:
             if result == _('Paste URL here'):
@@ -1162,7 +1162,7 @@ class Commands:
                           )
     
     def set_trending(self,event=None):
-        f = 'yatube.Commands.set_trending'
+        f = '[Yatube] yatube.Commands.set_trending'
         sh.log.append (f,_('INFO')
                       ,_('Switch to channel "%s"') \
                       % str(self._menu.opt_trd.choice)
@@ -1181,7 +1181,7 @@ class Commands:
         self.update_trending(url=url)
         
     def search_youtube(self,event=None):
-        f = 'yatube.Commands.search_youtube'
+        f = '[Yatube] yatube.Commands.search_youtube'
         result = self._menu.ent_src.get()
         if result and result != _('Search Youtube'):
             root_url = 'https://www.youtube.com/results?search_query=%s'
@@ -1194,7 +1194,7 @@ class Commands:
             sh.com.empty(f)
                           
     def filter_view(self,event=None):
-        f = 'yatube.Commands.filter_view'
+        f = '[Yatube] yatube.Commands.filter_view'
         # Remove previous filter; drop selection if no filter is given
         for video_gui in gi.objs.channel()._videos:
             video_gui.black_out()
@@ -1335,7 +1335,7 @@ class Commands:
                                  )
         
     def select_new(self,event=None):
-        f = 'yatube.Commands.select_new'
+        f = '[Yatube] yatube.Commands.select_new'
         for video_gui in gi.objs.channel()._videos:
             if video_gui in self._videos:
                 self._gvideo = video_gui
@@ -1377,7 +1377,7 @@ class Commands:
         sh.Launch(target=self._video.model._path).default()
 
     def play_video(self,event=None):
-        f = 'yatube.Commands.play_video'
+        f = '[Yatube] yatube.Commands.play_video'
         if self._video:
             if self._menu.chb_slw.get():
                 if os.path.exists('/usr/bin/mpv'):
@@ -1392,7 +1392,7 @@ class Commands:
             sh.com.empty(f)
     
     def play(self,event=None):
-        f = 'yatube.Commands.play'
+        f = '[Yatube] yatube.Commands.play'
         selection = self.selection()
         if selection:
             for i in range(len(selection)):
@@ -1415,7 +1415,7 @@ class Commands:
                           )
         
     def mark_downloaded(self):
-        f = 'yatube.Commands.mark_downloaded'
+        f = '[Yatube] yatube.Commands.mark_downloaded'
         if self._video:
             self._video.model._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
             lg.objs.db().mark_downloaded (video_id = self._video.model._video_id
@@ -1430,7 +1430,7 @@ class Commands:
             gi.report_selection()
     
     def download_video(self,event=None):
-        f = 'yatube.Commands.download_video'
+        f = '[Yatube] yatube.Commands.download_video'
         ''' In case of 'get_url', there is no GUI to be handled
             ('self._gvideo' must be set to 'None'), so we do not force
             'self._gvideo' check here.
@@ -1467,7 +1467,7 @@ class Commands:
             sh.com.empty(f)
     
     def download(self,event=None):
-        f = 'yatube.Commands.download'
+        f = '[Yatube] yatube.Commands.download'
         selection = self.selection()
         if selection:
             for i in range(len(selection)):
@@ -1487,7 +1487,7 @@ class Commands:
                           )
         
     def update_channels(self,event=None):
-        f = 'yatube.Commands.update_channels'
+        f = '[Yatube] yatube.Commands.update_channels'
         # Update channels
         links    = []
         unknown  = []
@@ -1549,7 +1549,7 @@ class Commands:
                         )
         
     def fill_default(self):
-        f = 'yatube.Commands.fill_default'
+        f = '[Yatube] yatube.Commands.fill_default'
         # Operation takes ~0,7s but there seems nothing to speed up
         #timer = sh.Timer(f)
         #timer.start()
@@ -1566,7 +1566,7 @@ class Commands:
         #timer.end()
             
     def dimensions(self):
-        f = 'yatube.Commands.dimensions'
+        f = '[Yatube] yatube.Commands.dimensions'
         sg.objs.root().idle()
         height  = gi.objs._channel.frm_emb.widget.winfo_reqheight()
         ''' #NOTE: Extra space can be caused by a difference of
@@ -1584,7 +1584,7 @@ class Commands:
                                        )
     
     def fill_unknown(self):
-        f = 'yatube.Commands.fill_unknown'
+        f = '[Yatube] yatube.Commands.fill_unknown'
         #timer = sh.Timer(f)
         #timer.start()
         unknown   = []
@@ -1650,7 +1650,7 @@ class Commands:
         return(author,title,duration)
     
     def update_video(self,i):
-        f = 'yatube.Commands.update_video'
+        f = '[Yatube] yatube.Commands.update_video'
         if self._video:
             author, title, duration = self.unsupported()
             self._gvideo = gi.objs.channel()._videos[i]
@@ -1666,7 +1666,7 @@ class Commands:
             sh.com.empty(f)
     
     def fill_known(self):
-        f = 'yatube.Commands.fill_known'
+        f = '[Yatube] yatube.Commands.fill_known'
         #timer = sh.Timer(f)
         #timer.start()
         if lg.objs.wrap().cut():
@@ -1824,7 +1824,7 @@ class Video:
         sg.objs.root().widget.update_idletasks()
     
     def image(self):
-        f = 'yatube.Video.image'
+        f = '[Yatube] yatube.Video.image'
         if self.model._bytes:
             img = sg.Image()
             img._bytes = self.model._bytes
@@ -1839,10 +1839,10 @@ class Video:
 
 
 if __name__ == '__main__':
-    f = 'yatube.__main__'
+    f = '[Yatube] yatube.__main__'
     sg.objs.start()
     sg.Geometry(parent=gi.objs.parent()).set('1024x600')
-    lg.objs.default(product=gi.product)
+    lg.objs.default(product='yatube')
     if lg.objs._default.Success:
         commands = Commands()
         commands.bindings()

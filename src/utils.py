@@ -32,7 +32,7 @@ class DB:
                     )
     
     def down_markw(self):
-        f = 'utils.DB.down_markw'
+        f = '[Yatube] utils.DB.down_markw'
         if self.Success:
             try:
                 self.dbcw.execute ('update VIDEOS set DTIME = ? \
@@ -44,7 +44,7 @@ class DB:
             sh.com.cancel(f)
     
     def savew(self):
-        f = 'utils.DB.savew'
+        f = '[Yatube] utils.DB.savew'
         if self.Success:
             try:
                 self.dbw.commit()
@@ -54,7 +54,7 @@ class DB:
             sh.com.cancel(f)
         
     def connect(self):
-        f = 'utils.DB.connect'
+        f = '[Yatube] utils.DB.connect'
         if self.Success:
             try:
                 self.db  = sqlite3.connect(self._path)
@@ -65,7 +65,7 @@ class DB:
             sh.com.cancel(f)
                           
     def connectw(self):
-        f = 'utils.DB.connectw'
+        f = '[Yatube] utils.DB.connectw'
         if self.Success:
             try:
                 self.dbw  = sqlite3.connect(self._clone)
@@ -76,7 +76,7 @@ class DB:
             sh.com.cancel(f)
     
     def fetch(self):
-        f = 'utils.DB.fetch'
+        f = '[Yatube] utils.DB.fetch'
         if self.Success:
             try:
                 # 20 columns for now (for old DB)
@@ -94,7 +94,7 @@ class DB:
             sh.com.cancel(f)
     
     def create_table(self):
-        f = 'utils.DB.create_table'
+        f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
                 # 20 columns by now
@@ -128,7 +128,7 @@ class DB:
             sh.com.cancel(f)
     
     def fill(self):
-        f = 'utils.DB.fill'
+        f = '[Yatube] utils.DB.fill'
         if self.Success:
             if self._data:
                 sh.log.append (f,_('INFO')
@@ -174,7 +174,7 @@ class DB:
             sh.com.cancel(f)
                           
     def close(self):
-        f = 'utils.DB.close'
+        f = '[Yatube] utils.DB.close'
         if self.Success:
             try:
                 self.dbc.close()
@@ -184,7 +184,7 @@ class DB:
             sh.com.cancel(f)
                           
     def closew(self):
-        f = 'utils.DB.closew'
+        f = '[Yatube] utils.DB.closew'
         if self.Success:
             try:
                 self.dbcw.close()
@@ -194,7 +194,7 @@ class DB:
             sh.com.cancel(f)
                           
     def repair_urls(self):
-        f = 'utils.DB.repair_urls'
+        f = '[Yatube] utils.DB.repair_urls'
         if self.Success:
             self.dbcw.execute('select URL from VIDEOS where length(URL) > 11')
             result = self.dbcw.fetchall()
@@ -234,7 +234,7 @@ class Commands:
         self._clone = '/tmp/yatube.db'
         
     def repair_urls(self):
-        f = 'utils.Commands.repair_urls'
+        f = '[Yatube] utils.Commands.repair_urls'
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
                           ,AskRewrite = False
@@ -251,7 +251,7 @@ class Commands:
             sh.com.cancel(f)
     
     def down_markw(self):
-        f = 'utils.Commands.down_markw'
+        f = '[Yatube] utils.Commands.down_markw'
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
                           ,AskRewrite = False
@@ -283,7 +283,7 @@ class Commands:
         idb.closew()
         
     def read_random(self):
-        f = 'utils.Commands.read_random'
+        f = '[Yatube] utils.Commands.read_random'
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )
@@ -303,7 +303,7 @@ class Commands:
         idb.close()
         
     def _get_empty(self,idb):
-        f = 'utils.Commands._get_empty'
+        f = '[Yatube] utils.Commands._get_empty'
         idb.dbcw.execute('select AUTHOR from VIDEOS where AUTHOR=?',('',))
         data = idb.dbcw.fetchall()
         sh.log.append (f,_('INFO')
@@ -311,7 +311,7 @@ class Commands:
                       )
     
     def empty_author(self):
-        f = 'utils.Commands.empty_author'
+        f = '[Yatube] utils.Commands.empty_author'
         Success = sh.File (file       = self._path
                           ,dest       = self._clone
                           ,AskRewrite = False

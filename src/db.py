@@ -19,7 +19,7 @@ class DB:
         self.create_videos()
         
     def feed(self):
-        f = 'db.DB.feed'
+        f = '[Yatube] db.DB.feed'
         if self.Success:
             try:
                 self.dbc.execute ('select   URL from VIDEOS \
@@ -36,7 +36,7 @@ class DB:
             sh.com.cancel(f)
     
     def mark_later(self,video_id,ltime=0):
-        f = 'db.DB.mark_later'
+        f = '[Yatube] db.DB.mark_later'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   LTIME = ? \
@@ -49,7 +49,7 @@ class DB:
             sh.com.cancel(f)
     
     def watchlist(self):
-        f = 'db.DB.watchlist'
+        f = '[Yatube] db.DB.watchlist'
         if self.Success:
             try:
                 self.dbc.execute ('select   URL from VIDEOS \
@@ -65,7 +65,7 @@ class DB:
             sh.com.cancel(f)
     
     def starred(self):
-        f = 'db.DB.starred'
+        f = '[Yatube] db.DB.starred'
         if self.Success:
             try:
                 self.dbc.execute ('select   URL from VIDEOS \
@@ -82,7 +82,7 @@ class DB:
             sh.com.cancel(f)
     
     def mark_starred(self,video_id,ftime=0):
-        f = 'db.DB.mark_starred'
+        f = '[Yatube] db.DB.mark_starred'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   FTIME = ? \
@@ -103,7 +103,7 @@ class DB:
                     )
     
     def urls(self):
-        f = 'db.DB.urls'
+        f = '[Yatube] db.DB.urls'
         if self.Success:
             try:
                 self.dbc.execute('select URL from VIDEOS')
@@ -116,7 +116,7 @@ class DB:
             sh.com.cancel(f)
     
     def downloaded(self):
-        f = 'db.DB.downloaded'
+        f = '[Yatube] db.DB.downloaded'
         if self.Success:
             try:
                 self.dbc.execute ('select   URL from VIDEOS \
@@ -134,7 +134,7 @@ class DB:
             sh.com.cancel(f)
     
     def new_videos(self,timestamp,authors):
-        f = 'db.DB.new_videos'
+        f = '[Yatube] db.DB.new_videos'
         if self.Success:
             try:
                 query = 'select   URL from VIDEOS \
@@ -178,7 +178,7 @@ class DB:
     def date_filter (self,timestamp
                     ,Newer=True,WithReady=False
                     ):
-        f = 'db.DB.date_filter'
+        f = '[Yatube] db.DB.date_filter'
         if self.Success:
             #todo (?): BLOCK, IGNORE
             try:
@@ -199,7 +199,7 @@ class DB:
             sh.com.cancel(f)
     
     def connect(self):
-        f = 'db.DB.connect'
+        f = '[Yatube] db.DB.connect'
         if self.Success:
             try:
                 self.db  = sqlite3.connect(self._path)
@@ -210,7 +210,7 @@ class DB:
             sh.com.cancel(f)
     
     def channel_videos(self,author):
-        f = 'db.DB.channel_videos'
+        f = '[Yatube] db.DB.channel_videos'
         if self.Success:
             try:
                 self.dbc.execute ('select URL from VIDEOS where AUTHOR=?'
@@ -223,7 +223,7 @@ class DB:
             sh.com.cancel(f)
     
     def mark_downloaded(self,video_id,dtime):
-        f = 'db.DB.mark_downloaded'
+        f = '[Yatube] db.DB.mark_downloaded'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   DTIME = ? \
@@ -236,7 +236,7 @@ class DB:
             sh.com.cancel(f)
     
     def create_videos(self):
-        f = 'db.DB.create_videos'
+        f = '[Yatube] db.DB.create_videos'
         if self.Success:
             try:
                 # 20 columns by now
@@ -270,7 +270,7 @@ class DB:
             sh.com.cancel(f)
                           
     def add_video(self,data):
-        f = 'db.DB.add_video'
+        f = '[Yatube] db.DB.add_video'
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
@@ -285,7 +285,7 @@ class DB:
             sh.com.cancel(f)
                           
     def save(self):
-        f = 'db.DB.save'
+        f = '[Yatube] db.DB.save'
         if self.Success:
             sh.log.append (f,_('INFO')
                           ,_('Save "%s"') % self._path
@@ -301,7 +301,7 @@ class DB:
         ''' This is very slow (~0,28s per a video => ~3s per a channel).
             Use 'self.get_videos' for a batch.
         '''
-        f = 'db.DB.get_video'
+        f = '[Yatube] db.DB.get_video'
         if self.Success:
             try:
                 self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY \
@@ -323,7 +323,7 @@ class DB:
             tuples), so we need to return URL as well in order not to
             mix up results.
         '''
-        f = 'db.DB.get_videos'
+        f = '[Yatube] db.DB.get_videos'
         if self.Success:
             if urls:
                 try:
@@ -358,7 +358,7 @@ class DB:
             sh.com.cancel(f)
 
     def close(self):
-        f = 'db.DB.close'
+        f = '[Yatube] db.DB.close'
         if self.Success:
             try:
                 self.dbc.close()
@@ -370,7 +370,7 @@ class DB:
     def print (self,Selected=False,Shorten=False
               ,MaxRow=20,MaxRows=20
               ):
-        f = 'db.DB.print'
+        f = '[Yatube] db.DB.print'
         if self.Success:
             ''' 'self.dbc.description' is 'None' without performing 
                 'select' first

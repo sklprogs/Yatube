@@ -98,7 +98,7 @@ def invalid_urls():
 
 
 if __name__ == '__main__':
-    f = 'tests.__main__'
+    f = '[Yatube] tests.__main__'
     '''
     urls = ['OFP5rzaOCfw','taRRpqX0CmA','MYXjO5TJqjw','f2gX4K5AndM'
            ,'vDP804SHKGg','jJfXOpQuxU4','E8QB5oxtoYE','9ZWmJcAi_OI'

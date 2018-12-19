@@ -555,7 +555,7 @@ class Channel:
         self.gui()
         
     def scroll(self,i):
-        f = 'gui.Channel.scroll'
+        f = '[Yatube] gui.Channel.scroll'
         #fix: seems that another unit type is required
         value = i*112.133333333
         sh.log.append (f,_('DEBUG')
@@ -769,7 +769,7 @@ class Objects:
         return self._def_image
 
     def channel(self,parent=None):
-        f = 'gui.Objects.channel'
+        f = '[Yatube] gui.Objects.channel'
         if not self._channel:
             if parent is None:
                 sh.log.append (f,_('INFO')
@@ -825,9 +825,9 @@ class WaitMeta:
     def reset (self,author=_('Author'),title=_('Title')
               ,duration=_('Duration'),image=None,no=1
               ):
-        f = 'gui.WaitMeta.reset'
+        f = '[Yatube] gui.WaitMeta.reset'
         if self._video:
-            ''' Though 'no' is already set when creating 'gui.Video',
+            ''' Though 'no' is already set when creating '[Yatube] gui.Video',
                 we reset this value here in order not to meddle with it
                 in 'self.gui'.
             '''
@@ -905,7 +905,7 @@ if __name__ == '__main__':
     sg.objs.root().idle()
     # height = 112.133333333
     height = objs._channel.frame.widget.winfo_reqheight()
-    sh.log.append ('gui.__main__'
+    sh.log.append ('[Yatube] gui.__main__'
                   ,_('DEBUG')
                   ,_('Widget must be at least %d pixels in height') \
                   % height
