@@ -6,7 +6,7 @@ arch="i686"
 os="Linux" # Linux or Wine
 oslow="linux"
 # oldstable debian has glibc 2.19, whereas current stable debian has glibc 2.24
-glibc="2.24"
+glibc="2.19"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
@@ -14,6 +14,8 @@ resdir="$HOME/bin/$product/resources"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
 pildir="/usr/lib/python3/dist-packages/PIL"
+
+export "ARCH=$arch"
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit
@@ -73,9 +75,10 @@ cp "$HOME/bin/$product/build/$os/$productlow.desktop" "$tmpdir/app"
 cp "$HOME/bin/$product/build/$os/$productlow.png" "$tmpdir/app"
 cd "$tmpdir"
 ./appimagetool-$arch.AppImage app
-read -p "Update the AppImage? (y/n) " choice
-if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
-    # Probably a bug in 'appimagetool' (.appdata.xml)
-    mv -fv "$tmpdir/$productlow.appdata.xml" "$HOME/binaries/$product/$productlow-$oslow-$arch-glibc$glibc.AppImage"
-    rm -rf "$tmpdir"
+read -p "Update the AppImage? (Y/n) " choice
+if [ "$choice" = "n" ] || [ "$choice" = "N" ]; then
+    exit;
 fi
+# The tool is i686, but creates i386
+mv -fv "$tmpdir/$product-i386.AppImage" "$HOME/binaries/$product/$productlow-$oslow-i386-glibc$glibc.AppImage"
+rm -rf "$tmpdir"
