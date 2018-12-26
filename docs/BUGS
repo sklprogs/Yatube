@@ -1,4 +1,19 @@
 
+- FreeBSD, videos having titles with Cyrillic symbols
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/tkinter/__init__.py", line 1702, in __call__
+    return self.func(*args)
+  File "/usr/home/pete/bin/Yatube/src/sharedGUI.py", line 1368, in click
+    self.action(args)
+  File "yatube.py", line 1406, in play
+    self.download_video()
+  File "yatube.py", line 1442, in download_video
+    if os.path.exists(self._video.model._path):
+  File "/usr/local/lib/python3.6/genericpath.py", line 19, in exists
+    os.stat(path)
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 34-41: ordinal not in range(128)
+
 - Too high speed when streaming: jt0GkEMqaYI, 0lKfIgPm2n4, TxbtpDBISCA,
   X8smcoDKEeI
 - Do not delete commented lines when rewriting subscribe.txt & block.txt

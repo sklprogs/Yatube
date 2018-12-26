@@ -563,8 +563,8 @@ class Commands:
                         subscriptions = '\n'.join(subscriptions)
                         if not subscriptions:
                             subscriptions = '# ' + _('Put here authors to subscribe to')
-                        sh.WriteTextFile (file       = lg.objs.default()._fsubsc
-                                         ,AskRewrite = False
+                        sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                         ,Rewrite = True
                                          ).write(text=subscriptions)
                         lg.objs._lists.reset()
                         self.reset_channels()
@@ -593,8 +593,8 @@ class Commands:
                     blocked = '\n'.join(blocked)
                     if not blocked:
                         blocked = '# ' + _('Put here authors to be blocked')
-                    sh.WriteTextFile (file       = lg.objs.default()._fblock
-                                     ,AskRewrite = False
+                    sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                     ,Rewrite = True
                                      ).write(text=blocked)
                     lg.objs._lists.reset()
                     self.reset_channels()
@@ -722,8 +722,8 @@ class Commands:
                                            )
                     subscriptions = '\n'.join(subscriptions)
                     if subscriptions:
-                        sh.WriteTextFile (file       = lg.objs.default()._fsubsc
-                                         ,AskRewrite = False
+                        sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                         ,Rewrite = True
                                          ).write(text=subscriptions)
                         lg.objs._lists.reset()
                         self.reset_channels()
@@ -756,8 +756,8 @@ class Commands:
                                      )
                     blocked = '\n'.join(blocked)
                     if blocked:
-                        sh.WriteTextFile (file       = lg.objs.default()._fblock
-                                         ,AskRewrite = False
+                        sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                         ,Rewrite = True
                                          ).write(text=blocked)
                         lg.objs._lists.reset()
                         self.reset_channels()
@@ -1725,14 +1725,14 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file       = lg.objs.default()._fsubsc
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                             ,Rewrite = True
                              ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here authors to subscribe to')
-            sh.WriteTextFile (file       = lg.objs.default()._fsubsc
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                             ,Rewrite = True
                              ).write(text=text)
         lg.objs.lists().reset()
         self.reset_channels()
@@ -1749,14 +1749,14 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file       = lg.objs.default()._fblock
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = lg.objs.default()._fblock
+                             ,Rewrite = True
                              ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here authors to be blocked')
-            sh.WriteTextFile (file       = lg.objs.default()._fblock
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = lg.objs.default()._fblock
+                             ,Rewrite = True
                              ).write(text=text)
         lg.objs._lists.reset()
     
@@ -1772,14 +1772,14 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file       = lg.objs.default()._fblockw
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = lg.objs.default()._fblockw
+                             ,Rewrite = True
                              ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here words to block in titles (case is ignored)')
-            sh.WriteTextFile (file       = lg.objs.default()._fblockw
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = lg.objs.default()._fblockw
+                             ,Rewrite = True
                              ).write(text=text)
         lg.objs._lists.reset()
 

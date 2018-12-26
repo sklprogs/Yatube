@@ -235,9 +235,9 @@ class Commands:
         
     def repair_urls(self):
         f = '[Yatube] utils.Commands.repair_urls'
-        Success = sh.File (file       = self._path
-                          ,dest       = self._clone
-                          ,AskRewrite = False
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
                           ).copy()
         if Success:
             idb = DB (path  = self._path
@@ -252,9 +252,9 @@ class Commands:
     
     def down_markw(self):
         f = '[Yatube] utils.Commands.down_markw'
-        Success = sh.File (file       = self._path
-                          ,dest       = self._clone
-                          ,AskRewrite = False
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
                           ).copy()
         if Success:
             idb = DB (path  = self._path
@@ -312,9 +312,9 @@ class Commands:
     
     def empty_author(self):
         f = '[Yatube] utils.Commands.empty_author'
-        Success = sh.File (file       = self._path
-                          ,dest       = self._clone
-                          ,AskRewrite = False
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
                           ).copy()
         if Success:
             idb = DB (path  = self._path

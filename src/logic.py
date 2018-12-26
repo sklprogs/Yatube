@@ -1172,8 +1172,8 @@ class DefaultConfig:
                 if os.path.exists(self._fblockw):
                     self.Success = sh.File(file=self._fblockw).Success
                 else:
-                    iwrite = sh.WriteTextFile (file       = self._fblockw
-                                              ,AskRewrite = False
+                    iwrite = sh.WriteTextFile (file    = self._fblockw
+                                              ,Rewrite = True
                                               )
                     iwrite.write('# ' + _('Put here words to block in titles (case is ignored)'))
                     self.Success = iwrite.Success
@@ -1191,8 +1191,8 @@ class DefaultConfig:
                 if os.path.exists(self._fblock):
                     self.Success = sh.File(file=self._fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file       = self._fblock
-                                              ,AskRewrite = False
+                    iwrite = sh.WriteTextFile (file    = self._fblock
+                                              ,Rewrite = True
                                               )
                     iwrite.write(sample_block)
                     self.Success = iwrite.Success
@@ -1210,8 +1210,8 @@ class DefaultConfig:
                 if os.path.exists(self._fsubsc):
                     self.Success = sh.File(file=self._fsubsc).Success
                 else:
-                    iwrite = sh.WriteTextFile (file       = self._fsubsc
-                                              ,AskRewrite = False
+                    iwrite = sh.WriteTextFile (file    = self._fsubsc
+                                              ,Rewrite = True
                                               )
                     iwrite.write(sample_subscribe)
                     self.Success = iwrite.Success
