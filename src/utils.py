@@ -79,12 +79,10 @@ class DB:
         f = '[Yatube] utils.DB.fetch'
         if self.Success:
             try:
-                # 20 columns for now (for old DB)
-                self.dbc.execute ('select URL,AUTHOR,TITLE,DATE,CATEGORY\
-                                         ,DESC,DURATION,LENGTH,VIEWS\
-                                         ,LIKES,DISLIKES,RATING,IMAGE\
-                                         ,BLOCK,IGNORE,SEARCH,TIMESTAMP\
-                                         ,DTIME,FAV,LATER\
+                # 13 columns for now (for old DB)
+                self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
+                                         ,LENGTH,IMAGE,BLOCK,SEARCH\
+                                         ,PTIME,DTIME,FTIME,LTIME\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
@@ -97,29 +95,22 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # 20 columns by now
+                # 13 columns by now
                 self.dbcw.execute (
                     'create table VIDEOS (\
-                     URL       text    \
-                    ,AUTHOR    text    \
-                    ,TITLE     text    \
-                    ,DATE      text    \
-                    ,CATEGORY  text    \
-                    ,DESC      text    \
-                    ,DURATION  text    \
-                    ,LENGTH    integer \
-                    ,VIEWS     integer \
-                    ,LIKES     integer \
-                    ,DISLIKES  integer \
-                    ,RATING    float   \
-                    ,IMAGE     binary  \
-                    ,BLOCK     boolean \
-                    ,IGNORE    boolean \
-                    ,SEARCH    text    \
-                    ,TIMESTAMP float   \
-                    ,DTIME     float   \
-                    ,FTIME     float   \
-                    ,LTIME     float   \
+                     ID       text    \
+                    ,PLAYID   text    \
+                    ,AUTHOR   text    \
+                    ,TITLE    text    \
+                    ,DESC     text    \
+                    ,SEARCH   text    \
+                    ,LENGTH   integer \
+                    ,IMAGE    binary  \
+                    ,BLOCK    boolean \
+                    ,PTIME    float   \
+                    ,DTIME    float   \
+                    ,FTIME    float   \
+                    ,LTIME    float   \
                                          )'
                                  )
             except Exception as e:
@@ -138,36 +129,31 @@ class DB:
                               )
                 for row in self._data:
                     try:
-                        timestamp = sh.Time().timestamp()
-                        if row[18]:
-                            fav = timestamp
-                        else:
-                            fav = 0
-                        if row[19]:
-                            later = timestamp
-                        else:
-                            later = 0
-                        row = (row[0],row[1],row[2],row[3],row[4],row[5]
-                              ,row[6],row[7],row[8],row[9],row[10]
-                              ,row[11],row[12],row[13],row[14],row[15]
-                              ,row[16],row[17],fav,later
+                        vid      = row[0]
+                        playid   = row[1]
+                        author   = row[2]
+                        title    = row[3]
+                        desc     = row[4]
+                        search   = row[5]
+                        length   = row[6]
+                        image    = row[7]
+                        block    = row[8]
+                        ptime    = row[9]
+                        dtime    = row[10]
+                        ftime    = row[11]
+                        ltime    = row[12]
+                        row = (vid,playid,author,title,desc,search
+                              ,length,image,block,ptime,dtime,ftime
+                              ,ltime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                            (?,?,?,?,?,?,?,?,?,?,?,?,?\
-                                            ,?,?,?,?,?,?,?\
-                                            )'
+                                            (?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                           ,row
                                           )
-                    except (sqlite3.DatabaseError
-                           ,sqlite3.OperationalError
-                           ):
+                    except Exception as e:
                         self.Success = False
-                # This must be out of the loop
-                if not self.Success:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Database "%s" has failed!') \
-                                % self._clone
-                                )
+                        self.fail(f,e)
+                        break
             else:
                 sh.com.empty(f)
         else:
@@ -230,7 +216,8 @@ class DB:
 class Commands:
     
     def __init__(self):
-        self._path  = '/home/pete/.config/yatube/yatube.db'
+        #cur
+        self._path  = '/home/pete/.config/yatube2/yatube.db'
         self._clone = '/tmp/yatube.db'
         
     def repair_urls(self):
@@ -269,7 +256,7 @@ class Commands:
     
     def alter(self):
         sh.File(file=self._clone).delete()
-        # Alter DB and add a new column 'DTIME'
+        # Alter DB and add/remove some columns
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )

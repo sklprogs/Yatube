@@ -3,3 +3,4 @@ __pycache__/
 *.db
 *.db-journal
 subscribe2.txt
+examples

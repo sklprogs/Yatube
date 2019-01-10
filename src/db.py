@@ -18,14 +18,38 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def update_len(self,video_id,length):
+        f = '[Yatube] db.DB.update_len'
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set   LENGTH = ? \
+                                                 where ID     = ?'
+                                 ,(length,video_id,)
+                                 )
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def update_play_id(self,video_id,play_id):
+        f = '[Yatube] db.DB.update_play_id'
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set   PLAYID = ? \
+                                                 where ID     = ?'
+                                 ,(play_id,video_id,)
+                                 )
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def feed(self):
         f = '[Yatube] db.DB.feed'
         if self.Success:
             try:
-                self.dbc.execute ('select   URL from VIDEOS \
-                                   where    IGNORE = ? \
-                                   order by TIMESTAMP desc'
-                                 ,(False,)
+                self.dbc.execute ('select   ID from VIDEOS \
+                                   order by PTIME desc'
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -40,7 +64,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   LTIME = ? \
-                                                 where URL   = ?'
+                                                 where ID    = ?'
                                  ,(ltime,video_id,)
                                  )
             except Exception as e:
@@ -52,9 +76,9 @@ class DB:
         f = '[Yatube] db.DB.watchlist'
         if self.Success:
             try:
-                self.dbc.execute ('select   URL from VIDEOS \
+                self.dbc.execute ('select   ID from VIDEOS \
                                    where    LTIME > 0 \
-                                   order by LTIME desc,TIMESTAMP desc'
+                                   order by LTIME desc,PTIME desc'
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -68,10 +92,9 @@ class DB:
         f = '[Yatube] db.DB.starred'
         if self.Success:
             try:
-                self.dbc.execute ('select   URL from VIDEOS \
+                self.dbc.execute ('select   ID from VIDEOS \
                                    where    FTIME > 0 \
-                                   order by FTIME desc, \
-                                            TIMESTAMP desc'
+                                   order by FTIME desc,PTIME desc'
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -86,7 +109,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   FTIME = ? \
-                                                 where URL   = ?'
+                                                 where ID    = ?'
                                  ,(ftime,video_id,)
                                  )
             except Exception as e:
@@ -102,11 +125,11 @@ class DB:
                     % (self._path,str(error))
                     )
     
-    def urls(self):
-        f = '[Yatube] db.DB.urls'
+    def ids(self):
+        f = '[Yatube] db.DB.ids'
         if self.Success:
             try:
-                self.dbc.execute('select URL from VIDEOS')
+                self.dbc.execute('select ID from VIDEOS')
                 result = self.dbc.fetchall()
                 if result:
                     return [item[0] for item in result]
@@ -119,10 +142,9 @@ class DB:
         f = '[Yatube] db.DB.downloaded'
         if self.Success:
             try:
-                self.dbc.execute ('select   URL from VIDEOS \
+                self.dbc.execute ('select   ID from VIDEOS \
                                    where    DTIME > ? \
-                                   order by DTIME desc, \
-                                            TIMESTAMP desc'
+                                   order by DTIME desc,PTIME desc'
                                  ,(0,)
                                  )
                 result = self.dbc.fetchall()
@@ -137,9 +159,9 @@ class DB:
         f = '[Yatube] db.DB.new_videos'
         if self.Success:
             try:
-                query = 'select   URL from VIDEOS \
-                         where    AUTHOR in (%s) and TIMESTAMP >= %f\
-                         order by AUTHOR,TIMESTAMP' \
+                query = 'select   ID from VIDEOS \
+                         where    AUTHOR in (%s) and PTIME >= %f\
+                         order by AUTHOR,PTIME' \
                         % (','.join('?'*len(authors)),timestamp)
                 self.dbc.execute(query,authors)
                 result = self.dbc.fetchall()
@@ -152,27 +174,27 @@ class DB:
             sh.com.cancel(f)
     
     def _filt1(self,timestamp):
-        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
-                           where TIMESTAMP >= ? \
-                           order by AUTHOR,TIMESTAMP',(timestamp,)
+        self.dbc.execute ('select   ID,AUTHOR,TITLE from VIDEOS \
+                           where    PTIME >= ? \
+                           order by AUTHOR,PTIME',(timestamp,)
                          )
                          
     def _filt2(self,timestamp):
-        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
-                           where DTIME = ? and TIMESTAMP >= ? \
-                           order by AUTHOR,TIMESTAMP',(0,timestamp,)
+        self.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
+                           where DTIME = ? and PTIME >= ? \
+                           order by AUTHOR,PTIME',(0,timestamp,)
                          )
     
     def _filt3(self,timestamp):
-        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
-                           where TIMESTAMP <= ? \
-                           order by AUTHOR,TIMESTAMP',(timestamp,)
+        self.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
+                           where PTIME <= ? \
+                           order by AUTHOR,PTIME',(timestamp,)
                          )
                          
     def _filt4(self,timestamp):
-        self.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS \
-                           where DTIME = ? and TIMESTAMP <= ? \
-                           order by AUTHOR,TIMESTAMP',(0,timestamp,)
+        self.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
+                           where DTIME = ? and PTIME <= ? \
+                           order by AUTHOR,PTIME',(0,timestamp,)
                          )
     
     def date_filter (self,timestamp
@@ -180,7 +202,7 @@ class DB:
                     ):
         f = '[Yatube] db.DB.date_filter'
         if self.Success:
-            #todo (?): BLOCK, IGNORE
+            #todo (?): BLOCK
             try:
                 if Newer:
                     if WithReady:
@@ -213,7 +235,7 @@ class DB:
         f = '[Yatube] db.DB.channel_videos'
         if self.Success:
             try:
-                self.dbc.execute ('select URL from VIDEOS where AUTHOR=?'
+                self.dbc.execute ('select ID from VIDEOS where AUTHOR=?'
                                  ,(author,)
                                  )
                 return self.dbc.fetchall()
@@ -227,7 +249,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   DTIME = ? \
-                                                 where URL   = ?'
+                                                 where ID    = ?'
                                  ,(dtime,video_id,)
                                  )
             except Exception as e:
@@ -239,29 +261,22 @@ class DB:
         f = '[Yatube] db.DB.create_videos'
         if self.Success:
             try:
-                # 20 columns by now
+                # 13 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
-                     URL       text    \
-                    ,AUTHOR    text    \
-                    ,TITLE     text    \
-                    ,DATE      text    \
-                    ,CATEGORY  text    \
-                    ,DESC      text    \
-                    ,DURATION  text    \
-                    ,LENGTH    integer \
-                    ,VIEWS     integer \
-                    ,LIKES     integer \
-                    ,DISLIKES  integer \
-                    ,RATING    float   \
-                    ,IMAGE     binary  \
-                    ,BLOCK     boolean \
-                    ,IGNORE    boolean \
-                    ,SEARCH    text    \
-                    ,TIMESTAMP float   \
-                    ,DTIME     float   \
-                    ,FTIME     float   \
-                    ,LTIME     float   \
+                     ID     text    \
+                    ,PLAYID text    \
+                    ,AUTHOR text    \
+                    ,TITLE  text    \
+                    ,DESC   text    \
+                    ,SEARCH text    \
+                    ,LENGTH integer \
+                    ,IMAGE  binary  \
+                    ,BLOCK  boolean \
+                    ,PTIME  float   \
+                    ,DTIME  float   \
+                    ,FTIME  float   \
+                    ,LTIME  float   \
                                                        )'
                                  )
             except Exception as e:
@@ -274,9 +289,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
-                                   ,?,? \
-                                   )'
+                                   (?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
             except Exception as e:
@@ -304,13 +317,11 @@ class DB:
         f = '[Yatube] db.DB.get_video'
         if self.Success:
             try:
-                self.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY \
-                                         ,DESC,DURATION,LENGTH,VIEWS \
-                                         ,LIKES,DISLIKES,RATING,IMAGE \
-                                         ,SEARCH,TIMESTAMP,DTIME,FTIME \
-                                         ,LTIME,BLOCK \
+                self.dbc.execute ('select PLAYID,AUTHOR,TITLE,DESC\
+                                         ,LENGTH,IMAGE,SEARCH,PTIME\
+                                         ,DTIME,FTIME,LTIME,BLOCK \
                                    from   VIDEOS \
-                                   where  URL = ?',(video_id,)
+                                   where  ID = ?',(video_id,)
                                  )
                 return self.dbc.fetchone()
             except Exception as e:
@@ -318,22 +329,20 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def get_videos(self,urls):
-        ''' For some reason, sqlite skips unknown URLs (no empty
-            tuples), so we need to return URL as well in order not to
+    def get_videos(self,ids):
+        ''' For some reason, sqlite skips unknown IDs (no empty
+            tuples), so we need to return ID as well in order not to
             mix up results.
         '''
         f = '[Yatube] db.DB.get_videos'
         if self.Success:
-            if urls:
+            if ids:
                 try:
-                    query = 'select URL,AUTHOR,TITLE,DATE,CATEGORY,DESC\
-                                   ,DURATION,LENGTH,VIEWS,LIKES\
-                                   ,DISLIKES,RATING,IMAGE,SEARCH\
-                                   ,TIMESTAMP,DTIME\
-                             from   VIDEOS where  URL in (%s)' \
-                            % ','.join('?'*len(urls))
-                    self.dbc.execute(query,urls)
+                    query = 'select ID,PLAYID,AUTHOR,TITLE,DESC,LENGTH\
+                                   ,IMAGE,SEARCH,PTIME,DTIME\
+                             from   VIDEOS where ID in (%s)' \
+                            % ','.join('?'*len(ids))
+                    self.dbc.execute(query,ids)
                     result = self.dbc.fetchall()
                 except Exception as e:
                     result = None
@@ -341,10 +350,10 @@ class DB:
                 # The data are fetched in a mixed order
                 if result:
                     data = []
-                    for url in urls:
+                    for vid in ids:
                         Found = False
                         for item in result:
-                            if item[0] == url:
+                            if item[0] == vid:
                                 Found = True
                                 break
                         if Found:
@@ -376,7 +385,7 @@ class DB:
                 'select' first
              '''
             if not Selected:
-                self.dbc.execute('select * from VIDEOS')
+                self.dbc.execute('select * from VIDEOS limit ?',(5,))
             headers = [cn[0] for cn in self.dbc.description]
             rows    = self.dbc.fetchall()
             sh.Table (headers = headers
@@ -392,9 +401,9 @@ class DB:
 if __name__ == '__main__':
     path = sh.Home('yatube').add_config('yatube.db')
     idb = DB(path)
-    urls = idb.downloaded()
-    urls = list(urls)
-    for i in range(len(urls)):
-        urls[i] = str(i) + ': ' + urls[i]
-    print('\n'.join(urls))
+    ids = idb.downloaded()
+    ids = list(ids)
+    for i in range(len(ids)):
+        ids[i] = str(i) + ': ' + ids[i]
+    print('\n'.join(ids))
     idb.close()

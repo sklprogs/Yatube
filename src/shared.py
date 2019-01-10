@@ -9,6 +9,7 @@ import re
 import os, sys
 import configparser
 import calendar
+import datetime
 import os
 import pickle
 import re
@@ -1365,10 +1366,10 @@ class Time:
         self._instance = self._date = self._year = self._month_abbr \
                        = self._month_name = ''
         # Prevent recursion
-        if self._timestamp or self._timestamp == 0:
-            self.instance()
-        else:
+        if self._timestamp is None:
             self.todays_date()
+        else:
+            self.instance()
 
     def add_days(self,days_delta):
         f = '[shared] shared.Time.add_days'
@@ -1409,14 +1410,15 @@ class Time:
     def instance(self):
         f = '[shared] shared.Time.instance'
         if self.Success:
-            if not self._timestamp:
+            if self._timestamp is None:
                 self.timestamp()
             try:
                 self._instance = datetime.datetime.fromtimestamp(self._timestamp)
-            except:
+            except Exception as e:
                 self.Success = False
                 objs.mes (f,_('WARNING')
-                         ,_('Set time parameters are incorrect or not supported.')
+                         ,_('Set time parameters are incorrect or not supported.\n\nDetails: %s')\
+                         % str(e)
                          )
         else:
             log.append (f,_('WARNING')
@@ -2577,7 +2579,7 @@ class Online:
 
 class Diff:
 
-    def __init__(self):
+    def __init__(self,text1='',text2='',file=None):
         self.Custom      = False
         ''' Some browsers update web-page as soon as we rewrite it, and
             some even do not open the same file again. So, we have to
@@ -2587,6 +2589,11 @@ class Diff:
         self.h_wda_write = WriteTextFile (file    = self.wda_html
                                          ,Rewrite = True
                                          )
+        if text1 or text2:
+            self.reset (text1 = text1
+                       ,text2 = text2
+                       ,file  = file
+                       )
 
     def reset(self,text1,text2,file=None):
         self._diff = ''
@@ -3873,8 +3880,8 @@ class Objects:
         through different programs both using 'shared.py').
     '''
     def __init__(self):
-        self._enchant = self._morph = self._pretty_table = self._diff \
-                      = self._pdir = self._mes = self._online_mt \
+        self._enchant = self._morph = self._pretty_table = self._pdir \
+                      = self._mes = self._online_mt \
                       = self._online_other = self._tmpfile = None
 
     def tmpfile(self,suffix='.htm',Delete=0):
@@ -3941,11 +3948,6 @@ class Objects:
             from prettytable import PrettyTable
             self._pretty_table = PrettyTable
         return self._pretty_table
-
-    def diff(self):
-        if not self._diff:
-            self._diff = Diff()
-        return self._diff
 
 
 
@@ -4182,7 +4184,14 @@ class Get:
         self.Verbose   = Verbose
         self.Verify    = Verify
         self.unverified()
-        
+    
+    def read(self):
+        ''' This is a dummy function to return the final result.
+            It is needed merely to use 'json' which calls 'read'
+            for input object.
+        '''
+        return self._html
+    
     def unverified(self):
         ''' On *some* systems we can get urllib.error.URLError: 
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
@@ -4579,6 +4588,57 @@ class Commands:
     def __init__(self):
         self.lang()
     
+    def yt_date(self,date):
+        # Convert a date provided by Youtube API to a timestamp
+        f = '[shared] shared.Commands.yt_date'
+        if date:
+            pattern = '%Y-%m-%dT%H:%M:%S'
+            itime = Time(pattern=pattern)
+            # Prevent errors caused by 'datetime' parsing microseconds
+            tmp = date.split('.')
+            if date != tmp[0]:
+                ind  = date.index('.'+tmp[-1])
+                date = date[0:ind]
+            itime._instance = datetime.datetime.strptime(date,pattern)
+            return itime.timestamp()
+        else:
+            self.empty(f)
+    
+    def yt_length(self,length):
+        ''' Convert a length of a video provided by Youtube API (string)
+            to seconds.
+            Possible variants: PT%dM%dS, PT%dH%dM%dS, P%dDT%dH%dM%dS.
+        '''
+        f = '[shared] shared.Commands.yt_length'
+        result = 0
+        if length:
+            if isinstance(length,str) and length[0] == 'P':
+                days    = 0
+                hours   = 0
+                minutes = 0
+                seconds = 0
+                match = re.search(r'(\d+)D',length)
+                if match:
+                    days = int(match.group(1))
+                match = re.search(r'(\d+)H',length)
+                if match:
+                    hours = int(match.group(1))
+                match = re.search(r'(\d+)M',length)
+                if match:
+                    minutes = int(match.group(1))
+                match = re.search(r'(\d+)S',length)
+                if match:
+                    seconds = int(match.group(1))
+                result = days * 86400 + hours * 3600 + minutes * 60 \
+                         + seconds
+            else:
+                objs.mes (f,_('WARNING')
+                         ,_('Wrong input data: "%s"!') % str(length)
+                         )
+        else:
+            self.empty(f)
+        return result
+    
     def rewrite(self,file,Rewrite=False):
         ''' - We do not put this into File class because we do not need
               to check existence.
@@ -4624,27 +4684,52 @@ class Commands:
                                            ).name
     
     def human_time(self,delta):
-        f = 'Commands.human_time'
-        if isinstance(delta,int) or isinstance(delta,float):
-            hours   = delta // 3600
-            minutes = (delta - hours * 3600) // 60
-            seconds = delta - hours * 3600 - minutes * 60
-            mes = []
-            if hours:
-                mes.append('%d %s' % (hours,_('hrs')))
-            if minutes:
-                mes.append('%d %s' % (minutes,_('min')))
-            if seconds:
-                mes.append('%d %s' % (seconds,_('sec')))
-            if mes:
-                return ' '.join(mes)
+        f = '[shared] shared.Commands.human_time'
+        result = '%d %s' % (0,_('sec'))
+        # Allows to use 'None'
+        if delta:
+            if isinstance(delta,int) or isinstance(delta,float):
+                # 'datetime' will output years even for small integers
+                # https://kalkulator.pro/year-to-second.html
+                years   = delta // 31536000.00042889
+                all_sec = years * 31536000.00042889
+                months  = (delta - all_sec) // 2592000.0000000005
+                all_sec += months * 2592000.0000000005
+                weeks   = (delta - all_sec) // 604800
+                all_sec += weeks * 604800
+                days    = (delta - all_sec) // 86400
+                all_sec += days * 86400
+                hours   = (delta - all_sec) // 3600
+                all_sec += hours * 3600
+                minutes = (delta - all_sec) // 60
+                all_sec += minutes * 60
+                seconds = delta - all_sec
+                mes = []
+                if years:
+                    mes.append('%d %s' % (years,_('yrs')))
+                if months:
+                    mes.append('%d %s' % (months,_('mths')))
+                if weeks:
+                    mes.append('%d %s' % (weeks,_('wks')))
+                if days:
+                    mes.append('%d %s' % (days,_('days')))
+                if hours:
+                    mes.append('%d %s' % (hours,_('hrs')))
+                if minutes:
+                    mes.append('%d %s' % (minutes,_('min')))
+                if seconds:
+                    mes.append('%d %s' % (seconds,_('sec')))
+                if mes:
+                    result = ' '.join(mes)
             else:
-                return '%d %s' % (0,_('sec'))
+                objs.mes (f,_('WARNING')
+                         ,_('Wrong input data: "%s"!') % str(delta)
+                         )
         else:
-            objs.mes (f,_('WARNING')
-                     ,_('Wrong input data: "%s"!') % str(delta)
-                     )
-            return '%d %s' % (0,_('sec'))
+            log.append (f,_('WARNING')
+                       ,_('Empty input is not allowed!')
+                       )
+        return result
     
     def cancel(self,func):
         log.append (func

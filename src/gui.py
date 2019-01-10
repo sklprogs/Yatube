@@ -13,8 +13,7 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-product = 'Yatube'
-version = '1.5'
+VERSION = '2.0'
 
 context_items = (_('Show the full summary')
                 ,_('Stream')
@@ -84,6 +83,251 @@ default_entry_width = 19
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
+class AddId:
+    
+    def __init__(self):
+        self.parent = sg.Top(sg.objs.root())
+        self.widget = self.parent.widget
+        sg.Geometry(self.parent).set('800x600')
+        self.gui()
+    
+    def paste_ath(self,event=None):
+        self.ent_ath.clear_text()
+        self.ent_ath.insert(sg.Clipboard().paste())
+    
+    def paste_pid(self,event=None):
+        self.ent_pid.clear_text()
+        self.ent_pid.insert(sg.Clipboard().paste())
+    
+    def bindings(self):
+        sg.bind (obj      = self.ent_ath
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = self.paste_ath
+                )
+        sg.bind (obj      = self.ent_pid
+                ,bindings = '<ButtonRelease-3>'
+                ,action   = self.paste_pid
+                )
+    
+    def title(self,text=None):
+        if not text:
+            text = _('Add or remove IDs')
+        self.parent.title(text=text)
+    
+    def icon(self,path=None):
+        if path:
+            self.parent.icon(path)
+        else:
+            self.parent.icon(icon_path)
+    
+    def show(self,event=None):
+        self.parent.show()
+    
+    def close(self,event=None):
+        self.parent.close()
+    
+    def gui(self):
+        self.frames()
+        self.widgets()
+        self.icon()
+        self.title()
+        self.bindings()
+        self.ent_ath.focus()
+    
+    def frames(self):
+        self.frm_prm = sg.Frame (parent = self.parent
+                                ,side   = 'left'
+                                )
+        self.frm_rht = sg.Frame (parent = self.parent
+                                ,expand = False
+                                ,side   = 'right'
+                                )
+        self.frm_top = sg.Frame (parent = self.frm_prm
+                                ,side   = 'top'
+                                ,expand = False
+                                )
+        self.frm_bot = sg.Frame (parent = self.frm_prm)
+        self.frm_rh1 = sg.Frame (parent = self.frm_rht
+                                ,side   = 'top'
+                                )
+        self.frm_rh2 = sg.Frame (parent = self.frm_rht
+                                ,side   = 'bottom'
+                                )
+        self.frm_bt1 = sg.Frame (parent = self.frm_bot
+                                ,side   = 'left'
+                                )
+        self.frm_bt2 = sg.Frame (parent = self.frm_bot
+                                ,side   = 'left'
+                                )
+        self.frm_bt3 = sg.Frame (parent = self.frm_bot
+                                ,side   = 'left'
+                                )
+    
+    def widgets(self):
+        self.lbl_ath = sg.Label (parent = self.frm_top
+                                ,text   = _('Channel title:')
+                                ,Close  = True
+                                )
+        self.ent_ath = sg.Entry (parent    = self.frm_top
+                                ,fill      = 'x'
+                                ,Composite = True
+                                )
+        self.lbl_pid = sg.Label (parent = self.frm_top
+                                ,text   = _('Playlist ID, channel ID or Youtube user name:')
+                                ,Close  = True
+                                )
+        self.ent_pid = sg.Entry (parent    = self.frm_top
+                                ,fill      = 'x'
+                                ,Composite = True
+                                )
+        self.lbl_id1 = sg.Label (parent = self.frm_bt1
+                                ,text   = _('Channel title:')
+                                ,Close  = True
+                                )
+        self.lst_id1 = sg.ListBox (parent          = self.frm_bt1
+                                  ,SelectionCloses = False
+                                  ,SingleClick     = False
+                                  ,Composite       = True
+                                  ,Scrollbar       = True
+                                  )
+        self.lbl_id2 = sg.Label (parent = self.frm_bt2
+                                ,text   = _('Your ID:')
+                                ,Close  = True
+                                )
+        self.lst_id2 = sg.ListBox (parent          = self.frm_bt2
+                                  ,SelectionCloses = False
+                                  ,SingleClick     = False
+                                  ,Composite       = True
+                                  ,Scrollbar       = False
+                                  )
+        self.lbl_id3 = sg.Label (parent = self.frm_bt3
+                                ,text   = _('Playlist ID:')
+                                ,Close  = True
+                                )
+        self.lst_id3 = sg.ListBox (parent          = self.frm_bt3
+                                  ,SelectionCloses = False
+                                  ,SingleClick     = False
+                                  ,Composite       = True
+                                  ,Scrollbar       = False
+                                  )
+        self.btn_opn = sg.Button (parent = self.frm_rh1
+                                 ,text   = _('Open URL')
+                                 ,side   = 'top'
+                                 )
+        self.btn_add = sg.Button (parent = self.frm_rh1
+                                 ,text   = _('Add')
+                                 ,side   = 'top'
+                                 )
+        self.btn_edt = sg.Button (parent = self.frm_rh1
+                                 ,text   = _('Edit')
+                                 ,side   = 'top'
+                                 )
+        self.btn_del = sg.Button (parent = self.frm_rh1
+                                 ,text   = _('Delete')
+                                 ,side   = 'top'
+                                 )
+        self.btn_cls = sg.Button (parent = self.frm_rh2
+                                 ,text   = _('Save & close')
+                                 ,side   = 'bottom'
+                                 )
+        self.btn_sav = sg.Button (parent = self.frm_rh2
+                                 ,text   = _('Save')
+                                 ,side   = 'bottom'
+                                 )
+        self.btn_rst = sg.Button (parent = self.frm_rh2
+                                 ,text   = _('Reset')
+                                 ,side   = 'bottom'
+                                 )
+
+
+
+class Comments:
+    
+    def __init__(self):
+        self.values()
+        self.gui()
+    
+    def show(self,event=None):
+        self.parent.show()
+    
+    def close(self,event=None):
+        self.parent.close()
+    
+    def title(self,text=None):
+        if not text:
+            text = _('Comments:')
+        self.parent.title(text=text)
+    
+    def icon(self,path=None):
+        if path:
+            self.parent.icon(path)
+        else:
+            self.parent.icon(icon_path)
+    
+    def values(self):
+        self.icon_prev     = sh.objs.pdir().add ('..','resources'
+                                                ,'buttons'
+                                                ,'icon_36x36_go_back.gif'
+                                                )
+        self.icon_prev_off = sh.objs.pdir().add ('..','resources'
+                                                ,'buttons'
+                                                ,'icon_36x36_go_back_off.gif'
+                                                )
+        self.icon_next     = sh.objs.pdir().add ('..','resources'
+                                                ,'buttons'
+                                                ,'icon_36x36_go_forward.gif'
+                                                )
+        self.icon_next_off = sh.objs.pdir().add ('..','resources'
+                                                ,'buttons'
+                                                ,'icon_36x36_go_forward_off.gif'
+                                                )
+        
+    def frames(self):
+        self.frm_top = sg.Frame (parent = self.parent
+                                ,expand = False
+                                ,side   = 'top'
+                                )
+        self.frm_lft = sg.Frame (parent = self.frm_top
+                                ,side   = 'left'
+                                )
+        self.frm_rht = sg.Frame (parent = self.frm_top
+                                ,side   = 'right'
+                                )
+        self.frm_txt = sg.Frame (parent = self.parent
+                                ,side   = 'top'
+                                )
+    
+    def widgets(self):
+        self.btn_prv = sg.Button (parent   = self.frm_rht
+                                 ,hint     = _('Go to the previous page')
+                                 ,inactive = self.icon_prev_off
+                                 ,active   = self.icon_prev
+                                 ,side     = 'left'
+                                 ,bindings = '<Alt-Left>'
+                                 )
+        self.btn_nxt = sg.Button (parent   = self.frm_rht
+                                 ,hint     = _('Go to the next page')
+                                 ,inactive = self.icon_next_off
+                                 ,active   = self.icon_next
+                                 ,side     = 'left'
+                                 ,bindings = '<Alt-Right>'
+                                 )
+        self.txt_com = sg.TextBox (parent    = self.frm_txt
+                                  ,Composite = True
+                                  )
+    
+    def gui(self):
+        self.parent = sg.Top(sg.objs.root())
+        self.widget = self.parent.widget
+        sg.Geometry(self.parent).set('1024x768')
+        self.frames()
+        self.widgets()
+        self.icon()
+        self.title()
+        self.txt_com.focus()
+
+
+
 class Menu:
     
     def __init__(self,parent):
@@ -128,12 +372,7 @@ class Menu:
     def tooltips(self):
         sg.ToolTip (obj        = self.opt_max
                    ,text       = _('Videos per page')
-                   ,hint_width = 150
-                   ,hint_dir   = 'bottom'
-                   )
-        sg.ToolTip (obj        = self.opt_wrp
-                   ,text       = _('Page #')
-                   ,hint_width = 150
+                   ,hint_width = 200
                    ,hint_dir   = 'bottom'
                    )
     
@@ -175,13 +414,9 @@ class Menu:
                                  ,hint_dir = 'bottom'
                                  )
         self.opt_max = sg.OptionMenu (parent  = self.frame1
-                                     ,items   = (5,10,15,30,50,100)
+                                     ,items   = (5,10,15,30,50)
+                                     ,default = 50
                                      )
-        self.opt_wrp = sg.OptionMenu (parent = self.frame1
-                                     ,anchor = 'w'
-                                     ,Combo  = True
-                                     )
-        self.opt_wrp.widget.config(width=4)
         self.chb_dat = sg.CheckBox (parent = self.frame1
                                    ,Active = False
                                    ,side   = 'left'
@@ -330,7 +565,7 @@ class Menu:
     
     def title(self,text=None,selected=0,total=0):
         if not text:
-            text = sh.List(lst1=[product,version]).space_items()
+            text = sh.List(lst1=['Yatube',VERSION]).space_items()
             if selected:
                 text += _(' (selected: %d/%d)') % (selected,total)
         self.parent.title(text)
@@ -407,7 +642,7 @@ class Video:
         self._widgets  = []
         self._author   = _('Author')
         self._title    = _('Title')
-        self._duration = _('Duration')
+        self._date     = _('Date')
         self._image    = objs.def_image()
     
     def frames(self):
@@ -482,7 +717,7 @@ class Video:
                                ,width  = 60
                                )
         self.label7 = sg.Label (parent = self.frame4
-                               ,text   = _('Duration:')
+                               ,text   = _('Date:')
                                ,Close  = False
                                ,width  = 20
                                )
@@ -518,12 +753,12 @@ class Video:
                     ,action   = self.toggle_cbox
                     )
         
-    def reset (self,author,title,duration
+    def reset (self,author,title,date
               ,image=None,no=0
               ):
         self._author   = author
         self._title    = title
-        self._duration = duration
+        self._date     = date
         self._image    = image
         ''' 'no' normally remains unmodified, so we check the input
             so we don't have to set 'no' again and again each time
@@ -541,7 +776,7 @@ class Video:
         self.label4.reset()
         self.label6._text = self._title
         self.label6.reset()
-        self.label8._text = self._duration
+        self.label8._text = self._date
         self.label8.reset()
         self.pic()
 
@@ -604,7 +839,6 @@ class Channel:
         
     def values(self):
         self._no     = 0
-        self._videos = []
         ''' These values set the width and height of the frame that 
             contains videos and therefore the scrolling region.
             The default Youtube video picture has the dimensions of
@@ -665,10 +899,9 @@ class Channel:
         
     def add(self,no=1):
         self._no = no
-        self._videos.append (Video (parent = self.frm_emb
-                                   ,no     = self._no
-                                   )
-                            )
+        return Video (parent = self.frm_emb
+                     ,no     = self._no
+                     )
         
     def mouse_wheel(self,event=None):
         ''' #todo: fix: too small delta in Windows
@@ -689,8 +922,7 @@ class Objects:
         self._def_image = self._channel = self._menu = self._parent \
                         = self._context = self._summary \
                         = self._progress = self._blacklist \
-                        = self._subscribe = self._wait = self._comments\
-                        = None
+                        = self._subscribe = self._comments = None
         
     def comments(self):
         if not self._comments:
@@ -702,11 +934,6 @@ class Objects:
             self._comments.icon(icon_path)
             self._comments.title(_('First 100 comments:'))
         return self._comments
-    
-    def wait(self):
-        if self._wait is None:
-            self._wait = WaitMeta(parent=sg.Top(parent=sg.objs.root()))
-        return self._wait
     
     def subscribe(self):
         if not self._subscribe:
@@ -791,64 +1018,6 @@ class Objects:
 
 
 
-class WaitMeta:
-    
-    def __init__(self,parent):
-        self._video = None
-        self.parent = parent
-        self.gui()
-        
-    def icon(self,path=None):
-        if not path:
-            path = icon_path
-        sg.WidgetShared.icon(self.parent,path)
-    
-    def title(self,text=None):
-        if not text:
-            text = _('Get video info')
-        self.parent.title(text)
-    
-    def gui(self):
-        self.frame = sg.Frame (parent = self.parent)
-        self.label = sg.Label (parent = self.frame
-                              ,expand = True
-                              ,fill   = 'x'
-                              ,text   = _('Loading metadata. Please wait...')
-                              )
-        self._video = Video(parent=self.frame)
-        self.title()
-        self.icon()
-        
-    def update(self):
-        self.frame.widget.update()
-        
-    def reset (self,author=_('Author'),title=_('Title')
-              ,duration=_('Duration'),image=None,no=1
-              ):
-        f = '[Yatube] gui.WaitMeta.reset'
-        if self._video:
-            ''' Though 'no' is already set when creating '[Yatube] gui.Video',
-                we reset this value here in order not to meddle with it
-                in 'self.gui'.
-            '''
-            self._video.reset (author   = author
-                              ,title    = title
-                              ,duration = duration
-                              ,image    = image
-                              ,no       = no
-                              )
-        else:
-            sh.com.cancel(f)
-        
-    def show(self):
-        self.parent.show(Lock=False)
-        self.update()
-        self.parent.center(Force=1)
-        
-    def close(self):
-        self.parent.close()
-
-
 def report_selection(event=None):
     count = 0
     for video_gui in objs.channel()._videos:
@@ -874,7 +1043,8 @@ objs = Objects()
 if __name__ == '__main__':
     # Show the menu
     sg.objs.start()
-    objs.menu().show()
+    #objs.menu().show()
+    AddId().show()
     sg.objs.end()
     '''
     # Simulate meta updating
@@ -898,9 +1068,9 @@ if __name__ == '__main__':
     for i in range(max_videos):
         objs._channel.add(no=i+1)
         video_gui = objs._channel._videos[-1]
-        video_gui.reset (author   = 'Author (%d)' % (i + 1)
-                        ,title    = 'Title (%d)'  % (i + 1)
-                        ,duration = 60 * (i + 1)
+        video_gui.reset (author = 'Author (%d)' % (i + 1)
+                        ,title  = 'Title (%d)'  % (i + 1)
+                        ,date   = '2018-12-31'
                         )
     sg.objs.root().idle()
     # height = 112.133333333

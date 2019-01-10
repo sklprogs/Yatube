@@ -1,9 +1,56 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import shared as sh
-import logic  as lg
+import shared    as sh
+import sharedGUI as sg
+import logic     as lg
 import db
+
+
+class ImageViewer:
+    
+    def __init__(self):
+        self.gui()
+    
+    def show(self,event=None):
+        self.parent.show()
+    
+    def close(self,event=None):
+        self.parent.close()
+    
+    def bindings(self):
+        sg.bind (obj      = self.parent
+                ,bindings = ['<Escape>','<Control-w>','<Control-q>'
+                            ,'<ButtonRelease-1>'
+                            ]
+                ,action   = self.close
+                )
+    
+    def title(self,arg=None):
+        if not arg:
+            arg = _('Image:')
+        self.parent.title(arg)
+    
+    def icon(self,path=None):
+        if path:
+            self.parent.icon(path)
+        else:
+            self.parent.icon (sh.objs.pdir().add ('..','resources'
+                                                 ,'unmusic.gif'
+                                                 )
+                             )
+    
+    def gui(self):
+        self.parent = sg.Top(sg.objs.root())
+        self.lbl    = sg.Label (parent = self.parent
+                               ,text   = _('Image:')
+                               ,Close  = False
+                               ,expand = True
+                               ,fill   = 'both'
+                               )
+        self.title()
+        self.icon()
+        self.bindings()
 
 
 def time():
@@ -72,10 +119,10 @@ def timestamp():
     
 def dtime():
     idb = db.DB()
-    idb.dbc.execute('select TITLE,DTIME,TIMESTAMP from VIDEOS where DTIME > ? order by DTIME desc,TIMESTAMP desc limit ?',(0,5))
+    idb.dbc.execute('select TITLE,DTIME,PTIME from VIDEOS where DTIME > ? order by DTIME desc,PTIME desc limit ?',(0,5))
     result = idb.dbc.fetchall()
     if result:
-        sh.Table (headers = ['TITLE','DTIME','TIMESTAMP']
+        sh.Table (headers = ['TITLE','DTIME','PTIME']
                  ,rows    = result
                  ).print()
     idb.close()
@@ -88,7 +135,7 @@ def url():
     
 def invalid_urls():
     idb = db.DB()
-    idb.dbc.execute('select URL from VIDEOS where length(URL) > 11')
+    idb.dbc.execute('select ID from VIDEOS where length(ID) > 11')
     result = idb.dbc.fetchall()
     if result:
         result = list(result)
@@ -99,51 +146,12 @@ def invalid_urls():
 
 if __name__ == '__main__':
     f = '[Yatube] tests.__main__'
-    '''
-    urls = ['OFP5rzaOCfw','taRRpqX0CmA','MYXjO5TJqjw','f2gX4K5AndM'
-           ,'vDP804SHKGg','jJfXOpQuxU4','E8QB5oxtoYE','9ZWmJcAi_OI'
-           ,'WVNlMYYY-XX','c_2baGSBlxg','WVNlMBpS-eE'
-           ]
-    '''
-    urls = ('WVNlMYYY-XX','WVNlMBpS-eE')
-    path = sh.Home('yatube').add_config('yatube.db')
-    #invalid_urls()
-    idb = db.DB(path)
-    '''
-    idb.dbc.execute ('select AUTHOR,TITLE,DATE,CATEGORY,DESC,DURATION\
-                            ,LENGTH,VIEWS,LIKES,DISLIKES,RATING,IMAGE\
-                            ,SEARCH,TIMESTAMP,DTIME from VIDEOS \
-                      where URL = ?',(video_id,)
-                    )
-    '''
-    '''
-    idb.dbc.execute ('select TITLE from VIDEOS where URL like ?'
-                    ,('%' + ','.join(urls) + '%',)
-                    )
-    '''
-    idb.dbc.execute ('select URL,AUTHOR,TITLE,DATE from VIDEOS where URL in %s' % str(tuple(urls))
-                    )
-    result = idb.dbc.fetchall()
-    if result:
-        #result = [item[0] for item in result]
-        #print('\n'.join(result))
-        print(result)
-        '''
-        authors = [item[0] for item in result]
-        titles  = [item[1] for item in result]
-        dates   = [item[2] for item in result]
-        mes = ''
-        for i in range(len(authors)):
-            mes += '%d: %s; ' % (i,authors[i])
-        mes += '\n'
-        for i in range(len(titles)):
-            mes += '%d: %s; ' % (i,titles[i])
-        mes += '\n'
-        for i in range(len(dates)):
-            mes += '%d: %s; ' % (i,dates[i])
-        mes += '\n'
-        print(mes)
-        '''
-    else:
-        sh.com.empty(f)
-    idb.close()
+    sg.objs.start()
+    import yatube as ct
+    import meta   as mt
+    mt.objs.stat()
+    add = ct.objs.add_id()
+    add.reset()
+    add.show()
+    mt.objs._stat.report()
+    sg.objs.end()
