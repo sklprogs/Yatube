@@ -255,7 +255,7 @@ class Comments:
     
     def title(self,text=None):
         if not text:
-            text = _('Comments:')
+            text = _('Comments')
         self.parent.title(text=text)
     
     def icon(self,path=None):

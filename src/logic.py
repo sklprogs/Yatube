@@ -659,6 +659,7 @@ class Video:
         f = '[Yatube] logic.Video.summary'
         if self.Success:
             video = mt.objs.videos().current()
+            mt.VideoInfo().extra()
             tmp = io.StringIO()
             tmp.write(_('Author'))
             tmp.write(': ')
@@ -672,10 +673,6 @@ class Video:
             tmp.write(': ')
             tmp.write(sh.com.human_time(video._len))
             tmp.write('\n')
-            tmp.write(_('Comments'))
-            tmp.write(': ')
-            tmp.write(video._com_num)
-            tmp.write('\n')
             tmp.write(_('Views'))
             tmp.write(': ')
             tmp.write(str(video._views))
@@ -688,6 +685,11 @@ class Video:
             tmp.write(': ')
             tmp.write(str(video._dislikes))
             tmp.write('\n')
+            # ':' is right here to provide a different localization item
+            tmp.write(_('Comments:'))
+            tmp.write(' ')
+            tmp.write(str(video._com_num))
+            tmp.write('\n\n')
             tmp.write(_('Description'))
             tmp.write(':\n')
             tmp.write(video._desc)
@@ -725,7 +727,7 @@ class Video:
                                                   ,ShowGap = True
                                                   )
                 video._path += '.mp4'
-            return self._path
+            return video._path
         else:
             sh.com.cancel(f)
     

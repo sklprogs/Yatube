@@ -308,7 +308,12 @@ class VideoInfo:
         f = '[Yatube] meta.VideoInfo.extra'
         if self.Success:
             video = objs._videos.current()
-            if not video._len:
+            # 'video._len' is filled somewhere, so do not rely on it
+            if video._views:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
                 resp = None
                 try:
                     ''' #NOTE: suggestions, fileDetails and
@@ -674,7 +679,7 @@ class Videos:
     def set_gui(self,gui):
         f = '[Yatube] meta.Videos.set_gui'
         if gui:
-            for self.i in range(self._videos):
+            for self.i in range(len(self._videos)):
                 if self._videos[self.i]._gui == gui:
                     return True
         else:

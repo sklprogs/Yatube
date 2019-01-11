@@ -222,8 +222,7 @@ class Comments:
         self.reset()
     
     def values(self):
-        self.Success   = True
-        self._video_id = None
+        self.Success = True
     
     def bindings(self):
         sg.bind (obj      = self.gui.parent
@@ -361,32 +360,35 @@ class Commands:
     def update_context(self):
         f = '[Yatube] yatube.Commands.update_context'
         video = mt.objs.videos().current()
-        logic = lg.Video()
         if video:
             items = list(gi.context_items)
             data = lg.objs.db().get_video(video._id)
             if data:
-                if data[14]:
+                dtime = data[8]
+                ftime = data[9]
+                ltime = data[10]
+                block = data[11]
+                if dtime:
                     items.remove(_('Mark as watched'))
                 else:
                     items.remove(_('Mark as not watched'))
-                if data[15]:
+                if ftime:
                     items.remove(_('Add to favorites'))
                 else:
                     items.remove(_('Remove from favorites'))
-                if data[16]:
+                if ltime:
                     items.remove(_('Add to watchlist'))
                 else:
                     items.remove(_('Remove from watchlist'))
-                if data[17]:
+                if block:
                     items.remove(_('Block this channel'))
                 else:
                     items.remove(_('Unblock'))
             else:
                 sh.com.empty(f)
-            logic.path()
-            if logic._path:
-                if os.path.exists(logic._path):
+            objs.video().logic.path()
+            if video._path:
+                if os.path.exists(video._path):
                     items.remove(_('Download'))
                 else:
                     items.remove(_('Delete the downloaded file'))
@@ -616,7 +618,6 @@ class Commands:
         return selected
     
     def load_view(self):
-        self.reset_channel_gui()
         self.channel_gui()
         self.update_widgets()
         #todo: where we should place this?
@@ -680,11 +681,8 @@ class Commands:
     
     def show_comments(self,event=None):
         f = '[Yatube] yatube.Commands.show_comments'
-        if self._video:
-            objs.comments().reset()
-            objs._comments.show()
-        else:
-            sh.com.empty(f)
+        objs.comments().reset()
+        objs._comments.show()
     
     def menu_update(self,event=None):
         f = '[Yatube] yatube.Commands.menu_update'
@@ -820,70 +818,60 @@ class Commands:
     
     def unsubscribe(self,event=None):
         f = '[Yatube] yatube.Commands.unsubscribe'
-        if self._video and self._video.model.channel_url():
-            self._video.model.video()
-            if self._video.model._author:
-                if self._video.model._author \
-                in lg.objs.lists()._subsc_auth:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Unsubscribe from channel "%s"') \
-                                  % self._video.model._author
-                                  )
-                    if self._video.model._author \
-                    in lg.objs._lists._subsc_auth:
-                        ind = lg.objs._lists._subsc_auth.index(self._video.model._author)
-                        del lg.objs._lists._subsc_auth[ind]
-                        del lg.objs._lists._subsc_ids[ind]
-                        subscriptions = []
-                        for i in range(len(lg.objs._lists._subsc_auth)):
-                            subscriptions.append (lg.objs._lists._subsc_auth[i]\
-                                                 + '\t' \
-                                                 + lg.objs._lists._subsc_ids[i]
-                                                 )
-                        subscriptions = '\n'.join(subscriptions)
-                        if not subscriptions:
-                            subscriptions = '# ' + _('Put here authors to subscribe to')
-                        sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                                         ,Rewrite = True
-                                         ).write(text=subscriptions)
-                        lg.objs._lists.reset()
-                        self.reset_channels()
-                else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
+        video = mt.objs.videos().current()
+        if video._author:
+            if video._author in lg.objs.lists()._subsc_auth:
+                sh.log.append (f,_('INFO')
+                              ,_('Unsubscribe from channel "%s"') \
+                              % video._author
+                              )
+                if video._author in lg.objs._lists._subsc_auth:
+                    ind = lg.objs._lists._subsc_auth.index(video._author)
+                    del lg.objs._lists._subsc_auth[ind]
+                    del lg.objs._lists._subsc_ids[ind]
+                    subscriptions = []
+                    for i in range(len(lg.objs._lists._subsc_auth)):
+                        subscriptions.append (lg.objs._lists._subsc_auth[i]\
+                                             + '\t' \
+                                             + lg.objs._lists._subsc_ids[i]
+                                             )
+                    subscriptions = '\n'.join(subscriptions)
+                    if not subscriptions:
+                        subscriptions = '# ' + _('Put here authors to subscribe to')
+                    sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                     ,Rewrite = True
+                                     ).write(text=subscriptions)
+                    lg.objs._lists.reset()
+                    self.reset_channels()
             else:
-                sh.com.empty(f)
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
         else:
             sh.com.empty(f)
     
     def unblock(self,event=None):
         f = '[Yatube] yatube.Commands.unblock'
-        if self._video:
-            self._video.model.video()
-            if self._video.model._author:
-                if self._video.model._author \
-                in lg.objs.lists()._block_auth:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Unblock channel "%s"') \
-                                  % self._video.model._author
-                                  )
-                    lg.objs._lists._block_auth.remove(self._video.model._author)
-                    blocked = lg.objs._lists._block_auth
-                    blocked = '\n'.join(blocked)
-                    if not blocked:
-                        blocked = '# ' + _('Put here authors to be blocked')
-                    sh.WriteTextFile (file    = lg.objs.default()._fblock
-                                     ,Rewrite = True
-                                     ).write(text=blocked)
-                    lg.objs._lists.reset()
-                    self.reset_channels()
-                else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
+        video = mt.objs.videos().current()
+        if video._author:
+            if video._author in lg.objs.lists()._block_auth:
+                sh.log.append (f,_('INFO')
+                              ,_('Unblock channel "%s"') % video._author
+                              )
+                lg.objs._lists._block_auth.remove(video._author)
+                blocked = lg.objs._lists._block_auth
+                blocked = '\n'.join(blocked)
+                if not blocked:
+                    blocked = '# ' + _('Put here authors to be blocked')
+                sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                 ,Rewrite = True
+                                 ).write(text=blocked)
+                lg.objs._lists.reset()
+                self.reset_channels()
             else:
-                sh.com.empty(f)
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
         else:
             sh.com.empty(f)
     
@@ -1231,11 +1219,14 @@ class Commands:
             sh.com.empty(f)
     
     def summary(self,event=None):
-        if self._video:
+        f = '[Yatube] yatube.Commands.summary'
+        if mt.objs.videos().current()._id:
             #self.save_extra()
             gi.objs.summary().reset()
             gi.objs._summary.insert(objs.video().logic.summary())
-        gi.objs._summary.show()
+            gi.objs._summary.show()
+        else:
+            sh.com.empty(f)
     
     def _context(self,choice,event=None):
         f = '[Yatube] yatube.Commands._context'
@@ -1321,6 +1312,8 @@ class Commands:
         f = '[Yatube] logic.Commands.update_channel'
         timer = sh.Timer(f)
         timer.start()
+        # We need to delete GUI before resetting logic
+        self.reset_channel_gui()
         if author:
             self._menu.opt_chl.set(author)
         lg.objs.channel().reset(play_id)
@@ -1615,7 +1608,7 @@ class Commands:
 
     def play_video(self,event=None):
         f = '[Yatube] yatube.Commands.play_video'
-        if self._video:
+        if mt.objs.videos().current()._id:
             if self._menu.chb_slw.get():
                 if os.path.exists('/usr/bin/mpv'):
                     self._play_slow()
@@ -1870,6 +1863,9 @@ class Commands:
         timer.end()
             
     def channel_gui(self):
+        ''' Do not forget to run 'reset_channel_gui' BEFORE resetting
+            logic and running this procedure.
+        '''
         self.fill_default()
         ''' After setting default images, we should align the left
             border, otherwise, it looks shabby. However, we cannot
