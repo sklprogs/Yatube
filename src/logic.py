@@ -22,14 +22,53 @@ pattern5  = 'https://www.youtube.com/'
 AllOS     = False
 
 
-sample_subscribe = '''BostonDynamics	https://www.youtube.com/user/BostonDynamics/videos
-Brave Wilderness	https://www.youtube.com/user/BreakingTrail/videos
-Pravda GlazaRezhet	https://www.youtube.com/channel/UCgCqhDRyMH1wZBI4OOKLQ8g/videos
-Дмитрий ПОТАПЕНКО	https://www.youtube.com/channel/UC54SBo5_usXGEoybX1ZVETQ/videos
-Мохнатые Друзья	https://www.youtube.com/channel/UCqKbBJRz6SGrvUHNoZkpF2w/videos
+sample_subscribe = '''BostonDynamics	UU7vVhkEfw4nOGp8TyDk7RcQ
+Brave Wilderness	UU6E2mP01ZLH_kbAyeazCNdg
+Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
+Дмитрий ПОТАПЕНКО	UU54SBo5_usXGEoybX1ZVETQ
+Мохнатые Друзья	UUqKbBJRz6SGrvUHNoZkpF2w
 '''
 
 sample_block = '''Россия 24'''
+
+
+class History:
+    
+    def __init__(self):
+        pass
+    
+    def fetch(self):
+        token = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self.fetch_next(token)
+    
+    def fetch_prev(self,token):
+        f = '[Yatube] logic.History.fetch_prev'
+        mt.objs.videos().reset()
+        ids = objs.db().history_prev (dtime = token
+                                     ,limit = mt.MAX_VIDEOS
+                                     )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+    
+    def fetch_next(self,token):
+        f = '[Yatube] logic.History.fetch_next'
+        mt.objs.videos().reset()
+        ids = objs.db().history_next (dtime = token
+                                     ,limit = mt.MAX_VIDEOS
+                                     )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+
 
 
 class Channel:
@@ -438,7 +477,12 @@ class Objects:
     def __init__(self):
         self._online = self._lists = self._const = self._default \
                      = self._db = self._channels = self._channel \
-                     = self._extractor = None
+                     = self._extractor = self._history = None
+    
+    def history(self):
+        if self._history is None:
+            self._history = History()
+        return self._history
     
     def extractor(self):
         if not self._extractor:

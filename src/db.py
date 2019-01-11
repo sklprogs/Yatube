@@ -138,14 +138,39 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def downloaded(self):
-        f = '[Yatube] db.DB.downloaded'
+    def history_prev(self,dtime=0,limit=50):
+        f = '[Yatube] db.DB.history_prev'
+        if self.Success:
+            try:
+                ''' #note: videos are sorted from newest to oldest
+                    (new dtime > old dtime), therefore, we cannot use
+                    'desc' because otherwise the first page will be
+                    returned each time we use 'history_prev'. Thus, we
+                    manually sort the return output.
+                '''
+                self.dbc.execute ('select   ID from VIDEOS \
+                                   where    DTIME > ? and DTIME > ? \
+                                   order by DTIME,PTIME \
+                                   limit ?'
+                                 ,(0,dtime,limit,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result][::-1]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def history_next(self,dtime=0,limit=50):
+        f = '[Yatube] db.DB.history_next'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
-                                   where    DTIME > ? \
-                                   order by DTIME desc,PTIME desc'
-                                 ,(0,)
+                                   where    DTIME > ? and DTIME < ? \
+                                   order by DTIME desc,PTIME desc \
+                                   limit ?'
+                                 ,(0,dtime,limit,)
                                  )
                 result = self.dbc.fetchall()
                 if result:
