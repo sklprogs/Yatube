@@ -18,6 +18,50 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def watch_prev(self,ltime=0,limit=50):
+        f = '[Yatube] db.DB.watch_prev'
+        if self.Success:
+            try:
+                ''' #note: videos are sorted from newest to oldest
+                    (new ltime > old ltime), therefore, we cannot use
+                    'desc' because otherwise the first page will be
+                    returned each time we use 'history_prev'. Thus, we
+                    manually sort the return output.
+                    #note: also sort by PTIME everywhere, because DB
+                    inherits equal LTIME fields from previous versions,
+                    and 'sqlite' may randomize output.
+                '''
+                self.dbc.execute ('select   ID from VIDEOS \
+                                   where    LTIME > ? \
+                                   order by LTIME,PTIME limit ?'
+                                 ,(ltime,limit,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result][::-1]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def watch_next(self,ltime=0,limit=50):
+        f = '[Yatube] db.DB.watch_next'
+        if self.Success:
+            try:
+                self.dbc.execute ('select   ID from VIDEOS \
+                                   where    LTIME > ? and LTIME < ? \
+                                   order by LTIME desc,PTIME desc \
+                                   limit ?'
+                                 ,(0,ltime,limit,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def update_len(self,video_id,length):
         f = '[Yatube] db.DB.update_len'
         if self.Success:
@@ -67,22 +111,6 @@ class DB:
                                                  where ID    = ?'
                                  ,(ltime,video_id,)
                                  )
-            except Exception as e:
-                self.fail(f,e)
-        else:
-            sh.com.cancel(f)
-    
-    def watchlist(self):
-        f = '[Yatube] db.DB.watchlist'
-        if self.Success:
-            try:
-                self.dbc.execute ('select   ID from VIDEOS \
-                                   where    LTIME > 0 \
-                                   order by LTIME desc,PTIME desc'
-                                 )
-                result = self.dbc.fetchall()
-                if result:
-                    return [item[0] for item in result]
             except Exception as e:
                 self.fail(f,e)
         else:
@@ -342,9 +370,9 @@ class DB:
         f = '[Yatube] db.DB.get_video'
         if self.Success:
             try:
-                self.dbc.execute ('select PLAYID,AUTHOR,TITLE,DESC\
-                                         ,LENGTH,IMAGE,SEARCH,PTIME\
-                                         ,DTIME,FTIME,LTIME,BLOCK \
+                self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
+                                         ,SEARCH,LENGTH,IMAGE,BLOCK\
+                                         ,PTIME,DTIME,FTIME,LTIME\
                                    from   VIDEOS \
                                    where  ID = ?',(video_id,)
                                  )
@@ -363,8 +391,9 @@ class DB:
         if self.Success:
             if ids:
                 try:
-                    query = 'select ID,PLAYID,AUTHOR,TITLE,DESC,LENGTH\
-                                   ,IMAGE,SEARCH,PTIME,DTIME\
+                    query = 'select ID,PLAYID,AUTHOR,TITLE,DESC,SEARCH\
+                                   ,LENGTH,IMAGE,BLOCK,PTIME,DTIME\
+                                   ,FTIME,LTIME\
                              from   VIDEOS where ID in (%s)' \
                             % ','.join('?'*len(ids))
                     self.dbc.execute(query,ids)
@@ -382,7 +411,7 @@ class DB:
                                 Found = True
                                 break
                         if Found:
-                            data.append(item[1:])
+                            data.append(item)
                         else:
                             data.append(())
                     return data

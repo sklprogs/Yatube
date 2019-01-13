@@ -146,12 +146,16 @@ def invalid_urls():
 
 if __name__ == '__main__':
     f = '[Yatube] tests.__main__'
-    sg.objs.start()
-    import yatube as ct
-    import meta   as mt
-    mt.objs.stat()
-    add = ct.objs.add_id()
-    add.reset()
-    add.show()
-    mt.objs._stat.report()
+    idb = db.DB('/home/pete/.config/yatube2/yatube.db')
+    idb.dbc.execute ('select LTIME \
+                      from   VIDEOS \
+                      where  LTIME > ?',(0,)
+                    )
+    result = idb.dbc.fetchall()
+    if result:
+        result = [item[0] for item in result]
+    print(len(result))
+    result = [sh.Time(_timestamp=item,pattern='%y-%m-%d %H:%M:%S').date() for item in result]
+    print('\n'.join(result))
+    idb.close()
     sg.objs.end()

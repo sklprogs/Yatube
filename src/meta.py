@@ -15,7 +15,7 @@ API_KEY = 'AIzaSyCIM4EzNqi1in22f4Z3Ru3iYvLaY8tc3bo'
 ''' Default number of videos to be fetched: 5, max: 50.
     Default number of comments to be fetched: 20, max: 100.
 '''
-MAX_VIDEOS   = 50
+MAX_VIDEOS   = 5
 MAX_COMMENTS = 100
 
 
@@ -419,7 +419,6 @@ class Playlist:
             self.reset(play_id)
     
     def run(self):
-        objs.videos().reset()
         self.fetch()
         self.videos()
     
@@ -598,7 +597,6 @@ class Search:
             sh.com.cancel(f)
     
     def run(self):
-        objs.videos().reset()
         self.fetch()
         self.videos()
     
@@ -642,9 +640,9 @@ class Video:
     
     def __init__(self):
         self.Block     = False
+        self.Saved     = None
         self._bytes    = None
         self._gui      = None
-        self.Saved     = None
         self._com_num  = 0
         self._dtime    = 0
         self._ftime    = 0

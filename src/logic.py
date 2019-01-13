@@ -32,19 +32,107 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class Watchlist:
+    
+    def __init__(self):
+        self._token_prev = 0
+        self._token_next = 0
+    
+    def get_token(self):
+        f = '[Yatube] logic.Watchlist.get_token'
+        if mt.objs.videos()._videos:
+            self._token_next = mt.objs._videos._videos[-1]._ltime
+            self._token_prev = mt.objs._videos._videos[0]._ltime
+            date_next = sh.Time (_timestamp = self._token_next
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            date_prev = sh.Time (_timestamp = self._token_prev
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            sh.log.append (f,_('DEBUG')
+                          ,_('Previous page token: %s') % str(date_prev)
+                          )
+            sh.log.append (f,_('DEBUG')
+                          ,_('Next page token: %s') % str(date_next)
+                          )
+        else:
+            sh.com.empty(f)
+            ''' This returns correct tokens for the 1st page if we are
+                out of bounds.
+            '''
+            self._token_prev = 0
+            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+    
+    def fetch(self):
+        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self.fetch_next()
+    
+    def fetch_prev(self):
+        f = '[Yatube] logic.Watchlist.fetch_prev'
+        ids = objs.db().watch_prev (ltime = self._token_prev
+                                   ,limit = mt.MAX_VIDEOS
+                                   )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+    
+    def fetch_next(self):
+        f = '[Yatube] logic.Watchlist.fetch_next'
+        ids = objs.db().watch_next (ltime = self._token_next
+                                   ,limit = mt.MAX_VIDEOS
+                                   )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+
+
+
 class History:
     
     def __init__(self):
-        pass
+        self._token_next = 0
+        self._token_prev = 0
+    
+    def get_token(self):
+        f = '[Yatube] logic.History.get_token'
+        if mt.objs.videos()._videos:
+            self._token_next = mt.objs._videos._videos[-1]._dtime
+            self._token_prev = mt.objs._videos._videos[0]._dtime
+            date_next = sh.Time (_timestamp = self._token_next
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            date_prev = sh.Time (_timestamp = self._token_prev
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            sh.log.append (f,_('DEBUG')
+                          ,_('Previous page token: %s') % str(date_prev)
+                          )
+            sh.log.append (f,_('DEBUG')
+                          ,_('Next page token: %s') % str(date_next)
+                          )
+        else:
+            sh.com.empty(f)
+            ''' This returns correct tokens for the 1st page if we are
+                out of bounds.
+            '''
+            self._token_prev = 0
+            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def fetch(self):
-        token = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-        self.fetch_next(token)
+        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self.fetch_next()
     
-    def fetch_prev(self,token):
+    def fetch_prev(self):
         f = '[Yatube] logic.History.fetch_prev'
-        mt.objs.videos().reset()
-        ids = objs.db().history_prev (dtime = token
+        ids = objs.db().history_prev (dtime = self._token_prev
                                      ,limit = mt.MAX_VIDEOS
                                      )
         if ids:
@@ -55,10 +143,9 @@ class History:
         else:
             sh.com.empty(f)
     
-    def fetch_next(self,token):
+    def fetch_next(self):
         f = '[Yatube] logic.History.fetch_next'
-        mt.objs.videos().reset()
-        ids = objs.db().history_next (dtime = token
+        ids = objs.db().history_next (dtime = self._token_next
                                      ,limit = mt.MAX_VIDEOS
                                      )
         if ids:
@@ -477,7 +564,13 @@ class Objects:
     def __init__(self):
         self._online = self._lists = self._const = self._default \
                      = self._db = self._channels = self._channel \
-                     = self._extractor = self._history = None
+                     = self._extractor = self._history \
+                     = self._watchlist = None
+    
+    def watchlist(self):
+        if self._watchlist is None:
+            self._watchlist = Watchlist()
+        return self._watchlist
     
     def history(self):
         if self._history is None:
@@ -644,22 +737,26 @@ class Video:
         f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
-                data_len = 9
-                if len(data) >= data_len:
+                data_len = 13
+                if len(data) == data_len:
                     video = mt.objs.videos().current()
-                    video._play_id = data[0]
-                    video._author  = data[1]
-                    video._title   = data[2]
-                    video._desc    = data[3]
-                    video._len     = data[4]
-                    video._bytes   = data[5]
-                    video._search  = data[6]
-                    video._ptime   = data[7]
-                    video._dtime   = data[8]
+                    video._id      = data[0]
+                    video._play_id = data[1]
+                    video._author  = data[2]
+                    video._title   = data[3]
+                    video._desc    = data[4]
+                    video._search  = data[5]
+                    video._len     = data[6]
+                    video._bytes   = data[7]
+                    video.Block    = data[8]
+                    video._ptime   = data[9]
+                    video._dtime   = data[10]
+                    video._ftime   = data[11]
+                    video._ltime   = data[12]
                 else:
                     sh.objs.mes (f,_('ERROR')
-                                ,_('The condition "%s" is not observed!') \
-                                % '%d >= %d' % (len(data),data_len)
+                                ,_('The condition "%s" is not observed!')\
+                                % '%d == %d' % (len(data),data_len)
                                 )
             else:
                 sh.com.empty(f)

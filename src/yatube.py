@@ -15,6 +15,31 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+
+class Watchlist:
+    
+    def fetch(self):
+        lg.objs.watchlist().fetch()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._watchlist.get_token()
+        objs._commands.update_widgets()
+    
+    def fetch_prev(self):
+        f = '[Yatube] yatube.Watchlist.fetch_prev'
+        lg.objs.watchlist().fetch_prev()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._watchlist.get_token()
+        objs._commands.update_widgets()
+    
+    def fetch_next(self):
+        f = '[Yatube] yatube.Watchlist.fetch_next'
+        lg.objs.watchlist().fetch_next()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._watchlist.get_token()
+        objs._commands.update_widgets()
+
+
+
 class Playlist:
     
     def __init__(self,play_id=''):
@@ -23,22 +48,17 @@ class Playlist:
             self.reset(play_id)
     
     def fetch(self):
-        objs.commands().reset_channel_gui()
         mt.objs.playlist().run()
         objs._commands.channel_gui()
         objs._commands.update_widgets()
     
     def fetch_prev(self):
-        objs.commands().reset_channel_gui()
-        mt.objs.videos().reset()
         mt.objs.playlist().fetch_prev()
         mt.objs._playlist.videos()
         objs._commands.channel_gui()
         objs._commands.update_widgets()
     
     def fetch_next(self):
-        objs.commands().reset_channel_gui()
-        mt.objs.videos().reset()
         mt.objs.playlist().fetch_next()
         mt.objs._playlist.videos()
         objs._commands.channel_gui()
@@ -55,6 +75,10 @@ class Channels:
     def __init__(self):
         self._channels = []
     
+    def add_watchlist(self):
+        watchlist = Watchlist()
+        self._channels.append(watchlist)
+    
     def add_history(self):
         history = History()
         self._channels.append(history)
@@ -68,6 +92,8 @@ class Channels:
         if self._channels:
             timer = sh.Timer(f)
             timer.start()
+            objs.commands().reset_channel_gui()
+            mt.objs.videos().reset()
             self._channels[-1].fetch()
             timer.end()
         else:
@@ -78,6 +104,8 @@ class Channels:
         if self._channels:
             timer = sh.Timer(f)
             timer.start()
+            objs.commands().reset_channel_gui()
+            mt.objs.videos().reset()
             self._channels[-1].fetch_prev()
             timer.end()
         else:
@@ -88,6 +116,8 @@ class Channels:
         if self._channels:
             timer = sh.Timer(f)
             timer.start()
+            objs.commands().reset_channel_gui()
+            mt.objs.videos().reset()
             self._channels[-1].fetch_next()
             timer.end()
         else:
@@ -97,40 +127,24 @@ class Channels:
 
 class History:
     
-    def get_token(self,Next=False):
-        f = '[Yatube] yatube.History.get_token'
-        if mt.objs.videos()._videos:
-            if Next:
-                return mt.objs._videos._videos[-1]._dtime
-            else:
-                return mt.objs._videos._videos[0]._dtime
-        else:
-            sh.com.empty(f)
-            return sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-    
     def fetch(self):
-        objs.commands().reset_channel_gui()
-        mt.objs.videos().reset()
         lg.objs.history().fetch()
         objs._commands.channel_gui(Unknown=False)
+        lg.objs._history.get_token()
         objs._commands.update_widgets()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.History.fetch_prev'
-        objs.commands().reset_channel_gui()
-        token = self.get_token()
-        mt.objs.videos().reset()
-        lg.objs.history().fetch_prev(token)
+        lg.objs.history().fetch_prev()
         objs._commands.channel_gui(Unknown=False)
+        lg.objs._history.get_token()
         objs._commands.update_widgets()
     
     def fetch_next(self):
         f = '[Yatube] yatube.History.fetch_next'
-        objs.commands().reset_channel_gui()
-        token = self.get_token(Next=True)
-        mt.objs.videos().reset()
-        lg.objs.history().fetch_next(token)
+        lg.objs.history().fetch_next()
         objs._commands.channel_gui(Unknown=False)
+        lg.objs._history.get_token()
         objs._commands.update_widgets()
 
 
@@ -319,7 +333,6 @@ class AddId:
         self.gui.lst_id1.reset(lst=id1)
         self.gui.lst_id2.reset(lst=id2)
         self.gui.lst_id3.reset(lst=id3)
-        
 
 
 
@@ -489,10 +502,10 @@ class Commands:
             items = list(gi.context_items)
             data = lg.objs.db().get_video(video._id)
             if data:
-                dtime = data[8]
-                ftime = data[9]
-                ltime = data[10]
-                block = data[11]
+                block = data[8]
+                dtime = data[9]
+                ftime = data[10]
+                ltime = data[11]
                 if dtime:
                     items.remove(_('Mark as watched'))
                 else:
@@ -554,17 +567,8 @@ class Commands:
         objs.channels().fetch_next()
     
     def watchlist(self,event=None):
-        f = '[Yatube] yatube.Commands.watchlist'
-        urls = lg.objs.db().watchlist()
-        if urls:
-            lg.objs.channel().reset(urls=urls)
-            lg.objs._channel.run()
-            self.load_view()
-        else:
-            # Do not warn here since this is actually a common case
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+        objs.channels().add_watchlist()
+        objs._channels.fetch()
     
     def starred(self,event=None):
         f = '[Yatube] yatube.Commands.starred'
@@ -914,9 +918,10 @@ class Commands:
     
     def blank(self,event=None):
         # 'lg.objs.channel().reset' requires non-empty values at input
+        self.reset_channel_gui()
         lg.objs.channel().values()
         lg.objs.channels().reset()
-        self.reset_channel_gui()
+        mt.objs.videos().reset()
         self._menu.clear_search(Force=True)
         self._menu.clear_url()
         self._menu.clear_filter(Force=True)
@@ -2169,9 +2174,10 @@ if __name__ == '__main__':
     lg.objs.default(product='yatube2')
     if lg.objs._default.Success:
         objs.commands().bindings()
+        gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
         objs._commands.update_widgets()
         gi.objs.progress()
-        gi.objs.menu().show()
+        gi.objs._menu.show()
         lg.objs.db().save()
         lg.objs._db.close()
         #todo: del
