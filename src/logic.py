@@ -32,6 +32,69 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class Favorites:
+    
+    def __init__(self):
+        self._token_prev = 0
+        self._token_next = 0
+    
+    def get_token(self):
+        f = '[Yatube] logic.Favorites.get_token'
+        if mt.objs.videos()._videos:
+            self._token_next = mt.objs._videos._videos[-1]._ftime
+            self._token_prev = mt.objs._videos._videos[0]._ftime
+            date_next = sh.Time (_timestamp = self._token_next
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            date_prev = sh.Time (_timestamp = self._token_prev
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            sh.log.append (f,_('DEBUG')
+                          ,_('Previous page token: %s') % str(date_prev)
+                          )
+            sh.log.append (f,_('DEBUG')
+                          ,_('Next page token: %s') % str(date_next)
+                          )
+        else:
+            sh.com.empty(f)
+            ''' This returns correct tokens for the 1st page if we are
+                out of bounds.
+            '''
+            self._token_prev = 0
+            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+    
+    def fetch(self):
+        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self.fetch_next()
+    
+    def fetch_prev(self):
+        f = '[Yatube] logic.Favorites.fetch_prev'
+        ids = objs.db().fav_prev (ftime = self._token_prev
+                                 ,limit = mt.MAX_VIDEOS
+                                 )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+    
+    def fetch_next(self):
+        f = '[Yatube] logic.Favorites.fetch_next'
+        ids = objs.db().fav_next (ftime = self._token_next
+                                 ,limit = mt.MAX_VIDEOS
+                                 )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+
+
+
 class Watchlist:
     
     def __init__(self):
@@ -565,7 +628,12 @@ class Objects:
         self._online = self._lists = self._const = self._default \
                      = self._db = self._channels = self._channel \
                      = self._extractor = self._history \
-                     = self._watchlist = None
+                     = self._watchlist = self._favorites = None
+    
+    def favorites(self):
+        if self._favorites is None:
+            self._favorites = Favorites()
+        return self._favorites
     
     def watchlist(self):
         if self._watchlist is None:

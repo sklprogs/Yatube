@@ -1,8 +1,8 @@
 
 - Search results may be randomized. If that happens, use
-  utils.Commands.change_ltime to diversify LTIME. Also try using
-  microseconds for DTIME, LTIME, FTIME when assigning values to multiple
-  selected videos.
+  utils.Commands.change_ltime (change_ftime, etc.) to diversify LTIME
+  (FTIME, etc.). Also try using microseconds for DTIME, LTIME, FTIME
+  when assigning values to multiple selected videos.
 - Make numbers fit for very long output ("All feed")
 - Delete image URL from summary
 - yatube.Commands.tooltips: Calculate 'hint_width' and max title length

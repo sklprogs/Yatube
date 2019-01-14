@@ -16,6 +16,30 @@ gettext.install('yatube','../resources/locale')
 
 
 
+class Favorites:
+    
+    def fetch(self):
+        lg.objs.favorites().fetch()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._favorites.get_token()
+        objs._commands.update_widgets()
+    
+    def fetch_prev(self):
+        f = '[Yatube] yatube.Favorites.fetch_prev'
+        lg.objs.favorites().fetch_prev()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._favorites.get_token()
+        objs._commands.update_widgets()
+    
+    def fetch_next(self):
+        f = '[Yatube] yatube.Favorites.fetch_next'
+        lg.objs.favorites().fetch_next()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._favorites.get_token()
+        objs._commands.update_widgets()
+
+
+
 class Watchlist:
     
     def fetch(self):
@@ -75,17 +99,17 @@ class Channels:
     def __init__(self):
         self._channels = []
     
+    def add_favorites(self):
+        self._channels.append(Favorites())
+    
     def add_watchlist(self):
-        watchlist = Watchlist()
-        self._channels.append(watchlist)
+        self._channels.append(Watchlist())
     
     def add_history(self):
-        history = History()
-        self._channels.append(history)
+        self._channels.append(History())
     
     def add_playlist(self,play_id):
-        playlist = Playlist(play_id)
-        self._channels.append(playlist)
+        self._channels.append(Playlist(play_id))
     
     def fetch(self):
         f = '[Yatube] yatube.Channels.fetch'
@@ -570,19 +594,9 @@ class Commands:
         objs.channels().add_watchlist()
         objs._channels.fetch()
     
-    def starred(self,event=None):
-        f = '[Yatube] yatube.Commands.starred'
-        urls = lg.objs.db().starred()
-        if urls:
-            #todo: rework
-            #lg.objs.channel().reset(urls=urls)
-            #lg.objs._channel.run()
-            self.load_view()
-        else:
-            # Do not warn here since this is actually a common case
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+    def favorites(self,event=None):
+        objs.channels().add_favorites()
+        objs._channels.fetch()
     
     def remove_from_watchlist(self,event=None):
         f = '[Yatube] yatube.Commands.remove_from_watchlist'
@@ -846,7 +860,7 @@ class Commands:
             self.show_new()
         elif choice == _('Favorites'):
             self._menu.opt_viw.set(default)
-            self.starred()
+            self.favorites()
         elif choice == _('Watchlist'):
             self._menu.opt_viw.set(default)
             self.watchlist()
@@ -1608,7 +1622,7 @@ class Commands:
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Alt-f>'
-                ,action   = self.starred
+                ,action   = self.favorites
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Shift-Delete>'
