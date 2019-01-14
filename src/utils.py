@@ -17,6 +17,33 @@ class DB:
         self._clone  = clone
         self.Success = self._clone and sh.File(file=self._path).Success
     
+    def update_ltime(self,vid,ltime):
+        f = '[Yatube] utils.DB.update_ltime'
+        if self.Success:
+            try:
+                self.dbcw.execute ('update VIDEOS set LTIME = ? \
+                                    where  ID = ?',(ltime,vid,)
+                                  )
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def fetch_ltime(self):
+        f = '[Yatube] utils.DB.fetch_ltime'
+        if self.Success:
+            try:
+                self.dbcw.execute ('select  ID,LTIME\
+                                   from     VIDEOS \
+                                   where LTIME > ?\
+                                   order by LTIME desc,PTIME desc',(0,)
+                                 )
+                return self.dbcw.fetchall()
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def fail(self,f,e):
         self.Success = False
         sh.objs.mes (f,_('WARNING')
@@ -220,6 +247,47 @@ class Commands:
         self._path  = '/home/pete/.config/yatube2/yatube.db'
         self._clone = '/tmp/yatube.db'
         
+    def change_ltime(self):
+        f = '[Yatube] utils.Commands.change_ltime'
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
+                          ).copy()
+        if Success:
+            idb = DB (path  = self._path
+                     ,clone = self._clone
+                     )
+            idb.connectw()
+            result = idb.fetch_ltime()
+            if result:
+                ids = []
+                ltm = []
+                for item in result:
+                    ids.append(item[0])
+                    ltm.append(item[1])
+                for i in range(len(ids)):
+                    ind = ltm.index(ltm[i])
+                    while i > ind:
+                        ltm[i] += 1
+                        ind = ltm.index(ltm[i])
+                '''
+                for i in range(len(ltm)):
+                    ltm[i] = sh.Time (_timestamp = ltm[i]
+                                     ,pattern    = '%y-%m-%d %H:%M:%S'
+                                     ).date()
+                for i in range(len(ids)):
+                    print('ID: %s, LTIME: %s' % (ids[i],ltm[i]))
+                '''
+                for i in range(len(ids)):
+                    if ltm[i] != result[i][1]:
+                        idb.update_ltime(ids[i],ltm[i])
+            else:
+                sh.com.empty(f)
+            idb.savew()
+            idb.closew()
+        else:
+            sh.com.cancel(f)
+    
     def repair_urls(self):
         f = '[Yatube] utils.Commands.repair_urls'
         Success = sh.File (file    = self._path
@@ -320,4 +388,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.alter()
+    commands.change_ltime()

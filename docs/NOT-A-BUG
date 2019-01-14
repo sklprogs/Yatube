@@ -1,0 +1,6 @@
+- All local lists (Watchlist, Favorites, History, etc.): since we fetch
+  MAX_VIDEOS results instead of all results, reaching the end of
+  the list, then going to the empty screen (outbounds, no more results),
+  then going back to the 1st page may result in that the last page will
+  have MAX_VIDEOS results, while the 1st page - less than MAX_VIDEOS.
+  This is a normal behavior.

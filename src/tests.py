@@ -147,15 +147,34 @@ def invalid_urls():
 if __name__ == '__main__':
     f = '[Yatube] tests.__main__'
     idb = db.DB('/home/pete/.config/yatube2/yatube.db')
-    idb.dbc.execute ('select LTIME \
+    idb.dbc.execute ('select LTIME,PTIME \
                       from   VIDEOS \
-                      where  LTIME > ?',(0,)
+                      where  LTIME > ? order by LTIME desc,PTIME desc'
+                    ,(0,)
                     )
     result = idb.dbc.fetchall()
     if result:
-        result = [item[0] for item in result]
-    print(len(result))
-    result = [sh.Time(_timestamp=item,pattern='%y-%m-%d %H:%M:%S').date() for item in result]
-    print('\n'.join(result))
+        dupl1 = []
+        dupl2 = []
+        ltimes = [item[0] for item in result]
+        ptimes = [item[1] for item in result]
+        for i in range(len(ltimes)):
+            if ltimes.count(ltimes[i]) > 1:
+                dupl1.append(ltimes[i])
+                dupl2.append(ptimes[i])
+        for i in range(len(dupl1)):
+            ltime = sh.Time (_timestamp = dupl1[i]
+                            ,pattern    = '%y-%m-%d %H:%M:%S'
+                            ).date()
+            ptime = sh.Time (_timestamp = dupl2[i]
+                            ,pattern    = '%y-%m-%d %H:%M:%S'
+                            ).date()
+            print('LTIME: %s; PTIME: %s' % (ltime,ptime))
+        dupl = []
+        for item in dupl2:
+            if dupl2.count(item) > 1:
+                if not item in dupl:
+                    dupl.append(item)
+        print('Duplicate PTIMEs:',dupl)
     idb.close()
     sg.objs.end()
