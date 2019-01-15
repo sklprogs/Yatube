@@ -15,7 +15,7 @@ API_KEY = 'AIzaSyCIM4EzNqi1in22f4Z3Ru3iYvLaY8tc3bo'
 ''' Default number of videos to be fetched: 5, max: 50.
     Default number of comments to be fetched: 20, max: 100.
 '''
-MAX_VIDEOS   = 5
+MAX_VIDEOS   = 50
 MAX_COMMENTS = 100
 
 
@@ -643,6 +643,7 @@ class Video:
         self.Saved     = None
         self._bytes    = None
         self._gui      = None
+        self._image    = None
         self._com_num  = 0
         self._dtime    = 0
         self._ftime    = 0

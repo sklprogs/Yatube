@@ -15,6 +15,45 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+class Videos:
+    ''' Currently this class comprises some controller-specific
+        functionality of 'gi.Video'.
+    '''
+    def __init__(self):
+        pass
+    
+    def bindings(self):
+        guis = [video._gui for video in mt.objs.videos()._videos \
+                if video._gui
+               ]
+        for gui in guis:
+            gui.cbox.action = objs.commands().report_selection
+            for obj in gui._objects:
+                sg.bind (obj      = obj
+                        ,bindings = '<ButtonRelease-1>'
+                        ,action   = self.toggle_cbox
+                        )
+                sg.bind (obj      = obj
+                        ,bindings = '<ButtonRelease-3>'
+                        ,action   = objs.commands().context
+                        )
+
+    def toggle_cbox(self,event=None):
+        f = '[Yatube] Videos.toggle_cbox'
+        video = mt.objs.videos().current()
+        if video._gui:
+            video._gui.cbox.toggle()
+            objs.commands().report_selection()
+        else:
+            sh.com.empty(f)
+    
+    def add(self,no=1):
+        ivideo = gi.Video (parent = gi.objs.channel().frm_emb
+                          ,no     = no
+                          )
+        return ivideo
+
+
 
 class Favorites:
     
@@ -515,6 +554,85 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def toggle_select(self,event=None):
+        guis = [video._gui for video in mt.objs.videos()._videos \
+                if video._gui
+               ]
+        if self._menu.chb_sel.get():
+            for gui in guis:
+                gui.cbox.enable()
+        else:
+            for gui in guis:
+                gui.cbox.disable()
+        self.report_selection()
+    
+    def report_selection(self,event=None):
+        selection = self.selection()
+        if selection:
+            count = len(selection)
+        else:
+            count = 0
+        self._menu.title (selected = count
+                         ,total    = len(mt.objs.videos()._videos)
+                         )
+    
+    def statistics(self,event=None):
+        mt.objs.stat().report()
+    
+    def progress(self,data):
+        ''' Depending on situation, youtube_dl may not provide some keys,
+            so be aware of KeyError.
+        '''
+        if 'total_bytes' in data:
+            total = data['total_bytes']
+        else:
+            total = 0
+        if 'downloaded_bytes' in data:
+            cur_size = data['downloaded_bytes']
+        else:
+            cur_size = 0
+        if 'eta' in data:
+            eta = data['eta']
+        else:
+            eta = 0
+        if 'speed' in data:
+            rate = data['speed']
+        else:
+            rate = 0
+        # If unknown, values may be None
+        if total is None:
+            total = 0
+        if cur_size is None:
+            cur_size = 0
+        if eta is None:
+            eta = 0
+        if rate is None:
+            rate = 0
+        total    = total    / 1000000
+        cur_size = cur_size / 1000000
+        # Prevent ZeroDivisionError
+        if total:
+            percent = round((100*cur_size)/total)
+        else:
+            percent = 0
+        gi.objs.progress()._item.widget['value'] = percent
+        rate = rate // 1000
+        # Prevent from irritating message length changes
+        rate = sh.Text(text=str(rate)).grow (max_len = 4
+                                            ,FromEnd = False
+                                            )
+        eta = sh.Text(text=str(eta)).grow (max_len = 3
+                                          ,FromEnd = False
+                                          )
+        gi.objs._progress._item.text (file     = mt.objs.videos().current()._pathsh
+                                     ,cur_size = cur_size
+                                     ,total    = total
+                                     ,rate     = rate
+                                     ,eta      = eta
+                                     )
+        # This is required to fill the progress bar on-the-fly
+        sg.objs.root().widget.update_idletasks()
+    
     def history(self,event=None):
         objs.channels().add_history()
         objs._channels.fetch()
@@ -548,7 +666,7 @@ class Commands:
                     items.remove(_('Unblock'))
             else:
                 sh.com.empty(f)
-            objs.video().logic.path()
+            lg.objs.video().path()
             if video._path:
                 if os.path.exists(video._path):
                     items.remove(_('Download'))
@@ -641,7 +759,7 @@ class Commands:
         gui = mt.objs.videos().current()._gui
         if gui:
             gui.cbox.disable()
-            gi.report_selection()
+            self.report_selection()
         else:
             sh.com.empty(f)
     
@@ -1045,8 +1163,8 @@ class Commands:
                 videos on the channel and pressed 'Shift-Del'.
             '''
             mt.objs._videos.current()._gui.cbox.disable()
-            gi.report_selection()
-        return objs.video().logic.delete()
+            self.report_selection()
+        return lg.objs.video().delete()
     
     def reset_channels(self,event=None):
         default_channels = [_('Channels')]
@@ -1062,7 +1180,7 @@ class Commands:
     
     def open_video_url(self,event=None):
         f = '[Yatube] yatube.Commands.open_video_url'
-        url = objs.video().logic.url()
+        url = lg.objs.video().url()
         if url:
             lg.objs.online()._url = url
             lg.objs._online.browse()
@@ -1071,7 +1189,7 @@ class Commands:
                    
     def copy_video_url(self,event=None):
         f = '[Yatube] yatube.Commands.copy_video_url'
-        url = objs.video().logic.url()
+        url = lg.objs.video().url()
         if url:
             sg.Clipboard().copy(text=url)
         else:
@@ -1158,7 +1276,7 @@ class Commands:
     
     def open_channel_url(self,event=None):
         f = '[Yatube] yatube.Commands.open_channel_url'
-        url = objs.video().logic.channel_url()
+        url = lg.objs.video().channel_url()
         if url:
             lg.objs.online()._url = url
             lg.objs._online.browse()
@@ -1167,7 +1285,7 @@ class Commands:
 
     def copy_channel_url(self,event=None):
         f = '[Yatube] yatube.Commands.copy_channel_url'
-        url = objs.video().logic.channel_url()
+        url = lg.objs.video().channel_url()
         if url:
             sg.Clipboard().copy(url)
         else:
@@ -1186,7 +1304,7 @@ class Commands:
     
     def stream_video(self,event=None):
         f = '[Yatube] yatube.Commands.stream_video'
-        url = objs.video().logic.stream()
+        url = lg.objs.video().stream()
         if url:
             ''' Consider using newer python/OS builds if you have
                 SSL/TLS problems here.
@@ -1352,7 +1470,7 @@ class Commands:
         if mt.objs.videos().current()._id:
             #self.save_extra()
             gi.objs.summary().reset()
-            gi.objs._summary.insert(objs.video().logic.summary())
+            gi.objs._summary.insert(lg.objs.video().summary())
             gi.objs._summary.show()
         else:
             sh.com.empty(f)
@@ -1360,7 +1478,7 @@ class Commands:
     def _context(self,choice,event=None):
         f = '[Yatube] yatube.Commands._context'
         if choice:
-            url = objs.video().logic.url()
+            url = lg.objs.video().url()
             if choice == _('Show the full summary'):
                 self.summary()
             elif choice == _('Download'):
@@ -1488,12 +1606,12 @@ class Commands:
                 if self._menu.opt_url.choice == _('Extract links'):
                     self.get_links(url=result)
                 else:
-                    video = Video()
+                    video = mt.Video()
                     video._id = lg.URL(result).video_id()
                     mt.objs.videos().add(video)
                     mt.objs._videos.i = len(mt.objs._videos._videos) - 1
-                    objs.video().get()
-                    if objs._video.logic.Success:
+                    lg.objs.video().get()
+                    if lg.objs._video.Success:
                         if self._menu.opt_url.choice == _('Show summary'):
                             self.summary()
                         elif self._menu.opt_url.choice == _('Download'):
@@ -1585,6 +1703,10 @@ class Commands:
     def bindings(self):
         # Menu: main window
         sg.bind (obj      = self._menu.parent
+                ,bindings = '<F1>'
+                ,action   = self.statistics
+                )
+        sg.bind (obj      = self._menu.parent
                 ,bindings = '<Alt-Left>'
                 ,action   = self.prev_page
                 )
@@ -1651,6 +1773,7 @@ class Commands:
         self._menu.btn_prv.action = self.prev_url
         self._menu.btn_stm.action = self.stream
         self._menu.btn_ytb.action = self.search_youtube
+        self._menu.chb_sel.action = self.toggle_select
         # Menu: labels
         sg.bind (obj      = self._menu.ent_flt
                 ,bindings = ['<Return>','<KP_Enter>']
@@ -1713,7 +1836,7 @@ class Commands:
                 cond = not video._dtime and not video.Block
                 if cond:
                     gui.cbox.enable()
-        gi.report_selection()
+        self.report_selection()
         
     def _play_slow(self,app='/usr/bin/mpv'):
         if 'mpv' in app:
@@ -1726,13 +1849,13 @@ class Commands:
                           ]
         else:
             custom_args = []
-        sh.Launch (target = objs.video().logic._path
+        sh.Launch (target = lg.objs.video().path()
                   ).app (custom_app  = app
                         ,custom_args = custom_args
                         )
                         
     def _play_default(self):
-        sh.Launch(target=objs.video().logic._path).default()
+        sh.Launch(target=lg.objs.video().path()).default()
 
     def play_video(self,event=None):
         f = '[Yatube] yatube.Commands.play_video'
@@ -1782,7 +1905,7 @@ class Commands:
         if video._gui:
             video._gui.cbox.disable()
             video._gui.gray_out()
-            gi.report_selection()
+            self.report_selection()
     
     def download_video(self,event=None):
         f = '[Yatube] yatube.Commands.download_video'
@@ -1790,8 +1913,8 @@ class Commands:
             ('mt.Video._gui' must be set to 'None'), so we do not force
             'mt.Video._gui' check here.
         '''
-        if objs.video().logic.path():
-            if os.path.exists(objs._video.logic._path):
+        if lg.objs.video().path():
+            if os.path.exists(mt.objs.videos().current()._path):
                 ''' Lift videos up in history (update DTIME field)
                     even if they were already downloaded. However,
                     do not put this in the end because we do not
@@ -1811,7 +1934,7 @@ class Commands:
                     sg.Geometry(parent=gi.objs._progress.obj).activate()
                     gi.objs._progress.obj.center()
                     self.FirstVideo = False
-                if objs._video.logic.download():
+                if lg.objs._video.download(self.progress):
                     self.mark_downloaded()
         else:
             sh.com.empty(f)
@@ -1861,19 +1984,9 @@ class Commands:
         for gui in guis:
             gui.frame.widget.destroy()
         self._menu.title()
-        self.save_url()
+        #todo: rework
+        #self.save_url()
     
-    def bind_context(self,event=None):
-        guis = [video._gui for video in mt.objs.videos()._videos \
-                if video._gui
-               ]
-        for gui in guis:
-            for obj in gui._objects:
-                sg.bind (obj      = obj
-                        ,bindings = '<ButtonRelease-3>'
-                        ,action   = self.context
-                        )
-        
     def fill_default(self):
         f = '[Yatube] yatube.Commands.fill_default'
         # Operation takes ~0,56s but there seems nothing to speed up
@@ -1883,7 +1996,7 @@ class Commands:
         if mt.objs.videos()._videos:
             for i in range(len(mt.objs._videos._videos)):
                 mt.objs._videos.i = i
-                mt.objs._videos._videos[i]._gui = gi.objs._channel.add(no=i+1)
+                mt.objs._videos._videos[i]._gui = objs.videos().add(no=i+1)
         else:
             sh.com.empty(f)
         #timer.end()
@@ -1918,10 +2031,7 @@ class Commands:
         if unknown:
             for i in range(len(unknown)):
                 mt.objs._videos.i = unknown[i]
-                objs.video().logic.assign_online()
-                objs._video.logic.image()
-                objs._video.image()
-                objs._video.logic.dump()
+                lg.objs.video().get()
                 self.update_video(i=unknown[i])
             lg.objs.db().save()
         else:
@@ -1938,25 +2048,25 @@ class Commands:
         or author in lg.objs._lists._block_auth \
         or lg.objs._lists.match_blocked_word(title+video._title):
             author = title = _('BLOCKED')
-            objs.video()._image = None
+            video._image = None
             video.Block  = True
         return(author,title)
     
     def update_video(self,i):
         f = '[Yatube] yatube.Commands.update_video'
-        gui = mt.objs.videos().current()._gui
-        if gui:
-            date = sh.Time (_timestamp = mt.objs.videos().current()._ptime
+        video = mt.objs.videos().current()
+        if video._gui:
+            date = sh.Time (_timestamp = video._ptime
                            ,pattern    ='%Y-%m-%d %H:%M'
                            ).date()
             author, title = self.set_block()
-            gui.reset (author = author
-                      ,title  = title
-                      ,date   = date
-                      ,image  = objs.video()._image
-                      )
-            if mt.objs._videos.current()._dtime:
-                gui.gray_out()
+            video._gui.reset (author = author
+                             ,title  = title
+                             ,date   = date
+                             ,image  = video._image
+                             )
+            if video._dtime:
+                video._gui.gray_out()
                 self.video_date_filter()
             else:
                 sh.com.empty(f)
@@ -1980,9 +2090,8 @@ class Commands:
                     mt.objs._videos.i = i
                     if result[i]:
                         mt.objs._videos.current().Saved = result[i]
-                        objs.video().logic.assign_offline(result[i])
-                        #todo: elaborate 'Video.model.get' and delete this
-                        objs._video.image()
+                        lg.objs.video().assign_offline(result[i])
+                        lg.objs._video.load_image()
                         self.update_video(i)
             else:
                 sh.com.empty(f)
@@ -2012,7 +2121,7 @@ class Commands:
         if Unknown:
             self.fill_unknown()
         # Using the canvas is fast, no need to time this
-        self.bind_context()
+        objs.videos().bindings()
         self.dimensions()
         gi.objs._channel.canvas.move_top()
         gi.objs._channel.canvas.widget.xview_moveto(0)
@@ -2093,62 +2202,10 @@ class Commands:
 
 
 
-class Video:
-    
-    def __init__(self):
-        self.logic  = lg.Video(callback=self.progress)
-        self._image = None
-        
-    def progress (self,total=0,cur_size=0
-                 ,ratio=0,rate=0,eta=0
-                 ):
-        total    = total    / 1000000
-        cur_size = cur_size / 1000000
-        
-        percent = round((100*cur_size)/total)
-        gi.objs.progress()._item.widget['value'] = percent
-        
-        total    = int(total)
-        cur_size = int(cur_size)
-        rate     = str(int(rate))
-        eta      = str(int(eta))
-        
-        # Prevent from irritating message length changes
-        rate = sh.Text(text=rate).grow (max_len = 4
-                                       ,FromEnd = False
-                                       )
-        eta = sh.Text(text=eta).grow (max_len = 3
-                                     ,FromEnd = False
-                                     )
-        gi.objs._progress._item.text (file     = self.logic._pathsh
-                                     ,cur_size = cur_size
-                                     ,total    = total
-                                     ,rate     = rate
-                                     ,eta      = eta
-                                     )
-        # This is required to fill the progress bar on-the-fly
-        sg.objs.root().widget.update_idletasks()
-    
-    def image(self):
-        f = '[Yatube] yatube.Video.image'
-        if mt.objs.videos().current()._bytes:
-            img = sg.Image()
-            img._bytes = mt.objs._videos.current()._bytes
-            img.loader()
-            self._image = img.image()
-        else:
-            sh.com.empty(f)
-    
-    def get(self):
-        self.logic.get()
-        self.image()
-
-
-
 class Objects:
     
     def __init__(self):
-        self._comments = self._video = self._add_id = self._commands \
+        self._comments = self._videos = self._add_id = self._commands \
                        = self._channels = None
     
     def channels(self):
@@ -2166,10 +2223,10 @@ class Objects:
             self._add_id = AddId()
         return self._add_id
     
-    def video(self):
-        if self._video is None:
-            self._video = Video()
-        return self._video
+    def videos(self):
+        if self._videos is None:
+            self._videos = Videos()
+        return self._videos
     
     def comments(self):
         if self._comments is None:
@@ -2194,8 +2251,6 @@ if __name__ == '__main__':
         gi.objs._menu.show()
         lg.objs.db().save()
         lg.objs._db.close()
-        #todo: del
-        mt.objs.stat().report()
     else:
         sh.objs.mes (f,_('WARNING')
                     ,_('Unable to continue due to an invalid configuration.')

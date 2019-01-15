@@ -469,7 +469,6 @@ class Menu:
         self.chb_sel = sg.CheckBox (parent = self.frame3
                                    ,Active = False
                                    ,side   = 'left'
-                                   ,action = toggle_select
                                    )
         self.btn_stm = sg.Button (parent = self.frame3
                                  ,text   = _('Stream')
@@ -639,11 +638,12 @@ class Video:
                                        ]
 
     def values(self):
-        self._widgets  = []
-        self._author   = _('Author')
-        self._title    = _('Title')
-        self._date     = _('Date')
-        self._image    = objs.def_image()
+        self._objects = []
+        self._widgets = []
+        self._author  = _('Author')
+        self._title   = _('Title')
+        self._date    = _('Date')
+        self._image   = objs.def_image()
     
     def frames(self):
         self.frame  = sg.Frame (parent = self.parent)
@@ -732,34 +732,21 @@ class Video:
         self.cbox = sg.CheckBox (parent = self.frame1
                                 ,Active = False
                                 ,side   = 'left'
-                                ,action = report_selection
                                 )
-                                
+
     def gui(self):
         self.frames()
         self.checkboxes()
         self.labels()
         self.objects()
-        self.bindings()
-        
-    def toggle_cbox(self,event=None):
-        self.cbox.toggle()
-        report_selection()
-    
-    def bindings(self):
-        for obj in self._objects:
-            sg.bind (obj      = obj
-                    ,bindings = '<ButtonRelease-1>'
-                    ,action   = self.toggle_cbox
-                    )
         
     def reset (self,author,title,date
               ,image=None,no=0
               ):
-        self._author   = author
-        self._title    = title
-        self._date     = date
-        self._image    = image
+        self._author = author
+        self._title  = title
+        self._date   = date
+        self._image  = image
         ''' 'no' normally remains unmodified, so we check the input
             so we don't have to set 'no' again and again each time
             'self.reset' is called.
@@ -838,15 +825,14 @@ class Channel:
                 )
         
     def values(self):
-        self._no     = 0
         ''' These values set the width and height of the frame that 
             contains videos and therefore the scrolling region.
             The default Youtube video picture has the dimensions of
             196x110, therefore, the channel frame embedding 10 videos
             will have the height of at least 1100.
         '''
-        self._max_x = 1024
-        self._max_y = 1120
+        self._max_x   = 1024
+        self._max_y   = 1120
         
     def frames(self):
         self.frame   = sg.Frame (parent = self.parent)
@@ -896,12 +882,6 @@ class Channel:
         self.canvas.region (x = self._max_x
                            ,y = self._max_y
                            )
-        
-    def add(self,no=1):
-        self._no = no
-        return Video (parent = self.frm_emb
-                     ,no     = self._no
-                     )
         
     def mouse_wheel(self,event=None):
         ''' #todo: fix: too small delta in Windows
@@ -1017,26 +997,6 @@ class Objects:
         return self._menu
 
 
-
-def report_selection(event=None):
-    count = 0
-    for video_gui in objs.channel()._videos:
-        if video_gui.cbox.get():
-            count += 1
-    objs.menu().title (selected = count
-                      ,total    = len(objs._channel._videos)
-                      )
-                      
-def toggle_select(event=None):
-    if objs.menu().chb_sel.get():
-        for video in objs.channel()._videos:
-            video.cbox.enable()
-    else:
-        for video in objs.channel()._videos:
-            video.cbox.disable()
-    report_selection()
-
-
 objs = Objects()
 
 
@@ -1066,6 +1026,7 @@ if __name__ == '__main__':
     sg.Geometry(parent=objs.parent()).set('1024x600')
     objs.channel(parent=objs.menu().framev)
     for i in range(max_videos):
+        #todo: rework
         objs._channel.add(no=i+1)
         video_gui = objs._channel._videos[-1]
         video_gui.reset (author = 'Author (%d)' % (i + 1)

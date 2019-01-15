@@ -4,6 +4,7 @@
 import re
 import os
 import io
+import youtube_dl
 import shared    as sh
 import sharedGUI as sg
 import db
@@ -628,7 +629,13 @@ class Objects:
         self._online = self._lists = self._const = self._default \
                      = self._db = self._channels = self._channel \
                      = self._extractor = self._history \
-                     = self._watchlist = self._favorites = None
+                     = self._watchlist = self._favorites = self._video \
+                     = None
+    
+    def video(self):
+        if self._video is None:
+            self._video = Video()
+        return self._video
     
     def favorites(self):
         if self._favorites is None:
@@ -700,10 +707,9 @@ class Objects:
 
 class Video:
     
-    def __init__(self,callback=None):
+    def __init__(self):
         self.values()
         self.check()
-        self._callback = callback
     
     def channel_url(self):
         f = '[Yatube] logic.Video.channel_url'
@@ -831,6 +837,27 @@ class Video:
         else:
             sh.com.cancel(f)
     
+    def load_image(self):
+        ''' We need this code as a separate function since we should be
+            able to assign offline data, and 'self.image' is run only
+            for online data. Indeed, this function uses 'sharedGUI', but
+            it seems easier and more appropriate to use this code in
+            the logic, not in the controller. After all, these are
+            GUI data that are still data.
+        '''
+        f = '[Yatube] logic.Video.load_image'
+        if self.Success:
+            video = mt.objs.videos().current()
+            if video._bytes:
+                img = sg.Image()
+                img._bytes = video._bytes
+                img.loader()
+                video._image = img.image()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def image(self):
         f = '[Yatube] logic.Video.image'
         if self.Success:
@@ -841,6 +868,7 @@ class Video:
                            ).run()
             if image:
                 video._bytes = image
+                self.load_image()
             else:
                 sh.com.empty(f)
         else:
@@ -952,7 +980,7 @@ class Video:
         else:
             sh.com.cancel(f)
     
-    def download(self):
+    def download(self,callback=None):
         f = '[Yatube] logic.Video.download'
         self.make_dir()
         if self.Success:
@@ -962,15 +990,24 @@ class Video:
                               ,_('Download "%s"') % video._path
                               )
                 #todo: select format & quality
+                options = {'outtmpl'           :video._path
+                          ,'format'            :'mp4'
+                          ,'ignoreerrors'      :True
+                          ,'nooverwrites'      :True
+                          ,'noplaylist'        :True
+                          ,'nocheckcertificate':True
+                          ,'socket_timeout'    :7
+                          ,'progress_hooks'    :[callback]
+                          }
                 try:
-                    #todo: implement
-                    pass
+                    with youtube_dl.YoutubeDL(options) as ydl:
+                        ydl.download([video._id])
                     # Tell other functions the operation was a success
                     return True
                 except Exception as e:
                     sh.objs.mes (f,_('WARNING')
-                                ,_('Failed to download "%s"!\n\nDetails: %s') \
-                                % (video._path,str(e))
+                                ,_('Third-party module has failed!\n\nDetails: %s')\
+                                % str(e)
                                 )
             else:
                 sh.com.empty(f)
