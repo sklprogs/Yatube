@@ -15,6 +15,39 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+class Search:
+    
+    def __init__(self,query=''):
+        self.values()
+        if query:
+            self.reset(query)
+    
+    def values(self):
+        self._query = ''
+    
+    def fetch(self):
+        mt.objs.search().run()
+        objs._commands.channel_gui()
+        objs._commands.update_widgets()
+    
+    def fetch_prev(self):
+        mt.objs.search().fetch_prev()
+        mt.objs._search.videos()
+        objs._commands.channel_gui()
+        objs._commands.update_widgets()
+    
+    def fetch_next(self):
+        mt.objs.search().fetch_next()
+        mt.objs._search.videos()
+        objs._commands.channel_gui()
+        objs._commands.update_widgets()
+    
+    def reset(self,query):
+        self._query = query
+        mt.objs.search().reset(self._query)
+
+
+
 class Videos:
     ''' Currently this class comprises some controller-specific
         functionality of 'gi.Video'.
@@ -128,6 +161,9 @@ class Channels:
     
     def __init__(self):
         self._channels = []
+    
+    def add_search(self,query):
+        self._channels.append(Search(query))
     
     def add_favorites(self):
         self._channels.append(Favorites())
@@ -1666,14 +1702,10 @@ class Commands:
         
     def search_youtube(self,event=None):
         f = '[Yatube] yatube.Commands.search_youtube'
-        result = self._menu.ent_src.get()
-        if result and result != _('Search Youtube'):
-            root_url = 'https://www.youtube.com/results?search_query=%s'
-            result = sh.Online (base_str   = root_url
-                               ,search_str = result
-                               ,MTSpecific = False
-                               ).url()
-            self.get_links(url=result)
+        query = self._menu.ent_src.get()
+        if query and query != _('Search Youtube'):
+            objs.channels().add_search(query)
+            objs._channels.fetch()
         else:
             sh.com.empty(f)
                           
@@ -2089,6 +2121,7 @@ class Commands:
                     if result[i]:
                         mt.objs._videos.current().Saved = result[i]
                         lg.objs.video().assign_offline(result[i])
+                        lg.objs._video.unsupported()
                         lg.objs._video.load_image()
                         self.update_video(i)
             else:

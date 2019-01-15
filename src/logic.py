@@ -234,7 +234,6 @@ class Channel:
         if self.Success:
             mt.objs.playlist().reset(self._play_id)
             mt.objs._playlist.run()
-            mt.objs.videos().run()
             for video in mt.objs._videos._videos:
                 self._ids.append(video._id)
         else:
@@ -711,6 +710,12 @@ class Video:
         self.values()
         self.check()
     
+    def unsupported(self):
+        video         = mt.objs.videos().current()
+        video._author = sh.Text(video._author).delete_unsupported()
+        video._title  = sh.Text(video._title).delete_unsupported()
+        video._desc   = sh.Text(video._desc).delete_unsupported()
+    
     def channel_url(self):
         f = '[Yatube] logic.Video.channel_url'
         video = mt.objs.videos().current()
@@ -879,14 +884,23 @@ class Video:
         if self.Success:
             video = mt.objs.videos().current()
             video.Saved = objs.db().get_video(video._id)
+            ''' We use 'self.unsupported' for both online and offline
+                value assigning. Do not put it in the end - we want
+                DB to be clean of unsupported symbols, because we may
+                want to use separate methods instead of the whole
+                'self.get' (for example, see
+                'yatube.Commands.fill_known').
+            '''
             if video.Saved:
                 self.assign_offline(video.Saved)
+                self.unsupported()
             else:
                 sh.log.append (f,_('INFO')
                               ,_('Get new video info: %s') \
                               % str(video._id)
                               )
                 self.assign_online()
+                self.unsupported()
                 self.image()
                 self.dump()
         else:

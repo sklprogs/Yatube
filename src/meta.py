@@ -660,9 +660,6 @@ class Videos:
                         )
             return Video()
     
-    def run(self):
-        self.unsupported()
-    
     def add(self,video):
         f = '[Yatube] meta.Videos.video'
         if video:
@@ -676,12 +673,6 @@ class Videos:
     def values(self):
         self._videos = []
         self.i = 0
-
-    def unsupported(self):
-        for video in self._videos:
-            video._author = sh.Text(video._author).delete_unsupported()
-            video._title  = sh.Text(video._title).delete_unsupported()
-            video._desc   = sh.Text(video._desc).delete_unsupported()
     
     # Orphan, debug
     def summary(self):
