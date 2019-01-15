@@ -17,7 +17,7 @@ class DB:
         self._path   = path
         self.connect()
         self.create_videos()
-        
+    
     def feed_next(self,ptime=0,limit=50):
         f = '[Yatube] db.DB.feed_next'
         if self.Success:
@@ -272,24 +272,6 @@ class DB:
                 result = self.dbc.fetchall()
                 if result:
                     return [item[0] for item in result]
-            except Exception as e:
-                self.fail(f,e)
-        else:
-            sh.com.cancel(f)
-    
-    def new_videos(self,timestamp,authors):
-        f = '[Yatube] db.DB.new_videos'
-        if self.Success:
-            try:
-                query = 'select   ID from VIDEOS \
-                         where    AUTHOR in (%s) and PTIME >= %f\
-                         order by AUTHOR,PTIME' \
-                        % (','.join('?'*len(authors)),timestamp)
-                self.dbc.execute(query,authors)
-                result = self.dbc.fetchall()
-                if result:
-                    #todo: should we return a list or a tuple?
-                    return [row[0] for row in result]
             except Exception as e:
                 self.fail(f,e)
         else:

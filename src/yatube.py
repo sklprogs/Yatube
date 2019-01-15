@@ -1048,7 +1048,9 @@ class Commands:
         default = _('Edit')
         choice  = self._menu.opt_edt.choice
         if choice == default:
-            pass
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
         elif choice == _('Subscriptions'):
             self._menu.opt_edt.set(default)
             self.manage_sub()
@@ -2149,27 +2151,8 @@ class Commands:
         self.update_widgets()
     
     def manage_sub(self):
-        words = sh.Words(text=lg.objs.lists()._subsc)
-        gi.objs.subscribe().reset(words=words)
-        gi.objs._subscribe.insert(text=lg.objs._lists._subsc)
-        gi.objs._subscribe.show()
-        text = gi.objs._subscribe.get()
-        if text:
-            text = text.splitlines()
-            text = sorted (text
-                          ,key = lambda x:x[0].lower()
-                          )
-            text = '\n'.join(text)
-            sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                             ,Rewrite = True
-                             ).write(text=text)
-        else:
-            # 'WriteTextFile' cannot write an empty text
-            text = '# ' + _('Put here authors to subscribe to')
-            sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                             ,Rewrite = True
-                             ).write(text=text)
-        lg.objs.lists().reset()
+        objs.add_id().reset()
+        objs._add_id.show()
         self.reset_channels()
                              
     def manage_blocked_authors(self,event=None):
