@@ -30,10 +30,10 @@ class PlayId:
         f = '[Yatube] meta.PlayId.by_user'
         if self.Success:
             try:
-                resp = objs.service().channels().list (forUsername = self._id
-                                                      ,part        = 'contentDetails'
-                                                      ,maxResults  = 1
-                                                      ).execute()
+                resp = com.service().channels().list (forUsername = self._id
+                                                     ,part        = 'contentDetails'
+                                                     ,maxResults  = 1
+                                                     ).execute()
             except Exception as e:
                 sh.objs.mes (f,_('WARNING')
                             ,_('Third-party module has failed!\n\nDetails: %s')\
@@ -61,10 +61,10 @@ class PlayId:
         f = '[Yatube] meta.PlayId.by_channel_id'
         if self.Success:
             try:
-                resp = objs.service().channels().list (id         = self._id
-                                                      ,part       = 'contentDetails'
-                                                      ,maxResults = 1
-                                                      ).execute()
+                resp = com.service().channels().list (id         = self._id
+                                                     ,part       = 'contentDetails'
+                                                     ,maxResults = 1
+                                                     ).execute()
             except Exception as e:
                 sh.objs.mes (f,_('WARNING')
                             ,_('Third-party module has failed!\n\nDetails: %s')\
@@ -116,25 +116,6 @@ class MemoryCache:
 
     def set(self, url, content):
         MemoryCache._CACHE[url] = content
-
-
-
-class Service:
-    
-    def __init__(self):
-        self._service = self.service()
-    
-    def service(self):
-        try:
-            return build ('youtube','v3'
-                         ,developerKey = API_KEY
-                         ,cache        = MemoryCache()
-                         )
-        except Exception as e:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('Third-party module has failed!\n\nDetails: %s')\
-                        % str(e)
-                        )
 
 
 
@@ -203,21 +184,9 @@ class Comments:
         
     def reset(self):
         self.values()
-        self.check()
-    
-    def check(self):
-        f = '[Yatube] meta.Comments.check'
-        if objs.service() and objs.videos().current():
-            if hasattr(objs._videos.current(),'_id'):
-                return True
-            else:
-                self.Success = False
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
-        else:
-            self.Success = False
-            sh.com.empty(f)
+        ''' We do not perform checks here since 'Videos.current'
+            will create empty fields if they are missing.
+        '''
     
     def fetch_next(self):
         f = '[Yatube] meta.Comments.fetch_next'
@@ -259,7 +228,7 @@ class Comments:
         f = '[Yatube] meta.Comments.fetch'
         if self.Success:
             try:
-                self._resp = objs.service().commentThreads().list(
+                self._resp = com.service().commentThreads().list(
                                          part       = 'snippet,replies'
                                         ,maxResults = MAX_COMMENTS
                                         ,videoId    = objs.videos().current()._id
@@ -302,7 +271,9 @@ class VideoInfo:
     
     def __init__(self):
         self.Success = True
-        self.check()
+        ''' We do not perform checks here since 'Videos.current'
+            will create empty fields if they are missing.
+        '''
     
     def extra(self):
         f = '[Yatube] meta.VideoInfo.extra'
@@ -320,9 +291,9 @@ class VideoInfo:
                         processingDetails parts are only available
                         to the video's owner.
                     '''
-                    resp = objs.service().videos().list (id   = video._id
-                                                        ,part = 'id,contentDetails,statistics'
-                                                        ).execute()
+                    resp = com.service().videos().list (id   = video._id
+                                                       ,part = 'id,contentDetails,statistics'
+                                                       ).execute()
                 except Exception as e:
                     sh.objs.mes (f,_('WARNING')
                                 ,_('Third-party module has failed!\n\nDetails: %s')\
@@ -367,20 +338,6 @@ class VideoInfo:
                     sh.com.empty(f)
         else:
             sh.com.cancel(f)
-    
-    def check(self):
-        f = '[Yatube] meta.VideoInfo.check'
-        if objs.service() and objs.videos().current():
-            if hasattr(objs._videos.current(),'_id'):
-                return True
-            else:
-                self.Success = False
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
-        else:
-            self.Success = False
-            sh.com.empty(f)
 
 
 
@@ -400,14 +357,19 @@ class Stat:
     def add_quota(self,number):
         self._quota += number
     
-    def report(self):
+    def report(self,Silent=False):
         f = '[Yatube] meta.Stat.report'
         message = _('Uptime:') + ' ' + sh.com.human_time(self.uptime())\
                                + '\n'
         message += _('Used quota:') + ' %d' % self._quota
-        sh.objs.mes (f,_('INFO')
-                    ,message
-                    )
+        if Silent:
+            sh.log.append (f,_('INFO')
+                          ,message
+                          )
+        else:
+            sh.objs.mes (f,_('INFO')
+                        ,message
+                        )
 
 
 
@@ -448,7 +410,7 @@ class Playlist:
     
     def check(self):
         f = '[Yatube] meta.Playlist.check'
-        if objs.service() and self._play_id:
+        if self._play_id:
             if self._play_id.startswith('UU') \
             and len(self._play_id) == 24:
                 return True
@@ -479,11 +441,11 @@ class Playlist:
         f = '[Yatube] meta.Playlist.fetch'
         if self.Success:
             try:
-                self._resp = objs.service().playlistItems().list (playlistId = self._play_id
-                                                                 ,part       = 'id,snippet'
-                                                                 ,maxResults = MAX_VIDEOS
-                                                                 ,pageToken  = token
-                                                                 ).execute()
+                self._resp = com.service().playlistItems().list (playlistId = self._play_id
+                                                                ,part       = 'id,snippet'
+                                                                ,maxResults = MAX_VIDEOS
+                                                                ,pageToken  = token
+                                                                ).execute()
             except Exception as e:
                 sh.objs.mes (f,_('WARNING')
                             ,_('Third-party module has failed!\n\nDetails: %s')\
@@ -537,7 +499,7 @@ class Search:
             self.reset(query)
     
     def check(self):
-        if objs.service() and self._query:
+        if self._query:
             return True
         else:
             self.Success = False
@@ -547,12 +509,12 @@ class Search:
         f = '[Yatube] meta.Search.fetch'
         if self.Success:
             try:
-                self._resp = objs.service().search().list (q          = self._query
-                                                          ,part       = 'id,snippet'
-                                                          ,maxResults = MAX_VIDEOS
-                                                          ,safeSearch = 'none'
-                                                          ,pageToken  = token
-                                                          ).execute()
+                self._resp = com.service().search().list (q          = self._query
+                                                         ,part       = 'id,snippet'
+                                                         ,maxResults = MAX_VIDEOS
+                                                         ,safeSearch = 'none'
+                                                         ,pageToken  = token
+                                                         ).execute()
             except Exception as e:
                 sh.objs.mes (f,_('WARNING')
                             ,_('Third-party module has failed!\n\nDetails: %s')\
@@ -766,8 +728,7 @@ class Objects:
     
     def __init__(self):
         self._playlist = self._videos = self._search = self._stat \
-                       = self._service = self._comments = self._playid \
-                       = None
+                       = self._comments = self._playid = None
     
     def playid(self):
         if self._playid is None:
@@ -778,11 +739,6 @@ class Objects:
         if self._comments is None:
             self._comments = Comments()
         return self._comments
-    
-    def service(self):
-        if self._service is None:
-            self._service = Service()._service
-        return self._service
     
     def playlist(self):
         if self._playlist is None:
@@ -805,7 +761,28 @@ class Objects:
         return self._videos
 
 
+
+class Commands:
+    
+    def service(self):
+        f = '[Yatube] meta.Commands.service'
+        ''' Since this call quickly expires, we should rerun each time
+            we use it.
+        '''
+        try:
+            return build ('youtube','v3'
+                         ,developerKey = API_KEY
+                         ,cache        = MemoryCache()
+                         )
+        except Exception as e:
+            sh.objs.mes (f,_('WARNING')
+                        ,_('Third-party module has failed!\n\nDetails: %s')\
+                        % str(e)
+                        )
+
+
 objs = Objects()
+com  = Commands()
 
 
 if __name__ == '__main__':

@@ -576,8 +576,8 @@ class Commands:
                          ,total    = len(mt.objs.videos()._videos)
                          )
     
-    def statistics(self,event=None):
-        mt.objs.stat().report()
+    def statistics(self,event=None,Silent=False):
+        mt.objs.stat().report(Silent=Silent)
     
     def progress(self,data):
         ''' Depending on situation, youtube_dl may not provide some keys,
@@ -2068,8 +2068,6 @@ class Commands:
             if video._dtime:
                 video._gui.gray_out()
                 self.video_date_filter()
-            else:
-                sh.com.empty(f)
         else:
             sh.com.empty(f)
     
@@ -2255,4 +2253,8 @@ if __name__ == '__main__':
         sh.objs.mes (f,_('WARNING')
                     ,_('Unable to continue due to an invalid configuration.')
                     )
+    objs.commands().statistics(Silent=True)
+    sh.log.append (f,_('DEBUG')
+                  ,_('Goodbye!')
+                  )
     sg.objs.end()
