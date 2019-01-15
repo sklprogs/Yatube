@@ -15,6 +15,39 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+class Trending:
+    
+    def __init__(self,country=''):
+        self.values()
+        if country:
+            self.reset(country)
+    
+    def values(self):
+        self._country = ''
+    
+    def fetch(self):
+        mt.objs.trending().run()
+        objs._commands.channel_gui()
+        objs._commands.update_widgets()
+    
+    def fetch_prev(self):
+        mt.objs.trending().fetch_prev()
+        mt.objs._trending.videos()
+        objs._commands.channel_gui()
+        objs._commands.update_widgets()
+    
+    def fetch_next(self):
+        mt.objs.trending().fetch_next()
+        mt.objs._trending.videos()
+        objs._commands.channel_gui()
+        objs._commands.update_widgets()
+    
+    def reset(self,country):
+        self._country = country
+        mt.objs.trending().reset(self._country)
+
+
+
 class Feed:
     
     def fetch(self):
@@ -185,6 +218,9 @@ class Channels:
     
     def __init__(self):
         self._channels = []
+    
+    def add_trending(self,abbr):
+        self._channels.append(Trending(abbr))
     
     def add_feed(self):
         self._channels.append(Feed())
@@ -1668,25 +1704,6 @@ class Commands:
             sh.log.append (f,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-    
-    def set_trending(self,event=None):
-        f = '[Yatube] yatube.Commands.set_trending'
-        sh.log.append (f,_('INFO')
-                      ,_('Switch to channel "%s"') \
-                      % str(self._menu.opt_trd.choice)
-                      )
-        if self._menu.opt_trd.choice in lg.objs.const()._countries:
-            country = lg.objs._const._countries[self._menu.opt_trd.choice]
-        else:
-            country = 'RU'
-        url = 'https://www.youtube.com/feed/trending?gl=%s' % country
-        sh.log.append (f,_('DEBUG')
-                      ,country
-                      )
-        sh.log.append (f,_('DEBUG')
-                      ,url
-                      )
-        self.update_trending(url=url)
         
     def search_youtube(self,event=None):
         f = '[Yatube] yatube.Commands.search_youtube'
@@ -1988,14 +2005,31 @@ class Commands:
             objs._channels.fetch()
         self.feed()
         
-    def update_trending(self,event=None,url=None):
-        if not url:
-            url = 'https://www.youtube.com/feed/trending?gl=RU'
-            # This is needed if we use hotkeys (update an old value)
-            self._menu.opt_trd.set(_('Trending'))
-        lg.objs.channel().reset(url=url)
-        lg.objs._channel.run()
-        self.load_view()
+    def update_trending(self,event=None,country='RU'):
+        f = '[Yatube] yatube.Commands.update_trending'
+        ''' We need this procedure to be separate from
+            'self.set_trending' because of hotkeys.
+        '''
+        objs.channels().add_trending(country)
+        objs._channels.fetch()
+    
+    def set_trending(self,event=None):
+        f = '[Yatube] yatube.Commands.set_trending'
+        choice = self._menu.opt_trd.choice
+        if choice == _('Trending'):
+            country = 'RU'
+        else:
+            sh.log.append (f,_('INFO')
+                          ,_('Switch to channel "%s"') % str(choice)
+                          )
+            if choice in lg.objs.const()._countries:
+                country = lg.objs._const._countries[choice]
+            else:
+                country = 'RU'
+            sh.log.append (f,_('DEBUG')
+                          ,_('Country: %s') % country
+                          )
+        self.update_trending(country=country)
         
     def reset_channel_gui(self):
         # Clears the old Channel widget

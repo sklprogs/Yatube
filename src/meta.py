@@ -19,6 +19,113 @@ MAX_VIDEOS   = 50
 MAX_COMMENTS = 100
 
 
+class Trending:
+    
+    def __init__(self,country=''):
+        self.values()
+        if country:
+            self.reset(country)
+    
+    def check(self):
+        if self._country:
+            return True
+        else:
+            self.Success = False
+            sh.com.empty(f)
+    
+    def fetch(self,token=''):
+        f = '[Yatube] meta.Trending.fetch'
+        if self.Success:
+            try:
+                self._resp = com.service().videos().list (chart      = 'mostPopular'
+                                                         ,regionCode = self._country
+                                                         ,part       = 'id,snippet'
+                                                         ,maxResults = MAX_VIDEOS
+                                                         ,pageToken  = token
+                                                         ).execute()
+            except Exception as e:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Third-party module has failed!\n\nDetails: %s')\
+                            % str(e)
+                            )
+            objs.stat().add_quota(3)
+            if self._resp:
+                try:
+                    self._prev = self._resp['prevPageToken']
+                except KeyError:
+                    self._prev = ''
+                try:
+                    self._next = self._resp['nextPageToken']
+                except KeyError:
+                    sh.log.append (f,_('INFO')
+                                  ,_('The end of the channel has been reached!')
+                                  )
+                    self._next = ''
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def fetch_next(self):
+        f = '[Yatube] meta.Trending.fetch_next'
+        if self.Success:
+            if self._resp and self._next:
+                self.fetch(token=self._next)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def fetch_prev(self):
+        f = '[Yatube] meta.Trending.fetch_prev'
+        if self.Success:
+            if self._resp and self._prev:
+                self.fetch(token=self._prev)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.fetch()
+        self.videos()
+    
+    def videos(self):
+        f = '[Yatube] meta.Trending.videos'
+        if self.Success:
+            for item in self._resp['items']:
+                if item['kind'] == "youtube#video":
+                    try:
+                        video         = Video()
+                        video._id     = item['id']
+                        video._author = item['snippet']['channelTitle']
+                        video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
+                        video._title  = item['snippet']['title']
+                        video._desc   = item['snippet']['description']
+                        video._thumb  = item['snippet']['thumbnails']['default']['url']
+                        objs.videos().add(video)
+                    except KeyError as e:
+                        sh.objs.mes (f,_('WARNING')
+                                    ,_('Missing key: "%s"!') % str(e)
+                                    )
+        else:
+            sh.com.cancel(f)
+    
+    def values(self):
+        self.Success  = True
+        self._resp    = {}
+        self._country = ''
+        self._next    = ''
+        self._prev    = ''
+    
+    def reset(self,country):
+        f = '[Yatube] meta.Trending.reset'
+        self.values()
+        self._country = country
+        self.check()
+
+
+
 class PlayId:
     
     def __init__(self,myid=''):
@@ -719,7 +826,13 @@ class Objects:
     
     def __init__(self):
         self._playlist = self._videos = self._search = self._stat \
-                       = self._comments = self._playid = None
+                       = self._comments = self._playid = self._trending\
+                       = None
+    
+    def trending(self):
+        if self._trending is None:
+            self._trending = Trending()
+        return self._trending
     
     def playid(self):
         if self._playid is None:
