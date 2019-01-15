@@ -15,6 +15,30 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+class Feed:
+    
+    def fetch(self):
+        lg.objs.feed().fetch()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._feed.get_token()
+        objs._commands.update_widgets()
+    
+    def fetch_prev(self):
+        f = '[Yatube] yatube.Feed.fetch_prev'
+        lg.objs.feed().fetch_prev()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._feed.get_token()
+        objs._commands.update_widgets()
+    
+    def fetch_next(self):
+        f = '[Yatube] yatube.Feed.fetch_next'
+        lg.objs.feed().fetch_next()
+        objs._commands.channel_gui(Unknown=False)
+        lg.objs._feed.get_token()
+        objs._commands.update_widgets()
+
+
+
 class Search:
     
     def __init__(self,query=''):
@@ -161,6 +185,9 @@ class Channels:
     
     def __init__(self):
         self._channels = []
+    
+    def add_feed(self):
+        self._channels.append(Feed())
     
     def add_search(self,query):
         self._channels.append(Search(query))
@@ -722,21 +749,11 @@ class Commands:
             sh.com.empty(f)
     
     def reload_channel(self,event=None):
-        f = '[Yatube] yatube.Commands.reload_channel'
-        sg.Message (f,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        objs.channels().fetch()
     
     def feed(self,event=None):
-        f = '[Yatube] yatube.Commands.feed'
-        urls = lg.objs.db().feed()
-        if urls:
-            #todo: rework
-            #lg.objs.channel().reset(urls=urls)
-            #lg.objs._channel.run()
-            self.load_view()
-        else:
-            sh.com.empty(f)
+        objs.channels().add_feed()
+        objs._channels.fetch()
     
     def prev_page(self,event=None):
         objs.channels().fetch_prev()
@@ -984,11 +1001,13 @@ class Commands:
         default = _('Update')
         choice  = self._menu.opt_upd.choice
         if choice == default:
-            pass
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
         elif choice == _('Subscriptions'):
             self._menu.opt_upd.set(default)
             self.update_channels()
-        elif choice == _('Links'):
+        elif choice == _('Channel'):
             self._menu.opt_upd.set(default)
             self.reload_channel()
         else:
@@ -1009,9 +1028,6 @@ class Commands:
         elif choice == _('All feed'):
             self._menu.opt_viw.set(default)
             self.feed()
-        elif choice == _('Subscriptions'):
-            self._menu.opt_viw.set(default)
-            self.show_new()
         elif choice == _('Favorites'):
             self._menu.opt_viw.set(default)
             self.favorites()
@@ -1157,23 +1173,6 @@ class Commands:
                               )
         else:
             sh.com.empty(f)
-    
-    def show_new(self,event=None):
-        f = '[Yatube] yatube.Commands.show_new'
-        itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
-        itime.add_days(days_delta=-3)
-        urls = lg.objs.db().new_videos (timestamp = itime.timestamp()
-                                       ,authors   = lg.objs.lists()._subsc_auth
-                                       )
-        if urls:
-            lg.objs.channel().reset(urls=urls)
-            lg.objs._channel.run()
-            self.load_view()
-        else:
-            # Do not warn here since this is actually a common case
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
     
     # GUI-only
     def delete_selected(self,event=None):
@@ -1590,19 +1589,6 @@ class Commands:
             self._context(choice)
         else:
             sh.com.empty(f)
-    
-    def update_channel(self,author,play_id):
-        f = '[Yatube] logic.Commands.update_channel'
-        timer = sh.Timer(f)
-        timer.start()
-        # We need to delete GUI before resetting logic
-        self.reset_channel_gui()
-        if author:
-            self._menu.opt_chl.set(author)
-        lg.objs.channel().reset(play_id)
-        lg.objs._channel.run()
-        self.load_view()
-        timer.end()
         
     def get_links(self,url):
         lg.objs.extractor().reset(url=url)
@@ -1612,7 +1598,7 @@ class Commands:
     def set_channel(self,event=None):
         f = '[Yatube] yatube.Commands.set_channel'
         if self._menu.opt_chl.choice == _('Channels'):
-            self.show_new()
+            self.feed()
         else:
             sh.log.append (f,_('INFO')
                           ,_('Switch to channel "%s"') \
@@ -1784,7 +1770,7 @@ class Commands:
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Alt-c>'
-                ,action   = self.show_new
+                ,action   = self.feed
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Alt-t>'
@@ -1995,9 +1981,10 @@ class Commands:
         authors  = lg.objs.lists()._subsc_auth
         play_ids = lg.objs._lists._subsc_ids
         for i in range(len(play_ids)):
-            self.update_channel (author  = authors[i]
-                                ,play_id = play_ids[i]
-                                )
+            self._menu.opt_chl.set(authors[i])
+            objs.channels().add_playlist(play_ids[i])
+            objs._channels.fetch()
+        self.feed()
         
     def update_trending(self,event=None,url=None):
         if not url:
@@ -2089,7 +2076,7 @@ class Commands:
         video = mt.objs.videos().current()
         if video._gui:
             date = sh.Time (_timestamp = video._ptime
-                           ,pattern    ='%Y-%m-%d %H:%M'
+                           ,pattern    = '%Y-%m-%d %H:%M'
                            ).date()
             author, title = self.set_block()
             video._gui.reset (author = author

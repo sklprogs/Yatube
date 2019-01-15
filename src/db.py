@@ -18,6 +18,46 @@ class DB:
         self.connect()
         self.create_videos()
         
+    def feed_next(self,ptime=0,limit=50):
+        f = '[Yatube] db.DB.feed_next'
+        if self.Success:
+            try:
+                self.dbc.execute ('select   ID from VIDEOS \
+                                   where    PTIME < ? \
+                                   order by PTIME desc limit ?'
+                                 ,(ptime,limit,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def feed_prev(self,ptime=0,limit=50):
+        f = '[Yatube] db.DB.feed_prev'
+        if self.Success:
+            try:
+                ''' #note: videos are sorted from newest to oldest
+                    (new ptime > old ptime), therefore, we cannot use
+                    'desc' because otherwise the first page will be
+                    returned each time we use 'feed_prev'. Thus, we
+                    manually sort the return output.
+                '''
+                self.dbc.execute ('select   ID from VIDEOS \
+                                   where    PTIME > ? \
+                                   order by PTIME limit ?'
+                                 ,(ptime,limit,)
+                                 )
+                result = self.dbc.fetchall()
+                if result:
+                    return [item[0] for item in result][::-1]
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def fav_next(self,ftime=0,limit=50):
         f = '[Yatube] db.DB.fav_next'
         if self.Success:
@@ -127,21 +167,6 @@ class DB:
                                                  where ID     = ?'
                                  ,(play_id,video_id,)
                                  )
-            except Exception as e:
-                self.fail(f,e)
-        else:
-            sh.com.cancel(f)
-    
-    def feed(self):
-        f = '[Yatube] db.DB.feed'
-        if self.Success:
-            try:
-                self.dbc.execute ('select   ID from VIDEOS \
-                                   order by PTIME desc'
-                                 )
-                result = self.dbc.fetchall()
-                if result:
-                    return [item[0] for item in result]
             except Exception as e:
                 self.fail(f,e)
         else:

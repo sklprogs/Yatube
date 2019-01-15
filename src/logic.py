@@ -33,6 +33,69 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class Feed:
+    
+    def __init__(self):
+        self._token_prev = 0
+        self._token_next = 0
+    
+    def get_token(self):
+        f = '[Yatube] logic.Feed.get_token'
+        if mt.objs.videos()._videos:
+            self._token_next = mt.objs._videos._videos[-1]._ptime
+            self._token_prev = mt.objs._videos._videos[0]._ptime
+            date_next = sh.Time (_timestamp = self._token_next
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            date_prev = sh.Time (_timestamp = self._token_prev
+                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ).date()
+            sh.log.append (f,_('DEBUG')
+                          ,_('Previous page token: %s') % str(date_prev)
+                          )
+            sh.log.append (f,_('DEBUG')
+                          ,_('Next page token: %s') % str(date_next)
+                          )
+        else:
+            sh.com.empty(f)
+            ''' This returns correct tokens for the 1st page if we are
+                out of bounds.
+            '''
+            self._token_prev = 0
+            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+    
+    def fetch(self):
+        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self.fetch_next()
+    
+    def fetch_prev(self):
+        f = '[Yatube] logic.Feed.fetch_prev'
+        ids = objs.db().feed_prev (ptime = self._token_prev
+                                  ,limit = mt.MAX_VIDEOS
+                                  )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+    
+    def fetch_next(self):
+        f = '[Yatube] logic.Feed.fetch_next'
+        ids = objs.db().feed_next (ptime = self._token_next
+                                  ,limit = mt.MAX_VIDEOS
+                                  )
+        if ids:
+            for vid in ids:
+                video = mt.Video()
+                video._id = vid
+                mt.objs._videos.add(video)
+        else:
+            sh.com.empty(f)
+
+
+
 class Favorites:
     
     def __init__(self):
@@ -629,7 +692,12 @@ class Objects:
                      = self._db = self._channels = self._channel \
                      = self._extractor = self._history \
                      = self._watchlist = self._favorites = self._video \
-                     = None
+                     = self._feed = None
+    
+    def feed(self):
+        if self._feed is None:
+            self._feed = Feed()
+        return self._feed
     
     def video(self):
         if self._video is None:

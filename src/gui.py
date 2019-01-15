@@ -49,14 +49,13 @@ url_items = (_('Show summary')
             )
 
 update_items = (_('Update')
+               ,_('Channel')
                ,_('Subscriptions')
-               ,_('Links')
                )
 
 view_items = (_('View')
              ,_('History')
              ,_('All feed')
-             ,_('Subscriptions')
              ,_('Favorites')
              ,_('Watchlist')
              ,_('Welcome screen')
@@ -1003,8 +1002,7 @@ objs = Objects()
 if __name__ == '__main__':
     # Show the menu
     sg.objs.start()
-    #objs.menu().show()
-    AddId().show()
+    objs.menu().show()
     sg.objs.end()
     '''
     # Simulate meta updating
