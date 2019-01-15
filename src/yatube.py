@@ -31,21 +31,12 @@ class Videos:
             for obj in gui._objects:
                 sg.bind (obj      = obj
                         ,bindings = '<ButtonRelease-1>'
-                        ,action   = self.toggle_cbox
+                        ,action   = objs._commands.toggle_cbox
                         )
                 sg.bind (obj      = obj
                         ,bindings = '<ButtonRelease-3>'
-                        ,action   = objs.commands().context
+                        ,action   = objs._commands.context
                         )
-
-    def toggle_cbox(self,event=None):
-        f = '[Yatube] Videos.toggle_cbox'
-        video = mt.objs.videos().current()
-        if video._gui:
-            video._gui.cbox.toggle()
-            objs.commands().report_selection()
-        else:
-            sh.com.empty(f)
     
     def add(self,no=1):
         ivideo = gi.Video (parent = gi.objs.channel().frm_emb
@@ -553,6 +544,15 @@ class Commands:
         self._day    = itime._day
         lg.objs.lists().reset()
         self.reset_channels()
+    
+    def toggle_cbox(self,event=None):
+        f = '[Yatube] Commands.toggle_cbox'
+        gui = self.get_widget(event=event)
+        if gui:
+            gui.cbox.toggle()
+            objs.commands().report_selection()
+        else:
+            sh.com.empty(f)
     
     def toggle_select(self,event=None):
         guis = [video._gui for video in mt.objs.videos()._videos \
@@ -1773,7 +1773,7 @@ class Commands:
         self._menu.btn_prv.action = self.prev_url
         self._menu.btn_stm.action = self.stream
         self._menu.btn_ytb.action = self.search_youtube
-        self._menu.chb_sel.action = self.toggle_select
+        self._menu.chb_sel.reset(action=self.toggle_select)
         # Menu: labels
         sg.bind (obj      = self._menu.ent_flt
                 ,bindings = ['<Return>','<KP_Enter>']
