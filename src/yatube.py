@@ -616,7 +616,7 @@ class Commands:
         else:
             percent = 0
         gi.objs.progress()._item.widget['value'] = percent
-        rate = rate // 1000
+        rate = int(rate) // 1000
         # Prevent from irritating message length changes
         rate = sh.Text(text=str(rate)).grow (max_len = 4
                                             ,FromEnd = False

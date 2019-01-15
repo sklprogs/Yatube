@@ -1017,18 +1017,37 @@ class Video:
     def stream(self):
         f = '[Yatube] logic.Video.stream'
         if self.Success:
-            #todo: select quality
-            try:
-                #todo: implement
-                pass
-                #return stream.url
-            except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Operation has failed!\n\nDetails: %s') \
-                            % str(e)
-                            )
-        else:
-            sh.com.cancel(f)
+            video = mt.objs.videos().current()
+            if video._id:
+                #todo: select quality
+                ''' If we do not set 'format', then 'youtube_dl'
+                    will not provide info_dict['url']. Instead, it will
+                    generate 'url' for each available format.
+                '''
+                options = {'format'            :'best'
+                          ,'ignoreerrors'      :True
+                          ,'nocheckcertificate':True
+                          ,'socket_timeout'    :7
+                          }
+                try:
+                    with youtube_dl.YoutubeDL(options) as ydl:
+                        info_dict = ydl.extract_info(video._id,download=False)
+                        if 'url' in info_dict:
+                            ''' Since the stream url will expire, we do
+                                not create a permanent variable.
+                            '''
+                            return info_dict['url']
+                        else:
+                            sh.objs.mes (f,_('WARNING')
+                                        ,_('Wrong input data!')
+                                        )
+                except Exception as e:
+                    sh.objs.mes (f,_('WARNING')
+                                ,_('Third-party module has failed!\n\nDetails: %s')\
+                                % str(e)
+                                )
+            else:
+                sh.com.empty(f)
 
 
 
