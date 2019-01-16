@@ -811,9 +811,12 @@ class Commands:
             items = list(gi.context_items)
             data = lg.objs.db().get_video(video._id)
             if data:
-                dtime = data[8]
-                ftime = data[9]
-                ltime = data[10]
+                ''' #note: do not forget to update indices in case of
+                    changing the DB structure.
+                '''
+                dtime = data[9]
+                ftime = data[10]
+                ltime = data[11]
                 if dtime:
                     items.remove(_('Mark as watched'))
                 else:

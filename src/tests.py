@@ -149,9 +149,8 @@ if __name__ == '__main__':
     f = 'tests.__main__'
     sg.objs.start()
     idb = db.DB(path='/home/pete/.config/yatube2/yatube.db')
-    authors = lg.objs.lists()._subsc_auth
-    print(authors)
-    ptime   = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
-    print(idb.subsc_next(authors,ptime))
+    idb.dbc.execute('select * from VIDEOS limit ?',(5,))
+    headers = [cn[0] for cn in idb.dbc.description]
+    print(headers)
     idb.close()
     sg.objs.end()

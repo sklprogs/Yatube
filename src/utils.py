@@ -135,8 +135,8 @@ class DB:
             try:
                 # 12 columns for now
                 self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
-                                         ,LENGTH,IMAGE,SEARCH\
-                                         ,BLOCK,PTIME,DTIME,FTIME,LTIME\
+                                         ,SEARCH,LENGTH,IMAGE\
+                                         ,PTIME,DTIME,FTIME,LTIME\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
@@ -190,10 +190,10 @@ class DB:
                         search = row[5]
                         length = row[6]
                         image  = row[7]
-                        ptime  = row[9]
-                        dtime  = row[10]
-                        ftime  = row[11]
-                        ltime  = row[12]
+                        ptime  = row[8]
+                        dtime  = row[9]
+                        ftime  = row[10]
+                        ltime  = row[11]
                         row = (vid,playid,author,title,desc,search
                               ,length,image,ptime,dtime,ftime,ltime
                               )
