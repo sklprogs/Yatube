@@ -1668,6 +1668,29 @@ class Commands:
         else:
             sh.com.empty(f)
     
+    def _color_context(self,message,color='green'):
+        if message in gi.objs.context().lst:
+            ind = gi.objs._context.lst.index(message)
+            gi.objs._context.widget.itemconfig(ind,fg=color)
+    
+    def color_context(self):
+        f = '[Yatube] yatube.Commands.color_context'
+        if gi.objs.context().lst:
+            self._color_context(_('Download'),'green')
+            self._color_context(_('Delete the downloaded file'),'red')
+            self._color_context(_('Mark as watched'),'green')
+            self._color_context(_('Mark as not watched'),'red')
+            self._color_context(_('Add to favorites'),'green')
+            self._color_context(_('Remove from favorites'),'red')
+            self._color_context(_('Add to watchlist'),'green')
+            self._color_context(_('Remove from watchlist'),'red')
+            self._color_context(_('Block this channel'),'green')
+            self._color_context(_('Unblock'),'red')
+            self._color_context(_('Subscribe to this channel'),'green')
+            self._color_context(_('Unsubscribe'),'red')
+        else:
+            sh.com.empty(f)
+    
     def context(self,event=None):
         f = '[Yatube] yatube.Commands.context'
         # 'event' will be 'tuple' if it is a callback from 'Button.click'
@@ -1682,6 +1705,7 @@ class Commands:
             if not items:
                 items = gi.context_items
             gi.objs._context.reset(lst=items)
+            self.color_context()
             gi.objs._context.show()
             choice = gi.objs._context._get
             self._context(choice)
