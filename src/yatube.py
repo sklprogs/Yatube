@@ -23,6 +23,7 @@ class Trending:
             self.reset(country)
     
     def values(self):
+        self._type    = 'trending'
         self._country = ''
     
     def fetch(self):
@@ -49,6 +50,9 @@ class Trending:
 
 
 class Feed:
+    
+    def __init__(self):
+        self._type = 'feed'
     
     def fetch(self):
         lg.objs.feed().fetch()
@@ -80,6 +84,7 @@ class Search:
             self.reset(query)
     
     def values(self):
+        self._type  = 'search'
         self._query = ''
     
     def fetch(self):
@@ -138,6 +143,9 @@ class Videos:
 
 class Favorites:
     
+    def __init__(self):
+        self._type = 'favorites'
+    
     def fetch(self):
         lg.objs.favorites().fetch()
         objs._commands.channel_gui(Unknown=False)
@@ -161,6 +169,9 @@ class Favorites:
 
 
 class Watchlist:
+    
+    def __init__(self):
+        self._type = 'watchlist'
     
     def fetch(self):
         lg.objs.watchlist().fetch()
@@ -187,6 +198,7 @@ class Watchlist:
 class Playlist:
     
     def __init__(self,play_id=''):
+        self._type    = 'playlist'
         self._play_id = ''
         if play_id:
             self.reset(play_id)
@@ -218,27 +230,80 @@ class Channels:
     
     def __init__(self):
         self._channels = []
+        self._modes    = ('favorites','feed','history','playlist'
+                         ,'search','trending','watchlist'
+                         )
+        self._unique   = ('favorites','feed','history','watchlist')
+        self._types    = []
+        self.i         = 0
     
-    def add_trending(self,abbr):
-        self._channels.append(Trending(abbr))
+    def inc(self):
+        if self.i == len(self._channels) - 1:
+            self.i = 0
+        elif self._channels:
+            self.i += 1
     
-    def add_feed(self):
-        self._channels.append(Feed())
+    def dec(self):
+        if self.i == 0:
+            if self._channels:
+                self.i = len(self._channels) - 1
+        else:
+            self.i -= 1
     
-    def add_search(self,query):
-        self._channels.append(Search(query))
+    def current(self):
+        f = '[Yatube] yatube.Channels.current'
+        if not self._channels:
+            sh.log.append (f,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+            self.add('history')
+        if self.i < 0 or self.i >= len(self._channels):
+            sh.objs.mes (f,_('ERROR')
+                        ,_('The condition "%s" is not observed!') \
+                        % '%d <= %d < %d' % (0,self.i
+                                            ,len(self._channels)
+                                            )
+                        )
+            self.i = 0
+        return self._channels[self.i]
     
-    def add_favorites(self):
-        self._channels.append(Favorites())
+    def go_mode(self,mode):
+        f = '[Yatube] yatube.Channels.go_mode'
+        types = [channel._type for channel in self._channels]
+        if types:
+            if mode in types:
+                self.i = types.index(mode)
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data: "%s"!') % str(mode)
+                            )
+        else:
+            sh.com.empty(f)
     
-    def add_watchlist(self):
-        self._channels.append(Watchlist())
-    
-    def add_history(self):
-        self._channels.append(History())
-    
-    def add_playlist(self,play_id):
-        self._channels.append(Playlist(play_id))
+    def add(self,mode='playlist',arg=None):
+        f = '[Yatube] yatube.Channels.add'
+        if mode in self._unique and mode in self._types:
+            self.go_mode(mode)
+        elif mode in self._modes:
+            if mode == 'playlist':
+                self._channels.append(Playlist(arg))
+            elif mode == 'trending':
+                self._channels.append(Trending(arg))
+            elif mode == 'feed':
+                self._channels.append(Feed())
+            elif mode == 'search':
+                self._channels.append(Search(arg))
+            elif mode == 'favorites':
+                self._channels.append(Favorites())
+            elif mode == 'watchlist':
+                self._channels.append(Watchlist())
+            elif mode == 'history':
+                self._channels.append(History())
+            self.inc()
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Wrong input data: "%s"!') % str(mode)
+                        )
     
     def fetch(self):
         f = '[Yatube] yatube.Channels.fetch'
@@ -247,7 +312,7 @@ class Channels:
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
-            self._channels[-1].fetch()
+            self.current().fetch()
             timer.end()
         else:
             sh.com.empty(f)
@@ -259,7 +324,7 @@ class Channels:
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
-            self._channels[-1].fetch_prev()
+            self.current().fetch_prev()
             timer.end()
         else:
             sh.com.empty(f)
@@ -271,7 +336,7 @@ class Channels:
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
-            self._channels[-1].fetch_next()
+            self.current().fetch_next()
             timer.end()
         else:
             sh.com.empty(f)
@@ -279,6 +344,9 @@ class Channels:
 
 
 class History:
+    
+    def __init__(self):
+        self._type = 'history'
     
     def fetch(self):
         lg.objs.history().fetch()
@@ -733,7 +801,7 @@ class Commands:
         sg.objs.root().widget.update_idletasks()
     
     def history(self,event=None):
-        objs.channels().add_history()
+        objs.channels().add('history')
         objs._channels.fetch()
     
     def update_context(self):
@@ -788,7 +856,7 @@ class Commands:
         objs.channels().fetch()
     
     def feed(self,event=None):
-        objs.channels().add_feed()
+        objs.channels().add('feed')
         objs._channels.fetch()
     
     def prev_page(self,event=None):
@@ -798,11 +866,11 @@ class Commands:
         objs.channels().fetch_next()
     
     def watchlist(self,event=None):
-        objs.channels().add_watchlist()
+        objs.channels().add('watchlist')
         objs._channels.fetch()
     
     def favorites(self,event=None):
-        objs.channels().add_favorites()
+        objs.channels().add('favorites')
         objs._channels.fetch()
     
     def remove_from_watchlist(self,event=None):
@@ -1009,23 +1077,13 @@ class Commands:
                                ,urls   = lg.objs.channel()._ids
                                )
     
-    def prev_url(self,event=None):
-        f = '[Yatube] yatube.Commands.prev_url'
-        result = lg.objs.channels().prev()
-        if result:
-            #todo: implement
-            pass
-        else:
-            sh.com.empty(f)
+    def prev_channel(self,event=None):
+        objs.channels().dec()
+        objs._channels.fetch()
     
-    def next_url(self,event=None):
-        f = '[Yatube] yatube.Commands.next_url'
-        result = lg.objs.channels().next()
-        if result:
-            #todo: implement
-            pass
-        else:
-            sh.com.empty(f)
+    def next_channel(self,event=None):
+        objs.channels().inc()
+        objs._channels.fetch()
     
     def show_comments(self,event=None):
         f = '[Yatube] yatube.Commands.show_comments'
@@ -1646,7 +1704,7 @@ class Commands:
                 author  = self._menu.opt_chl.choice
                 no      = lg.objs._lists._subsc_auth.index(author)
                 play_id = lg.objs._lists._subsc_ids[no]
-                objs.channels().add_playlist(play_id)
+                objs.channels().add('playlist',play_id)
                 objs._channels.fetch()
             else:
                 sh.objs.mes (f,_('ERROR')
@@ -1709,7 +1767,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.search_youtube'
         query = self._menu.ent_src.get()
         if query and query != _('Search Youtube'):
-            objs.channels().add_search(query)
+            objs.channels().add('search',query)
             objs._channels.fetch()
         else:
             sh.com.empty(f)
@@ -1753,11 +1811,11 @@ class Commands:
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-Left>'
-                ,action   = self.prev_url
+                ,action   = self.prev_channel
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-Right>'
-                ,action   = self.next_url
+                ,action   = self.next_channel
                 )
         sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-p>'
@@ -1804,10 +1862,10 @@ class Commands:
         self._menu.btn_dld.action = self.download
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_npg.action = self.next_page
-        self._menu.btn_nxt.action = self.next_url
+        self._menu.btn_nxt.action = self.next_channel
         self._menu.btn_ply.action = self.play
         self._menu.btn_ppg.action = self.prev_page
-        self._menu.btn_prv.action = self.prev_url
+        self._menu.btn_prv.action = self.prev_channel
         self._menu.btn_stm.action = self.stream
         self._menu.btn_ytb.action = self.search_youtube
         self._menu.chb_sel.reset(action=self.toggle_select)
@@ -2010,7 +2068,7 @@ class Commands:
         ''' We need this procedure to be separate from
             'self.set_trending' because of hotkeys.
         '''
-        objs.channels().add_trending(country)
+        objs.channels().add('trending',country)
         objs._channels.fetch()
     
     def set_trending(self,event=None):
