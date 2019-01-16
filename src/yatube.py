@@ -1416,17 +1416,19 @@ class Commands:
     
     def open_channel_url(self,event=None):
         f = '[Yatube] yatube.Commands.open_channel_url'
-        url = lg.Video().channel_url()
-        if url:
-            lg.objs.online()._url = url
+        channel_id = lg.Video().channel_id()
+        if channel_id:
+            lg.objs.online()._url = 'https://www.youtube.com/channel/' \
+                                  + channel_id
             lg.objs._online.browse()
         else:
             sh.com.empty(f)
 
     def copy_channel_url(self,event=None):
         f = '[Yatube] yatube.Commands.copy_channel_url'
-        url = lg.Video().channel_url()
-        if url:
+        channel_id = lg.Video().channel_id()
+        if channel_id:
+            url = 'https://www.youtube.com/channel/' + channel_id
             sg.Clipboard().copy(url)
         else:
             sh.com.empty(f)
