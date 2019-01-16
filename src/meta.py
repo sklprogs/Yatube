@@ -99,6 +99,7 @@ class Trending:
                         video         = Video()
                         video._id     = item['id']
                         video._author = item['snippet']['channelTitle']
+                        video._ch_id  = item['snippet']['channelId']
                         video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
                         video._title  = item['snippet']['title']
                         video._desc   = item['snippet']['description']
@@ -550,13 +551,15 @@ class Playlist:
                 try:
                     for item in self._resp['items']:
                         if item['snippet']['resourceId']['kind'] == "youtube#video":
-                            video         = Video()
-                            video._id     = item['snippet']['resourceId']['videoId']
-                            video._author = item['snippet']['channelTitle']
-                            video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
-                            video._title  = item['snippet']['title']
-                            video._desc   = item['snippet']['description']
-                            video._thumb  = item['snippet']['thumbnails']['default']['url']
+                            video          = Video()
+                            video._id      = item['snippet']['resourceId']['videoId']
+                            video._author  = item['snippet']['channelTitle']
+                            video._ch_id   = item['snippet']['channelId']
+                            video._play_id = item['snippet']['playlistId']
+                            video._ptime   = sh.com.yt_date(item['snippet']['publishedAt'])
+                            video._title   = item['snippet']['title']
+                            video._desc    = item['snippet']['description']
+                            video._thumb   = item['snippet']['thumbnails']['default']['url']
                             objs.videos().add(video)
                 except KeyError as e:
                     sh.objs.mes (f,_('WARNING')
@@ -730,6 +733,7 @@ class Search:
                         video         = Video()
                         video._id     = item['id']['videoId']
                         video._author = item['snippet']['channelTitle']
+                        video._ch_id  = item['snippet']['channelId']
                         video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
                         video._title  = item['snippet']['title']
                         video._desc   = item['snippet']['description']
@@ -944,15 +948,9 @@ com  = Commands()
 if __name__ == '__main__':
     f = 'meta.__main__'
     sg.objs.start()
-    #author = 'Новости СВЕРХДЕРЖАВЫ'
-    #objs.playid().reset(author)
-    #print(objs._playid.by_user())
-    video = Video()
-    video._id = 'vjSohj-Iclc'
-    objs.videos().add(video)
-    VideoInfo().statistics()
-    print('Views:',video._views)
-    print('Likes:',video._likes)
-    print('Dislikes:',video._dislikes)
-    print('Comments:',video._com_num)
+    objs.playlist().reset('UU63-vXUchmKqP7K9WE2jCfg')
+    objs._playlist.run()
+    video = objs.videos().current()
+    print('CHANID:',video._ch_id)
+    print('PLAYID:',video._play_id)
     sg.objs.end()

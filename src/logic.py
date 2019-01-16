@@ -807,6 +807,23 @@ class Video:
             return mt.VideoInfo().statistics()
         return True
     
+    def play_id(self):
+        f = '[Yatube] logic.Video.play_id'
+        video = mt.objs.videos().current()
+        if not video._play_id:
+            channel_id = self.channel_id()
+            if channel_id:
+                mt.objs.playid().reset(channel_id)
+                play_id = mt.objs._playid.by_channel_id()
+                if play_id:
+                    video._play_id = play_id
+                    objs.db().update_play_id(video._id,video._play_id)
+                else:
+                    sh.com.empty(f)
+            else:
+                sh.com.empty(f)
+        return video._play_id
+    
     def channel_id(self):
         f = '[Yatube] logic.Video.channel_id'
         video = mt.objs.videos().current()
@@ -814,7 +831,7 @@ class Video:
             channel_id = mt.VideoInfo().channel_id()
             if channel_id:
                 video._ch_id = channel_id
-                objs.db().update_ch_id(video._id,channel_id)
+                objs.db().update_ch_id(video._id,video._ch_id)
             else:
                 sh.com.empty(f)
         return video._ch_id
@@ -1432,4 +1449,12 @@ mt.objs.stat()
 
 
 if __name__ == '__main__':
-    pass
+    video = mt.Video()
+    video._id = 'vjSohj-Iclc'
+    mt.objs.videos().add(video)
+    logic = Video()
+    logic.get()
+    print(logic.play_id())
+    mt.objs._stat.report(Silent=True)
+    objs.db().save()
+    objs._db.close()

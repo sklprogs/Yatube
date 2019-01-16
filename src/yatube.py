@@ -829,12 +829,12 @@ class Commands:
                     items.remove(_('Add to watchlist'))
                 else:
                     items.remove(_('Remove from watchlist'))
-                if video.Block:
-                    items.remove(_('Block this channel'))
-                else:
-                    items.remove(_('Unblock'))
             else:
                 sh.com.empty(f)
+            if video.Block:
+                items.remove(_('Block this channel'))
+            else:
+                items.remove(_('Unblock'))
             lg.Video().path()
             if video._path:
                 if os.path.exists(video._path):
@@ -1336,6 +1336,7 @@ class Commands:
     def subscribe(self,event=None):
         f = '[Yatube] yatube.Commands.subscribe'
         video = mt.objs.videos().current()
+        lg.Video().play_id()
         if video._author and video._play_id:
             if video._author in lg.objs.lists()._subsc_auth:
                 sh.log.append (f,_('INFO')
@@ -1352,21 +1353,21 @@ class Commands:
                                          + '\t' \
                                          + lg.objs._lists._subsc_ids[i]
                                          )
-                    subscriptions.append (video._author + '\t' \
-                                         + video._play_id
-                                         )
-                    subscriptions = sorted (subscriptions
-                                           ,key=lambda x:x[0].lower()
-                                           )
-                    subscriptions = '\n'.join(subscriptions)
-                    if subscriptions:
-                        sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                                         ,Rewrite = True
-                                         ).write(text=subscriptions)
-                        lg.objs._lists.reset()
-                        self.reset_channels()
-                    else:
-                        sh.com.empty(f)
+                subscriptions.append (video._author + '\t' \
+                                     + video._play_id
+                                     )
+                subscriptions = sorted (subscriptions
+                                       ,key=lambda x:x[0].lower()
+                                       )
+                subscriptions = '\n'.join(subscriptions)
+                if subscriptions:
+                    sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                     ,Rewrite = True
+                                     ).write(text=subscriptions)
+                    lg.objs._lists.reset()
+                    self.reset_channels()
+                else:
+                    sh.com.empty(f)
         else:
             sh.com.empty(f)
     
