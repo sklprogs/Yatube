@@ -306,7 +306,6 @@ class DB:
                     ):
         f = '[Yatube] db.DB.date_filter'
         if self.Success:
-            #todo (?): BLOCK
             try:
                 if Newer:
                     if WithReady:
@@ -365,7 +364,7 @@ class DB:
         f = '[Yatube] db.DB.create_videos'
         if self.Success:
             try:
-                # 13 columns by now
+                # 12 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
                      ID     text    \
@@ -376,7 +375,6 @@ class DB:
                     ,SEARCH text    \
                     ,LENGTH integer \
                     ,IMAGE  binary  \
-                    ,BLOCK  boolean \
                     ,PTIME  float   \
                     ,DTIME  float   \
                     ,FTIME  float   \
@@ -393,7 +391,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                   (?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                   (?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
             except Exception as e:
@@ -422,8 +420,8 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
-                                         ,SEARCH,LENGTH,IMAGE,BLOCK\
-                                         ,PTIME,DTIME,FTIME,LTIME\
+                                         ,SEARCH,LENGTH,IMAGE,PTIME\
+                                         ,DTIME,FTIME,LTIME\
                                    from   VIDEOS \
                                    where  ID = ?',(video_id,)
                                  )
@@ -443,8 +441,8 @@ class DB:
             if ids:
                 try:
                     query = 'select ID,PLAYID,AUTHOR,TITLE,DESC,SEARCH\
-                                   ,LENGTH,IMAGE,BLOCK,PTIME,DTIME\
-                                   ,FTIME,LTIME\
+                                   ,LENGTH,IMAGE,PTIME,DTIME,FTIME\
+                                   ,LTIME\
                              from   VIDEOS where ID in (%s)' \
                             % ','.join('?'*len(ids))
                     self.dbc.execute(query,ids)

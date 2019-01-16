@@ -688,21 +688,20 @@ class Lists:
 class Objects:
     
     def __init__(self):
+        ''' Do not put here instances that do not require input because
+            of using meta objects and need to be constantly reset owing
+            to possible 'Success' fails (e.g., 'logic.Video').
+        '''
         self._online = self._lists = self._const = self._default \
                      = self._db = self._channels = self._channel \
                      = self._extractor = self._history \
-                     = self._watchlist = self._favorites = self._video \
-                     = self._feed = None
+                     = self._watchlist = self._favorites = self._feed \
+                     = None
     
     def feed(self):
         if self._feed is None:
             self._feed = Feed()
         return self._feed
-    
-    def video(self):
-        if self._video is None:
-            self._video = Video()
-        return self._video
     
     def favorites(self):
         if self._favorites is None:
@@ -775,6 +774,9 @@ class Objects:
 class Video:
     
     def __init__(self):
+        self.reset()
+    
+    def reset(self):
         self.values()
         self.check()
     
@@ -873,8 +875,7 @@ class Video:
             video = mt.objs.videos().current()
             data = (video._id,video._play_id,video._author,video._title
                    ,video._desc,video._search,video._len,video._bytes
-                   ,video.Block,video._ptime,video._dtime,video._ftime
-                   ,video._ltime
+                   ,video._ptime,video._dtime,video._ftime,video._ltime
                    )
             objs.db().add_video(data)
         else:
@@ -884,7 +885,7 @@ class Video:
         f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
-                data_len = 13
+                data_len = 12
                 if len(data) == data_len:
                     video = mt.objs.videos().current()
                     video._id      = data[0]
@@ -895,11 +896,10 @@ class Video:
                     video._search  = data[5]
                     video._len     = data[6]
                     video._bytes   = data[7]
-                    video.Block    = data[8]
-                    video._ptime   = data[9]
-                    video._dtime   = data[10]
-                    video._ftime   = data[11]
-                    video._ltime   = data[12]
+                    video._ptime   = data[8]
+                    video._dtime   = data[9]
+                    video._ftime   = data[10]
+                    video._ltime   = data[11]
                 else:
                     sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!')\

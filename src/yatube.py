@@ -811,10 +811,9 @@ class Commands:
             items = list(gi.context_items)
             data = lg.objs.db().get_video(video._id)
             if data:
-                block = data[8]
-                dtime = data[9]
-                ftime = data[10]
-                ltime = data[11]
+                dtime = data[8]
+                ftime = data[9]
+                ltime = data[10]
                 if dtime:
                     items.remove(_('Mark as watched'))
                 else:
@@ -827,13 +826,13 @@ class Commands:
                     items.remove(_('Add to watchlist'))
                 else:
                     items.remove(_('Remove from watchlist'))
-                if block:
+                if video.Block:
                     items.remove(_('Block this channel'))
                 else:
                     items.remove(_('Unblock'))
             else:
                 sh.com.empty(f)
-            lg.objs.video().path()
+            lg.Video().path()
             if video._path:
                 if os.path.exists(video._path):
                     items.remove(_('Download'))
@@ -1295,7 +1294,7 @@ class Commands:
             '''
             mt.objs._videos.current()._gui.cbox.disable()
             self.report_selection()
-        return lg.objs.video().delete()
+        return lg.Video().delete()
     
     def reset_channels(self,event=None):
         default_channels = [_('Channels')]
@@ -1311,7 +1310,7 @@ class Commands:
     
     def open_video_url(self,event=None):
         f = '[Yatube] yatube.Commands.open_video_url'
-        url = lg.objs.video().url()
+        url = lg.Video().url()
         if url:
             lg.objs.online()._url = url
             lg.objs._online.browse()
@@ -1320,7 +1319,7 @@ class Commands:
                    
     def copy_video_url(self,event=None):
         f = '[Yatube] yatube.Commands.copy_video_url'
-        url = lg.objs.video().url()
+        url = lg.Video().url()
         if url:
             sg.Clipboard().copy(text=url)
         else:
@@ -1407,7 +1406,7 @@ class Commands:
     
     def open_channel_url(self,event=None):
         f = '[Yatube] yatube.Commands.open_channel_url'
-        url = lg.objs.video().channel_url()
+        url = lg.Video().channel_url()
         if url:
             lg.objs.online()._url = url
             lg.objs._online.browse()
@@ -1416,7 +1415,7 @@ class Commands:
 
     def copy_channel_url(self,event=None):
         f = '[Yatube] yatube.Commands.copy_channel_url'
-        url = lg.objs.video().channel_url()
+        url = lg.Video().channel_url()
         if url:
             sg.Clipboard().copy(url)
         else:
@@ -1435,7 +1434,7 @@ class Commands:
     
     def stream_video(self,event=None):
         f = '[Yatube] yatube.Commands.stream_video'
-        url = lg.objs.video().stream()
+        url = lg.Video().stream()
         if url:
             ''' Consider using newer python/OS builds if you have
                 SSL/TLS problems here.
@@ -1601,7 +1600,7 @@ class Commands:
         if mt.objs.videos().current()._id:
             #self.save_extra()
             gi.objs.summary().reset()
-            gi.objs._summary.insert(lg.objs.video().summary())
+            gi.objs._summary.insert(lg.Video().summary())
             gi.objs._summary.show()
         else:
             sh.com.empty(f)
@@ -1609,7 +1608,7 @@ class Commands:
     def _context(self,choice,event=None):
         f = '[Yatube] yatube.Commands._context'
         if choice:
-            url = lg.objs.video().url()
+            url = lg.Video().url()
             if choice == _('Show the full summary'):
                 self.summary()
             elif choice == _('Download'):
@@ -1728,8 +1727,9 @@ class Commands:
                     video._id = lg.URL(result).video_id()
                     mt.objs.videos().add(video)
                     mt.objs._videos.i = len(mt.objs._videos._videos) - 1
-                    lg.objs.video().get()
-                    if lg.objs._video.Success:
+                    logic = lg.Video()
+                    logic.get()
+                    if logic.Success:
                         if self._menu.opt_url.choice == _('Show summary'):
                             self.summary()
                         elif self._menu.opt_url.choice == _('Download'):
@@ -1944,13 +1944,13 @@ class Commands:
                           ]
         else:
             custom_args = []
-        sh.Launch (target = lg.objs.video().path()
+        sh.Launch (target = lg.Video().path()
                   ).app (custom_app  = app
                         ,custom_args = custom_args
                         )
                         
     def _play_default(self):
-        sh.Launch(target=lg.objs.video().path()).default()
+        sh.Launch(target=lg.Video().path()).default()
 
     def play_video(self,event=None):
         f = '[Yatube] yatube.Commands.play_video'
@@ -2008,7 +2008,8 @@ class Commands:
             ('mt.Video._gui' must be set to 'None'), so we do not force
             'mt.Video._gui' check here.
         '''
-        if lg.objs.video().path():
+        logic = lg.Video()
+        if logic.path():
             if os.path.exists(mt.objs.videos().current()._path):
                 ''' Lift videos up in history (update DTIME field)
                     even if they were already downloaded. However,
@@ -2029,7 +2030,7 @@ class Commands:
                     sg.Geometry(parent=gi.objs._progress.obj).activate()
                     gi.objs._progress.obj.center()
                     self.FirstVideo = False
-                if lg.objs._video.download(self.progress):
+                if logic.download(self.progress):
                     self.mark_downloaded()
         else:
             sh.com.empty(f)
@@ -2144,7 +2145,7 @@ class Commands:
         if unknown:
             for i in range(len(unknown)):
                 mt.objs._videos.i = unknown[i]
-                lg.objs.video().get()
+                lg.Video().get()
                 self.update_video(i=unknown[i])
             lg.objs.db().save()
         else:
@@ -2201,9 +2202,10 @@ class Commands:
                     mt.objs._videos.i = i
                     if result[i]:
                         mt.objs._videos.current().Saved = result[i]
-                        lg.objs.video().assign_offline(result[i])
-                        lg.objs._video.unsupported()
-                        lg.objs._video.load_image()
+                        logic = lg.Video()
+                        logic.assign_offline(result[i])
+                        logic.unsupported()
+                        logic.load_image()
                         self.update_video(i)
             else:
                 sh.com.empty(f)

@@ -133,10 +133,10 @@ class DB:
         f = '[Yatube] utils.DB.fetch'
         if self.Success:
             try:
-                # 13 columns for now (for old DB)
+                # 12 columns for now
                 self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
-                                         ,LENGTH,IMAGE,BLOCK,SEARCH\
-                                         ,PTIME,DTIME,FTIME,LTIME\
+                                         ,LENGTH,IMAGE,SEARCH\
+                                         ,BLOCK,PTIME,DTIME,FTIME,LTIME\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
@@ -149,7 +149,7 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # 13 columns by now
+                # 12 columns by now
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      ID       text    \
@@ -160,7 +160,6 @@ class DB:
                     ,SEARCH   text    \
                     ,LENGTH   integer \
                     ,IMAGE    binary  \
-                    ,BLOCK    boolean \
                     ,PTIME    float   \
                     ,DTIME    float   \
                     ,FTIME    float   \
@@ -191,17 +190,15 @@ class DB:
                         search = row[5]
                         length = row[6]
                         image  = row[7]
-                        block  = row[8]
                         ptime  = row[9]
                         dtime  = row[10]
                         ftime  = row[11]
                         ltime  = row[12]
                         row = (vid,playid,author,title,desc,search
-                              ,length,image,block,ptime,dtime,ftime
-                              ,ltime
+                              ,length,image,ptime,dtime,ftime,ltime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                            (?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                            (?,?,?,?,?,?,?,?,?,?,?,?)'
                                           ,row
                                           )
                     except Exception as e:
@@ -456,4 +453,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.change_ftime()
+    commands.alter()
