@@ -1407,10 +1407,10 @@ class Commands:
                    
     def load_channel(self,event=None):
         f = '[Yatube] yatube.Commands.load_channel'
-        if mt.objs.videos().current()._play_id:
-            lg.objs.channel().reset(url=mt.objs._videos.current()._play_id)
-            lg.objs._channel.run()
-            self.load_view()
+        play_id = lg.Video().play_id()
+        if play_id:
+            objs.channels().add('playlist',play_id)
+            objs._channels.fetch()
         else:
             sh.com.empty(f)
     
@@ -2094,7 +2094,7 @@ class Commands:
         play_ids = lg.objs._lists._subsc_ids
         for i in range(len(play_ids)):
             self._menu.opt_chl.set(authors[i])
-            objs.channels().add_playlist(play_ids[i])
+            objs.channels().add('playlist',play_ids[i])
             objs._channels.fetch()
         self.feed()
         
