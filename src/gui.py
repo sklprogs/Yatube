@@ -963,7 +963,7 @@ class Objects:
                                        ,title           = _('Select an action:')
                                        ,icon            = icon_path
                                        ,SingleClick     = False
-                                       ,SelectionCloses = False
+                                       ,SelectionCloses = True
                                        )
             self._context.close()
         return self._context

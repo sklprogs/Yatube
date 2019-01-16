@@ -18,6 +18,19 @@ class DB:
         self.connect()
         self.create_videos()
     
+    def update_ch_id(self,video_id,channel_id):
+        f = '[Yatube] db.DB.update_ch_id'
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set   CHANID = ? \
+                                                 where ID     = ?'
+                                 ,(channel_id,video_id,)
+                                 )
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def feed_next(self,ptime=0,limit=50):
         f = '[Yatube] db.DB.feed_next'
         if self.Success:
@@ -369,6 +382,7 @@ class DB:
                     'create table if not exists VIDEOS (\
                      ID     text    \
                     ,PLAYID text    \
+                    ,CHANID text    \
                     ,AUTHOR text    \
                     ,TITLE  text    \
                     ,DESC   text    \
@@ -391,7 +405,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                   (?,?,?,?,?,?,?,?,?,?,?,?)'
+                                   (?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
             except Exception as e:
@@ -419,9 +433,9 @@ class DB:
         f = '[Yatube] db.DB.get_video'
         if self.Success:
             try:
-                self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
-                                         ,SEARCH,LENGTH,IMAGE,PTIME\
-                                         ,DTIME,FTIME,LTIME\
+                self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
+                                         ,DESC,SEARCH,LENGTH,IMAGE\
+                                         ,PTIME,DTIME,FTIME,LTIME\
                                    from   VIDEOS \
                                    where  ID = ?',(video_id,)
                                  )
@@ -440,9 +454,9 @@ class DB:
         if self.Success:
             if ids:
                 try:
-                    query = 'select ID,PLAYID,AUTHOR,TITLE,DESC,SEARCH\
-                                   ,LENGTH,IMAGE,PTIME,DTIME,FTIME\
-                                   ,LTIME\
+                    query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC\
+                                   ,SEARCH,LENGTH,IMAGE,PTIME,DTIME\
+                                   ,FTIME,LTIME\
                              from   VIDEOS where ID in (%s)' \
                             % ','.join('?'*len(ids))
                     self.dbc.execute(query,ids)

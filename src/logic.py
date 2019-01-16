@@ -786,16 +786,38 @@ class Video:
         video._title  = sh.Text(video._title).delete_unsupported()
         video._desc   = sh.Text(video._desc).delete_unsupported()
     
-    def channel_url(self):
-        f = '[Yatube] logic.Video.channel_url'
+    def length(self):
+        f = '[Yatube] logic.Video.length'
         video = mt.objs.videos().current()
-        if not video._ch_url:
-            sh.objs.mes (f,_('INFO')
-                        ,_('Not implemented yet!')
-                        )
-            #todo: implement
-            #todo: update DB
-        return video._ch_url
+        if not video._len:
+            if mt.VideoInfo().length():
+                objs.db().update_len(video._id,video._len)
+            else:
+                sh.com.empty(f)
+        return video._len
+    
+    def statistics(self):
+        f = '[Yatube] logic.Video.statistics'
+        video = mt.objs.videos().current()
+        ''' Likes/dislikes/number of comments can be 0, so we shoud rely
+            on 'video._views' only.
+        '''
+        if not video._views:
+            # Return True if metadata were fetched successfully
+            return mt.VideoInfo().statistics()
+        return True
+    
+    def channel_id(self):
+        f = '[Yatube] logic.Video.channel_id'
+        video = mt.objs.videos().current()
+        if not video._ch_id:
+            channel_id = mt.VideoInfo().channel_id()
+            if channel_id:
+                video._ch_id = channel_id
+                objs.db().update_ch_id(video._id,channel_id)
+            else:
+                sh.com.empty(f)
+        return video._ch_id
     
     def check(self):
         f = '[Yatube] logic.Video.check'
@@ -873,9 +895,10 @@ class Video:
                 Do not forget to commit where necessary.
             '''
             video = mt.objs.videos().current()
-            data = (video._id,video._play_id,video._author,video._title
-                   ,video._desc,video._search,video._len,video._bytes
-                   ,video._ptime,video._dtime,video._ftime,video._ltime
+            data = (video._id,video._play_id,video._ch_id,video._author
+                   ,video._title,video._desc,video._search,video._len
+                   ,video._bytes,video._ptime,video._dtime,video._ftime
+                   ,video._ltime
                    )
             objs.db().add_video(data)
         else:
@@ -885,21 +908,22 @@ class Video:
         f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
-                data_len = 12
+                data_len = 13
                 if len(data) == data_len:
                     video = mt.objs.videos().current()
                     video._id      = data[0]
                     video._play_id = data[1]
-                    video._author  = data[2]
-                    video._title   = data[3]
-                    video._desc    = data[4]
-                    video._search  = data[5]
-                    video._len     = data[6]
-                    video._bytes   = data[7]
-                    video._ptime   = data[8]
-                    video._dtime   = data[9]
-                    video._ftime   = data[10]
-                    video._ltime   = data[11]
+                    video._ch_id   = data[2]
+                    video._author  = data[3]
+                    video._title   = data[4]
+                    video._desc    = data[5]
+                    video._search  = data[6]
+                    video._len     = data[7]
+                    video._bytes   = data[8]
+                    video._ptime   = data[9]
+                    video._dtime   = data[10]
+                    video._ftime   = data[11]
+                    video._ltime   = data[12]
                 else:
                     sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!')\
@@ -978,7 +1002,9 @@ class Video:
         f = '[Yatube] logic.Video.summary'
         if self.Success:
             video = mt.objs.videos().current()
-            mt.VideoInfo().extra()
+            logic = Video()
+            logic.length()
+            logic.statistics()
             tmp = io.StringIO()
             tmp.write(_('Author'))
             tmp.write(': ')

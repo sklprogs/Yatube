@@ -377,74 +377,126 @@ class Comments:
 class VideoInfo:
     
     def __init__(self):
-        self.Success = True
         ''' We do not perform checks here since 'Videos.current'
             will create empty fields if they are missing.
+            #NOTE: suggestions, fileDetails and processingDetails parts
+            are only available to the video's owner.
         '''
+        pass
     
-    def extra(self):
-        f = '[Yatube] meta.VideoInfo.extra'
-        if self.Success:
-            video = objs._videos.current()
-            # 'video._len' is filled somewhere, so do not rely on it
-            if video._views:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-            else:
-                resp = None
+    def channel_id(self):
+        f = '[Yatube] meta.VideoInfo.channel_id'
+        video = objs._videos.current()
+        if video._id:
+            resp = None
+            try:
+                resp = com.service().videos().list (id   = video._id
+                                                   ,part = 'id,snippet'
+                                                   ).execute()
+            except Exception as e:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Third-party module has failed!\n\nDetails: %s')\
+                            % str(e)
+                            )
+            objs.stat().add_quota(3)
+            if resp:
                 try:
-                    ''' #NOTE: suggestions, fileDetails and
-                        processingDetails parts are only available
-                        to the video's owner.
-                    '''
-                    resp = com.service().videos().list (id   = video._id
-                                                       ,part = 'id,contentDetails,statistics'
-                                                       ).execute()
-                except Exception as e:
+                    for item in resp['items']:
+                        if item['kind'] == "youtube#video":
+                            video._ch_id = item['snippet']['channelId']
+                            # We need only 1 suitable section
+                            return video._ch_id
+                except KeyError as e:
                     sh.objs.mes (f,_('WARNING')
-                                ,_('Third-party module has failed!\n\nDetails: %s')\
-                                % str(e)
+                                ,_('Missing key: "%s"!') % str(e)
                                 )
-                objs.stat().add_quota(5)
-                if resp:
-                    try:
-                        for item in resp['items']:
-                            if item['kind'] == "youtube#video":
-                                length = item['contentDetails']['duration']
-                                length = sh.com.yt_length(length)
-                                if length:
-                                    if isinstance(length,(float,int)):
-                                        video._len = length
-                                    else:
-                                        sh.objs.mes (f,_('ERROR')
-                                                    ,_('Wrong input data: "%s"!')\
-                                                    % str(length)
-                                                    )
-                                else:
-                                    sh.com.empty(f)
-                                video._views = sh.Input (title = f
-                                                        ,value = item['statistics']['viewCount']
-                                                        ).integer()
-                                video._likes = sh.Input (title = f
-                                                        ,value = item['statistics']['likeCount']
-                                                        ).integer()
-                                video._dislikes = sh.Input (title = f
-                                                           ,value = item['statistics']['dislikeCount']
-                                                           ).integer()
-                                video._com_num = sh.Input (title = f
-                                                          ,value = item['statistics']['commentCount']
-                                                          ).integer()
-                                # There can be only 1 suitable section
-                                break
-                    except KeyError as e:
-                        sh.objs.mes (f,_('WARNING')
-                                    ,_('Missing key: "%s"!') % str(e)
-                                    )
-                else:
-                    sh.com.empty(f)
+            else:
+                sh.com.empty(f)
         else:
-            sh.com.cancel(f)
+            sh.com.empty(f)
+    
+    def length(self):
+        f = '[Yatube] meta.VideoInfo.length'
+        video = objs._videos.current()
+        if video._id:
+            resp = None
+            try:
+                resp = com.service().videos().list (id   = video._id
+                                                   ,part = 'id,contentDetails'
+                                                   ).execute()
+            except Exception as e:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Third-party module has failed!\n\nDetails: %s')\
+                            % str(e)
+                            )
+            objs.stat().add_quota(3)
+            if resp:
+                try:
+                    for item in resp['items']:
+                        if item['kind'] == "youtube#video":
+                            length = item['contentDetails']['duration']
+                            length = sh.com.yt_length(length)
+                            if length:
+                                if isinstance(length,(float,int)):
+                                    video._len = length
+                                    return video._len
+                                else:
+                                    sh.objs.mes (f,_('ERROR')
+                                                ,_('Wrong input data: "%s"!')\
+                                                % str(length)
+                                                )
+                            else:
+                                sh.com.empty(f)
+                except KeyError as e:
+                    sh.objs.mes (f,_('WARNING')
+                                ,_('Missing key: "%s"!') % str(e)
+                                )
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.empty(f)
+    
+    def statistics(self):
+        f = '[Yatube] meta.VideoInfo.statistics'
+        video = objs._videos.current()
+        if video._id:
+            resp = None
+            try:
+                resp = com.service().videos().list (id   = video._id
+                                                   ,part = 'id,statistics'
+                                                   ).execute()
+            except Exception as e:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Third-party module has failed!\n\nDetails: %s')\
+                            % str(e)
+                            )
+            objs.stat().add_quota(3)
+            if resp:
+                try:
+                    for item in resp['items']:
+                        if item['kind'] == "youtube#video":
+                            video._views = sh.Input (title = f
+                                                    ,value = item['statistics']['viewCount']
+                                                    ).integer()
+                            video._likes = sh.Input (title = f
+                                                    ,value = item['statistics']['likeCount']
+                                                    ).integer()
+                            video._dislikes = sh.Input (title = f
+                                                       ,value = item['statistics']['dislikeCount']
+                                                       ).integer()
+                            video._com_num = sh.Input (title = f
+                                                      ,value = item['statistics']['commentCount']
+                                                      ).integer()
+                            # We need only 1 suitable section
+                            return True
+                except KeyError as e:
+                    sh.objs.mes (f,_('WARNING')
+                                ,_('Missing key: "%s"!') % str(e)
+                                )
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.empty(f)
 
 
 
@@ -730,7 +782,7 @@ class Video:
         self._desc     = ''
         self._thumb    = ''
         self._search   = ''
-        self._ch_url   = ''
+        self._ch_id    = ''
         self._dir      = ''
         self._url      = ''
         self._path     = ''
@@ -892,4 +944,15 @@ com  = Commands()
 if __name__ == '__main__':
     f = 'meta.__main__'
     sg.objs.start()
+    #author = 'Новости СВЕРХДЕРЖАВЫ'
+    #objs.playid().reset(author)
+    #print(objs._playid.by_user())
+    video = Video()
+    video._id = 'vjSohj-Iclc'
+    objs.videos().add(video)
+    VideoInfo().statistics()
+    print('Views:',video._views)
+    print('Likes:',video._likes)
+    print('Dislikes:',video._dislikes)
+    print('Comments:',video._com_num)
     sg.objs.end()

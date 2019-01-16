@@ -814,9 +814,9 @@ class Commands:
                 ''' #note: do not forget to update indices in case of
                     changing the DB structure.
                 '''
-                dtime = data[9]
-                ftime = data[10]
-                ltime = data[11]
+                dtime = data[10]
+                ftime = data[11]
+                ltime = data[12]
                 if dtime:
                     items.remove(_('Mark as watched'))
                 else:
@@ -1255,6 +1255,11 @@ class Commands:
                 sh.log.append (f,_('INFO')
                               ,_('Unblock channel "%s"') % video._author
                               )
+                ''' The 'Block' boolean will actually be set after
+                    reloading the channel, however, we want to inform
+                    the context menu about the changes.
+                '''
+                video.Block = False
                 lg.objs._lists._block_auth.remove(video._author)
                 blocked = lg.objs._lists._block_auth
                 blocked = '\n'.join(blocked)
@@ -1368,33 +1373,34 @@ class Commands:
     def block_channel(self,event=None):
         f = '[Yatube] yatube.Commands.block_channel'
         video = mt.objs.videos().current()
-        if video._play_id:
-            if video._author:
-                if video._author in lg.objs.lists()._block_auth:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
-                else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Block channel "%s"') \
-                                  % video._author
-                                  )
-                    lg.objs._lists._block_auth.append(video._author)
-                    blocked = lg.objs._lists._block_auth
-                    blocked = sorted (blocked
-                                     ,key=lambda x:x[0].lower()
-                                     )
-                    blocked = '\n'.join(blocked)
-                    if blocked:
-                        sh.WriteTextFile (file    = lg.objs.default()._fblock
-                                         ,Rewrite = True
-                                         ).write(text=blocked)
-                        lg.objs._lists.reset()
-                        self.reset_channels()
-                    else:
-                        sh.com.empty(f)
+        if video._author:
+            if video._author in lg.objs.lists()._block_auth:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
             else:
-                sh.com.empty(f)
+                sh.log.append (f,_('INFO')
+                              ,_('Block channel "%s"') % video._author
+                              )
+                ''' The 'Block' boolean will actually be set after
+                    reloading the channel, however, we want to inform
+                    the context menu about the changes.
+                '''
+                video.Block = True
+                lg.objs._lists._block_auth.append(video._author)
+                blocked = lg.objs._lists._block_auth
+                blocked = sorted (blocked
+                                 ,key=lambda x:x[0].lower()
+                                 )
+                blocked = '\n'.join(blocked)
+                if blocked:
+                    sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                     ,Rewrite = True
+                                     ).write(text=blocked)
+                    lg.objs._lists.reset()
+                    self.reset_channels()
+                else:
+                    sh.com.empty(f)
         else:
             sh.com.empty(f)
                    

@@ -1618,10 +1618,11 @@ class ListBox:
              )
         if self.SelectionCloses:
             #todo: test <KP_Enter> in Windows
+            ''' I remove '<Double-Button-1>' from the bindings because
+                it causes an odd click on underlying widgets.
+            '''
             bind (obj      = self
-                 ,bindings = ['<Return>','<KP_Enter>'
-                             ,'<Double-Button-1>'
-                             ]
+                 ,bindings = ['<Return>','<KP_Enter>']
                  ,action   = self.close
                  )
             if self.SingleClick and not self.Multiple:

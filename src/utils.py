@@ -133,7 +133,7 @@ class DB:
         f = '[Yatube] utils.DB.fetch'
         if self.Success:
             try:
-                # 12 columns for now
+                # 12 columns (old table)
                 self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
                                          ,SEARCH,LENGTH,IMAGE\
                                          ,PTIME,DTIME,FTIME,LTIME\
@@ -149,11 +149,12 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # 12 columns by now
+                # 13 columns by now
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      ID       text    \
                     ,PLAYID   text    \
+                    ,CHANID   text    \
                     ,AUTHOR   text    \
                     ,TITLE    text    \
                     ,DESC     text    \
@@ -165,7 +166,7 @@ class DB:
                     ,FTIME    float   \
                     ,LTIME    float   \
                                          )'
-                                 )
+                                  )
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -194,11 +195,13 @@ class DB:
                         dtime  = row[9]
                         ftime  = row[10]
                         ltime  = row[11]
-                        row = (vid,playid,author,title,desc,search
-                              ,length,image,ptime,dtime,ftime,ltime
+                        channel_id = ''
+                        row = (vid,playid,channel_id,author,title,desc
+                              ,search,length,image,ptime,dtime,ftime
+                              ,ltime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                            (?,?,?,?,?,?,?,?,?,?,?,?)'
+                                            (?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                           ,row
                                           )
                     except Exception as e:
