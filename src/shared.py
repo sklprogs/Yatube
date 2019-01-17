@@ -1078,27 +1078,6 @@ class Text:
             if match:
                 return match.group(1)
 
-    #todo: del
-    def extract_date_hash(self):
-        f = '[shared] shared.Text.extract_date_hash'
-        hash = -1
-        # Only strings at input
-        result = self.text.split('-')
-        if len(result) == 3:
-            self.text = result[0]
-            hash = self.str2int() * 365
-            self.text = result[1]
-            hash += self.str2int() * 12
-            self.text = result[2]
-            hash += self.str2int()
-        '''
-        else:
-           objs.mes (f,_('WARNING')
-                    ,_('Wrong input data!')
-                    )
-        '''
-        return hash
-
     def enclose(self,sym='"'):
         open_sym = close_sym = sym
         if sym == '(':

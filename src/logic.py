@@ -725,7 +725,7 @@ class Objects:
     def db(self):
         f = '[Yatube] logic.Objects.db'
         if not self._db:
-            path = self.default(product='yatube2')._fdb
+            path = self.default(product='yatube')._fdb
             if self._default.Success:
                 self._db = db.DB(path=path)
             else:
@@ -735,9 +735,9 @@ class Objects:
                 self._db = db.DB()
         return self._db
     
-    def default(self,product='yatube2'):
+    def default(self,product='yatube'):
         if not self._default:
-            self._default = DefaultConfig(product='yatube2')
+            self._default = DefaultConfig(product='yatube')
             self._default.run()
         return self._default
     
@@ -1272,7 +1272,7 @@ class URL:
 
 class DefaultConfig:
     
-    def __init__(self,product='yatube2'):
+    def __init__(self,product='yatube'):
         self.values()
         self.ihome   = sh.Home(app_name=product)
         self.Success = self.ihome.create_conf()

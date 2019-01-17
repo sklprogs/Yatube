@@ -270,8 +270,7 @@ class DB:
 class Commands:
     
     def __init__(self):
-        #cur
-        self._path  = '/home/pete/.config/yatube2/yatube.db'
+        self._path  = '/home/pete/.config/yatube/yatube.db'
         self._clone = '/tmp/yatube.db'
         
     def change_ftime(self):

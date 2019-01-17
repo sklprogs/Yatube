@@ -2422,8 +2422,7 @@ if __name__ == '__main__':
     f = '[Yatube] yatube.__main__'
     sg.objs.start()
     sg.Geometry(parent=gi.objs.parent()).set('1024x600')
-    #todo: rename to 'yatube' when ready
-    lg.objs.default(product='yatube2')
+    lg.objs.default(product='yatube')
     if lg.objs._default.Success:
         objs.commands().bindings()
         gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)

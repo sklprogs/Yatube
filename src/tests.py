@@ -148,7 +148,7 @@ def invalid_urls():
 if __name__ == '__main__':
     f = 'tests.__main__'
     sg.objs.start()
-    idb = db.DB(path='/home/pete/.config/yatube2/yatube.db')
+    idb = db.DB(path='/home/pete/.config/yatube/yatube.db')
     idb.dbc.execute('select * from VIDEOS limit ?',(5,))
     headers = [cn[0] for cn in idb.dbc.description]
     print(headers)
