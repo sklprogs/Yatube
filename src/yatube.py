@@ -1112,12 +1112,12 @@ class Commands:
         f = '[Yatube] yatube.Commands.set_max_videos'
         if str(self._menu.opt_max.choice).isdigit():
             mt.MAX_VIDEOS = int(self._menu.opt_max.choice)
+            self.reload_channel()
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('Wrong input data: "%s"') \
                         % str(self._menu.opt_max.choice)
                         )
-        self.channel_gui()
     
     def tooltips(self):
         guis = [video._gui for video in mt.objs.videos()._videos \
