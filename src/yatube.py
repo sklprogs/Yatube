@@ -40,7 +40,6 @@ class Extractor:
                 video._id = vid
                 mt.objs.videos().add(video)
             objs._commands.channel_gui()
-            objs._commands.update_widgets()
         else:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
@@ -78,19 +77,16 @@ class Trending:
     def fetch(self):
         mt.objs.trending().run()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         mt.objs.trending().fetch_prev()
         mt.objs._trending.videos()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         mt.objs.trending().fetch_next()
         mt.objs._trending.videos()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def reset(self,country):
         self._country = country
@@ -107,21 +103,18 @@ class Feed:
         lg.objs.feed().fetch()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._feed.get_token()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.Feed.fetch_prev'
         lg.objs.feed().fetch_prev()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._feed.get_token()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         f = '[Yatube] yatube.Feed.fetch_next'
         lg.objs.feed().fetch_next()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._feed.get_token()
-        objs._commands.update_widgets()
 
 
 
@@ -139,19 +132,16 @@ class Search:
     def fetch(self):
         mt.objs.search().run()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         mt.objs.search().fetch_prev()
         mt.objs._search.videos()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         mt.objs.search().fetch_next()
         mt.objs._search.videos()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def reset(self,query):
         self._query = query
@@ -199,21 +189,18 @@ class Favorites:
         lg.objs.favorites().fetch()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._favorites.get_token()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.Favorites.fetch_prev'
         lg.objs.favorites().fetch_prev()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._favorites.get_token()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         f = '[Yatube] yatube.Favorites.fetch_next'
         lg.objs.favorites().fetch_next()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._favorites.get_token()
-        objs._commands.update_widgets()
 
 
 
@@ -226,21 +213,18 @@ class Watchlist:
         lg.objs.watchlist().fetch()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._watchlist.get_token()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.Watchlist.fetch_prev'
         lg.objs.watchlist().fetch_prev()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._watchlist.get_token()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         f = '[Yatube] yatube.Watchlist.fetch_next'
         lg.objs.watchlist().fetch_next()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._watchlist.get_token()
-        objs._commands.update_widgets()
 
 
 
@@ -255,19 +239,16 @@ class Playlist:
     def fetch(self):
         mt.objs.playlist().run()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         mt.objs.playlist().fetch_prev()
         mt.objs._playlist.videos()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         mt.objs.playlist().fetch_next()
         mt.objs._playlist.videos()
         objs._commands.channel_gui()
-        objs._commands.update_widgets()
     
     def reset(self,play_id):
         self._play_id = play_id
@@ -403,21 +384,18 @@ class History:
         lg.objs.history().fetch()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._history.get_token()
-        objs._commands.update_widgets()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.History.fetch_prev'
         lg.objs.history().fetch_prev()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._history.get_token()
-        objs._commands.update_widgets()
     
     def fetch_next(self):
         f = '[Yatube] yatube.History.fetch_next'
         lg.objs.history().fetch_next()
         objs._commands.channel_gui(Unknown=False)
         lg.objs._history.get_token()
-        objs._commands.update_widgets()
 
 
 
@@ -763,6 +741,49 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def update_sel_menu(self,event=None):
+        f = '[Yatube] yatube.Commands.update_sel_menu'
+        selection = self.selection()
+        if selection:
+            items = list(gi.selection_items)
+            Found = False
+            for gui in selection:
+                mt.objs.videos().set_gui(gui)
+                path = lg.Video().path()
+                if path and os.path.exists(path):
+                    Found = True
+                    break
+            if not Found:
+                items.remove(_('Delete selected'))
+            ids = []
+            for gui in selection:
+                mt.objs._videos.set_gui(gui)
+                ids.append(mt.objs._videos.current()._id)
+            result = lg.objs.db().get_videos(ids)
+            if result:
+                dtimes = [item[10] for item in result if item[10]]
+                ftimes = [item[11] for item in result if item[11]]
+                ltimes = [item[12] for item in result if item[12]]
+                if len(dtimes) == len(result):
+                    items.remove(_('Mark as watched'))
+                elif not dtimes:
+                    items.remove(_('Mark as not watched'))
+                if len(ftimes) == len(result):
+                    items.remove(_('Add to favorites'))
+                elif not ftimes:
+                   items.remove(_('Remove from favorites')) 
+                if len(ltimes) == len(result):
+                    items.remove(_('Add to watchlist'))
+                elif not ltimes:
+                   items.remove(_('Remove from watchlist')) 
+        else:
+            items = (_('Selection')
+                    ,_('Select all new videos')
+                    )
+        self._menu.opt_sel.reset (items   = list(items)
+                                 ,default = _('Selection')
+                                 )
+    
     def toggle_cbox(self,event=None):
         f = '[Yatube] Commands.toggle_cbox'
         gui = self.get_widget(event=event)
@@ -793,6 +814,7 @@ class Commands:
         self._menu.title (selected = count
                          ,total    = len(mt.objs.videos()._videos)
                          )
+        self.update_sel_menu()
     
     def statistics(self,event=None,Silent=False):
         mt.objs.stat().report(Silent=Silent)
@@ -1086,12 +1108,6 @@ class Commands:
                 selected.append(gui)
         return selected
     
-    def load_view(self):
-        self.channel_gui()
-        self.update_widgets()
-        #todo: where we should place this?
-        #self.save_extra()
-    
     def set_max_videos(self,event=None):
         f = '[Yatube] yatube.Commands.set_max_videos'
         if str(self._menu.opt_max.choice).isdigit():
@@ -1101,7 +1117,7 @@ class Commands:
                         ,_('Wrong input data: "%s"') \
                         % str(self._menu.opt_max.choice)
                         )
-        self.load_view()
+        self.channel_gui()
     
     def tooltips(self):
         guis = [video._gui for video in mt.objs.videos()._videos \
@@ -1115,20 +1131,6 @@ class Commands:
                            ,hint_dir   = 'top'
                            ,hint_font  = 'Serif 10'
                            )
-    
-    def update_buttons(self,event=None):
-        #todo: implement
-        pass
-            
-    def update_widgets(self,event=None):
-        self.update_buttons()
-    
-    def save_url(self,event=None):
-        f = '[Yatube] yatube.Commands.save_url'
-        #todo: rework
-        lg.objs.channels().add (author = self._menu.opt_chl.choice
-                               ,urls   = lg.objs.channel()._ids
-                               )
     
     def prev_channel(self,event=None):
         objs.channels().dec()
@@ -1228,12 +1230,22 @@ class Commands:
         elif choice == _('Mark as not watched'):
             self._menu.opt_sel.set(default)
             self.sel_mark_not_watched()
+            ''' Do not put this code into 'self.mark_not_watched'
+                because it is used by 'self.sel_mark_not_watched'.
+            '''
+            if objs.channels().current()._type == 'history':
+                self.reload_channel()
         elif choice == _('Add to favorites'):
             self._menu.opt_sel.set(default)
             self.sel_star()
         elif choice == _('Remove from favorites'):
             self._menu.opt_sel.set(default)
             self.sel_unstar()
+            ''' Do not put this code into 'self.unstar'
+                because the latter is used by 'self.sel_unstar'.
+            '''
+            if objs.channels().current()._type == 'favorites':
+                self.reload_channel()
         elif choice == _('Delete selected'):
             self._menu.opt_sel.set(default)
             self.delete_selected()
@@ -1243,6 +1255,12 @@ class Commands:
         elif choice == _('Remove from watchlist'):
             self._menu.opt_sel.set(default)
             self.sel_remove_from_watchlist()
+            ''' Do not put this code into 'self.remove_from_watchlist'
+                because the latter is used by
+                'self.sel_remove_from_watchlist'.
+            '''
+            if objs.channels().current()._type == 'watchlist':
+                self.reload_channel()
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
@@ -1262,7 +1280,6 @@ class Commands:
         self._menu.opt_chl.set(_('Channels'))
         self._menu.opt_trd.set(_('Trending'))
         gi.objs.channel().canvas.move_top()
-        self.update_widgets()
     
     def unsubscribe(self,event=None):
         f = '[Yatube] yatube.Commands.unsubscribe'
@@ -1321,6 +1338,7 @@ class Commands:
                                  ).write(text=blocked)
                 lg.objs._lists.reset()
                 self.reset_channels()
+                self.reload_channel()
             else:
                 sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
@@ -1451,6 +1469,7 @@ class Commands:
                                      ).write(text=blocked)
                     lg.objs._lists.reset()
                     self.reset_channels()
+                    self.reload_channel()
                 else:
                     sh.com.empty(f)
         else:
@@ -1533,6 +1552,8 @@ class Commands:
                     Success = False
                 if Success:
                     self.mark_downloaded()
+                    if objs.channels().current()._type == 'watchlist':
+                        self.reload_channel()
             else:
                 sh.com.empty(f)
         else:
@@ -1678,20 +1699,45 @@ class Commands:
             elif choice == _('Play'):
                 self.download_video()
                 self.play_video()
+                if objs.channels().current()._type == 'watchlist':
+                    self.reload_channel()
             elif choice == _('Stream'):
                 self.stream_video()
             elif choice == _('Mark as watched'):
                 self.mark_watched()
             elif choice == _('Mark as not watched'):
                 self.mark_not_watched()
+                ''' Do not put this code into 'self.mark_not_watched'
+                    because the latter is used by
+                    'self.sel_mark_not_watched'.
+                '''
+                if objs.channels().current()._type == 'history':
+                    self.reload_channel()
             elif choice == _('Add to favorites'):
                 self.star()
             elif choice == _('Remove from favorites'):
                 self.unstar()
+                ''' Do not put this code into 'self.unstar' because
+                    the latter is used by 'self.sel_unstar'.
+                '''
+                if objs.channels().current()._type == 'favorites':
+                    self.reload_channel()
             elif choice == _('Add to watchlist'):
                 self.add2watchlist()
+                ''' Do not put this code into 'self.add2watchlist'
+                    because the latter is used by
+                    'self.sel_add2watchlist'.
+                '''
+                if objs.channels().current()._type == 'watchlist':
+                    self.reload_channel()
             elif choice == _('Remove from watchlist'):
                 self.remove_from_watchlist()
+                ''' Do not put this code into
+                    'self.remove_from_watchlist' because the latter is
+                    used by 'self.sel_remove_from_watchlist'.
+                '''
+                if objs.channels().current()._type == 'watchlist':
+                    self.reload_channel()
             elif choice == _('Delete the downloaded file'):
                 self.delete_video()
             elif choice == _('Extract links'):
@@ -2070,6 +2116,8 @@ class Commands:
                     self.play_video()
             gi.objs._progress.title()
             gi.objs._progress.close()
+            if objs.channels().current()._type == 'watchlist':
+                self.reload_channel()
         else:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
@@ -2328,7 +2376,6 @@ class Commands:
         # Move focus away from 'ttk.Combobox' (OptionMenu)
         gi.objs._channel.canvas.focus()
         self.tooltips()
-        self.update_widgets()
     
     def manage_sub(self):
         objs.add_id().reset()
@@ -2426,7 +2473,6 @@ if __name__ == '__main__':
     if lg.objs._default.Success:
         objs.commands().bindings()
         gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
-        objs._commands.update_widgets()
         gi.objs.progress()
         gi.objs._menu.show()
         lg.objs.db().save()

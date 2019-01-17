@@ -516,10 +516,14 @@ class DB:
 
 
 if __name__ == '__main__':
+    f = 'db.__main__'
     path = sh.Home('yatube').add_config('yatube.db')
     idb = DB(path)
-    idb.dbc.execute ('select AUTHOR,TITLE,LENGTH,DESC,PTIME from VIDEOS\
-                      where ID = ?',('JGNopwFcz3A',)
-                    )
-    print(idb.dbc.fetchall())
+    ids = ['vjSohj-Iclc','0BXC2-zyujI','0nNrILS7OgE']
+    result = idb.get_videos(ids)
+    if result:
+        dtimes = [item[10] for item in result if item[10]]
+        print(dtimes)
+    else:
+        sh.com.empty(f)
     idb.close()
