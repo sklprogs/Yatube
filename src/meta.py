@@ -404,7 +404,18 @@ class VideoInfo:
                 try:
                     for item in resp['items']:
                         if item['kind'] == "youtube#video":
-                            video._ch_id = item['snippet']['channelId']
+                            video._ch_id  = item['snippet']['channelId']
+                            ''' We need other fields besides CHANID
+                                if we extract URLs. This multi-purpose
+                                procedure allows us to get those fields
+                                by the same quota cost.
+                            '''
+                            if not video._author:
+                                video._author = item['snippet']['channelTitle']
+                                video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
+                                video._title  = item['snippet']['title']
+                                video._desc   = item['snippet']['description']
+                                video._thumb  = item['snippet']['thumbnails']['default']['url']
                             # We need only 1 suitable section
                             return video._ch_id
                 except KeyError as e:

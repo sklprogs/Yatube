@@ -15,6 +15,55 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+class Extractor:
+    
+    def __init__(self,url=''):
+        self._type = 'extractor'
+        self._url  = ''
+        if url:
+            self.reset(url)
+    
+    def fetch(self):
+        f = '[Yatube] yatube.Extractor.fetch'
+        objs.commands().reset_channel_gui()
+        lg.objs.extractor().run()
+        if lg.objs._extractor._urls:
+            mt.objs.videos().reset()
+            ''' We put a limit here just not to hang the program.
+                Potential limit (after which GUI may freeze) may be
+                around 500 videos. Moreover, each extracted video ID
+                adds up quota.
+            '''
+            ids = list(lg.objs._extractor._urls)[:200]
+            for vid in lg.objs._extractor._urls:
+                video = mt.Video()
+                video._id = vid
+                mt.objs.videos().add(video)
+            objs._commands.channel_gui()
+            objs._commands.update_widgets()
+        else:
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def fetch_prev(self):
+        f = '[Yatube] yatube.Extractor.fetch_prev'
+        sh.log.append (f,_('INFO')
+                      ,_('Nothing to do!')
+                      )
+    
+    def fetch_next(self):
+        f = '[Yatube] yatube.Extractor.fetch_next'
+        sh.log.append (f,_('INFO')
+                      ,_('Nothing to do!')
+                      )
+    
+    def reset(self,url):
+        self._url = url
+        lg.objs.extractor().reset(url=self._url)
+
+
+
 class Trending:
     
     def __init__(self,country=''):
@@ -231,7 +280,7 @@ class Channels:
     def __init__(self):
         self._channels = []
         self._modes    = ('favorites','feed','history','playlist'
-                         ,'search','trending','watchlist'
+                         ,'search','trending','watchlist','extractor'
                          )
         self._unique   = ('favorites','feed','history','watchlist')
         self._types    = []
@@ -299,6 +348,8 @@ class Channels:
                 self._channels.append(Watchlist())
             elif mode == 'history':
                 self._channels.append(History())
+            elif mode == 'extractor':
+                self._channels.append(Extractor(arg))
             self.inc()
         else:
             sh.objs.mes (f,_('ERROR')
@@ -1418,8 +1469,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.open_channel_url'
         channel_id = lg.Video().channel_id()
         if channel_id:
-            lg.objs.online()._url = 'https://www.youtube.com/channel/' \
-                                  + channel_id
+            lg.objs.online()._url = lg.pattern3a + channel_id
             lg.objs._online.browse()
         else:
             sh.com.empty(f)
@@ -1428,7 +1478,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.copy_channel_url'
         channel_id = lg.Video().channel_id()
         if channel_id:
-            url = 'https://www.youtube.com/channel/' + channel_id
+            url = lg.pattern3a + channel_id
             sg.Clipboard().copy(url)
         else:
             sh.com.empty(f)
@@ -1645,10 +1695,7 @@ class Commands:
             elif choice == _('Delete the downloaded file'):
                 self.delete_video()
             elif choice == _('Extract links'):
-                if url:
-                    self.get_links(url)
-                else:
-                    sh.com.empty(f)
+                self.get_links(url)
             elif choice == _('Load this channel'):
                 self.load_channel()
             elif choice == _('Block this channel'):
@@ -1722,9 +1769,12 @@ class Commands:
             sh.com.empty(f)
         
     def get_links(self,url):
-        lg.objs.extractor().reset(url=url)
-        lg.objs._extractor.run()
-        self.load_view()
+        f = '[Yatube] yatube.Commands.get_links'
+        if url:
+            objs.channels().add('extractor',url)
+            objs._channels.fetch()
+        else:
+            sh.com.empty(f)
                           
     def set_channel(self,event=None):
         f = '[Yatube] yatube.Commands.set_channel'

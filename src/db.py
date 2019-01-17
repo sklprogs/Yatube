@@ -516,11 +516,8 @@ class DB:
 
 
 if __name__ == '__main__':
-    path = sh.Home('yatube').add_config('yatube.db')
+    path = sh.Home('yatube2').add_config('yatube.db')
     idb = DB(path)
-    ids = idb.downloaded()
-    ids = list(ids)
-    for i in range(len(ids)):
-        ids[i] = str(i) + ': ' + ids[i]
-    print('\n'.join(ids))
+    idb.dbc.execute('select AUTHOR,TITLE,LENGTH,DESC,PTIME from VIDEOS where ID = ?',('JGNopwFcz3A',))
+    print(idb.dbc.fetchall())
     idb.close()

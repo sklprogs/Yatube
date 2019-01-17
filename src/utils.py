@@ -427,11 +427,28 @@ class Commands:
         
     def _get_empty(self,idb):
         f = '[Yatube] utils.Commands._get_empty'
-        idb.dbcw.execute('select AUTHOR from VIDEOS where AUTHOR=?',('',))
+        idb.dbcw.execute ('select AUTHOR from VIDEOS \
+                           where  AUTHOR = ? or TITLE = ?',('','',)
+                         )
         data = idb.dbcw.fetchall()
         sh.log.append (f,_('INFO')
                       ,_('%d records have been found.') % len(data)
                       )
+    
+    def get_empty(self):
+        f = '[Yatube] utils.Commands.get_empty'
+        idb = DB (path  = self._path
+                 ,clone = self._clone
+                 )
+        idb.connect()
+        idb.dbc.execute ('select AUTHOR from VIDEOS \
+                          where  AUTHOR = ? or TITLE = ?',('','',)
+                         )
+        data = idb.dbc.fetchall()
+        sh.log.append (f,_('INFO')
+                      ,_('%d records have been found.') % len(data)
+                      )
+        idb.close()
     
     def empty_author(self):
         f = '[Yatube] utils.Commands.empty_author'
@@ -445,7 +462,9 @@ class Commands:
                      )
             idb.connectw()
             self._get_empty(idb)
-            idb.dbcw.execute('delete from VIDEOS where AUTHOR=?',('',))
+            idb.dbcw.execute ('delete from VIDEOS \
+                               where AUTHOR = ? or TITLE = ?',('','',)
+                             )
             self._get_empty(idb)
             idb.savew()
             idb.closew()
@@ -456,4 +475,4 @@ class Commands:
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
     commands = Commands()
-    commands.alter()
+    commands.get_empty()

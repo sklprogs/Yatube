@@ -486,37 +486,29 @@ class Extractor:
        
     def __init__(self):
         self.values()
-        
+    
     def url(self):
         f = '[Yatube] logic.Extractor.url'
         if self.Success:
-            if self._url:
-                if ('youtube' in self._url or 'youtu.be' in self._url) \
-                and not '?list=' in self._url \
-                and not 'results?search_query=' in self._url \
-                and not '?gl=' in self._url:
-                    self._url = URL(url=self._url).channel_full()
-                elif len(self._url) == 11 and not 'https:' in self._url\
-                and not 'http:' in self._url and not 'www.' in self._url:
-                    self._url = URL(url=self._url).video_full()
-                elif not self._url.startswith('http'):
-                    self.Success = False
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data: "%s"') % self._url
-                                )
-            else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+            ''' Owing to parser peculiarities, if the link is
+                a non-conventional link to a Youtube video, it should be
+                first converted to a conventional link (see 'pattern1').
+                Youtube playlists, search results and links from
+                external sites may be preserved in the original form.
+                #todo: Fix the parser to get rid of this.
+            '''
+            vid = URL(self._url).video_id()
+            if len(vid) == 11 and not 'https:' in vid \
+            and not 'http:' in vid and not 'www.' in vid:
+                self._url = URL(vid).video_full()
         else:
             sh.com.cancel(f)
-    
-    def reset(self,url='',urls=[]):
+        
+    def reset(self,url=''):
         f = '[Yatube] logic.Extractor.reset'
         self.values()
-        if url or urls:
-            self._url  = url
-            self._urls = urls
+        if url:
+            self._url = url
         else:
             self.Success = False
             sh.com.empty(f)
@@ -538,6 +530,8 @@ class Extractor:
                 response = sh.Get(url=self._url).run()
                 if response:
                     self._html = response
+                else:
+                    sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
@@ -900,6 +894,11 @@ class Video:
         f = '[Yatube] logic.Video.assign_online'
         if self.Success:
             video = mt.objs.videos().current()
+            if not video._author:
+                ''' Do not use 'self.channel_id' or 'self.play_id' here
+                    since we do not want unnecessary DB updates.
+                '''
+                mt.VideoInfo().channel_id()
             video._search = video._author.lower() + ' ' \
                             + video._title.lower()
         else:
@@ -917,7 +916,10 @@ class Video:
                    ,video._bytes,video._ptime,video._dtime,video._ftime
                    ,video._ltime
                    )
-            objs.db().add_video(data)
+            if video._author and video._title:
+                objs.db().add_video(data)
+            else:
+                sh.com.empty(f)
         else:
             sh.com.cancel(f)
         
@@ -1449,12 +1451,5 @@ mt.objs.stat()
 
 
 if __name__ == '__main__':
-    video = mt.Video()
-    video._id = 'vjSohj-Iclc'
-    mt.objs.videos().add(video)
-    logic = Video()
-    logic.get()
-    print(logic.play_id())
-    mt.objs._stat.report(Silent=True)
-    objs.db().save()
-    objs._db.close()
+    url = 'https://www.youtube.com/embed/1jjSSXr5J7A?hl=ru_RU'
+    print(URL(url).video_id())
