@@ -948,37 +948,39 @@ class Commands:
         objs.channels().add('favorites')
         objs._channels.fetch()
     
-    def remove_from_watchlist(self,event=None):
+    def remove_from_watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.remove_from_watchlist'
         lg.objs.db().mark_later (video_id = mt.objs.videos().current()._id
                                 ,ltime    = 0
                                 )
-        self.unselect()
+        if Unselect:
+            self.unselect()
     
-    def add2watchlist(self,event=None):
+    def add2watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.add2watchlist'
         lg.objs.db().mark_later (video_id = mt.objs.videos().current()._id
                                 ,ltime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                 )
-        self.unselect()
+        if Unselect:
+            self.unselect()
     
-    def sel_add2watchlist(self,event=None):
+    def sel_add2watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.sel_add2watchlist'
         selection = self.selection()
         if selection:
             for video_gui in selection:
                 mt.objs.videos().set_gui(video_gui)
-                self.add2watchlist()
+                self.add2watchlist(Unselect=Unselect)
         else:
             sh.com.empty(f)
     
-    def sel_remove_from_watchlist(self,event=None):
+    def sel_remove_from_watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.sel_remove_from_watchlist'
         selection = self.selection()
         if selection:
             for video_gui in selection:
                 if mt.objs.videos().set_gui(video_gui):
-                    self.remove_from_watchlist()
+                    self.remove_from_watchlist(Unselect=Unselect)
                 else:
                     sh.objs.mes (f,_('WARNING')
                                 ,_('Wrong input data!')
@@ -1009,27 +1011,29 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def unstar(self,event=None):
+    def unstar(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.unstar'
         lg.objs.db().mark_starred (video_id = mt.objs.videos().current()._id
                                   ,ftime    = 0
                                   )
-        self.unselect()
+        if Unselect:
+            self.unselect()
     
-    def star(self,event=None):
+    def star(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.star'
         lg.objs.db().mark_starred (video_id = mt.objs.videos().current()._id
                                   ,ftime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                   )
-        self.unselect()
+        if Unselect:
+            self.unselect()
             
-    def sel_star(self,event=None):
+    def sel_star(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.sel_star'
         selection = self.selection()
         if selection:
             for video_gui in selection:
                 if mt.objs.videos().set_gui(video_gui):
-                    self.star()
+                    self.star(Unselect=Unselect)
                 else:
                     sh.objs.mes (f,_('WARNING')
                                 ,_('Wrong input data!')
@@ -1037,13 +1041,13 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def sel_mark_not_watched(self,event=None):
+    def sel_mark_not_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.sel_mark_not_watched'
         selection = self.selection()
         if selection:
             for video_gui in selection:
                 if mt.objs.videos().set_gui(video_gui):
-                    self.mark_not_watched()
+                    self.mark_not_watched(Unselect=Unselect)
                 else:
                     sh.objs.mes (f,_('WARNING')
                                 ,_('Wrong input data!')
@@ -1053,13 +1057,13 @@ class Commands:
                           ,_('Nothing to do!')
                           )
     
-    def sel_mark_watched(self,event=None):
+    def sel_mark_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.sel_mark_watched'
         selection = self.selection()
         if selection:
             for video_gui in selection:
                 if mt.objs.videos().set_gui(video_gui):
-                    self.mark_watched()
+                    self.mark_watched(Unselect=Unselect)
                 else:
                     sh.objs.mes (f,_('WARNING')
                                 ,_('Wrong input data!')
@@ -1069,7 +1073,7 @@ class Commands:
                           ,_('Nothing to do!')
                           )
     
-    def mark_not_watched(self,event=None):
+    def mark_not_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_not_watched'
         video = mt.objs.videos().current()
         gui   = video._gui
@@ -1079,11 +1083,12 @@ class Commands:
                                          ,dtime    = video._dtime
                                          )
             gui.black_out()
-            self.unselect()
+            if Unselect:
+                self.unselect()
         else:
             sh.com.empty(f)
     
-    def mark_watched(self,event=None):
+    def mark_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_watched'
         video = mt.objs.videos().current()
         gui   = video._gui
@@ -1093,7 +1098,9 @@ class Commands:
                                          ,dtime    = video._dtime
                                          )
             gui.gray_out()
-            self.unselect()
+            self.remove_from_watchlist(Unselect=False)
+            if Unselect:
+                self.unselect()
         else:
             sh.com.empty(f)
     
@@ -1227,6 +1234,8 @@ class Commands:
         elif choice == _('Mark as watched'):
             self._menu.opt_sel.set(default)
             self.sel_mark_watched()
+            if objs.channels().current()._type == 'watchlist':
+                self.reload_channel()
         elif choice == _('Mark as not watched'):
             self._menu.opt_sel.set(default)
             self.sel_mark_not_watched()
@@ -1705,6 +1714,8 @@ class Commands:
                 self.stream_video()
             elif choice == _('Mark as watched'):
                 self.mark_watched()
+                if objs.channels().current()._type == 'watchlist':
+                    self.reload_channel()
             elif choice == _('Mark as not watched'):
                 self.mark_not_watched()
                 ''' Do not put this code into 'self.mark_not_watched'
@@ -2123,18 +2134,18 @@ class Commands:
                           ,_('Nothing to do!')
                           )
         
-    def mark_downloaded(self):
+    def mark_downloaded(self,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_downloaded'
         video = mt.objs.videos().current()
         video._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         lg.objs.db().mark_downloaded (video_id = video._id
                                      ,dtime    = video._dtime
                                      )
-        self.remove_from_watchlist()
+        self.remove_from_watchlist(Unselect=False)
         if video._gui:
-            video._gui.cbox.disable()
             video._gui.gray_out()
-            self.report_selection()
+            if Unselect:
+                self.unselect()
     
     def download_video(self,event=None):
         f = '[Yatube] yatube.Commands.download_video'
