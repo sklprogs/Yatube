@@ -31,14 +31,15 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def feed_next(self,ptime=0,limit=50):
+    def feed_next(self,fdtime=0,limit=50):
         f = '[Yatube] db.DB.feed_next'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
-                                   where    PTIME < ? \
-                                   order by PTIME desc limit ?'
-                                 ,(ptime,limit,)
+                                   where    FDTIME < ? \
+                                   order by FDTIME desc,PTIME desc \
+                                   limit ?'
+                                 ,(fdtime,limit,)
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -48,20 +49,20 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def feed_prev(self,ptime=0,limit=50):
+    def feed_prev(self,fdtime=0,limit=50):
         f = '[Yatube] db.DB.feed_prev'
         if self.Success:
             try:
                 ''' #note: videos are sorted from newest to oldest
-                    (new ptime > old ptime), therefore, we cannot use
+                    (new fdtime > old fdtime), therefore, we cannot use
                     'desc' because otherwise the first page will be
                     returned each time we use 'feed_prev'. Thus, we
                     manually sort the return output.
                 '''
                 self.dbc.execute ('select   ID from VIDEOS \
-                                   where    PTIME > ? \
-                                   order by PTIME limit ?'
-                                 ,(ptime,limit,)
+                                   where    FDTIME > ? \
+                                   order by FDTIME,PTIME limit ?'
+                                 ,(fdtime,limit,)
                                  )
                 result = self.dbc.fetchall()
                 if result:
@@ -377,7 +378,7 @@ class DB:
         f = '[Yatube] db.DB.create_videos'
         if self.Success:
             try:
-                # 12 columns by now
+                # 14 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
                      ID     text    \
@@ -393,6 +394,7 @@ class DB:
                     ,DTIME  float   \
                     ,FTIME  float   \
                     ,LTIME  float   \
+                    ,FDTIME float   \
                                                        )'
                                  )
             except Exception as e:
@@ -405,7 +407,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                   (?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
             except Exception as e:
@@ -436,6 +438,7 @@ class DB:
                 self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
                                          ,DESC,SEARCH,LENGTH,IMAGE\
                                          ,PTIME,DTIME,FTIME,LTIME\
+                                         ,FDTIME \
                                    from   VIDEOS \
                                    where  ID = ?',(video_id,)
                                  )
@@ -456,7 +459,7 @@ class DB:
                 try:
                     query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC\
                                    ,SEARCH,LENGTH,IMAGE,PTIME,DTIME\
-                                   ,FTIME,LTIME\
+                                   ,FTIME,LTIME,FDTIME\
                              from   VIDEOS where ID in (%s)' \
                             % ','.join('?'*len(ids))
                     self.dbc.execute(query,ids)

@@ -42,8 +42,8 @@ class Feed:
     def get_token(self):
         f = '[Yatube] logic.Feed.get_token'
         if mt.objs.videos()._videos:
-            self._token_next = mt.objs._videos._videos[-1]._ptime
-            self._token_prev = mt.objs._videos._videos[0]._ptime
+            self._token_next = mt.objs._videos._videos[-1]._fdtime
+            self._token_prev = mt.objs._videos._videos[0]._fdtime
             date_next = sh.Time (_timestamp = self._token_next
                                 ,pattern    = '%Y-%m-%d %H:%M:%S'
                                 ).date()
@@ -70,8 +70,8 @@ class Feed:
     
     def fetch_prev(self):
         f = '[Yatube] logic.Feed.fetch_prev'
-        ids = objs.db().feed_prev (ptime = self._token_prev
-                                  ,limit = mt.MAX_VIDEOS
+        ids = objs.db().feed_prev (fdtime = self._token_prev
+                                  ,limit  = mt.MAX_VIDEOS
                                   )
         if ids:
             for vid in ids:
@@ -83,8 +83,8 @@ class Feed:
     
     def fetch_next(self):
         f = '[Yatube] logic.Feed.fetch_next'
-        ids = objs.db().feed_next (ptime = self._token_next
-                                  ,limit = mt.MAX_VIDEOS
+        ids = objs.db().feed_next (fdtime = self._token_next
+                                  ,limit  = mt.MAX_VIDEOS
                                   )
         if ids:
             for vid in ids:
@@ -901,6 +901,7 @@ class Video:
                 mt.VideoInfo().channel_id()
             video._search = video._author.lower() + ' ' \
                             + video._title.lower()
+            video._fdtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         else:
             sh.com.cancel(f)
                           
@@ -914,7 +915,7 @@ class Video:
             data = (video._id,video._play_id,video._ch_id,video._author
                    ,video._title,video._desc,video._search,video._len
                    ,video._bytes,video._ptime,video._dtime,video._ftime
-                   ,video._ltime
+                   ,video._ltime,video._fdtime
                    )
             if video._author and video._title:
                 objs.db().add_video(data)
@@ -927,7 +928,7 @@ class Video:
         f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
-                data_len = 13
+                data_len = 14
                 if len(data) == data_len:
                     video = mt.objs.videos().current()
                     video._id      = data[0]
@@ -943,6 +944,7 @@ class Video:
                     video._dtime   = data[10]
                     video._ftime   = data[11]
                     video._ltime   = data[12]
+                    video._fdtime  = data[13]
                 else:
                     sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!')\

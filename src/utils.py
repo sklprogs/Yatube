@@ -133,9 +133,9 @@ class DB:
         f = '[Yatube] utils.DB.fetch'
         if self.Success:
             try:
-                # 12 columns (old table)
-                self.dbc.execute ('select ID,PLAYID,AUTHOR,TITLE,DESC\
-                                         ,SEARCH,LENGTH,IMAGE\
+                # 13 columns (old table)
+                self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
+                                         ,DESC,SEARCH,LENGTH,IMAGE\
                                          ,PTIME,DTIME,FTIME,LTIME\
                                    from   VIDEOS'
                                  )
@@ -149,22 +149,23 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # 13 columns by now
+                # 14 columns by now
                 self.dbcw.execute (
                     'create table VIDEOS (\
-                     ID       text    \
-                    ,PLAYID   text    \
-                    ,CHANID   text    \
-                    ,AUTHOR   text    \
-                    ,TITLE    text    \
-                    ,DESC     text    \
-                    ,SEARCH   text    \
-                    ,LENGTH   integer \
-                    ,IMAGE    binary  \
-                    ,PTIME    float   \
-                    ,DTIME    float   \
-                    ,FTIME    float   \
-                    ,LTIME    float   \
+                     ID     text    \
+                    ,PLAYID text    \
+                    ,CHANID text    \
+                    ,AUTHOR text    \
+                    ,TITLE  text    \
+                    ,DESC   text    \
+                    ,SEARCH text    \
+                    ,LENGTH integer \
+                    ,IMAGE  binary  \
+                    ,PTIME  float   \
+                    ,DTIME  float   \
+                    ,FTIME  float   \
+                    ,LTIME  float   \
+                    ,FDTIME float   \
                                          )'
                                   )
             except Exception as e:
@@ -185,23 +186,24 @@ class DB:
                     try:
                         vid    = row[0]
                         playid = row[1]
-                        author = row[2]
-                        title  = row[3]
-                        desc   = row[4]
-                        search = row[5]
-                        length = row[6]
-                        image  = row[7]
-                        ptime  = row[8]
-                        dtime  = row[9]
-                        ftime  = row[10]
-                        ltime  = row[11]
-                        channel_id = ''
-                        row = (vid,playid,channel_id,author,title,desc
+                        chanid = row[2]
+                        author = row[3]
+                        title  = row[4]
+                        desc   = row[5]
+                        search = row[6]
+                        length = row[7]
+                        image  = row[8]
+                        ptime  = row[9]
+                        dtime  = row[10]
+                        ftime  = row[11]
+                        ltime  = row[12]
+                        fdtime = ptime
+                        row = (vid,playid,chanid,author,title,desc
                               ,search,length,image,ptime,dtime,ftime
-                              ,ltime
+                              ,ltime,fdtime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                            (?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                          (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                           ,row
                                           )
                     except Exception as e:
@@ -473,5 +475,4 @@ class Commands:
 
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
-    commands = Commands()
-    commands.get_empty()
+    Commands().alter()
