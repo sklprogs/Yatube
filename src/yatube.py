@@ -741,6 +741,27 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def hint(self,event=None):
+        f = '[Yatube] yatube.Commands.hint'
+        gui = self.get_widget(event)
+        if gui:
+            if hasattr(gui,'label2'):
+                mt.objs.videos().set_gui(gui)
+                length = lg.Video().length()
+                length = sh.com.easy_time(length)
+                sg.ToolTip (obj        = gui.label2
+                           ,text       = length
+                           ,hint_width = 90
+                           ,hint_dir   = 'bottom'
+                           ,hint_delay = 400
+                           ).showtip()
+            else:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Wrong input data!')
+                            )
+        else:
+            sh.com.empty(f)
+    
     def update_sel_menu(self,event=None):
         f = '[Yatube] yatube.Commands.update_sel_menu'
         selection = self.selection()
@@ -1131,6 +1152,10 @@ class Commands:
                 if video._gui
                ]
         for gui in guis:
+            sg.bind (obj      = gui.label2
+                    ,bindings = '<Enter>'
+                    ,action   = self.hint
+                    )
             if len(gui._title) > 60:
                 sg.ToolTip (obj        = gui.frame
                            ,text       = gui._title

@@ -902,7 +902,7 @@ class Objects:
                         = self._context = self._summary \
                         = self._progress = self._blacklist \
                         = self._subscribe = self._comments = None
-        
+    
     def comments(self):
         if not self._comments:
             top = sg.Top(parent=sg.objs.root())
