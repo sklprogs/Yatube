@@ -1569,14 +1569,13 @@ class Commands:
             sh.com.empty(f)
     
     def _stream_slow(self,app):
+        #'-ao','sdl',
         if 'mpv' in app:
-            return ['-ao','sdl','-fs','-framedrop=vo'
-                   ,'-cache','8192','--cache-initial','1024'
-                   ,'--no-correct-pts'
+            return ['-fs','-framedrop=vo','-cache','8192'
+                   ,'--cache-initial','1024','--no-correct-pts'
                    ]
         elif 'mplayer' in app:
-            return ['-ao','sdl','-fs','-framedrop'
-                   ,'-cache','8192','-cache-min','50'
+            return ['-fs','-framedrop','-cache','8192','-cache-min','50'
                    ,'-nocorrect-pts'
                    ]
     
@@ -2078,13 +2077,9 @@ class Commands:
         
     def _play_slow(self,app='/usr/bin/mpv'):
         if 'mpv' in app:
-            custom_args = ['-ao','sdl','-fs','-framedrop=vo'
-                          ,'--no-correct-pts'
-                          ]
+            custom_args = ['-fs','-framedrop=vo','--no-correct-pts']
         elif 'mplayer' in app:
-            custom_args = ['-ao','sdl','-fs','-framedrop'
-                          ,'-nocorrect-pts'
-                          ]
+            custom_args = ['-fs','-framedrop','-nocorrect-pts']
         else:
             custom_args = []
         sh.Launch (target = lg.Video().path()
