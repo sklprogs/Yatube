@@ -930,7 +930,7 @@ class Video:
             if data:
                 data_len = 14
                 if len(data) == data_len:
-                    video = mt.objs.videos().current()
+                    video          = mt.objs.videos().current()
                     video._id      = data[0]
                     video._play_id = data[1]
                     video._ch_id   = data[2]
@@ -1134,10 +1134,7 @@ class Video:
                     # Tell other functions the operation was a success
                     return True
                 except Exception as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Third-party module has failed!\n\nDetails: %s')\
-                                % str(e)
-                                )
+                    mt.com.error(f,e)
             else:
                 sh.com.empty(f)
         else:
@@ -1171,10 +1168,7 @@ class Video:
                                         ,_('Wrong input data!')
                                         )
                 except Exception as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Third-party module has failed!\n\nDetails: %s')\
-                                % str(e)
-                                )
+                    mt.com.error(f,e)
             else:
                 sh.com.empty(f)
 

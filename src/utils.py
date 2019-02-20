@@ -17,6 +17,18 @@ class DB:
         self._clone  = clone
         self.Success = self._clone and sh.File(file=self._path).Success
     
+    def del_author(self,author):
+        f = '[Yatube] utils.DB.del_author'
+        if self.Success:
+            try:
+                idb.dbcw.execute ('delete from VIDEOS \
+                                   where AUTHOR = ?',(author,)
+                                 )
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def fetch_ftime(self):
         f = '[Yatube] utils.DB.fetch_ftime'
         if self.Success:
@@ -275,6 +287,16 @@ class Commands:
         self._path  = '/home/pete/.config/yatube/yatube.db'
         self._clone = '/tmp/yatube.db'
         
+    def del_author(self,author):
+        sh.File(self._path,self._clone).copy()
+        idb = DB (path  = self._path
+                 ,clone = self._clone
+                 )
+        idb.connectw()
+        idb.del_author(author)
+        idb.savew()
+        idb.closew()
+    
     def change_ftime(self):
         f = '[Yatube] utils.Commands.change_ftime'
         Success = sh.File (file    = self._path
@@ -475,4 +497,4 @@ class Commands:
 
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
-    Commands().alter()
+    #Commands().alter()

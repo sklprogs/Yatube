@@ -2084,8 +2084,8 @@ class Commands:
     def select_new(self,event=None):
         f = '[Yatube] yatube.Commands.select_new'
         video = mt.objs.videos().current()
-        guis  = [video._gui for video in mt.objs._videos._videos \
-                 if video._gui
+        guis  = [item._gui for item in mt.objs._videos._videos \
+                 if item._gui
                 ]
         for gui in guis:
             mt.objs._videos.set_gui(gui)
@@ -2096,8 +2096,8 @@ class Commands:
                        self._date_filter()
             else:
                 cond = not video._dtime and not video.Block
-                if cond:
-                    gui.cbox.enable()
+            if cond:
+                gui.cbox.enable()
         self.report_selection()
         
     def _play_slow(self,app='/usr/bin/mpv'):

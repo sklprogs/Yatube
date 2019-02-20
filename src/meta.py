@@ -44,10 +44,7 @@ class Trending:
                                                          ,pageToken  = token
                                                          ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if self._resp:
                 try:
@@ -143,10 +140,7 @@ class PlayId:
                                                      ,maxResults  = 1
                                                      ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if resp:
                 try:
@@ -174,10 +168,7 @@ class PlayId:
                                                      ,maxResults = 1
                                                      ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if resp:
                 try:
@@ -344,17 +335,8 @@ class Comments:
                                         ,pageToken  = token
                                         ).execute()
             except Exception as e:
-                e = str(e)
                 self.Success = False
-                if 'has disabled comments' in e:
-                    sh.objs.mes (f,_('INFO')
-                                ,_('Comments are disabled for this video.')
-                                )
-                else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Third-party module has failed!\n\nDetails: %s')\
-                                % str(e)
-                                )
+                com.error(f,e)
             ''' The comments quota is not set in the quota calculator.
                 According to documentation:
                 https://developers.google.com/youtube/v3/docs/commentThreads/list#properties%23properties
@@ -395,10 +377,7 @@ class VideoInfo:
                                                    ,part = 'id,snippet'
                                                    ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if resp:
                 try:
@@ -437,10 +416,7 @@ class VideoInfo:
                                                    ,part = 'id,contentDetails'
                                                    ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if resp:
                 try:
@@ -478,10 +454,7 @@ class VideoInfo:
                                                    ,part = 'id,statistics'
                                                    ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if resp:
                 try:
@@ -620,10 +593,7 @@ class Playlist:
                                                                 ,pageToken  = token
                                                                 ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(3)
             if self._resp:
                 try:
@@ -689,10 +659,7 @@ class Search:
                                                          ,pageToken  = token
                                                          ).execute()
             except Exception as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Third-party module has failed!\n\nDetails: %s')\
-                            % str(e)
-                            )
+                com.error(f,e)
             objs.stat().add_quota(100)
             if self._resp:
                 try:
@@ -947,9 +914,23 @@ class Commands:
                          ,cache        = MemoryCache()
                          )
         except Exception as e:
+            self.error(f,e)
+    
+    def error(self,f,e):
+        e = str(e)
+        if 'you have exceeded your' in e and 'quota' in e \
+        or 'Daily Limit Exceeded' in e:
+            sh.objs.mes (f,_('WARNING')
+                        ,_('Quota has been exceeded!')
+                        )
+        elif 'has disabled comments' in e:
+            sh.objs.mes (f,_('INFO')
+                        ,_('Comments are disabled for this video.')
+                        )
+        else:
             sh.objs.mes (f,_('WARNING')
                         ,_('Third-party module has failed!\n\nDetails: %s')\
-                        % str(e)
+                        % e
                         )
 
 
