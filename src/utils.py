@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import sqlite3
+import html
 import shared as sh
 import gettext, gettext_windows
 
@@ -17,11 +18,38 @@ class DB:
         self._clone  = clone
         self.Success = self._clone and sh.File(file=self._path).Success
     
+    def update_unescape(self,vid,author,title,desc,search):
+        f = '[Yatube] utils.DB.update_unescape'
+        if self.Success:
+            try:
+                self.dbcw.execute ('update VIDEOS set AUTHOR = ?\
+                                          ,TITLE = ?,DESC = ?,SEARCH = ?\
+                                    where  ID = ?'
+                                  ,(author,title,desc,search,vid)
+                                  )
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def get_unescape(self):
+        f = '[Yatube] utils.DB.get_unescape'
+        if self.Success:
+            try:
+                self.dbcw.execute ('select ID,AUTHOR,TITLE,DESC,SEARCH \
+                                   from VIDEOS'
+                                 )
+                return self.dbcw.fetchall()
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def del_author(self,author):
         f = '[Yatube] utils.DB.del_author'
         if self.Success:
             try:
-                idb.dbcw.execute ('delete from VIDEOS \
+                self.dbcw.execute ('delete from VIDEOS \
                                    where AUTHOR = ?',(author,)
                                  )
             except Exception as e:
@@ -287,6 +315,52 @@ class Commands:
         self._path  = '/home/pete/.config/yatube/yatube.db'
         self._clone = '/tmp/yatube.db'
         
+    def unescape(self):
+        f = '[Yatube] utils.Commands.unescape'
+        sh.File(self._path,self._clone).copy()
+        idb = DB (path  = self._path
+                 ,clone = self._clone
+                 )
+        idb.connectw()
+        data = idb.get_unescape()
+        if data:
+            ids     = []
+            authors = []
+            titles  = []
+            desc    = []
+            search  = []
+            sh.log.append (f,_('INFO')
+                          ,_('Get data')
+                          )
+            for item in data:
+                ids.append(item[0])
+                authors.append(item[1])
+                titles.append(item[2])
+                desc.append(item[3])
+                search.append(item[4])
+            sh.log.append (f,_('INFO')
+                          ,_('Process data')
+                          )
+            for i in range(len(ids)):
+                if authors[i] != html.unescape(authors[i]) \
+                or titles[i] != html.unescape(titles[i]) \
+                or desc[i] != html.unescape(desc[i]) \
+                or search[i] != html.unescape(search[i]):
+                    sh.log.append (f,_('INFO')
+                                  ,_('Update %s') % ids[i]
+                                  )
+                    tauthor = html.unescape(authors[i])
+                    ttitle  = html.unescape(titles[i])
+                    tdesc   = html.unescape(desc[i])
+                    tsearch = html.unescape(search[i])
+                    idb.update_unescape (ids[i],tauthor,ttitle,tdesc
+                                        ,tsearch
+                                        )
+            idb.savew()
+        else:
+            sh.com.empty(f)
+        idb.closew()
+    
     def del_author(self,author):
         sh.File(self._path,self._clone).copy()
         idb = DB (path  = self._path
@@ -497,4 +571,4 @@ class Commands:
 
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
-    #Commands().alter()
+    Commands().unescape()

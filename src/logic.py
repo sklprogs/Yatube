@@ -4,6 +4,7 @@
 import re
 import os
 import io
+import html
 import youtube_dl
 import shared    as sh
 import sharedGUI as sg
@@ -779,6 +780,11 @@ class Video:
         video._author = sh.Text(video._author).delete_unsupported()
         video._title  = sh.Text(video._title).delete_unsupported()
         video._desc   = sh.Text(video._desc).delete_unsupported()
+        video._search = sh.Text(video._search).delete_unsupported()
+        video._author = html.unescape(video._author)
+        video._title  = html.unescape(video._title)
+        video._desc   = html.unescape(video._desc)
+        video._search = html.unescape(video._search)
     
     def length(self):
         f = '[Yatube] logic.Video.length'
