@@ -1085,6 +1085,14 @@ class Video:
                                         ,AllOS    = AllOS
                                         ,max_len  = 100
                                         ).run()
+                ''' For some reason, 'youtube_dl' does not screen
+                    correctly characters such as '%' and throws an error
+                    when downloading videos containing such characters
+                    in their path. We delete '%' instead of replacing
+                    with '%%' since 'mpv' also seems to have such
+                    problems.
+                '''
+                title = title.replace('%','')
                 video._dir  = objs.default().ihome.add_config ('Youtube'
                                                               ,author
                                                               )
