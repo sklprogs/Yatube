@@ -1172,14 +1172,19 @@ class Video:
                 try:
                     with youtube_dl.YoutubeDL(options) as ydl:
                         info_dict = ydl.extract_info(video._id,download=False)
-                        if 'url' in info_dict:
-                            ''' Since the stream url will expire, we do
-                                not create a permanent variable.
-                            '''
-                            return info_dict['url']
+                        if info_dict:
+                            if 'url' in info_dict:
+                                ''' Since the stream url will expire, we do
+                                    not create a permanent variable.
+                                '''
+                                return info_dict['url']
+                            else:
+                                sh.objs.mes (f,_('WARNING')
+                                            ,_('Wrong input data!')
+                                            )
                         else:
                             sh.objs.mes (f,_('WARNING')
-                                        ,_('Wrong input data!')
+                                        ,_('This video is not available.')
                                         )
                 except Exception as e:
                     mt.com.error(f,e)
