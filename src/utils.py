@@ -569,6 +569,8 @@ class Commands:
             sh.com.cancel(f)
 
 
+com = Commands()
+
+
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
-    Commands().unescape()

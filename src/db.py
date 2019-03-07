@@ -429,7 +429,7 @@ class DB:
             sh.com.cancel(f)
                           
     def get_video(self,video_id):
-        ''' This is very slow (~0,28s per a video => ~3s per a channel).
+        ''' This is very slow (~0,28s per a video).
             Use 'self.get_videos' for a batch.
         '''
         f = '[Yatube] db.DB.get_video'

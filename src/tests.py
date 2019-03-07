@@ -143,14 +143,36 @@ def invalid_urls():
         print('\n'.join(result))
     idb.close()
 
+def search_field():
+    idb = db.DB(path='/home/pete/.config/yatube/yatube.db')
+    itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
+    itime.add_days(-7)
+    idb.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
+                      where SEARCH like ? and DTIME > ? and FDTIME < ?'
+                    ,('%дерев%',0,itime.timestamp(),)
+                    )
+    result = idb.dbc.fetchall()
+    if result:
+        import io
+        tmp = io.StringIO()
+        for i in range(len(result)):
+            tmp.write(str(i))
+            tmp.write(' : ')
+            tmp.write(result[i][0])
+            tmp.write('\n')
+            tmp.write(result[i][1])
+            tmp.write('\n')
+            tmp.write(result[i][2])
+            tmp.write('\n\n')
+        text = tmp.getvalue()
+        tmp.close()
+        sg.fast_txt(text)
+    idb.close()
+
 
 
 if __name__ == '__main__':
     f = 'tests.__main__'
     sg.objs.start()
-    idb = db.DB(path='/home/pete/.config/yatube/yatube.db')
-    idb.dbc.execute('select * from VIDEOS limit ?',(5,))
-    headers = [cn[0] for cn in idb.dbc.description]
-    print(headers)
-    idb.close()
+    search_field()
     sg.objs.end()

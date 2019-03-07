@@ -1,4 +1,5 @@
 
+- Remove popup windows when starting downloading/playing/streaming (otherwise, the popup may freeze and/or occupy the screen)
 - Search results may be randomized. If that happens, use
   utils.Commands.change_ltime (change_ftime, etc.) to diversify LTIME
   (FTIME, etc.). Also try using microseconds for DTIME, LTIME, FTIME
