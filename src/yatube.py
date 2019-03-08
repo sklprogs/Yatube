@@ -835,7 +835,6 @@ class Commands:
         self._menu.title (selected = count
                          ,total    = len(mt.objs.videos()._videos)
                          )
-        self.update_sel_menu()
     
     def statistics(self,event=None,Silent=False):
         mt.objs.stat().report(Silent=Silent)
@@ -2053,6 +2052,15 @@ class Commands:
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
         # Menu: OptionMenus
+        ''' Updating selection menu is slow, so we run it only when
+            clicking 'opt_sel' and not in 'self.report_selection'.
+            This is a binding to the entire OptionMenu and will not
+            interfere with bindings to OptionMenu items.
+        '''
+        sg.bind (obj      = self._menu.opt_sel
+                ,bindings = '<Button-1>'
+                ,action   = self.update_sel_menu
+                )
         self._menu.opt_upd.action = self.menu_update
         self._menu.opt_viw.action = self.menu_view
         self._menu.opt_sel.action = self.menu_selection
