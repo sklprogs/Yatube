@@ -1198,7 +1198,8 @@ class Text:
         self.text = self.text.replace('\t',' ')
         return self.text
 
-    def yo(self): # This allows to shorten dictionaries
+    # This allows to shorten dictionaries
+    def yo(self):
         self.text = self.text.replace('Ё','Е')
         self.text = self.text.replace('ё','е')
         return self.text

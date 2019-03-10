@@ -725,6 +725,8 @@ class Commands:
     def __init__(self):
         self._mode      = None
         self._timestamp = None
+        self._tip_tim   = None
+        self._tip_tit   = None
         self.FirstVideo = True
         self._menu      = gi.objs.menu()
         itime           = lg.Time()
@@ -741,6 +743,33 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def show_hints(self,event=None):
+        # We need to call 'idletasks' twice in order to view changes
+        sg.objs.root().idle()
+        sg.SHOW_HINTS = True
+        sg.objs.root().idle()
+    
+    def hide_hints(self,event=None):
+        ''' - Showing/hiding a hint is managed automatically. However,
+              we may want to force hiding the hint when
+              downloading/playing/streaming since the hint will overlap
+              other windows (e.g., a player app when playing/streaming
+              or all apps when downloading for a long time).
+            - Also set sg.SHOW_HINTS to False to prevent creating new
+              hints.
+        '''
+        try:
+            self._tip_tim.leave()
+            self._tip_tit.leave()
+        except Exception as e:
+            #cur
+            #todo: del
+            print('hide_hints: NOT WORKING !!!!!!!!!!!!!!!!!')
+            print(str(e))
+        sg.objs.root().idle()
+        sg.SHOW_HINTS = False
+        sg.objs.root().idle()
+    
     def hint(self,event=None):
         f = '[Yatube] yatube.Commands.hint'
         gui = self.get_widget(event)
@@ -749,12 +778,13 @@ class Commands:
                 mt.objs.videos().set_gui(gui)
                 length = lg.Video().length()
                 length = sh.com.easy_time(length)
-                sg.ToolTip (obj        = gui.label2
-                           ,text       = length
-                           ,hint_width = 90
-                           ,hint_dir   = 'bottom'
-                           ,hint_delay = 400
-                           ).showtip()
+                self._tip_tim = sg.ToolTip (obj        = gui.label2
+                                           ,text       = length
+                                           ,hint_width = 90
+                                           ,hint_dir   = 'bottom'
+                                           ,hint_delay = 400
+                                           )
+                self._tip_tim.showtip()
             else:
                 sh.objs.mes (f,_('WARNING')
                             ,_('Wrong input data!')
@@ -1156,12 +1186,12 @@ class Commands:
                     ,action   = self.hint
                     )
             if len(gui._title) > 60:
-                sg.ToolTip (obj        = gui.frame
-                           ,text       = gui._title
-                           ,hint_width = 900
-                           ,hint_dir   = 'top'
-                           ,hint_font  = 'Serif 10'
-                           )
+                self._tip_tit = sg.ToolTip (obj        = gui.frame
+                                           ,text       = gui._title
+                                           ,hint_width = 900
+                                           ,hint_dir   = 'top'
+                                           ,hint_font  = 'Serif 10'
+                                           )
     
     def prev_channel(self,event=None):
         objs.channels().dec()
@@ -1539,8 +1569,10 @@ class Commands:
         f = '[Yatube] yatube.Commands.stream'
         selection = self.selection()
         if selection:
+            self.hide_hints()
             mt.objs.videos().set_gui(selection[0])
             self.stream_video()
+            self.show_hints()
         else:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
@@ -2142,6 +2174,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.play'
         selection = self.selection()
         if selection:
+            self.hide_hints()
             # Download all videos, play the first one only
             for i in range(len(selection)):
                 mt.objs.videos().set_gui(selection[i])
@@ -2157,6 +2190,7 @@ class Commands:
             gi.objs._progress.close()
             if objs.channels().current()._type == 'watchlist':
                 self.reload_channel()
+            self.show_hints()
         else:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
@@ -2212,6 +2246,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.download'
         selection = self.selection()
         if selection:
+            self.hide_hints()
             for i in range(len(selection)):
                 mt.objs.videos().set_gui(selection[i])
                 gi.objs.progress().title (_('Download progress') \
@@ -2222,6 +2257,7 @@ class Commands:
                 self.download_video()
             gi.objs._progress.title()
             gi.objs._progress.close()
+            self.show_hints()
         else:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
@@ -2318,7 +2354,7 @@ class Commands:
         if unknown:
             for i in range(len(unknown)):
                 mt.objs._videos.i = unknown[i]
-                lg.Video().get()
+                lg.Video().new()
                 self.update_video(i=unknown[i])
             lg.objs.db().save()
         else:

@@ -12,6 +12,9 @@ gettext_windows.setup_env()
 gettext.install('shared','../resources/locale')
 
 
+SHOW_HINTS = True
+
+
 # Привязать горячие клавиши или кнопки мыши к действию
 # object, str/list, function
 def bind(obj,bindings,action):
@@ -1450,7 +1453,7 @@ class ToolTipBase:
 
     def showtip(self):
         f = '[shared] sharedGUI.ToolTipBase.showtip'
-        if self.tip:
+        if self.tip or not SHOW_HINTS:
             return
         ''' The tip window must be completely outside the widget;
             otherwise, when the mouse enters the tip window we get
@@ -1514,20 +1517,22 @@ class ToolTip(ToolTipBase):
         ToolTipBase.__init__(self,obj=obj)
 
     def showcontents(self):
-        self.frm = Frame (parent = self.tip
-                         ,bg     = self.hint_bcolor
-                         ,bd     = self.hint_bwidth
-                         ,expand = False
-                         )
-        self.lbl = Label (parent  = self.frm
-                         ,text    = self.text
-                         ,bg      = self.hint_bg
-                         ,width   = self.hint_width
-                         ,height  = self.hint_height
-                         ,justify = 'center'
-                         ,Close   = False
-                         ,font    = self.hint_font
-                         )
+        # Assign this boolean externally to stop showing hints
+        if SHOW_HINTS:
+            self.frm = Frame (parent = self.tip
+                             ,bg     = self.hint_bcolor
+                             ,bd     = self.hint_bwidth
+                             ,expand = False
+                             )
+            self.lbl = Label (parent  = self.frm
+                             ,text    = self.text
+                             ,bg      = self.hint_bg
+                             ,width   = self.hint_width
+                             ,height  = self.hint_height
+                             ,justify = 'center'
+                             ,Close   = False
+                             ,font    = self.hint_font
+                             )
 
 
 
@@ -1858,10 +1863,14 @@ class ListBox:
 
 
 class OptionMenu:
-    ''' tk.OptionMenu will convert integers to strings, but we better do
-        this here to avoid problems with iterating ("in requires int as
-        the left operand") later (this happens when we pass a sequence
-        of chars instead of a list of strings).
+    ''' - 'action' parameter defines an action triggered any time we
+          select an OptionMenu item. Use 'sg.bind' to set an action each
+          time the entire OptionMenu (and not an item) is clicked. These
+          bindings do not interfere with each other.
+        - tk.OptionMenu will convert integers to strings, but we better
+          do this here to avoid problems with iterating ("in requires
+          int as the left operand") later (this happens when we pass
+          a sequence of chars instead of a list of strings).
     '''
     def __init__ (self
                  ,parent

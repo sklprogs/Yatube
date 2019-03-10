@@ -998,6 +998,23 @@ class Video:
         else:
             sh.com.cancel(f)
     
+    def new(self):
+        ''' Separating this code allows to skip a slow 'get_video'
+            procedure when we are processing videos not known by the DB.
+        '''
+        f = '[Yatube] logic.Video.new'
+        if self.Success:
+            sh.log.append (f,_('INFO')
+                          ,_('Get new video info: %s') \
+                          % str(mt.objs.videos().current()._id)
+                          )
+            self.assign_online()
+            self.unsupported()
+            self.image()
+            self.dump()
+        else:
+            sh.com.cancel(f)
+    
     def get(self):
         f = '[Yatube] logic.Video.get'
         if self.Success:
@@ -1014,14 +1031,7 @@ class Video:
                 self.assign_offline(video.Saved)
                 self.unsupported()
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Get new video info: %s') \
-                              % str(video._id)
-                              )
-                self.assign_online()
-                self.unsupported()
-                self.image()
-                self.dump()
+                self.new()
         else:
             sh.com.cancel(f)
     
