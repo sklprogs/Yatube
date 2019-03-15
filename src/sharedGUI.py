@@ -545,9 +545,15 @@ class TextBox:
                  ,expand=1,side=None,fill='both'
                  ,words=None,font='Serif 14'
                  ,ScrollX=False,ScrollY=True
-                 ,SpecialReturn=True,state='normal'
+                 ,SpReturn=True,state='normal'
                  ):
         self.type      = 'TextBox'
+        self.scr_ver   = None
+        self.scr_hor   = None
+        self.Active    = False
+        self.Save      = False
+        self.tags      = []
+        self.marks     = []
         self.Composite = Composite
         self.ScrollX   = ScrollX
         self.ScrollY   = ScrollY
@@ -557,14 +563,10 @@ class TextBox:
             выберите 'disabled', чтобы надпись на кнопке была другой
         '''
         self.state     = state
-        self.SpecialReturn = SpecialReturn
+        self.SpReturn  = SpReturn
         ''' (optional, external) Prevent resetting the active (already
             shown) widget
         '''
-        self.Active    = False
-        self.Save      = False
-        self.tags      = []
-        self.marks     = []
         self.parent    = parent
         self.expand    = expand
         self.side      = side
@@ -577,13 +579,13 @@ class TextBox:
 
     def _gui_txt(self):
         if self.parent.type in ('Root','Toplevel'):
-            self.widget = tk.Text (master = self.parent.widget
+            self.widget = tk.Text (master = self.frm_txt.widget
                                   ,font   = self.font
                                   ,wrap   = 'word'
                                   ,height = 1
                                   )
         else:
-            self.widget = tk.Text (master = self.parent.widget
+            self.widget = tk.Text (master = self.frm_txt.widget
                                   ,font   = self.font
                                   ,wrap   = 'word'
                                   )
@@ -592,42 +594,49 @@ class TextBox:
                          ,side   = self.side
                          )
 
-    def _gui_scroll_hor(self):
-        frame = Frame (parent = self.parent
-                      ,expand = 0
-                      ,fill   = 'x'
-                      ,side   = 'top'
-                      )
-        self.scrollbar_hor = tk.Scrollbar (master    = frame.widget
-                                          ,orient    = tk.HORIZONTAL
-                                          ,jump      = 0
-                                          ,takefocus = False
-                                          )
-        self.widget.config(xscrollcommand=self.scrollbar_hor.set)
-        self.scrollbar_hor.config(command=self.widget.xview)
-        self.scrollbar_hor.pack(expand=1,fill='x')
-
-    def _gui_scroll_ver(self):
-        self.scrollbar = tk.Scrollbar (master    = self.widget
-                                      ,jump      = 0
-                                      ,takefocus = False
-                                      )
-        self.widget.config(yscrollcommand=self.scrollbar.set)
-        self.scrollbar.config(command=self.widget.yview)
-        self.scrollbar.pack(side='right',fill='y')
-
+    def frames(self):
+        self.frm_prm = Frame (parent = self.parent)
+        self.frm_top = Frame (parent = self.frm_prm
+                             ,side   = 'top'
+                             ,expand = True
+                             ,fill   = 'both'
+                             )
+        self.frm_btm = Frame (parent = self.frm_prm
+                             ,side   = 'bottom'
+                             ,expand = False
+                             ,fill   = 'x'
+                             )
+        self.frm_txt = Frame (parent = self.frm_top
+                             ,side   = 'left'
+                             )
+        self.frm_ver = Frame (parent = self.frm_top
+                             ,expand = False
+                             ,side   = 'right'
+                             ,fill   = 'y'
+                             )
+        self.frm_hor = Frame (parent = self.frm_btm
+                             ,expand = False
+                             ,fill   = 'x'
+                             )
+    
     def gui(self):
+        self.frames()
         self._gui_txt()
         if self.ScrollY:
-            self._gui_scroll_ver()
+            self.scr_ver = Scrollbar (parent = self.frm_ver
+                                     ,scroll = self
+                                     )
         if self.ScrollX:
-            self._gui_scroll_hor()
+            self.scr_hor = Scrollbar (parent = self.frm_hor
+                                     ,scroll = self
+                                     ,Horiz  = True
+                                     )
         if not self.Composite and \
            not hasattr(self.parent,'close_button'):
             if self.parent.type == 'Toplevel' \
             or self.parent.type == 'Root':
                 self.parent.close_button = \
-                Button (parent = self.parent
+                Button (parent = self.frm_btm
                        ,text   = _('Quit')
                        ,hint   = _('Quit')
                        ,action = self.close
@@ -686,7 +695,7 @@ class TextBox:
         # Только для несоставных виджетов
         if not self.Composite:
             self.widget.unbind('<Return>')
-            if self.state == 'disabled' or self.SpecialReturn:
+            if self.state == 'disabled' or self.SpReturn:
                 ''' Разрешать считывать текст после нажатия Escape
                     (в Entry запрещено)
                 '''
@@ -716,25 +725,24 @@ class TextBox:
              ,action   = self.insert_clipboard
              )
         bind (obj      = self
-             ,bindings = '<Key>'
-             ,action   = self.clear_on_key
-             )
-        bind (obj      = self
              ,bindings = '<Control-Alt-u>'
              ,action   = self.toggle_case
              )
         if hasattr(self.parent,'type') \
-            and self.parent.type == 'Toplevel':
+        and self.parent.type == 'Toplevel':
             self.parent.widget.protocol ("WM_DELETE_WINDOW"
-                                            ,self.close
-                                            )
+                                        ,self.close
+                                        )
 
     def toggle_case(self,event=None):
         f = '[shared] sharedGUI.TextBox.toggle_case'
         text = sh.Text(text=self.selection.text()).toggle_case()
         pos1, pos2 = self.selection.get()
         self.clear_selection()
-        self.insert(text=text,pos=self.cursor(),MoveTop=0)
+        self.insert (text    = text
+                    ,pos     = self.cursor()
+                    ,MoveTop = 0
+                    )
         if pos1 and pos2:
             self.selection.reset (pos1tk     = pos1
                                  ,pos2tk     = pos2
@@ -803,7 +811,10 @@ class TextBox:
     #todo: simplify
     def tag_remove(self,tag_name='sel',pos1tk='1.0',pos2tk='end'):
         f = '[shared] sharedGUI.TextBox.tag_remove'
-        self._tag_remove(tag_name=tag_name,pos1tk=pos1tk,pos2tk=pos2tk)
+        self._tag_remove (tag_name = tag_name
+                         ,pos1tk   = pos1tk
+                         ,pos2tk   = pos2tk
+                         )
         if self.tags:
             try:
                 self.tags.remove(tag_name)
@@ -907,24 +918,13 @@ class TextBox:
                           ,_('The parent has already been destroyed.')
                           )
 
-    #fix Tkinter limitations
-    def clear_on_key(self,event=None):
-        if event and event.char:
-            if event.char.isspace() or event.char in sh.lat_alphabet \
-            or event.char in sh.ru_alphabet or event.char in sh.digits \
-            or event.char in sh.punc_array or event.char \
-            in sh.punc_ext_array:
-                ''' #todo: suppress excessive logging (Selection.get,
-                    TextBox.clear_selection, TextBox.cursor,
-                    Clipboard.paste, Words.no_by_tk)
-                '''
-                self.clear_selection()
-
     def clear_selection(self,event=None):
         f = '[shared] sharedGUI.TextBox.clear_selection'
         pos1tk, pos2tk = self.selection.get()
         if pos1tk and pos2tk:
-            self.clear_text(pos1=pos1tk,pos2=pos2tk)
+            self.clear_text (pos1 = pos1tk
+                            ,pos2 = pos2tk
+                            )
             return 'break'
         # Too frequent
         '''
@@ -1045,7 +1045,9 @@ class TextBox:
                 sh.log.append (f,_('DEBUG')
                               ,_('%d tags to assign') % len(result)
                               )
-                self.tag_config(tag_name='spell',background='red')
+                self.tag_config (tag_name   = 'spell'
+                                ,background = 'red'
+                                )
             else:
                 sh.log.append (f,_('INFO')
                               ,_('Spelling seems to be correct.')
@@ -3396,17 +3398,17 @@ class SimpleTop:
 
 class Scrollbar:
     
-    def __init__(self,parent,scroll,Horizontal=False):
-        self.type       = 'Scrollbar'
-        self.parent     = parent
-        self.scroll     = scroll
-        self.Horizontal = Horizontal
+    def __init__(self,parent,scroll,Horiz=False):
+        self.type   = 'Scrollbar'
+        self.parent = parent
+        self.scroll = scroll
+        self.Horiz  = Horiz
         self.gui()
     
     def gui(self):
         f = '[shared] sharedGUI.Scrollbar.gui'
         if hasattr(self.parent,'widget'):
-            if self.Horizontal:
+            if self.Horiz:
                 orient = tk.HORIZONTAL
                 fill   = 'x'
                 side   = None
@@ -3421,7 +3423,7 @@ class Scrollbar:
                              ,fill   = fill
                              ,side   = side
                              )
-            if self.Horizontal:
+            if self.Horiz:
                 self.scroll.widget.config(xscrollcommand=self.widget.set)
                 self.widget.config(command=self.scroll.widget.xview)
             else:
@@ -4208,12 +4210,12 @@ class MultCBoxes:
         self.frm1 = Frame (parent = self.frm)
         
     def scrollbars(self):
-        self.xscr = Scrollbar (parent     = self.frmx
-                              ,scroll     = self.cvs
-                              ,Horizontal = True
+        self.xscr = Scrollbar (parent = self.frmx
+                              ,scroll = self.cvs
+                              ,Horiz  = True
                               )
-        self.yscr = Scrollbar (parent     = self.frmy
-                              ,scroll     = self.cvs
+        self.yscr = Scrollbar (parent = self.frmy
+                              ,scroll = self.cvs
                               )
                                  
     def show(self,event=None):

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-copyright = 'Copyright 2015-2018, Peter Sklyar'
+copyright = 'Copyright 2015-2019, Peter Sklyar'
 license   = 'GPL v.3'
 email     = 'skl.progs@gmail.com'
 

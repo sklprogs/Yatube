@@ -861,13 +861,13 @@ class Channel:
         self.canvas.embed(self.frm_emb)
     
     def scrollbars(self):
-        sg.Scrollbar (parent     = self.frame_x
-                     ,scroll     = self.canvas
-                     ,Horizontal = True
+        sg.Scrollbar (parent = self.frame_x
+                     ,scroll = self.canvas
+                     ,Horiz  = True
                      )
-        sg.Scrollbar (parent     = self.frame_y
-                     ,scroll     = self.canvas
-                     ,Horizontal = False
+        sg.Scrollbar (parent = self.frame_y
+                     ,scroll = self.canvas
+                     ,Horiz  = False
                      )
     
     def gui(self):
@@ -907,8 +907,8 @@ class Objects:
         if not self._comments:
             top = sg.Top(parent=sg.objs.root())
             sg.Geometry(parent=top).set('1024x768')
-            self._comments = sg.TextBox (parent        = top
-                                        ,SpecialReturn = True
+            self._comments = sg.TextBox (parent   = top
+                                        ,SpReturn = True
                                         )
             self._comments.icon(icon_path)
             self._comments.title(_('First 100 comments:'))
@@ -918,8 +918,8 @@ class Objects:
         if not self._subscribe:
             top = sg.Top(parent=sg.objs.root())
             sg.Geometry(parent=top).set('1024x768')
-            self._subscribe = sg.TextBox (parent        = top
-                                         ,SpecialReturn = False
+            self._subscribe = sg.TextBox (parent   = top
+                                         ,SpReturn = False
                                          )
             self._subscribe.icon(icon_path)
             self._subscribe.title(_('Edit subscriptions:'))
@@ -929,8 +929,8 @@ class Objects:
         if not self._blacklist:
             top = sg.Top(parent=sg.objs.root())
             sg.Geometry(parent=top).set('1024x768')
-            self._blacklist = sg.TextBox (parent        = top
-                                         ,SpecialReturn = False
+            self._blacklist = sg.TextBox (parent   = top
+                                         ,SpReturn = False
                                          )
             self._blacklist.icon(icon_path)
             self._blacklist.title(_('Edit the blacklist:'))
