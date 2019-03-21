@@ -20,7 +20,8 @@ SHOW_HINTS = True
 def bind(obj,bindings,action):
     f = '[shared] sharedGUI.bind'
     if hasattr(obj,'widget'):
-        if isinstance(bindings,str) or isinstance(bindings,list):
+        if isinstance(bindings,str) or isinstance(bindings,list) \
+        or isinstance(bindings,tuple):
             if isinstance(bindings,str):
                 bindings = [bindings]
             for binding in bindings:
@@ -595,7 +596,9 @@ class TextBox:
                          )
 
     def frames(self):
-        self.frm_prm = Frame (parent = self.parent)
+        self.frm_prm = Frame (parent = self.parent
+                             ,propag = not self.Composite
+                             )
         self.frm_top = Frame (parent = self.frm_prm
                              ,side   = 'top'
                              ,expand = True
@@ -1101,6 +1104,18 @@ class Entry:
             WidgetShared.custom_buttons(self)
         self.bindings()
 
+    def reset_data(self):
+        ''' This is added for compliance with 'TextBox' (especially
+            useful when the parent may be different).
+        '''
+        self.clear_text()
+    
+    def reset(self):
+        ''' This is added for compliance with 'TextBox' (especially
+            useful when the parent may be different).
+        '''
+        self.clear_text()
+    
     def read_only(self,ReadOnly=True):
         ''' Setting ReadOnly state works only after filling text. Only
             tk.Text, tk.Entry and not tk.Toplevel are supported.
@@ -2769,18 +2784,21 @@ class MessageBuilder:
                  ,Single=True,YesNo=False
                  ):
         self.Yes    = False
+        self.Lock   = False
         self.YesNo  = YesNo
         self.Single = Single
         self.level  = level
-        self.Lock   = False
         self.paths()
         self.parent = parent
+        self.gui()
+        
+    def gui(self):
         self.obj    = Top(parent=self.parent)
         self.widget = self.obj.widget
         self.icon()
         self.frames()
         self.picture()
-        self.txt = TextBox (parent    = self.top_right
+        self.txt = TextBox (parent    = self.frm_tpr
                            ,Composite = True
                            )
         self.buttons()
@@ -2800,23 +2818,19 @@ class MessageBuilder:
     def paths(self):
         f = '[shared] sharedGUI.MessageBuilder.paths'
         if self.level == _('WARNING'):
-            self.path = sh.objs.pdir().add ('..'
-                                           ,'resources'
+            self.path = sh.objs.pdir().add ('..','resources'
                                            ,'warning.gif'
                                            )
         elif self.level == _('INFO'):
-            self.path = sh.objs.pdir().add ('..'
-                                           ,'resources'
+            self.path = sh.objs.pdir().add ('..','resources'
                                            ,'info.gif'
                                            )
         elif self.level == _('QUESTION'):
-            self.path = sh.objs.pdir().add ('..'
-                                           ,'resources'
+            self.path = sh.objs.pdir().add ('..','resources'
                                            ,'question.gif'
                                            )
         elif self.level == _('ERROR'):
-            self.path = sh.objs.pdir().add ('..'
-                                           ,'resources'
+            self.path = sh.objs.pdir().add ('..','resources'
                                            ,'error.gif'
                                            )
         else:
@@ -2837,33 +2851,28 @@ class MessageBuilder:
             self.obj.icon(path=self.path)
 
     def frames(self):
-        frame = Frame (parent = self.obj
-                      ,expand = 1
-                      )
-        top = Frame (parent = frame
-                    ,expand = 1
-                    ,side   = 'top'
-                    )
-        bottom = Frame (parent = frame
-                       ,expand = 0
-                       ,side   = 'bottom'
-                       )
-        self.top_left = Frame (parent = top
-                              ,expand = 0
-                              ,side   = 'left'
-                              )
-        self.top_right = Frame (parent = top
-                               ,expand = 1
-                               ,side   = 'right'
-                               )
-        self.bottom_left = Frame (parent = bottom
-                                 ,expand = 1
-                                 ,side   = 'left'
-                                 )
-        self.bottom_right = Frame (parent = bottom
-                                  ,expand = 1
-                                  ,side   = 'right'
-                                  )
+        self.frm_prm = Frame (parent = self.obj)
+        self.frm_top = Frame (parent = self.frm_prm
+                             ,side   = 'top'
+                             )
+        self.frm_btm = Frame (parent = self.frm_prm
+                             ,expand = False
+                             ,side   = 'bottom'
+                             )
+        self.frm_tpl = Frame (parent = self.frm_top
+                             ,expand = False
+                             ,side   = 'left'
+                             )
+        self.frm_tpr = Frame (parent = self.frm_top
+                             ,side   = 'right'
+                             ,propag = False
+                             )
+        self.frm_btl = Frame (parent = self.frm_btm
+                             ,side   = 'left'
+                             )
+        self.frm_btr = Frame (parent = self.frm_btm
+                             ,side   = 'right'
+                             )
 
     def buttons(self):
         if self.YesNo or self.level == _('QUESTION'):
@@ -2873,7 +2882,7 @@ class MessageBuilder:
             YesName = 'OK'
             NoName  = _('Cancel')
         if self.Single and self.level != _('QUESTION'):
-            self.btn_yes = Button (parent    = self.bottom_left
+            self.btn_yes = Button (parent    = self.frm_btl
                                   ,action    = self.close_yes
                                   ,hint      = _('Accept and close')
                                   ,text      = YesName
@@ -2881,13 +2890,13 @@ class MessageBuilder:
                                   ,side      = 'right'
                                   )
         else:
-            self.btn_no  = Button (parent = self.bottom_left
+            self.btn_no  = Button (parent = self.frm_btl
                                   ,action = self.close_no
                                   ,hint   = _('Reject and close')
                                   ,text   = NoName
                                   ,side   = 'left'
                                   )
-            self.btn_yes = Button (parent    = self.bottom_right
+            self.btn_yes = Button (parent    = self.frm_btr
                                   ,action    = self.close_yes
                                   ,hint      = _('Accept and close')
                                   ,text      = YesName
@@ -2937,9 +2946,9 @@ class MessageBuilder:
                 Without explicitly indicating 'master', we get
                 "image pyimage1 doesn't exist".
             '''
-            self.label = Label (parent = self.top_left
+            self.label = Label (parent = self.frm_tpl
                                ,image  = \
-                         tk.PhotoImage (master = self.top_left.widget
+                         tk.PhotoImage (master = self.frm_tpl.widget
                                        ,file   = self.path
                                        )
                                )
@@ -3040,6 +3049,10 @@ class Canvas:
         self.fill         = fill
         self.gui()
         
+    def move_left_corner(self,event=None):
+        self.move_top()
+        self.widget.xview_moveto(0)
+    
     def mouse_wheel(self,event=None):
         ''' Windows XP has the delta of -120, however, it differs
             depending on the version.
@@ -3051,7 +3064,7 @@ class Canvas:
         return 'break'
     
     # These bindings are not enabled by default
-    def top_bindings(self,top):
+    def top_bindings(self,top,Control=True):
         f = '[shared] sharedGUI.Canvas.top_bindings'
         if top:
             if hasattr(top,'type') and top.type == 'Toplevel':
@@ -3080,20 +3093,30 @@ class Canvas:
                      ,action   = self.move_page_up
                      )
                 bind (obj      = top
-                     ,bindings = '<End>'
-                     ,action   = self.move_bottom
-                     )
-                bind (obj      = top
-                     ,bindings = '<Home>'
-                     ,action   = self.move_top
-                     )
-                bind (obj      = top
                      ,bindings = ['<MouseWheel>'
                                  ,'<Button 4>'
                                  ,'<Button 5>'
                                  ]
                      ,action   = self.mouse_wheel
                      )
+                if Control:
+                    bind (obj      = top
+                         ,bindings = '<Control-Home>'
+                         ,action   = self.move_top
+                         )
+                    bind (obj      = top
+                         ,bindings = '<Control-End>'
+                         ,action   = self.move_bottom
+                         )
+                else:
+                    bind (obj      = top
+                         ,bindings = '<Home>'
+                         ,action   = self.move_top
+                         )
+                    bind (obj      = top
+                         ,bindings = '<End>'
+                         ,action   = self.move_bottom
+                         )
             else:
                 sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
@@ -3508,98 +3531,170 @@ class Panes:
     def __init__(self,background='old lace',Extended=False):
         self._bg      = background
         self.Extended = Extended
+        self.parent   = objs.new_top(Maximize=1)
         self.gui()
         
     def frames(self):
-        self.frame1 = Frame (parent = self.obj
-                            ,side   = 'top'
-                            ,fill   = 'both'
-                            )
+        self.frm_prm = Frame (parent = self.parent)
+        self.frm_top = Frame (parent = self.frm_prm
+                             ,side   = 'top'
+                             )
+        self.frm_btm = Frame (parent = self.frm_prm
+                             ,side   = 'bottom'
+                             )
+        self.frm_pn1 = Frame (parent = self.frm_top
+                             ,side   = 'left'
+                             )
+        self.frm_pn2 = Frame (parent = self.frm_top
+                             ,side   = 'right'
+                             )
         if self.Extended:
-            self.frame2 = Frame (parent = self.obj
-                                ,side   = 'bottom'
-                                ,fill   = 'both'
-                                )
+            self.frm_pn3 = Frame (parent = self.frm_btm
+                                 ,side   = 'left'
+                                 )
+            self.frm_pn4 = Frame (parent = self.frm_btm
+                                 ,side   = 'right'
+                                 )
 
     def panes(self):
-        self.pane1 = TextBox (parent    = self.frame1
+        self.pane1 = TextBox (parent    = self.frm_pn1
                              ,Composite = True
-                             ,side      = 'left'
                              )
-        self.pane2 = TextBox (parent    = self.frame1
+        self.pane2 = TextBox (parent    = self.frm_pn2
                              ,Composite = True
-                             ,side      = 'left'
                              )
         if self.Extended:
-            self.pane3 = TextBox (parent    = self.frame2
+            self.pane3 = TextBox (parent    = self.frm_pn3
                                  ,Composite = True
-                                 ,side      = 'left'
                                  )
-            self.pane4 = TextBox (parent    = self.frame2
+            self.pane4 = TextBox (parent    = self.frm_pn4
                                  ,Composite = True
-                                 ,side      = 'left'
                                  )
     
     def gui(self):
-        self.obj = objs.new_top(Maximize=1)
-        self.widget = self.obj.widget
+        self.widget = self.parent.widget
         self.frames()
         self.panes()
         self.pane1.focus()
-        #todo: reenable for 4 panes after GUI glitches are fixed
-        if not self.Extended:
+        if self.Extended:
             self.pane1.widget.config(bg=self._bg)
         self.icon()
         self.title()
         self.bindings()
         
     def title(self,text=_('Compare texts:')):
-        self.obj.title(text=text)
+        self.parent.title(text=text)
         
     def show(self,event=None):
-        self.obj.show()
+        self.parent.show()
         
     def close(self,event=None):
-        self.obj.close()
+        self.parent.close()
         
     def bindings(self):
-        ''' We do not bind 'select1' to 'pane1' and 'select2' to 'pane3'
-            since we need to further synchronize references by LMB
-            anyway, and this further binding will rewrite the current
-            binging.
+        ''' - We do not bind 'select1' to 'pane1' and 'select2' to
+              'pane3' since we need to further synchronize references
+              by LMB anyway, and this further binding will rewrite
+              the current binging.
+            - We do not use 'Control' for bindings. If we use it,
+              Tkinter will execute its internal bindings for
+              '<Control-Down/Up>' and '<Control-Left/Right>' before
+              executing our own. Even though we can return 'break'
+              in 'select1'-4, we should not do that because we need
+              internal bindings for '<Control-Left>' and
+              '<Control-Right>'. Thus, we should not use 'Control' at
+              all because we cannot replace 'Alt' with 'Control'
+              for all actions.
         '''
         bind (obj      = self
-             ,bindings = ['<Control-q>','<Control-w>']
+             ,bindings = ('<Control-q>','<Control-w>')
              ,action   = self.close
              )
         bind (obj      = self
              ,bindings = '<Escape>'
-             ,action   = Geometry(parent=self.obj).minimize
+             ,action   = Geometry(parent=self.parent).minimize
              )
         bind (obj      = self
-             ,bindings = ['<Alt-Key-1>','<Control-Key-1>']
+             ,bindings = ('<Alt-Key-1>','<Control-Key-1>')
              ,action   = self.select1
              )
         bind (obj      = self
-             ,bindings = ['<Alt-Key-2>','<Control-Key-2>']
+             ,bindings = ('<Alt-Key-2>','<Control-Key-2>')
              ,action   = self.select2
+             )
+        bind (obj      = self.pane1
+             ,bindings = '<ButtonRelease-1>'
+             ,action   = self.select1
              )
         bind (obj      = self.pane2
              ,bindings = '<ButtonRelease-1>'
              ,action   = self.select2
              )
+        bind (obj      = self.pane1
+             ,bindings = '<Alt-Right>'
+             ,action   = self.select2
+             )
+        bind (obj      = self.pane2
+             ,bindings = '<Alt-Left>'
+             ,action   = self.select1
+             )
         if self.Extended:
             bind (obj      = self
-                 ,bindings = ['<Alt-Key-3>','<Control-Key-3>']
+                 ,bindings = ('<Alt-Key-3>','<Control-Key-3>')
                  ,action   = self.select3
                  )
             bind (obj      = self
-                 ,bindings = ['<Alt-Key-4>','<Control-Key-4>']
+                 ,bindings = ('<Alt-Key-4>','<Control-Key-4>')
                  ,action   = self.select4
+                 )
+            bind (obj      = self.pane3
+                 ,bindings = '<ButtonRelease-1>'
+                 ,action   = self.select3
                  )
             bind (obj      = self.pane4
                  ,bindings = '<ButtonRelease-1>'
                  ,action   = self.select4
+                 )
+            bind (obj      = self.pane2
+                 ,bindings = '<Alt-Right>'
+                 ,action   = self.select3
+                 )
+            bind (obj      = self.pane3
+                 ,bindings = '<Alt-Right>'
+                 ,action   = self.select4
+                 )
+            bind (obj      = self.pane3
+                 ,bindings = '<Alt-Left>'
+                 ,action   = self.select2
+                 )
+            bind (obj      = self.pane4
+                 ,bindings = '<Alt-Left>'
+                 ,action   = self.select3
+                 )
+            bind (obj      = self.pane1
+                 ,bindings = '<Alt-Down>'
+                 ,action   = self.select3
+                 )
+            bind (obj      = self.pane2
+                 ,bindings = '<Alt-Down>'
+                 ,action   = self.select4
+                 )
+            bind (obj      = self.pane3
+                 ,bindings = '<Alt-Up>'
+                 ,action   = self.select1
+                 )
+            bind (obj      = self.pane4
+                 ,bindings = '<Alt-Up>'
+                 ,action   = self.select2
+                 )
+        else:
+            bind (obj      = self.pane1
+                 ,bindings = '<Alt-Down>'
+                 ,action   = self.select2
+                 )
+            bind (obj      = self.pane2
+                 ,bindings = '<Alt-Up>'
+                 ,action   = self.select1
                  )
              
     def decolorize(self):
@@ -3612,42 +3707,45 @@ class Panes:
     def select1(self,event=None):
         # Without this the search doesn't work (the pane is inactive)
         self.pane1.focus()
-        #todo: reenable for 4 panes after GUI glitches are fixed
-        if not self.Extended:
+        if self.Extended:
             self.decolorize()
             self.pane1.widget.config(bg=self._bg)
+        # Ignore 'Alt-Up/Down'
+        return 'break'
         
     def select2(self,event=None):
         # Without this the search doesn't work (the pane is inactive)
         self.pane2.focus()
-        #todo: reenable for 4 panes after GUI glitches are fixed
-        if not self.Extended:
+        if self.Extended:
             self.decolorize()
             self.pane2.widget.config(bg=self._bg)
+        # Ignore 'Alt-Up/Down'
+        return 'break'
         
     def select3(self,event=None):
         # Without this the search doesn't work (the pane is inactive)
         self.pane3.focus()
-        #fix: GUI glitches when doing this
-        #self.decolorize()
-        #self.pane3.widget.config(bg=self._bg)
+        self.decolorize()
+        self.pane3.widget.config(bg=self._bg)
+        # Ignore 'Alt-Up/Down'
+        return 'break'
         
     def select4(self,event=None):
         # Without this the search doesn't work (the pane is inactive)
         self.pane4.focus()
-        #fix: GUI glitches when doing this
-        #self.decolorize()
-        #self.pane4.widget.config(bg=self._bg)
+        self.decolorize()
+        self.pane4.widget.config(bg=self._bg)
+        # Ignore 'Alt-Up/Down'
+        return 'break'
         
     def icon(self,path=None):
         if path:
-            self.obj.icon(path)
+            self.parent.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..'
-                                              ,'resources'
-                                              ,'icon_64x64_cpt.gif'
-                                              )
-                          )
+            self.parent.icon (sh.objs.pdir().add ('..','resources'
+                                                 ,'icon_64x64_cpt.gif'
+                                                 )
+                             )
                           
     def reset(self,words1,words2,words3=None,words4=None):
         self.pane1.reset(words=words1)
@@ -3655,6 +3753,7 @@ class Panes:
         if self.Extended:
             self.pane3.reset(words=words3)
             self.pane4.reset(words=words4)
+            self.select1()
 
 
 

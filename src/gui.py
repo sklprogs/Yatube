@@ -588,7 +588,9 @@ class Menu:
     
     def clear_url(self,event=None):
         self.ent_url.clear_text()
-        self.ent_url.widget.config(fg='black',font='Serif 10')
+        self.ent_url.widget.config (fg   = 'black'
+                                   ,font = 'Serif 10'
+                                   )
         self.ent_url.focus()
         
     def paste_url(self,event=None):
@@ -830,8 +832,8 @@ class Channel:
             196x110, therefore, the channel frame embedding 10 videos
             will have the height of at least 1100.
         '''
-        self._max_x   = 1024
-        self._max_y   = 1120
+        self._max_x = 1024
+        self._max_y = 1120
         
     def frames(self):
         self.frame   = sg.Frame (parent = self.parent)
