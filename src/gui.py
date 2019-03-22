@@ -228,26 +228,29 @@ class Pause:
                                  )
     
     def buttons(self):
-        self.btn_del = sg.Button (parent   = self.frm_btm
-                                 ,text     = _('Delete')
-                                 ,hint     = _('Delete & Close')
-                                 ,side     = 'left'
-                                 ,active   = self.icn_del
-                                 ,inactive = self.icn_del
+        self.btn_del = sg.Button (parent     = self.frm_btm
+                                 ,text       = _('Delete')
+                                 ,hint       = _('Delete & Close')
+                                 ,hint_width = 185
+                                 ,side       = 'left'
+                                 ,active     = self.icn_del
+                                 ,inactive   = self.icn_del
                                  )
-        self.btn_rst = sg.Button (parent   = self.frm_btm
-                                 ,text     = _('Reset')
-                                 ,hint     = _('Set the original time')
-                                 ,side     = 'left'
-                                 ,active   = self.icn_rst
-                                 ,inactive = self.icn_rst
+        self.btn_rst = sg.Button (parent     = self.frm_btm
+                                 ,text       = _('Reset')
+                                 ,hint       = _('Set the original time')
+                                 ,hint_width = 300
+                                 ,side       = 'left'
+                                 ,active     = self.icn_rst
+                                 ,inactive   = self.icn_rst
                                  )
-        self.btn_sav = sg.Button (parent   = self.frm_btm
-                                 ,text     = _('Save')
-                                 ,hint     = _('Save & Close')
-                                 ,side     = 'left'
-                                 ,active   = self.icn_sav
-                                 ,inactive = self.icn_sav
+        self.btn_sav = sg.Button (parent     = self.frm_btm
+                                 ,text       = _('Save')
+                                 ,hint       = _('Save & Close')
+                                 ,hint_width = 190
+                                 ,side       = 'left'
+                                 ,active     = self.icn_sav
+                                 ,inactive   = self.icn_sav
                                  )
     
     def widgets(self):
