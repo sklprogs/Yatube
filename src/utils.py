@@ -173,10 +173,11 @@ class DB:
         f = '[Yatube] utils.DB.fetch'
         if self.Success:
             try:
-                # 13 columns (old table)
+                # 14 columns (old table)
                 self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
                                          ,DESC,SEARCH,LENGTH,IMAGE\
                                          ,PTIME,DTIME,FTIME,LTIME\
+                                         ,FDTIME\
                                    from   VIDEOS'
                                  )
                 self._data = self.dbc.fetchall()
@@ -189,7 +190,7 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # 14 columns by now
+                # 15 columns by now
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      ID     text    \
@@ -206,6 +207,7 @@ class DB:
                     ,FTIME  float   \
                     ,LTIME  float   \
                     ,FDTIME float   \
+                    ,PATIME float   \
                                          )'
                                   )
             except Exception as e:
@@ -237,13 +239,14 @@ class DB:
                         dtime  = row[10]
                         ftime  = row[11]
                         ltime  = row[12]
-                        fdtime = ptime
+                        fdtime = row[13]
+                        patime = 0.0
                         row = (vid,playid,chanid,author,title,desc
                               ,search,length,image,ptime,dtime,ftime
-                              ,ltime,fdtime
+                              ,ltime,fdtime,patime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                          (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                          (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                           ,row
                                           )
                     except Exception as e:
@@ -574,3 +577,4 @@ com = Commands()
 
 if __name__ == '__main__':
     sh.objs.mes(Silent=1)
+    com.alter()

@@ -378,23 +378,24 @@ class DB:
         f = '[Yatube] db.DB.create_videos'
         if self.Success:
             try:
-                # 14 columns by now
+                # 15 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
-                     ID     text    \
-                    ,PLAYID text    \
-                    ,CHANID text    \
-                    ,AUTHOR text    \
-                    ,TITLE  text    \
-                    ,DESC   text    \
-                    ,SEARCH text    \
-                    ,LENGTH integer \
-                    ,IMAGE  binary  \
-                    ,PTIME  float   \
-                    ,DTIME  float   \
-                    ,FTIME  float   \
-                    ,LTIME  float   \
-                    ,FDTIME float   \
+                     ID      text    \
+                    ,PLAYID  text    \
+                    ,CHANID  text    \
+                    ,AUTHOR  text    \
+                    ,TITLE   text    \
+                    ,DESC    text    \
+                    ,SEARCH  text    \
+                    ,LENGTH  integer \
+                    ,IMAGE   binary  \
+                    ,PTIME   float   \
+                    ,DTIME   float   \
+                    ,FTIME   float   \
+                    ,LTIME   float   \
+                    ,FDTIME  float   \
+                    ,PATIME  float   \
                                                        )'
                                  )
             except Exception as e:
@@ -407,7 +408,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('insert into VIDEOS values \
-                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                   (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                  ,data
                                  )
             except Exception as e:
@@ -438,8 +439,8 @@ class DB:
                 self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
                                          ,DESC,SEARCH,LENGTH,IMAGE\
                                          ,PTIME,DTIME,FTIME,LTIME\
-                                         ,FDTIME \
-                                   from   VIDEOS \
+                                         ,FDTIME,PATIME\
+                                   from   VIDEOS\
                                    where  ID = ?',(video_id,)
                                  )
                 return self.dbc.fetchone()
@@ -459,7 +460,7 @@ class DB:
                 try:
                     query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC\
                                    ,SEARCH,LENGTH,IMAGE,PTIME,DTIME\
-                                   ,FTIME,LTIME,FDTIME\
+                                   ,FTIME,LTIME,FDTIME,PATIME\
                              from   VIDEOS where ID in (%s)' \
                             % ','.join('?'*len(ids))
                     self.dbc.execute(query,ids)

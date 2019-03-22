@@ -918,7 +918,7 @@ class Video:
             data = (video._id,video._play_id,video._ch_id,video._author
                    ,video._title,video._desc,video._search,video._len
                    ,video._bytes,video._ptime,video._dtime,video._ftime
-                   ,video._ltime,video._fdtime
+                   ,video._ltime,video._fdtime,video._patime
                    )
             if video._author and video._title:
                 objs.db().add_video(data)
@@ -931,7 +931,7 @@ class Video:
         f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
-                data_len = 14
+                data_len = 15
                 if len(data) == data_len:
                     video          = mt.objs.videos().current()
                     video._id      = data[0]
@@ -948,6 +948,7 @@ class Video:
                     video._ftime   = data[11]
                     video._ltime   = data[12]
                     video._fdtime  = data[13]
+                    video._patime  = data[14]
                 else:
                     sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!')\

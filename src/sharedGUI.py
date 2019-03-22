@@ -1068,6 +1068,7 @@ class Entry:
                 ,side=None,ipadx=None,ipady=None
                 ,fill=None,width=None,expand=None
                 ,font='Sans 11',bg=None,fg=None
+                ,justify='center'
                 ):
         self.type      = 'Entry'
         self.Composite = Composite
@@ -1075,11 +1076,12 @@ class Entry:
         self.state     = 'normal'
         self.Save      = False
         self.parent    = parent
-        self.widget    = tk.Entry (master = self.parent.widget
-                                  ,font   = font
-                                  ,bg     = bg
-                                  ,fg     = fg
-                                  ,width  = width
+        self.widget    = tk.Entry (master  = self.parent.widget
+                                  ,font    = font
+                                  ,bg      = bg
+                                  ,fg      = fg
+                                  ,width   = width
+                                  ,justify = justify
                                   )
         bind (obj      = self
              ,bindings = '<Control-a>'

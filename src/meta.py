@@ -758,6 +758,7 @@ class Video:
         self._fdtime   = 0.0
         self._ltime    = 0.0
         self._ptime    = 0.0
+        self._patime   = 0.0
         self._id       = ''
         self._play_id  = ''
         self._author   = ''

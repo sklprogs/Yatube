@@ -13,7 +13,7 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-VERSION = '2.0'
+VERSION = '2.1'
 
 context_items = (_('Show the full summary')
                 ,_('Stream')
@@ -80,6 +80,206 @@ edit_items = (_('Edit')
 
 default_entry_width = 19
 icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
+
+
+class Pause:
+    
+    def __init__(self):
+        self.values()
+        self.parent = sg.objs.new_top()
+        self.gui()
+        self.reset()
+    
+    def values(self):
+        self.icn_up0 = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_up_off.gif'
+                                          )
+        self.icn_up1 = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_up.gif'
+                                          )
+        self.icn_dn0 = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_down_off.gif'
+                                          )
+        self.icn_dn1 = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_down.gif'
+                                          )
+        self.icn_del = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_delete.gif'
+                                          )
+        self.icn_rst = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_reload.gif'
+                                          )
+        self.icn_sav = sh.objs.pdir().add ('..','resources','buttons'
+                                          ,'icon_36x36_save.gif'
+                                          )
+        
+    
+    def reset(self):
+        self.btn_hrd.inactive()
+        self.btn_hru.active()
+        self.ent_hrs.reset()
+        self.ent_hrs.insert('0')
+        self.btn_mnd.inactive()
+        self.btn_mnu.active()
+        self.ent_mnt.reset()
+        self.ent_mnt.insert('0')
+        self.btn_scd.inactive()
+        self.btn_scu.active()
+        self.ent_sec.reset()
+        self.ent_sec.insert('0')
+    
+    def frames(self):
+        self.frm_prm = sg.Frame (parent = self.parent
+                                ,expand = False
+                                )
+        self.frm_top = sg.Frame (parent = self.frm_prm
+                                ,expand = False
+                                ,side   = 'top'
+                                )
+        self.frm_btm = sg.Frame (parent = self.frm_prm
+                                ,expand = False
+                                ,side   = 'top'
+                                )
+        self.frm_hrs = sg.Frame (parent = self.frm_top
+                                ,expand = False
+                                ,side   = 'left'
+                                )
+        self.frm_sp1 = sg.Frame (parent = self.frm_top
+                                ,expand = False
+                                ,side   = 'left'
+                                ,propag = False
+                                ,width  = 3
+                                )
+        self.frm_mnt = sg.Frame (parent = self.frm_top
+                                ,expand = False
+                                ,side   = 'left'
+                                )
+        self.frm_sp2 = sg.Frame (parent = self.frm_top
+                                ,expand = False
+                                ,side   = 'left'
+                                ,propag = False
+                                ,width  = 3
+                                )
+        self.frm_sec = sg.Frame (parent = self.frm_top
+                                ,expand = False
+                                ,side   = 'left'
+                                )
+    
+    def hours(self):
+        self.btn_hru = sg.Button (parent   = self.frm_hrs
+                                 ,inactive = self.icn_up0
+                                 ,active   = self.icn_up1
+                                 ,side     = 'top'
+                                 )
+        self.ent_hrs = sg.Entry (parent    = self.frm_hrs
+                                ,Composite = True
+                                ,width     = 2
+                                )
+        self.btn_hrd = sg.Button (parent   = self.frm_hrs
+                                 ,inactive = self.icn_dn0
+                                 ,active   = self.icn_dn1
+                                 ,side     = 'bottom'
+                                 )
+    
+    def delimiters(self):
+        sg.Label (parent = self.frm_sp1
+                 ,text   = ':'
+                 ,expand = True
+                 ,Close  = False
+                 ,font   = 'Sans 14 bold'
+                 )
+        sg.Label (parent = self.frm_sp2
+                 ,text   = ':'
+                 ,expand = True
+                 ,Close  = False
+                 ,font   = 'Serif 14 bold'
+                 )
+    
+    def minutes(self):
+        self.btn_mnu = sg.Button (parent   = self.frm_mnt
+                                 ,inactive = self.icn_up0
+                                 ,active   = self.icn_up1
+                                 ,side     = 'top'
+                                 )
+        self.ent_mnt = sg.Entry (parent    = self.frm_mnt
+                                ,Composite = True
+                                ,width     = 2
+                                )
+        self.btn_mnd = sg.Button (parent   = self.frm_mnt
+                                 ,inactive = self.icn_dn0
+                                 ,active   = self.icn_dn1
+                                 ,side     = 'bottom'
+                                 )
+    
+    def seconds(self):
+        self.btn_scu = sg.Button (parent   = self.frm_sec
+                                 ,inactive = self.icn_up0
+                                 ,active   = self.icn_up1
+                                 ,side     = 'top'
+                                 )
+        self.ent_sec = sg.Entry (parent    = self.frm_sec
+                                ,Composite = True
+                                ,width     = 2
+                                )
+        self.btn_scd = sg.Button (parent   = self.frm_sec
+                                 ,inactive = self.icn_dn0
+                                 ,active   = self.icn_dn1
+                                 ,side     = 'bottom'
+                                 )
+    
+    def buttons(self):
+        self.btn_del = sg.Button (parent   = self.frm_btm
+                                 ,text     = _('Delete')
+                                 ,hint     = _('Delete & Close')
+                                 ,side     = 'left'
+                                 ,active   = self.icn_del
+                                 ,inactive = self.icn_del
+                                 )
+        self.btn_rst = sg.Button (parent   = self.frm_btm
+                                 ,text     = _('Reset')
+                                 ,hint     = _('Set the original time')
+                                 ,side     = 'left'
+                                 ,active   = self.icn_rst
+                                 ,inactive = self.icn_rst
+                                 )
+        self.btn_sav = sg.Button (parent   = self.frm_btm
+                                 ,text     = _('Save')
+                                 ,hint     = _('Save & Close')
+                                 ,side     = 'left'
+                                 ,active   = self.icn_sav
+                                 ,inactive = self.icn_sav
+                                 )
+    
+    def widgets(self):
+        self.hours()
+        self.minutes()
+        self.seconds()
+        self.delimiters()
+        self.buttons()
+    
+    def gui(self):
+        self.frames()
+        self.widgets()
+        self.icon()
+        self.title()
+    
+    def show(self,event=None):
+        self.parent.show()
+    
+    def close(self,event=None):
+        self.parent.close()
+    
+    def title(self,text=None):
+        if not text:
+            text = _('Set pause time')
+        self.parent.title(text=text)
+    
+    def icon(self,path=None):
+        if path:
+            self.parent.icon(path)
+        else:
+            self.parent.icon(icon_path)
+
 
 
 class AddId:
@@ -264,22 +464,18 @@ class Comments:
             self.parent.icon(icon_path)
     
     def values(self):
-        self.icon_prev     = sh.objs.pdir().add ('..','resources'
-                                                ,'buttons'
-                                                ,'icon_36x36_go_back.gif'
-                                                )
-        self.icon_prev_off = sh.objs.pdir().add ('..','resources'
-                                                ,'buttons'
-                                                ,'icon_36x36_go_back_off.gif'
-                                                )
-        self.icon_next     = sh.objs.pdir().add ('..','resources'
-                                                ,'buttons'
-                                                ,'icon_36x36_go_forward.gif'
-                                                )
-        self.icon_next_off = sh.objs.pdir().add ('..','resources'
-                                                ,'buttons'
-                                                ,'icon_36x36_go_forward_off.gif'
-                                                )
+        self.icn_prv1 = sh.objs.pdir().add ('..','resources','buttons'
+                                           ,'icon_36x36_go_back.gif'
+                                           )
+        self.icn_prv0 = sh.objs.pdir().add ('..','resources','buttons'
+                                           ,'icon_36x36_go_back_off.gif'
+                                           )
+        self.icn_nxt1 = sh.objs.pdir().add ('..','resources','buttons'
+                                           ,'icon_36x36_go_forward.gif'
+                                           )
+        self.icn_nxt0 = sh.objs.pdir().add ('..','resources','buttons'
+                                           ,'icon_36x36_go_forward_off.gif'
+                                           )
         
     def frames(self):
         self.frm_top = sg.Frame (parent = self.parent
@@ -299,15 +495,15 @@ class Comments:
     def widgets(self):
         self.btn_prv = sg.Button (parent   = self.frm_rht
                                  ,hint     = _('Go to the previous page')
-                                 ,inactive = self.icon_prev_off
-                                 ,active   = self.icon_prev
+                                 ,inactive = self.icn_prv0
+                                 ,active   = self.icn_prv1
                                  ,side     = 'left'
                                  ,bindings = '<Alt-Left>'
                                  )
         self.btn_nxt = sg.Button (parent   = self.frm_rht
                                  ,hint     = _('Go to the next page')
-                                 ,inactive = self.icon_next_off
-                                 ,active   = self.icon_next
+                                 ,inactive = self.icn_nxt0
+                                 ,active   = self.icn_nxt1
                                  ,side     = 'left'
                                  ,bindings = '<Alt-Right>'
                                  )
@@ -913,7 +1109,7 @@ class Objects:
                                         ,SpReturn = True
                                         )
             self._comments.icon(icon_path)
-            self._comments.title(_('First 100 comments:'))
+            self._comments.title(_('Comments'))
         return self._comments
     
     def subscribe(self):
@@ -1004,7 +1200,8 @@ objs = Objects()
 if __name__ == '__main__':
     # Show the menu
     sg.objs.start()
-    objs.menu().show()
+    #objs.menu().show()
+    Pause().show()
     sg.objs.end()
     '''
     # Simulate meta updating
