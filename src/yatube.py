@@ -1551,7 +1551,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.open_channel_url'
         channel_id = lg.Video().channel_id()
         if channel_id:
-            lg.objs.online()._url = lg.pattern3a + channel_id
+            lg.objs.online()._url = lg.pattern2 + channel_id
             lg.objs._online.browse()
         else:
             sh.com.empty(f)
@@ -1560,8 +1560,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.copy_channel_url'
         channel_id = lg.Video().channel_id()
         if channel_id:
-            url = lg.pattern3a + channel_id
-            sg.Clipboard().copy(url)
+            sg.Clipboard().copy(lg.pattern2+channel_id)
         else:
             sh.com.empty(f)
     

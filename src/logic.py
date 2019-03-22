@@ -15,13 +15,10 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-pattern1  = 'https://www.youtube.com/watch?v='
-pattern2  = '<meta itemprop="channelId" content="'
-pattern3a = 'https://www.youtube.com/channel/'
-pattern3b = '/videos'
-pattern4  = '?flow=list&sort=dd'
-pattern5  = 'https://www.youtube.com/'
-AllOS     = False
+pattern1 = 'https://www.youtube.com/watch?v='
+pattern2 = 'https://www.youtube.com/channel/'
+pattern3 = 'https://www.youtube.com/'
+AllOS    = False
 
 
 sample_subscribe = '''BostonDynamics	UU7vVhkEfw4nOGp8TyDk7RcQ
@@ -1283,8 +1280,8 @@ class URL:
         self._url = self._url.replace('https://youtu.be/',pattern1)
             
     def prefixes_ch(self):
-        if not pattern5 in self._url:
-            self._url = pattern5 + self._url
+        if not pattern3 in self._url:
+            self._url = pattern3 + self._url
         if '/user/' in self._url or '/channel/' in self._url \
         or '/c/' in self._url:
             pass
@@ -1294,8 +1291,6 @@ class URL:
     def suffixes_ch(self):
         if not '/videos' in self._url:
             self._url += '/videos'
-        if not pattern4 in self._url:
-            self._url += pattern4
 
 
 
