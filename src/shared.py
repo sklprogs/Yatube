@@ -4568,16 +4568,20 @@ class Commands:
     def __init__(self):
         self.lang()
     
+    def split_time(self,length=0):
+        hours   = length // 3600
+        all_sec = hours * 3600
+        minutes = (length - all_sec) // 60
+        all_sec += minutes * 60
+        seconds = length - all_sec
+        return(hours,minutes,seconds)
+    
     def easy_time(self,length=0):
         f = '[shared] shared.Commands.easy_time'
         result = '00:00:00'
         if length:
-            hours   = length // 3600
-            all_sec = hours * 3600
-            minutes = (length - all_sec) // 60
-            all_sec += minutes * 60
-            seconds = length - all_sec
-            mes     = []
+            hours, minutes, seconds = self.split_time(length)
+            mes = []
             if hours:
                 mes.append(str(hours))
             item = str(minutes)

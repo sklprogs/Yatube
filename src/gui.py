@@ -18,6 +18,7 @@ VERSION = '2.1'
 context_items = (_('Show the full summary')
                 ,_('Stream')
                 ,_('Play')
+                ,_('Set pause time')
                 ,_('Extract links')
                 ,_('Load this channel')
                 ,_('Open video URL')
@@ -121,8 +122,8 @@ class Pause:
         self.ent_hrs.insert('0')
         self.btn_mnd.inactive()
         self.btn_mnu.active()
-        self.ent_mnt.reset()
-        self.ent_mnt.insert('0')
+        self.ent_min.reset()
+        self.ent_min.insert('0')
         self.btn_scd.inactive()
         self.btn_scu.active()
         self.ent_sec.reset()
@@ -150,7 +151,7 @@ class Pause:
                                 ,propag = False
                                 ,width  = 3
                                 )
-        self.frm_mnt = sg.Frame (parent = self.frm_top
+        self.frm_min = sg.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,side   = 'left'
                                 )
@@ -196,16 +197,16 @@ class Pause:
                  )
     
     def minutes(self):
-        self.btn_mnu = sg.Button (parent   = self.frm_mnt
+        self.btn_mnu = sg.Button (parent   = self.frm_min
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
                                  ,side     = 'top'
                                  )
-        self.ent_mnt = sg.Entry (parent    = self.frm_mnt
+        self.ent_min = sg.Entry (parent    = self.frm_min
                                 ,Composite = True
                                 ,width     = 2
                                 )
-        self.btn_mnd = sg.Button (parent   = self.frm_mnt
+        self.btn_mnd = sg.Button (parent   = self.frm_min
                                  ,inactive = self.icn_dn0
                                  ,active   = self.icn_dn1
                                  ,side     = 'bottom'
@@ -1203,8 +1204,7 @@ objs = Objects()
 if __name__ == '__main__':
     # Show the menu
     sg.objs.start()
-    #objs.menu().show()
-    Pause().show()
+    objs.menu().show()
     sg.objs.end()
     '''
     # Simulate meta updating

@@ -748,30 +748,29 @@ class Video:
         self._gui      = None
         self._image    = None
         self._com_num  = 0
-        self._len      = 0
-        self._views    = 0
-        self._likes    = 0
         self._dislikes = 0
-        self._com_num  = 0
+        self._len      = 0
+        self._likes    = 0
+        self._pause    = 0
+        self._views    = 0
         self._dtime    = 0.0
-        self._ftime    = 0.0
         self._fdtime   = 0.0
+        self._ftime    = 0.0
         self._ltime    = 0.0
         self._ptime    = 0.0
-        self._patime   = 0.0
+        self._author   = ''
+        self._ch_id    = ''
+        self._desc     = ''
+        self._dir      = ''
         self._id       = ''
         self._play_id  = ''
-        self._author   = ''
-        self._title    = ''
-        self._desc     = ''
-        self._thumb    = ''
-        self._search   = ''
-        self._ch_id    = ''
-        self._dir      = ''
-        self._url      = ''
+        self._page     = ''
         self._path     = ''
         self._pathsh   = ''
-        self._page     = ''
+        self._search   = ''
+        self._thumb    = ''
+        self._title    = ''
+        self._url      = ''
 
 
 

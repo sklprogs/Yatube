@@ -18,6 +18,19 @@ class DB:
         self.connect()
         self.create_videos()
     
+    def update_pause(self,video_id,pause=0):
+        f = '[Yatube] db.DB.update_pause'
+        if self.Success:
+            try:
+                self.dbc.execute ('update VIDEOS set   PAUSE = ? \
+                                                 where ID    = ?'
+                                 ,(pause,video_id,)
+                                 )
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def update_ch_id(self,video_id,channel_id):
         f = '[Yatube] db.DB.update_ch_id'
         if self.Success:
@@ -381,21 +394,21 @@ class DB:
                 # 15 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
-                     ID      text    \
-                    ,PLAYID  text    \
-                    ,CHANID  text    \
-                    ,AUTHOR  text    \
-                    ,TITLE   text    \
-                    ,DESC    text    \
-                    ,SEARCH  text    \
-                    ,LENGTH  integer \
-                    ,IMAGE   binary  \
-                    ,PTIME   float   \
-                    ,DTIME   float   \
-                    ,FTIME   float   \
-                    ,LTIME   float   \
-                    ,FDTIME  float   \
-                    ,PATIME  float   \
+                     ID     text    \
+                    ,PLAYID text    \
+                    ,CHANID text    \
+                    ,AUTHOR text    \
+                    ,TITLE  text    \
+                    ,DESC   text    \
+                    ,SEARCH text    \
+                    ,LENGTH integer \
+                    ,PAUSE  integer \
+                    ,IMAGE  binary  \
+                    ,PTIME  float   \
+                    ,DTIME  float   \
+                    ,FTIME  float   \
+                    ,LTIME  float   \
+                    ,FDTIME float   \
                                                        )'
                                  )
             except Exception as e:
@@ -437,9 +450,9 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
-                                         ,DESC,SEARCH,LENGTH,IMAGE\
-                                         ,PTIME,DTIME,FTIME,LTIME\
-                                         ,FDTIME,PATIME\
+                                         ,DESC,SEARCH,LENGTH,PAUSE\
+                                         ,IMAGE,PTIME,DTIME,FTIME,LTIME\
+                                         ,FDTIME\
                                    from   VIDEOS\
                                    where  ID = ?',(video_id,)
                                  )
@@ -459,8 +472,8 @@ class DB:
             if ids:
                 try:
                     query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC\
-                                   ,SEARCH,LENGTH,IMAGE,PTIME,DTIME\
-                                   ,FTIME,LTIME,FDTIME,PATIME\
+                                   ,SEARCH,LENGTH,PAUSE,IMAGE,PTIME\
+                                   ,DTIME,FTIME,LTIME,FDTIME\
                              from   VIDEOS where ID in (%s)' \
                             % ','.join('?'*len(ids))
                     self.dbc.execute(query,ids)

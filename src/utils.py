@@ -201,13 +201,13 @@ class DB:
                     ,DESC   text    \
                     ,SEARCH text    \
                     ,LENGTH integer \
+                    ,PAUSE  integer \
                     ,IMAGE  binary  \
                     ,PTIME  float   \
                     ,DTIME  float   \
                     ,FTIME  float   \
                     ,LTIME  float   \
                     ,FDTIME float   \
-                    ,PATIME float   \
                                          )'
                                   )
             except Exception as e:
@@ -234,16 +234,16 @@ class DB:
                         desc   = row[5]
                         search = row[6]
                         length = row[7]
+                        pause  = 0
                         image  = row[8]
                         ptime  = row[9]
                         dtime  = row[10]
                         ftime  = row[11]
                         ltime  = row[12]
                         fdtime = row[13]
-                        patime = 0.0
                         row = (vid,playid,chanid,author,title,desc
-                              ,search,length,image,ptime,dtime,ftime
-                              ,ltime,fdtime,patime
+                              ,search,length,pause,image,ptime,dtime
+                              ,ftime,ltime,fdtime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
                                           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'

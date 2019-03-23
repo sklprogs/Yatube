@@ -15,6 +15,198 @@ gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
+
+class Pause:
+    
+    def __init__(self):
+        self.values()
+        self.gui = gi.Pause()
+        self.bindings()
+    
+    def values(self):
+        self._id    = ''
+        self._pause = 0
+    
+    def delete(self,event=None):
+        lg.objs.db().update_pause(self._id)
+        mt.objs.videos().current()._pause = 0
+        self.close()
+    
+    def reset(self,video_id,pause):
+        self._id    = video_id
+        self._pause = pause
+        self.fill()
+    
+    def fill(self,event=None):
+        hours, minutes, seconds = sh.com.split_time(self._pause)
+        self.gui.ent_hrs.reset()
+        self.gui.ent_min.reset()
+        self.gui.ent_sec.reset()
+        self.gui.ent_hrs.insert(hours)
+        self.gui.ent_min.insert(minutes)
+        self.gui.ent_sec.insert(seconds)
+        self.update()
+    
+    def save(self,event=None):
+        hours   = self.get_hrs()
+        minutes = self.get_min()
+        seconds = self.get_sec()
+        all_sec = hours * 3600 + minutes * 60 + seconds
+        mt.objs.videos().current()._pause = all_sec
+        lg.objs.db().update_pause (video_id = self._id
+                                  ,pause    = all_sec
+                                  )
+        self.close()
+    
+    def bindings(self):
+        self.gui.btn_del.action = self.delete
+        self.gui.btn_hrd.action = self.dec_hrs
+        self.gui.btn_hru.action = self.inc_hrs
+        self.gui.btn_mnd.action = self.dec_min
+        self.gui.btn_mnu.action = self.inc_min
+        self.gui.btn_rst.action = self.fill
+        self.gui.btn_sav.action = self.save
+        self.gui.btn_scd.action = self.dec_sec
+        self.gui.btn_scu.action = self.inc_sec
+        sg.bind (obj      = self.gui.ent_hrs
+                ,bindings = ('<Return>','<KP_Enter>')
+                ,action   = self.upd_hrs
+                )
+        sg.bind (obj      = self.gui.ent_min
+                ,bindings = ('<Return>','<KP_Enter>')
+                ,action   = self.upd_min
+                )
+        sg.bind (obj      = self.gui.ent_sec
+                ,bindings = ('<Return>','<KP_Enter>')
+                ,action   = self.upd_sec
+                )
+    
+    def get_sec(self,event=None):
+        f = '[Yatube] yatube.Pause.get_sec'
+        seconds = sh.Input (title = f
+                           ,value = self.gui.ent_sec.get()
+                           ).integer()
+        # 'sh.Input.integer' already throws an error at negative values
+        if seconds > 59:
+            sh.objs.mes (f,_('WARNING')
+                        ,_('The condition "%s" is not observed!') \
+                        % ('0 <= %d <= 59' % seconds)
+                        )
+            seconds = 59
+            self.gui.ent_sec.reset()
+            self.gui.ent_sec.insert(seconds)
+        return seconds
+    
+    def get_min(self,event=None):
+        f = '[Yatube] yatube.Pause.get_min'
+        minutes = sh.Input (title = f
+                           ,value = self.gui.ent_min.get()
+                           ).integer()
+        # 'sh.Input.integer' already throws an error at negative values
+        if minutes > 59:
+            sh.objs.mes (f,_('WARNING')
+                        ,_('The condition "%s" is not observed!') \
+                        % ('0 <= %d <= 59' % minutes)
+                        )
+            minutes = 59
+            self.gui.ent_min.reset()
+            self.gui.ent_min.insert(minutes)
+        return minutes
+    
+    def get_hrs(self,event=None):
+        f = '[Yatube] yatube.Pause.get_hrs'
+        return sh.Input (title = f
+                        ,value = self.gui.ent_hrs.get()
+                        ).integer()
+    
+    def update(self,event=None):
+        self.upd_hrs()
+        self.upd_min()
+        self.upd_sec()
+    
+    def upd_sec(self,event=None):
+        seconds = self.get_sec()
+        if seconds < 59:
+            self.gui.btn_scu.active()
+        else:
+            self.gui.btn_scu.inactive()
+        if seconds > 0:
+            self.gui.btn_scd.active()
+        else:
+            self.gui.btn_scd.inactive()
+    
+    def upd_min(self,event=None):
+        minutes = self.get_min()
+        if minutes < 59:
+            self.gui.btn_mnu.active()
+        else:
+            self.gui.btn_mnu.inactive()
+        if minutes > 0:
+            self.gui.btn_mnd.active()
+        else:
+            self.gui.btn_mnd.inactive()
+    
+    def upd_hrs(self,event=None):
+        self.gui.btn_hru.active()
+        if self.get_hrs() > 0:
+            self.gui.btn_hrd.active()
+        else:
+            self.gui.btn_hrd.inactive()
+    
+    def inc_sec(self,event=None):
+        seconds = self.get_sec()
+        if seconds < 59:
+            seconds += 1
+        self.gui.ent_sec.reset()
+        self.gui.ent_sec.insert(seconds)
+        self.upd_sec()
+    
+    def inc_min(self,event=None):
+        minutes = self.get_min()
+        if minutes < 59:
+            minutes += 1
+        self.gui.ent_min.reset()
+        self.gui.ent_min.insert(minutes)
+        self.upd_min()
+    
+    def inc_hrs(self,event=None):
+        hours = self.get_hrs() + 1
+        self.gui.ent_hrs.reset()
+        self.gui.ent_hrs.insert(hours)
+        self.upd_hrs()
+    
+    def dec_sec(self,event=None):
+        seconds = self.get_sec()
+        if seconds > 0:
+            seconds -= 1
+        self.gui.ent_sec.reset()
+        self.gui.ent_sec.insert(seconds)
+        self.upd_sec()
+    
+    def dec_min(self,event=None):
+        minutes = self.get_min()
+        if minutes > 0:
+            minutes -= 1
+        self.gui.ent_min.reset()
+        self.gui.ent_min.insert(minutes)
+        self.upd_min()
+    
+    def dec_hrs(self,event=None):
+        hours = self.get_hrs()
+        if hours > 0:
+            hours -= 1
+        self.gui.ent_hrs.reset()
+        self.gui.ent_hrs.insert(hours)
+        self.upd_hrs()
+    
+    def show(self,event=None):
+        self.gui.show()
+    
+    def close(self,event=None):
+        self.gui.close()
+
+
+
 class Extractor:
     
     def __init__(self,url=''):
@@ -743,6 +935,13 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def set_pause(self,event=None):
+        #cur
+        objs.pause().reset (video_id = mt.objs.videos().current()._id
+                           ,pause    = mt.objs._videos.current()._pause
+                           )
+        objs._pause.show()
+    
     def show_hints(self,event=None):
         # We need to call 'idletasks' twice in order to view changes
         sg.objs.root().idle()
@@ -812,9 +1011,10 @@ class Commands:
                 ids.append(mt.objs._videos.current()._id)
             result = lg.objs.db().get_videos(ids)
             if result:
-                dtimes = [item[10] for item in result if item[10]]
-                ftimes = [item[11] for item in result if item[11]]
-                ltimes = [item[12] for item in result if item[12]]
+                #NOTE: this depends on the DB fields order
+                dtimes = [item[11] for item in result if item[11]]
+                ftimes = [item[12] for item in result if item[12]]
+                ltimes = [item[13] for item in result if item[13]]
                 if len(dtimes) == len(result):
                     items.remove(_('Mark as watched'))
                 elif not dtimes:
@@ -937,9 +1137,9 @@ class Commands:
                 ''' #note: do not forget to update indices in case of
                     changing the DB structure.
                 '''
-                dtime = data[10]
-                ftime = data[11]
-                ltime = data[12]
+                dtime = data[11]
+                ftime = data[12]
+                ltime = data[13]
                 if dtime:
                     items.remove(_('Mark as watched'))
                 else:
@@ -1757,6 +1957,8 @@ class Commands:
             url = lg.Video().url()
             if choice == _('Show the full summary'):
                 self.summary()
+            elif choice == _('Set pause time'):
+                self.set_pause(self)
             elif choice == _('Download'):
                 self.download_video()
             elif choice == _('Play'):
@@ -1860,7 +2062,7 @@ class Commands:
     
     def context(self,event=None):
         f = '[Yatube] yatube.Commands.context'
-        # 'event' will be 'tuple' if it is a callback from 'Button.click'
+        # 'event' will be 'tuple' if it's a callback from 'Button.click'
         if isinstance(event,tuple):
             event = event[0]
         gui = self.get_widget(event=event)
@@ -2508,7 +2710,12 @@ class Objects:
     
     def __init__(self):
         self._comments = self._videos = self._add_id = self._commands \
-                       = self._channels = None
+                       = self._channels = self._pause = None
+    
+    def pause(self):
+        if self._pause is None:
+            self._pause = Pause()
+        return self._pause
     
     def channels(self):
         if self._channels is None:

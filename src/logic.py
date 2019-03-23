@@ -917,8 +917,8 @@ class Video:
             video = mt.objs.videos().current()
             data = (video._id,video._play_id,video._ch_id,video._author
                    ,video._title,video._desc,video._search,video._len
-                   ,video._bytes,video._ptime,video._dtime,video._ftime
-                   ,video._ltime,video._fdtime,video._patime
+                   ,video._pause,video._bytes,video._ptime,video._dtime
+                   ,video._ftime,video._ltime,video._fdtime
                    )
             if video._author and video._title:
                 objs.db().add_video(data)
@@ -942,13 +942,13 @@ class Video:
                     video._desc    = data[5]
                     video._search  = data[6]
                     video._len     = data[7]
-                    video._bytes   = data[8]
-                    video._ptime   = data[9]
-                    video._dtime   = data[10]
-                    video._ftime   = data[11]
-                    video._ltime   = data[12]
-                    video._fdtime  = data[13]
-                    video._patime  = data[14]
+                    video._pause   = data[8]
+                    video._bytes   = data[9]
+                    video._ptime   = data[10]
+                    video._dtime   = data[11]
+                    video._ftime   = data[12]
+                    video._ltime   = data[13]
+                    video._fdtime  = data[14]
                 else:
                     sh.objs.mes (f,_('ERROR')
                                 ,_('The condition "%s" is not observed!')\

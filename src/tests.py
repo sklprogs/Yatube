@@ -4,6 +4,7 @@
 import shared    as sh
 import sharedGUI as sg
 import logic     as lg
+import gui       as gi
 import db
 
 
@@ -144,6 +145,7 @@ def invalid_urls():
     idb.close()
 
 def search_field():
+    # An example of a complex search in the DB
     idb = db.DB(path='/home/pete/.config/yatube/yatube.db')
     itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
     itime.add_days(-7)
@@ -170,9 +172,8 @@ def search_field():
     idb.close()
 
 
-
 if __name__ == '__main__':
     f = 'tests.__main__'
     sg.objs.start()
-    search_field()
+    
     sg.objs.end()
