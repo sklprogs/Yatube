@@ -88,6 +88,7 @@ class Pause:
     def __init__(self):
         self.values()
         self.parent = sg.objs.new_top()
+        self.widget = self.parent.widget
         self.gui()
         self.reset()
     
@@ -175,6 +176,7 @@ class Pause:
         self.ent_hrs = sg.Entry (parent    = self.frm_hrs
                                 ,Composite = True
                                 ,width     = 2
+                                ,justify   = 'center'
                                 )
         self.btn_hrd = sg.Button (parent   = self.frm_hrs
                                  ,inactive = self.icn_dn0
@@ -205,6 +207,7 @@ class Pause:
         self.ent_min = sg.Entry (parent    = self.frm_min
                                 ,Composite = True
                                 ,width     = 2
+                                ,justify   = 'center'
                                 )
         self.btn_mnd = sg.Button (parent   = self.frm_min
                                  ,inactive = self.icn_dn0
@@ -221,6 +224,7 @@ class Pause:
         self.ent_sec = sg.Entry (parent    = self.frm_sec
                                 ,Composite = True
                                 ,width     = 2
+                                ,justify   = 'center'
                                 )
         self.btn_scd = sg.Button (parent   = self.frm_sec
                                  ,inactive = self.icn_dn0
@@ -827,6 +831,10 @@ class Video:
     def red_out(self,event=None):
         for label in self._labels:
             label.widget.config(fg='red')
+    
+    def green_out(self,event=None):
+        for label in self._labels:
+            label.widget.config(fg='green')
     
     def objects(self):
         # Do not include 'self.cbox'. Children must come first.

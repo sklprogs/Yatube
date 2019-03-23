@@ -1066,7 +1066,7 @@ class Entry:
                 ,side=None,ipadx=None,ipady=None
                 ,fill=None,width=None,expand=None
                 ,font='Sans 11',bg=None,fg=None
-                ,justify='center'
+                ,justify='left'
                 ):
         self.type      = 'Entry'
         self.Composite = Composite

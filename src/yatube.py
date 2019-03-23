@@ -31,6 +31,12 @@ class Pause:
         lg.objs.db().update_pause(self._id)
         mt.objs.videos().current()._pause = 0
         self.close()
+        objs.commands().mark_watched(Unselect=False)
+        objs._commands.remove_from_watchlist(Unselect=False)
+        if objs.channels().current()._type == 'watchlist':
+            objs._commands.reload_channel()
+        else:
+            objs._commands.update_video()
     
     def reset(self,video_id,pause):
         self._id    = video_id
@@ -57,6 +63,12 @@ class Pause:
                                   ,pause    = all_sec
                                   )
         self.close()
+        objs.commands().mark_not_watched(Unselect=False)
+        objs._commands.add2watchlist(Unselect=False)
+        if objs.channels().current()._type == 'watchlist':
+            objs._commands.reload_channel()
+        else:
+            objs._commands.update_video()
     
     def bindings(self):
         self.gui.btn_del.action = self.delete
@@ -80,6 +92,15 @@ class Pause:
                 ,bindings = ('<Return>','<KP_Enter>')
                 ,action   = self.upd_sec
                 )
+        sg.bind (obj      = self.gui.parent
+                ,bindings = ('<F2>','<Control-s>')
+                ,action   = self.save
+                )
+        sg.bind (obj      = self.gui.parent
+                ,bindings = ('<Escape>','<Control-w>','<Control-q>')
+                ,action   = self.close
+                )
+        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
     
     def get_sec(self,event=None):
         f = '[Yatube] yatube.Pause.get_sec'
@@ -716,7 +737,7 @@ class AddId:
         self.gui.btn_opn.action = self.open
         self.gui.btn_rst.action = self.reset
         self.gui.btn_sav.action = self.save
-        self.gui.widget.protocol("WM_DELETE_WINDOW",self.close)
+        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
         sg.bind (obj      = self.gui
                 ,bindings = ['<Escape>','<Control-w>','<Control-q>']
                 ,action   = self.close
@@ -818,7 +839,7 @@ class Comments:
                 )
         self.gui.btn_prv.action = self.prev
         self.gui.btn_nxt.action = self.next
-        self.gui.widget.protocol("WM_DELETE_WINDOW",self.close)
+        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
     
     def prev(self,event=None):
         f = '[Yatube] yatube.Comments.prev'
@@ -936,7 +957,6 @@ class Commands:
         self.reset_channels()
     
     def set_pause(self,event=None):
-        #cur
         objs.pause().reset (video_id = mt.objs.videos().current()._id
                            ,pause    = mt.objs._videos.current()._pause
                            )
@@ -2576,7 +2596,7 @@ class Commands:
             video.Block  = True
         return(author,title)
     
-    def update_video(self,i):
+    def update_video(self,i=0):
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.videos().current()
         if video._gui:
@@ -2592,6 +2612,11 @@ class Commands:
             if video._dtime:
                 video._gui.gray_out()
                 self.video_date_filter()
+            if video._pause:
+                video._gui.green_out()
+            if i > 0:
+                #todo: renumber
+                pass
         else:
             sh.com.empty(f)
     
