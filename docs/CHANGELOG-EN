@@ -5,6 +5,7 @@
 * Sort Feed more accurately
 * Add a tooltip showing a video length (when the pointer hovers over 
   a video image)
+* Set a time (manually) at which a video was stopped
 
 2.0
 * Significantly increase speed
