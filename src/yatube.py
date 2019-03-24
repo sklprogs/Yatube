@@ -999,9 +999,9 @@ class Commands:
                 length = sh.com.easy_time(length)
                 pause  = mt.objs._videos.current()._pause
                 if pause:
-                    text  = length + ', ' + _('stopped at') + ': ' \
+                    text  = length + ', ' + _('pause:') + ' ' \
                             + sh.com.easy_time(pause)
-                    width = 200
+                    width = 210
                 else:
                     text  = length
                     width = 90

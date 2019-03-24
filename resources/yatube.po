@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-24 15:18+0300\n"
+"POT-Creation-Date: 2019-03-24 15:27+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -1893,8 +1893,8 @@ msgid "Put here authors to subscribe to"
 msgstr "Вставьте сюда авторов, на которых нужно подписаться"
 
 #: yatube.py:1002
-msgid "stopped at"
-msgstr "остановлено на"
+msgid "pause:"
+msgstr "пауза:"
 
 #: yatube.py:1571 yatube.py:1668 yatube.py:1675 yatube.py:2122 yatube.py:2330
 msgid "Channels"
