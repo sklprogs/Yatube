@@ -997,9 +997,17 @@ class Commands:
                 mt.objs.videos().set_gui(gui)
                 length = lg.Video().length()
                 length = sh.com.easy_time(length)
+                pause  = mt.objs._videos.current()._pause
+                if pause:
+                    text  = length + ', ' + _('stopped at') + ': ' \
+                            + sh.com.easy_time(pause)
+                    width = 200
+                else:
+                    text  = length
+                    width = 90
                 self._tip_tim = sg.ToolTip (obj        = gui.label2
-                                           ,text       = length
-                                           ,hint_width = 90
+                                           ,text       = text
+                                           ,hint_width = width
                                            ,hint_dir   = 'bottom'
                                            ,hint_delay = 400
                                            )
