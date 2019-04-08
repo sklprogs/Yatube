@@ -33,65 +33,6 @@ gettext_windows.setup_env()
 gettext.install('shared','../resources/locale')
 
 
-
-class OSSpecific:
-
-    def __init__(self):
-        self._name = ''
-        self.win_import()
-
-    def shift_tab(self):
-        if self.lin():
-            return '<Shift-ISO_Left_Tab>'
-        else:
-            return '<Shift-KeyPress-Tab>'
-
-    def win(self):
-        return 'win' in sys.platform
-
-    def lin(self):
-        return 'lin' in sys.platform
-
-    def mac(self):
-        return 'mac' in sys.platform
-
-    def name(self):
-        if not self._name:
-            if self.win():
-                self._name = 'win'
-            elif self.lin():
-                self._name = 'lin'
-            elif self.mac():
-                self._name = 'mac'
-            else:
-                self._name = 'unknown'
-        return self._name
-
-    def win_import(self):
-        if self.win():
-            #http://mail.python.org/pipermail/python-win32/2012-July/012493.html
-            _tz = os.getenv('TZ')
-            if _tz is not None and '/' in _tz:
-                os.unsetenv('TZ')
-            import pythoncom
-            from win32com.shell import shell, shellcon
-            import win32com.client, win32api
-            if win32com.client.gencache.is_readonly:
-                win32com.client.gencache.is_readonly = False
-                ''' Under p2exe/cx_freeze the call in gencache to
-                    __init__() does not happen so we use Rebuild() to
-                    force the creation of the gen_py folder.
-                    The contents of library.zip\win32com shall be
-                    unpacked to exe.win32 - 3.3\win32com.
-                    See also the section where EnsureDispatch is called.
-                '''
-                win32com.client.gencache.Rebuild()
-            import win32gui, win32con, ctypes # Required by 'Geometry'
-
-
-
-config_parser = configparser.SafeConfigParser()
-
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 gpl3_url_ru = 'http://antirao.ru/gpltrans/gplru.pdf'
 
@@ -136,13 +77,64 @@ reserved_win  = ['CON','PRN','AUX','NUL','COM1','COM2','COM3','COM4'
                 ,'COM5','COM6','COM7','COM8','COM9','LPT1','LPT2','LPT3'
                 ,'LPT4','LPT5','LPT6','LPT7','LPT8','LPT9'
                 ]
+config_parser = configparser.SafeConfigParser()
 
-oss = OSSpecific()
-if oss.win():
-    import win32com
-    import pythoncom
-# Load last due to problems with TZ (see 'oss.win_import')
-import datetime
+
+class OSSpecific:
+
+    def __init__(self):
+        self._name = ''
+        self.win_import()
+
+    def shift_tab(self):
+        if self.lin():
+            return '<Shift-ISO_Left_Tab>'
+        else:
+            return '<Shift-KeyPress-Tab>'
+
+    def win(self):
+        return 'win' in sys.platform
+
+    def lin(self):
+        return 'lin' in sys.platform
+
+    def mac(self):
+        return 'mac' in sys.platform
+
+    def name(self):
+        if not self._name:
+            if self.win():
+                self._name = 'win'
+            elif self.lin():
+                self._name = 'lin'
+            elif self.mac():
+                self._name = 'mac'
+            else:
+                self._name = 'unknown'
+        return self._name
+
+    def win_import(self):
+        if self.win():
+            #http://mail.python.org/pipermail/python-win32/2012-July/012493.html
+            _tz = os.getenv('TZ')
+            if _tz is not None and '/' in _tz:
+                os.unsetenv('TZ')
+            import pythoncom, win32com, win32com.client, win32api
+            # Required by 'Geometry'
+            import win32gui, win32con, ctypes
+            if win32com.client.gencache.is_readonly:
+                win32com.client.gencache.is_readonly = False
+                ''' Under p2exe/cx_freeze the call in gencache to
+                    __init__() does not happen so we use Rebuild() to
+                    force the creation of the gen_py folder.
+                    The contents of library.zip\win32com shall be
+                    unpacked to exe.win32 - 3.3\win32com.
+                    See also the section where EnsureDispatch is called.
+                '''
+                win32com.client.gencache.Rebuild()
+            ''' 'datetime' may have to be imported last due to
+                the problems with TZ.
+            '''
 
 
 
@@ -154,8 +146,8 @@ class Launch:
         self.target = target
         self.Block  = Block
         # Do not shorten, Path is used further
-        self.h_path = Path(self.target)
-        self.ext    = self.h_path.extension().lower()
+        self.ipath = Path(self.target)
+        self.ext    = self.ipath.extension().lower()
         ''' We do not use the File class because the target can be a
             directory.
         '''
@@ -172,11 +164,11 @@ class Launch:
         f = '[shared] shared.Launch._launch'
         if self.custom_args:
             log.append (f,_('DEBUG')
-                       ,_('Custom arguments: "%s"') % ';'.join(self.custom_args)
+                       ,_('Custom arguments: "%s"') \
+                       % ';'.join(self.custom_args)
                        )
             try:
-                ''' Block the script till the called program is closed
-                '''
+                # Block the script till the called program is closed
                 if self.Block:
                     subprocess.call(self.custom_args)
                 else:
@@ -194,7 +186,7 @@ class Launch:
     def _lin(self):
         f = '[shared] shared.Launch._lin'
         try:
-            os.system("xdg-open " + self.h_path.escape() + "&")
+            os.system("xdg-open " + self.ipath.escape() + "&")
         except OSError:
             objs.mes (f,_('ERROR')
                      ,_('Unable to open the file in an external program. You should probably check the file associations.')
@@ -267,49 +259,37 @@ class Launch:
 
 class WriteTextFile:
 
-    def __init__(self,file,Rewrite=False,UseLog=True):
+    def __init__(self,file,Rewrite=False):
         f = '[shared] shared.WriteTextFile.__init__'
         self.file    = file
         self.text    = ''
         self.Rewrite = Rewrite
-        self.UseLog  = UseLog
         self.Success = True
         if not self.file:
-            if self.UseLog:
-                objs.mes (f,_('ERROR')
-                         ,_('Not enough input data!')
-                         )
-            else:
-                print(f+': Not enough input data!')
+            objs.mes (f,_('ERROR')
+                     ,_('Not enough input data!')
+                     )
             self.Success = False
 
     def _write(self,mode='w'):
         f = '[shared] shared.WriteTextFile._write'
         if mode == 'w' or mode == 'a':
-            if self.UseLog:
-                log.append (f,_('INFO')
-                           ,_('Write file "%s"') % self.file
-                           )
+            log.append (f,_('INFO')
+                       ,_('Write file "%s"') % self.file
+                       )
             try:
                 with open(self.file,mode,encoding='UTF-8') as fl:
                     fl.write(self.text)
             except:
                 self.Success = False
-                if self.UseLog:
-                    objs.mes (f,_('ERROR')
-                             ,_('Unable to write file "%s"!') \
-                             % self.file
-                             )
-                else:
-                    print(f+': Unable to write the file!')
-        else:
-            if self.UseLog:
                 objs.mes (f,_('ERROR')
-                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                         % (str(mode),'a, w')
+                         ,_('Unable to write file "%s"!') % self.file
                          )
-            else:
-                print(f+': An unknown mode!')
+        else:
+            objs.mes (f,_('ERROR')
+                     ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
+                     % (str(mode),'a, w')
+                     )
 
     def append(self,text=''):
         f = '[shared] shared.WriteTextFile.append'
@@ -322,17 +302,13 @@ class WriteTextFile:
                 '''
                 self._write('a')
             else:
-                if self.UseLog:
-                    objs.mes (f,_('ERROR')
-                             ,_('Not enough input data!')
-                             )
-                else:
-                    print(f+': Not enough input data!')
+                objs.mes (f,_('ERROR')
+                         ,_('Not enough input data!')
+                         )
         else:
-            if self.UseLog:
-                log.append (f,_('WARNING')
-                           ,_('Operation has been canceled.')
-                           )
+            log.append (f,_('WARNING')
+                       ,_('Operation has been canceled.')
+                       )
 
     def write(self,text=''):
         f = '[shared] shared.WriteTextFile.write'
@@ -344,74 +320,36 @@ class WriteTextFile:
                                ):
                     self._write('w')
             else:
-                if self.UseLog:
-                    objs.mes (f,_('ERROR')
-                             ,_('Not enough input data!')
-                             )
-                else:
-                    print(f+': Not enough input data!')
+                objs.mes (f,_('ERROR')
+                         ,_('Not enough input data!')
+                         )
         else:
-            if self.UseLog:
-                log.append (f,_('WARNING')
-                           ,_('Operation has been canceled.')
-                           )
+            log.append (f,_('WARNING')
+                       ,_('Operation has been canceled.')
+                       )
 
 
 
 class Log:
 
-    def __init__(self,Use=True,Write=False
-                ,Print=True,Short=False,file=None
-                ):
+    def __init__ (self,Use=True,Short=False
+                 ):
         f = self.func = 'shared.Log.__init__'
         self.Success = True
-        self.file    = file
         self.level   = _('INFO')
         self.message = 'Test'
-        self.count   = 0
-        self.Write   = Write
-        self.Print   = Print
+        self.count   = 1
         self.Short   = Short
         if not Use:
             self.Success = False
-        if self.Write:
-            self.h_write = WriteTextFile (file    = self.file
-                                         ,Rewrite = True
-                                         ,UseLog  = False
-                                         )
-            self.Success = self.h_write.Success
-            self.clear()
-
-    def clear(self):
-        if self.Success:
-            self.h_write.write(text=_('***** Start of log. *****'))
-
-    def _write(self):
-        self.h_write.append (text='\n%d:%s:%s:%s' % (self.count
-                                                    ,self.func
-                                                    ,self.level
-                                                    ,self.message
-                                                    )
-                            )
-
-    def write(self):
-        if self.Success and self.Write:
-            if self.Short:
-                if self.level == _('WARNING') \
-                or self.level == _('ERROR'):
-                    self._write()
-            else:
-                self._write()
 
     def print(self):
         if self.Success:
-            if self.Print:
-                if self.Short:
-                    if self.level == _('WARNING') \
-                    or self.level == _('ERROR'):
-                        self._print()
-                else:
+            if self.Short:
+                if self.level in (_('WARNING'),_('ERROR')):
                     self._print()
+            else:
+                self._print()
 
     def _print(self):
         f = '[shared] shared.Log._print'
@@ -441,23 +379,7 @@ class Log:
                 self.level   = level
                 self.message = message
                 self.print()
-                self.write()
                 self.count += 1
-
-if oss.win():
-    log = Log (Use   = True
-              ,Write = False
-              ,Print = True
-              ,Short = False
-              ,file  = r'C:\Users\pete\AppData\Local\Temp\log'
-              )
-else:
-    log = Log (Use   = True
-              ,Write = False
-              ,Print = True
-              ,Short = False
-              ,file  = '/tmp/log'
-              )
 
 
 
@@ -467,7 +389,7 @@ class TextDic:
     def __init__(self,file,Sortable=False):
         self.file     = file
         self.Sortable = Sortable
-        self.h_read   = ReadTextFile(self.file)
+        self.iread    = ReadTextFile(self.file)
         self.reset()
 
     ''' This is might be needed only for those dictionaries that
@@ -507,7 +429,7 @@ class TextDic:
         f = '[shared] shared.TextDic._join'
         if len(self.orig) == len(self.transl):
             self._lines = len(self.orig)
-            self._list = []
+            self._list  = []
             for i in range(self._lines):
                 self._list.append(self.orig[i]+'\t'+self.transl[i])
             self.text = '\n'.join(self._list)
@@ -523,8 +445,8 @@ class TextDic:
         f = '[shared] shared.TextDic._split'
         if self.get():
             self.Success = True
-            self.orig = []
-            self.transl = []
+            self.orig    = []
+            self.transl  = []
             ''' Building lists takes ~0.1 longer without temporary
                 variables (now self._split() takes ~0.256)
             '''
@@ -611,7 +533,7 @@ class TextDic:
 
     def get(self):
         if not self.text:
-            self.text = self.h_read.load()
+            self.text = self.iread.load()
         return self.text
 
     def lines(self):
@@ -625,10 +547,10 @@ class TextDic:
         return self._list
 
     def reset(self):
-        self.text = self.h_read.load()
-        self.orig = []
+        self.text   = self.iread.load()
+        self.orig   = []
         self.transl = []
-        self._list = self.get().splitlines()
+        self._list  = self.get().splitlines()
         self._lines = len(self._list)
         self._split()
 
@@ -1915,7 +1837,7 @@ class Dic:
         self.file     = file
         self.Sortable = Sortable
         self.errors   = []
-        self.h_read   = ReadTextFile(self.file)
+        self.iread    = ReadTextFile(self.file)
         self.reset()
 
     def _delete_duplicates(self):
@@ -2070,7 +1992,7 @@ class Dic:
 
     def get(self):
         if not self.text:
-            self.text = self.h_read.load()
+            self.text = self.iread.load()
         return self.text
 
     def lines(self):
@@ -2084,7 +2006,7 @@ class Dic:
         return self._list
 
     def reset(self):
-        self.text   = self.h_read.load()
+        self.text   = self.iread.load()
         self.orig   = []
         self.transl = []
         self._list  = self.get().splitlines()
@@ -2483,92 +2405,72 @@ class Config:
 
 
 class Online:
-
+    ''' If you get 'TypeError("quote_from_bytes() expected bytes")',
+        then you probably forgot to call 'self.reset' here or
+        in children classes.
+    '''
     def __init__ (self,base_str='%s',search_str=''
-                 ,encoding='UTF-8',MTSpecific=False
+                 ,encoding='UTF-8'
                  ):
         self.reset (base_str   = base_str
                    ,search_str = search_str
                    ,encoding   = encoding
-                   ,MTSpecific = MTSpecific
                    )
 
-    def bytes_common(self):
+    def get_bytes(self):
         if not self._bytes:
             self._bytes = bytes (self.search_str
                                 ,encoding = self.encoding
                                 )
-
-    def bytes_multitran(self):
-        if not self._bytes:
-            # Otherwise, will not be able to encode 'Ъ'
-            try:
-                self._bytes = bytes (self.search_str
-                                    ,encoding = globs['var']['win_encoding']
-                                    )
-            except:
-                ''' Otherwise, will not be able to encode specific
-                    characters
-                '''
-                try:
-                    self._bytes = bytes (self.search_str
-                                        ,encoding='UTF-8'
-                                        )
-                except:
-                    self._bytes = ''
-
-    def bytes(self):
-        if self.MTSpecific:
-            self.bytes_multitran()
-        else:
-            self.bytes_common()
         return self._bytes
 
     # Open a URL in a default browser
     def browse(self):
         f = '[shared] shared.Online.browse'
         try:
-            webbrowser.open(self.url(),new=2,autoraise=True)
-        except:
+            webbrowser.open (url       = self.url()
+                            ,new       = 2
+                            ,autoraise = True
+                            )
+        except Exception as e:
             objs.mes (f,_('ERROR')
-                     ,_('Failed to open URL "%s" in a default browser!')\
-                     % self._url
+                     ,_('Failed to open URL "%s" in a default browser!\n\nDetails: %s')\
+                     % (self._url,str(e))
                      )
 
     # Create a correct online link (URI => URL)
     def url(self):
         f = '[shared] shared.Online.url'
         if not self._url:
-            self._url = self.base_str % urllib.parse.quote(self.bytes())
+            self._url = self.base_str % urllib.parse.quote(self.get_bytes())
             log.append (f,_('DEBUG')
                        ,str(self._url)
                        )
         return self._url
 
     def reset (self,base_str='',search_str=''
-              ,encoding='UTF-8',MTSpecific=False
+              ,encoding='UTF-8'
               ):
-        self.encoding   = encoding
-        self.MTSpecific = MTSpecific
-        self.base_str   = base_str
-        self.search_str = search_str
         self._bytes     = None
         self._url       = None
+        self.encoding   = encoding
+        self.base_str   = base_str
+        self.search_str = search_str
 
 
 
 class Diff:
 
     def __init__(self,text1='',text2='',file=None):
-        self.Custom      = False
+        self.Custom     = False
         ''' Some browsers update web-page as soon as we rewrite it, and
             some even do not open the same file again. So, we have to
             create a new temporary file each time.
         '''
-        self.wda_html    = com.tmpfile(suffix='.htm',Delete=0)
-        self.h_wda_write = WriteTextFile (file    = self.wda_html
-                                         ,Rewrite = True
-                                         )
+        self.wda_html   = com.tmpfile(suffix='.htm',Delete=0)
+        self.iwda_write = WriteTextFile (file    = self.wda_html
+                                        ,Rewrite = True
+                                        )
         if text1 or text2:
             self.reset (text1 = text1
                        ,text2 = text2
@@ -2583,15 +2485,15 @@ class Diff:
             self.Custom  = True
             self.file    = file
             self._header = ''
-            self.h_write = WriteTextFile (file    = self.file
+            self.iwrite  = WriteTextFile (file    = self.file
                                          ,Rewrite = False
                                          )
-            self.h_path  = Path(self.file)
+            self.ipath   = Path(self.file)
         else:
             self.Custom  = False
             self.file    = self.wda_html
             self._header = '<title>%s</title>' % _('Differences:')
-            self.h_write = self.h_wda_write
+            self.iwrite  = self.iwda_write
         return self
 
     def diff(self):
@@ -2605,7 +2507,7 @@ class Diff:
 
     def header(self):
         if self.Custom:
-            self._header = self.h_path.basename().replace(self.h_path.extension(),'')
+            self._header = self.ipath.basename().replace(self.ipath.extension(),'')
             self._header = '<title>' + self._header + '</title>'
         self._diff = self._diff.replace('<title></title>',self._header)\
                      + '\n'
@@ -2620,8 +2522,8 @@ class Diff:
             else:
                 self.diff()
                 self.header()
-                self.h_write.write(self._diff)
-                if self.h_write.Success:
+                self.iwrite.write(self._diff)
+                if self.iwrite.Success:
                     ''' Cannot reuse the class instance because the
                         temporary file might be missing
                     '''
@@ -3861,8 +3763,7 @@ class Objects:
     '''
     def __init__(self):
         self._enchant = self._morph = self._pretty_table = self._pdir \
-                      = self._mes = self._online_mt \
-                      = self._online_other = self._tmpfile = None
+                      = self._mes = self._online = self._tmpfile = None
 
     def tmpfile(self,suffix='.htm',Delete=0):
         if self._tmpfile is None:
@@ -3871,15 +3772,10 @@ class Objects:
                                         )
         return self._tmpfile
     
-    def online_mt(self):
-        if self._online_mt is None:
-            self._online_mt = Online(MTSpecific=True)
-        return self._online_mt
-
-    def online_other(self):
-        if self._online_other is None:
-            self._online_other = Online(MTSpecific=False)
-        return self._online_other
+    def online(self):
+        if self._online is None:
+            self._online = Online()
+        return self._online
     
     def mes (self,func='MAIN',level=_('DEBUG')
             ,message='',Silent=False
@@ -4455,10 +4351,9 @@ class Links:
 
 
 class FilterList:
-    ''' Filter base names (case-ignorant) of files and folders in a path
-        Blacklist is a list of patterns, not obligatory full names
+    ''' Filter base names (case-ignorant) of files & folders in a path.
+        Blacklist is a list of patterns, not obligatory full names.
     '''
-
     def __init__(self,path,blacklist=[]):
         self._list   = []
         self._path   = path
@@ -4757,6 +4652,10 @@ class Commands:
     this beneath 'if __name__'
 '''
 com  = Commands()
+oss  = OSSpecific()
+log  = Log (Use   = True
+           ,Short = False
+           )
 objs = Objects()
 
 
