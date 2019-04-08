@@ -139,14 +139,13 @@ class OSSpecific:
 
 
 class Launch:
-
     #note: 'Block' works only a 'custom_app' is set
     def __init__(self,target='',Block=False):
         self.values()
         self.target = target
         self.Block  = Block
         # Do not shorten, Path is used further
-        self.ipath = Path(self.target)
+        self.ipath  = Path(self.target)
         self.ext    = self.ipath.extension().lower()
         ''' We do not use the File class because the target can be a
             directory.

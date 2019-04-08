@@ -1829,7 +1829,8 @@ class Commands:
                 else:
                     args = self._stream(app)
                 if args:
-                    custom_args = [app] + args + [url]
+                    custom_args = [app] + self.mpv_start(app,args) \
+                                        + [url]
                 else:
                     custom_args = [app,url]
                 #'sh.Launch' checks the target
@@ -2369,6 +2370,16 @@ class Commands:
                 gui.cbox.enable()
         self.report_selection()
         
+    def mpv_start(self,app,lst=[]):
+        pause = mt.objs.videos().current()._pause
+        if 'mpv' in app and pause:
+            ''' 'mpv' already resumes about 2s prior to an actual pause,
+                so we don't have to additionaly tune the pause to remind
+                a user what is happening on the screen.
+            '''
+            lst += ['--start=%s' % sh.com.easy_time(pause)]
+        return lst
+    
     def _play_slow(self,app='/usr/bin/mpv'):
         if 'mpv' in app:
             custom_args = ['-fs','-framedrop=vo','--no-correct-pts']
@@ -2378,7 +2389,7 @@ class Commands:
             custom_args = []
         sh.Launch (target = lg.Video().path()
                   ).app (custom_app  = app
-                        ,custom_args = custom_args
+                        ,custom_args = self.mpv_start(app,custom_args)
                         )
                         
     def _play_default(self):
