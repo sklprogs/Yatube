@@ -2056,14 +2056,16 @@ class OptionMenu:
             self.index = len(self.items) - 1
         else:
             self.index -= 1
-        self.var.set(self.items[self.index])
+        self.choice = self.items[self.index]
+        self.var.set(self.choice)
 
     def set_next(self,event=None):
         if self.index == len(self.items) - 1:
             self.index = 0
         else:
             self.index += 1
-        self.var.set(self.items[self.index])
+        self.choice = self.items[self.index]
+        self.var.set(self.choice)
 
     def focus(self,event=None):
         self.widget.focus_set()

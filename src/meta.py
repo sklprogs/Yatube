@@ -705,9 +705,9 @@ class Search:
     def videos(self):
         f = '[Yatube] meta.Search.videos'
         if self.Success:
-            for item in self._resp['items']:
-                if item['id']['kind'] == "youtube#video":
-                    try:
+            try:
+                for item in self._resp['items']:
+                    if item['id']['kind'] == "youtube#video":
                         video         = Video()
                         video._id     = item['id']['videoId']
                         video._author = item['snippet']['channelTitle']
@@ -717,10 +717,10 @@ class Search:
                         video._desc   = item['snippet']['description']
                         video._thumb  = item['snippet']['thumbnails']['default']['url']
                         objs.videos().add(video)
-                    except KeyError as e:
-                        sh.objs.mes (f,_('WARNING')
-                                    ,_('Missing key: "%s"!') % str(e)
-                                    )
+            except KeyError as e:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Missing key: "%s"!') % str(e)
+                            )
         else:
             sh.com.cancel(f)
     

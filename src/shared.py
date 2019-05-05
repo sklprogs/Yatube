@@ -80,6 +80,169 @@ reserved_win  = ['CON','PRN','AUX','NUL','COM1','COM2','COM3','COM4'
 config_parser = configparser.SafeConfigParser()
 
 
+class Hotkeys:
+    ''' Transform tkinter bindings to a human readable form
+        Use the following key names:
+        http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/key-names.html
+        #todo: add remaining keypad key
+    '''
+    def __init__(self,hotkeys,sep='; '):
+        self.Success  = True
+        self._hotkeys = hotkeys
+        self._sep     = sep
+        self.check()
+    
+    def check(self):
+        f = '[shared] shared.Hotkeys.check'
+        if self._hotkeys and self._sep:
+            if not isinstance(self._hotkeys,str) \
+            and not isinstance(self._hotkeys,tuple) \
+            and not isinstance(self._hotkeys,list):
+                self.Success = False
+                objs.mes (f,_('WARNING')
+                         ,_('Wrong input data: "%s"!') \
+                         % str(self._hotkeys)
+                         )
+        else:
+            self.Success = False
+            #todo: do we need this warning?
+            com.empty(f)
+    
+    def _loop(self,pattern):
+        self._hotkeys = [hotkey for hotkey in self._hotkeys \
+                         if not pattern in hotkey
+                        ]
+    
+    def keypad(self):
+        ''' Both 'Return' (main key) and 'KP_Enter' (numeric keypad)
+            usually do the same thing, so we just remove KP_Enter.
+            The same relates to other keypad key.
+        '''
+        f = '[shared] shared.Hotkeys.keypad'
+        if self.Success:
+            if not isinstance(self._hotkeys,str):
+                for hotkey in self._hotkeys:
+                    ''' Do not use '<' and '>' signs here since
+                        the combination can actually be
+                        '<Control-KP_Enter>'.
+                    '''
+                    if 'Return' in hotkey:
+                        self._loop('KP_Enter')
+                    if 'Home' in hotkey:
+                        self._loop('KP_Home')
+                    if 'End' in hotkey:
+                        self._loop('KP_End')
+                    if 'Delete' in hotkey:
+                        self._loop('KP_Delete')
+                    if 'Insert' in hotkey:
+                        self._loop('KP_Insert')
+        else:
+            com.cancel(f)
+    
+    def hotkeys(self):
+        f = '[shared] shared.Hotkeys.hotkeys'
+        if self.Success:
+            self._hotkeys = [self.replace(hotkey) \
+                             for hotkey in self._hotkeys
+                            ]
+            self._hotkeys = [hotkey for hotkey in self._hotkeys \
+                             if hotkey
+                            ]
+        else:
+            com.cancel(f)
+    
+    def run(self):
+        f = '[shared] shared.Hotkeys.run'
+        result = ''
+        if self.Success:
+            if isinstance(self._hotkeys,str):
+                result = self.replace(self._hotkeys)
+            else:
+                self.keypad()
+                self.hotkeys()
+                result = self._sep.join(self._hotkeys)
+        else:
+            com.cancel(f)
+        return result
+    
+    def replace(self,key):
+        f = '[shared] shared.Hotkeys.replace'
+        if key:
+            key = key.replace('<','').replace('>','')
+            key = key.replace('Left','←').replace('Right','→')
+            key = key.replace ('Button-1'
+                              ,_('Left mouse button')
+                              )
+            key = key.replace ('ButtonRelease-1'
+                              ,_('Left mouse button')
+                              )
+            key = key.replace ('Button-2'
+                              ,_('Middle mouse button')
+                              )
+            key = key.replace ('ButtonRelease-2'
+                              ,_('Middle mouse button')
+                              )
+            key = key.replace ('Button-3'
+                              ,_('Right mouse button')
+                              )
+            key = key.replace ('ButtonRelease-3'
+                              ,_('Right mouse button')
+                              )
+            key = key.replace('grave','~')
+            # Left and right Alt and Shift are usually interchangeable
+            key = key.replace('Alt_R','Alt_L')
+            key = key.replace('Alt_L','Alt')
+            key = key.replace('Control_L','Control')
+            key = key.replace('Control_R','Control')
+            key = key.replace('Control','Ctrl')
+            key = key.replace('Shift_R','Shift_L')
+            key = key.replace('Shift_L','Shift')
+            key = key.replace('-Key-','')
+            key = key.replace('Delete','Del')
+            key = key.replace('Insert','Ins')
+            key = key.replace('Scroll_Lock','ScrollLock')
+            key = key.replace('Print','PrintScrn')
+            key = key.replace('Up','↑').replace('Down','↓')
+            key = key.replace('Execute','SysReq')
+            key = key.replace('Num_Lock','NumLock')
+            key = key.replace('Prior','PgUp')
+            key = key.replace('Next','PgDn')
+            key = key.replace('Escape','Esc')
+            ''' We should leave only 1 key if there are key
+                both for keyboard and keypad. Thus, we generally should
+                not have to use keypad key without keyboard
+                analogs. If we do, we should excplicitly indicate that
+                it is keypad.
+            '''
+            key = key.replace('KP_Delete','Del (keypad)')
+            key = key.replace('KP_Divide','/ (keypad)')
+            key = key.replace('KP_Down','↓ (keypad)')
+            ''' '<Control-S>' actually means 'Ctrl-Shift-s' in tkinter.
+                Insert 'Shift' before making key upper-case.
+            '''
+            match = re.match('.*-([A-Z])$',key)
+            if match:
+                group = match.group(1)
+                key   = key.replace ('-'       + group
+                                    ,'-Shift-' + group
+                                    )
+            ''' We make letters upper-case in order to avoid confusion,
+                e.g., when using 'i', 'l' and '1'.
+            '''
+            match = re.match('.*-([a-z])$',key)
+            if match:
+                group = match.group(1)
+                key   = key.replace ('-' + group
+                                    ,'-' + group.upper()
+                                    )
+            #key = key.replace('-','+')
+        else:
+            #todo: do we need this warning?
+            self.empty(f)
+        return key
+
+
+
 class OSSpecific:
 
     def __init__(self):
@@ -1174,6 +1337,20 @@ class List:
                 return False
         return True
     
+    def duplicates_low(self):
+        ''' Remove (case-insensitively) duplicate items (positioned
+            after original items). Both lists must consist of strings.
+        '''
+        cilst = [item.lower() for item in self.lst1]
+        i = len(cilst) - 1
+        while i >= 0:
+            ind = cilst.index(cilst[i])
+            if ind < i:
+                del cilst[i]
+                del self.lst1[i]
+            i -= 1
+        return self.lst1
+    
     # Remove duplicate items (positioned after original items)
     def duplicates(self):
         i = len(self.lst1) - 1
@@ -1194,9 +1371,11 @@ class List:
                 elif self.lst1[i] and self.lst1[i][0] in punc_array \
                 or self.lst1[i][0] in '”»])}':
                     text += self.lst1[i]
-                # We do not know for sure where quotes should be placed, but we cannot leave out cases like ' " '
                 elif len(text) > 1 and text[-2].isspace() \
                 and text[-1] == '"':
+                    ''' We do not know for sure where quotes should be
+                        placed, but we cannot leave out cases like ' " '
+                    '''
                     text += self.lst1[i]
                 elif len(text) > 1 and text[-2].isspace() \
                 and text[-1] == "'":
@@ -4051,7 +4230,9 @@ class FixBaseName:
 
 class Get:
     
-    def __init__(self,url,encoding='UTF-8',Verbose=True,Verify=False):
+    def __init__ (self,url,encoding='UTF-8'
+                 ,Verbose=True,Verify=False
+                 ):
         self._timeout  = 6
         self._html     = ''
         self._url      = url
