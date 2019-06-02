@@ -4232,9 +4232,10 @@ class Get:
     
     def __init__ (self,url,encoding='UTF-8'
                  ,Verbose=True,Verify=False
+                 ,timeout=6
                  ):
-        self._timeout  = 6
         self._html     = ''
+        self._timeout  = timeout
         self._url      = url
         self._encoding = encoding
         self.Verbose   = Verbose

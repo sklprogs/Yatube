@@ -1007,7 +1007,6 @@ class Commands:
                     width = 90
                 self._tip_tim = sg.ToolTip (obj        = gui.label2
                                            ,text       = text
-                                           ,hint_width = width
                                            ,hint_dir   = 'bottom'
                                            ,hint_delay = 400
                                            )
@@ -1414,11 +1413,10 @@ class Commands:
                     ,action   = self.hint
                     )
             if len(gui._title) > 60:
-                self._tip_tit = sg.ToolTip (obj        = gui.frame
-                                           ,text       = gui._title
-                                           ,hint_width = 900
-                                           ,hint_dir   = 'top'
-                                           ,hint_font  = 'Serif 10'
+                self._tip_tit = sg.ToolTip (obj       = gui.frame
+                                           ,text      = gui._title
+                                           ,hint_dir  = 'top'
+                                           ,hint_font = 'Serif 10'
                                            )
     
     def prev_channel(self,event=None):

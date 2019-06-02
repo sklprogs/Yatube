@@ -2,8 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import sys, os
+import re
 import tkinter            as tk
 import tkinter.filedialog as dialog
+import tkinter.font
 import tkinter.ttk        as ttk
 import shared             as sh
 
@@ -13,6 +15,106 @@ gettext.install('shared','../resources/locale')
 
 
 SHOW_HINTS = True
+
+
+class Font:
+    
+    def __init__(self,name):
+        self.values()
+        if name:
+            self.reset(name)
+    
+    def attr(self):
+        f = '[shared] sharedGUI.Font.attr'
+        if self._name:
+            match = re.match('([aA-zZ].*) (\d+)',self._name)
+            if match:
+                self._family = match.group(1)
+                self._size   = int(match.group(2))
+            else:
+                sh.log.append (f,_('ERROR')
+                              ,_('Wrong input data: "%s"!') \
+                              % str(self._name)
+                              )
+        else:
+            sh.com.empty(f)
+    
+    def reset(self,name):
+        self.values()
+        self._name = name
+        self.attr()
+    
+    def values(self):
+        self._font   = None
+        self._family = ''
+        self._name   = ''
+        self._text   = ''
+        self._size   = 0
+        self._height = 0
+        self._width  = 0
+    
+    def set_text(self,text):
+        f = '[shared] sharedGUI.Font.set_text'
+        if text:
+            self._text = text
+        else:
+            sh.com.empty(f)
+    
+    def font(self):
+        f = '[shared] sharedGUI.Font.font'
+        if not self._font:
+            if self._family and self._size:
+                self._font = tkinter.font.Font (family = self._family
+                                               ,size   = self._size
+                                               )
+            else:
+                sh.com.empty(f)
+        return self._font
+    
+    def height(self,border=20):
+        f = '[shared] sharedGUI.Font.height'
+        if not self._height:
+            if self.font():
+                try:
+                    self._height = self._font.metrics("linespace")
+                except Exception as e:
+                    sh.log.append (f,_('ERROR')
+                                  ,str(e)
+                                  )
+                if self._height:
+                    lines = len(self._text.splitlines())
+                    if lines:
+                        self._height = self._height * lines
+                    self._height += border
+                sh.log.append (f,_('DEBUG')
+                              ,'%d' % self._height
+                              )
+            else:
+                sh.com.empty(f)
+        return self._height
+    
+    def width(self,border=20):
+        f = '[shared] sharedGUI.Font.width'
+        if not self._width:
+            if self.font() and self._text:
+                try:
+                    max_line = sorted (self._text.splitlines()
+                                      ,key     = len
+                                      ,reverse = True
+                                      )[0]
+                    self._width = self._font.measure(max_line)
+                except Exception as e:
+                    sh.log.append (f,_('ERROR')
+                                  ,str(e)
+                                  )
+                if self._width:
+                    self._width += border
+                sh.log.append (f,_('DEBUG')
+                              ,'%d' % self._width
+                              )
+            else:
+                sh.com.empty(f)
+        return self._width
 
 
 # Привязать горячие клавиши или кнопки мыши к действию
@@ -1266,8 +1368,6 @@ class Button:
                  ,fg_focus    = None
                  ,bd          = 0
                  ,hint_delay  = 800
-                 ,hint_width  = 280
-                 ,hint_height = 40
                  ,hint_bg     = '#ffffe0'
                  ,hint_dir    = 'top'
                  ,hint_bwidth = 1
@@ -1279,32 +1379,31 @@ class Button:
                  ):
         self.Status         = False
         self.parent         = parent
+        self.family         = 'Sans'
+        self.size           = 12
         self.action         = action
-        self.height         = height
-        self.width          = width
-        self.side           = side
-        self.expand         = expand
-        self.fill           = fill
-        self.text           = text
-        self._bindings      = bindings
-        self.TakeFocus      = TakeFocus
         self.bd             = bd
         self.bg             = bg
         self.bg_focus       = bg_focus
+        self._bindings      = bindings
+        self.expand         = expand
         self.fg             = fg
         self.fg_focus       = fg_focus
-        self.hint           = hint
-        self.hint_delay     = hint_delay
-        self.hint_width     = hint_width
-        self.hint_height    = hint_height
-        self.hint_bg        = hint_bg
-        self.hint_dir       = hint_dir
-        self.side           = side
-        self.inactive_image = self.image(inactive)
-        self.active_image   = self.image(active)
+        self.fill           = fill
         self.font           = font
+        self.height         = height
+        self.hint_bg        = hint_bg
+        self.hint_delay     = hint_delay
+        self.hint_dir       = hint_dir
+        self.hint           = hint
+        self.side           = side
+        self.TakeFocus      = TakeFocus
+        self.text           = text
+        self.width          = width
+        self.active_image   = self.image(active)
+        self.inactive_image = self.image(inactive)
         self.gui()
-        
+    
     def bindings(self):
         bind (obj      = self
              ,bindings = ['<ButtonRelease-1>','<space>','<Return>'
@@ -1353,16 +1452,16 @@ class Button:
     def set_hint(self):
         if self.hint:
             if self._bindings:
-                self.hint_extended = self.hint + '\n' + str(self._bindings).replace('[','').replace(']','').replace('<','').replace('>','').replace("'",'')
+                self.hint_extended = self.hint + '\n' \
+                                     + sh.Hotkeys(self._bindings).run()
             else:
                 self.hint_extended = self.hint
-            self.tip = ToolTip (obj         = self
-                               ,text        = self.hint_extended
-                               ,hint_delay  = self.hint_delay
-                               ,hint_width  = self.hint_width
-                               ,hint_height = self.hint_height
-                               ,hint_bg     = self.hint_bg
-                               ,hint_dir    = self.hint_dir
+            self.tip = ToolTip (obj        = self
+                               ,text       = self.hint_extended
+                               ,hint_delay = self.hint_delay
+                               ,hint_font  = self.font
+                               ,hint_bg    = self.hint_bg
+                               ,hint_dir   = self.hint_dir
                                )
     
     def title(self,button_text='Press me'):
@@ -1370,8 +1469,8 @@ class Button:
             self.widget.config(text=button_text)
 
     def image(self,button_image_path=None):
-        # Без 'file=' не сработает!
         if button_image_path and os.path.exists(button_image_path):
+            #note: Does not work without 'file='!
             button_image = tk.PhotoImage (file   = button_image_path
                                          ,master = self.parent.widget
                                          ,width  = self.width
@@ -1517,22 +1616,37 @@ class ToolTipBase:
 class ToolTip(ToolTipBase):
 
     def __init__(self,obj,text='Sample text'
-                ,hint_delay=800,hint_width=280
-                ,hint_height=40,hint_bg='#ffffe0'
+                ,hint_delay=800,hint_bg='#ffffe0'
                 ,hint_dir='top',hint_bwidth=1
                 ,hint_bcolor='navy',hint_font='Sans 11'
                 ):
+        self.hint_height = 0
+        self.hint_width  = 0
         self.text        = text
         self.hint_delay  = hint_delay
         self.hint_dir    = hint_dir
         self.hint_bg     = hint_bg
         self.hint_bcolor = hint_bcolor
-        self.hint_height = hint_height
-        self.hint_width  = hint_width
         self.hint_bwidth = hint_bwidth
         self.hint_font   = hint_font
+        self.calc_hint()
         ToolTipBase.__init__(self,obj=obj)
 
+    def calc_hint(self):
+        f = '[shared] sharedGUI.ToolTip.calc_hint'
+        if not self.hint_width or not self.hint_height:
+            if self.text:
+                if not self.hint_font:
+                    self.hint_font = 'Sans 11'
+                ifont = Font(self.hint_font)
+                ifont.set_text(self.text)
+                self.hint_width  = ifont.width()
+                self.hint_height = ifont.height()
+            else:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+    
     def showcontents(self):
         # Assign this boolean externally to stop showing hints
         if SHOW_HINTS:
@@ -1888,6 +2002,8 @@ class OptionMenu:
           do this here to avoid problems with iterating ("in requires
           int as the left operand") later (this happens when we pass
           a sequence of chars instead of a list of strings).
+        - 'expand' seems to has no effect at the time, but I leave it
+          for testing purposes.
     '''
     def __init__ (self
                  ,parent
@@ -1898,6 +2014,9 @@ class OptionMenu:
                  ,takefocus = 1
                  ,default   = None
                  ,Combo     = False
+                 ,expand    = False
+                 ,fill      = None
+                 ,font      = None
                  ):
         self.parent  = parent
         self.items   = items
@@ -1924,9 +2043,15 @@ class OptionMenu:
                                         ,*self.items
                                         ,command = self.trigger
                                         )
-        self.widget.pack(side=side,anchor=anchor)
+        self.widget.pack (side   = side
+                         ,anchor = anchor
+                         ,expand = expand
+                         ,fill   = fill
+                         )
         # Must be 1/True to be operational from keyboard
-        self.widget.configure(takefocus=takefocus)
+        self.widget.configure (takefocus = takefocus
+                              ,font      = font
+                              )
         self.default_set()
 
     # Allow to use digits at input
