@@ -188,6 +188,9 @@ class Hotkeys:
             key = key.replace ('ButtonRelease-3'
                               ,_('Right mouse button')
                               )
+            key = key.replace ('space'
+                              ,_('Space')
+                              )
             key = key.replace('grave','~')
             # Left and right Alt and Shift are usually interchangeable
             key = key.replace('Alt_R','Alt_L')
@@ -1032,10 +1035,6 @@ class Text:
             match = re.search(my_expr,self.text)
         return self.text
 
-    def delete_autotranslate_markers(self):
-        self.text = self.text.replace('[[','').replace(']]','').replace('{','').replace('}','').replace('_','')
-        return self.text
-
     def delete_embraced_text(self,opening_sym='(',closing_sym=')'):
         ''' If there are some brackets left after performing this
             operation, ensure that all of them are in the right place
@@ -1664,6 +1663,30 @@ class File:
                      ,_('The object "%s" is not a file!') % self.file
                      )
 
+    def size(self,Follow=True):
+        f = '[shared] shared.File.size'
+        result = 0
+        if self.Success:
+            try:
+                if Follow:
+                    cond = not os.path.islink(self.file)
+                else:
+                    cond = True
+                if cond:
+                    result = os.path.getsize(self.file)
+            except Exception as e:
+                ''' Along with other errors, 'No such file or directory'
+                    error will be raised if Follow=False and this is
+                    a broken symbolic link.
+                '''
+                objs.mes (f,_('WARNING')
+                         ,_('Operation has failed!\nDetails: %s') \
+                         % str(e)
+                         )
+        else:
+            com.cancel(f)
+        return result
+    
     def _copy(self):
         f = '[shared] shared.File._copy'
         Success = True
@@ -1825,6 +1848,27 @@ class Path:
     def __init__(self,path):
         self.reset(path)
 
+    def free_space(self):
+        f = '[shared] shared.Path.free_space'
+        result = 0
+        if self.path:
+            if os.path.exists(self.path):
+                try:
+                    istat  = os.statvfs(self.path)
+                    result = istat.f_bavail * istat.f_bsize
+                except Exception as e:
+                    objs.mes (f,_('WARNING')
+                             ,_('Operation has failed!\nDetails: %s') \
+                             % str(e)
+                             )
+            else:
+                objs.mes (f,_('WARNING')
+                         ,_('Wrong input data: "%s"!') % str(self.path)
+                         )
+        else:
+            com.empty(f)
+        return result
+    
     def _splitpath(self):
         if not self._split:
             self._split = os.path.splitext(self.basename())
@@ -1902,7 +1946,11 @@ class Path:
         return self._filename
 
     def reset(self,path):
-        self.path = path
+        # Prevent 'NoneType'
+        if path:
+            self.path = path
+        else:
+            self.path = ''
         ''' Building paths in Windows:
             - Use raw strings (e.g., set path as r'C:\1.txt')
             - Use os.path.join(mydir,myfile) or os.path.normpath(path)
@@ -1913,7 +1961,8 @@ class Path:
             dirname work differently in this case ('' and the last
             directory, correspondingly)
         '''
-        self.path      = self.path.rstrip('//')
+        if self.path != '/':
+            self.path = self.path.rstrip('//')
         self._basename = self._dirname = self._extension \
                        = self._filename = self._split = self._date = ''
         self.parts     = []
@@ -1950,7 +1999,7 @@ class WriteBinary:
         else:
             self.Success = False
             log.append (f,_('WARNING')
-                       ,_('Operation has been canceled.')
+                       ,_('Empty input is not allowed!')
                        )
 
     def _write(self,mode='w+b'):
@@ -2313,8 +2362,13 @@ class Directory:
         f = '[shared] shared.Directory.__init__'
         self.values()
         if path:
-            # Removes trailing slashes if necessary
-            self.dir = Path(path).path
+            ''' Remove trailing slashes and follow symlinks. No error is
+                thrown for broken symlinks, but further checks will fail
+                for them. Failing a real path (e.g., pointing to
+                the volume that is not mounted yet) is more
+                apprehensible than failing a symlink.
+            '''
+            self.dir = os.path.realpath(path)
         else:
             self.dir = ''
         if dest:
@@ -2327,6 +2381,33 @@ class Directory:
                      ,_('Wrong input data: "%s"') % self.dir
                      )
 
+    def size(self,Follow=True):
+        f = '[shared] shared.Directory.size'
+        result = 0
+        if self.Success:
+            try:
+                for dirpath, dirnames, filenames in os.walk(self.dir):
+                    for name in filenames:
+                        obj = os.path.join(dirpath,name)
+                        if Follow:
+                            cond = not os.path.islink(obj)
+                        else:
+                            cond = True
+                        if cond:
+                            result += os.path.getsize(obj)
+            except Exception as e:
+                ''' Along with other errors, 'No such file or directory'
+                    error will be raised if Follow=False and there are
+                    broken symbolic links.
+                '''
+                objs.mes (f,_('WARNING')
+                         ,_('Operation has failed!\nDetails: %s') \
+                         % str(e)
+                         )
+        else:
+            com.cancel(f)
+        return result
+    
     def values(self):
         self.Success = True
         # Assigning lists must be one per line
@@ -4643,6 +4724,35 @@ class Commands:
 
     def __init__(self):
         self.lang()
+        
+    # IEC standard
+    def human_size(self,bsize,LargeOnly=False):
+        result = '%d %s' % (0,_('B'))
+        if bsize:
+            tebibytes = bsize // pow(2,40)
+            cursize   = tebibytes * pow(2,40)
+            gibibytes = (bsize - cursize) // pow(2,30)
+            cursize  += gibibytes * pow(2,30)
+            mebibytes = (bsize - cursize) // pow(2,20)
+            cursize  += mebibytes * pow(2,20)
+            kibibytes = (bsize - cursize) // pow(2,10)
+            cursize  += kibibytes * pow(2,10)
+            rbytes    = bsize - cursize
+            mes = []
+            if tebibytes:
+                mes.append('%d %s' % (tebibytes,_('TiB')))
+            if gibibytes:
+                mes.append('%d %s' % (gibibytes,_('GiB')))
+            if mebibytes:
+                mes.append('%d %s' % (mebibytes,_('MiB')))
+            if not (LargeOnly and bsize // pow(2,20)):
+                if kibibytes:
+                    mes.append('%d %s' % (kibibytes,_('KiB')))
+                if rbytes:
+                    mes.append('%d %s' % (rbytes,_('B')))
+            if mes:
+                result = ' '.join(mes)
+        return result
     
     def split_time(self,length=0):
         hours   = length // 3600
@@ -4817,16 +4927,19 @@ class Commands:
         return result
     
     def cancel(self,func):
-        log.append (func
-                   ,_('WARNING')
+        log.append (func,_('WARNING')
                    ,_('Operation has been canceled.')
                    )
     
     def empty(self,func):
-        log.append (func
-                   ,_('WARNING')
+        log.append (func,_('WARNING')
                    ,_('Empty input is not allowed!')
                    )
+    
+    def not_ready(self,func):
+        objs.mes (func,_('INFO')
+                 ,_('Not implemented yet!')
+                 )
 
 
 ''' If there are problems with import or tkinter's wait_variable, put

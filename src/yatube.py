@@ -2236,14 +2236,6 @@ class Commands:
                 ,action   = self.next_page
                 )
         sg.bind (obj      = self._menu.parent
-                ,bindings = '<Control-Left>'
-                ,action   = self.prev_channel
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Control-Right>'
-                ,action   = self.next_channel
-                )
-        sg.bind (obj      = self._menu.parent
                 ,bindings = '<Control-p>'
                 ,action   = self.play
                 )

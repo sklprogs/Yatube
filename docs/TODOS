@@ -1,6 +1,7 @@
 
 - Support extracting URLs from fragments like 'source=youtube&amp;vid=XWu1wmTHpVM&amp'
 - Support URLs like https://www.youtube.com/watch?time_continue=4&v=3AbzmEja7N4
+  and https://www.youtube.com/watch?v=rkxtQZUQk44%D0%97%D0%B2%D0%B8%D0%B0%D0%B4
 - Remove popup windows when starting downloading/playing/streaming
   (otherwise, the popup may freeze and/or occupy the screen)
 - Search results may be randomized. If that happens, use
