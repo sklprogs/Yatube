@@ -463,15 +463,24 @@ class VideoInfo:
                             video._views = sh.Input (title = f
                                                     ,value = item['statistics']['viewCount']
                                                     ).integer()
-                            video._likes = sh.Input (title = f
-                                                    ,value = item['statistics']['likeCount']
-                                                    ).integer()
-                            video._dislikes = sh.Input (title = f
-                                                       ,value = item['statistics']['dislikeCount']
-                                                       ).integer()
-                            video._com_num = sh.Input (title = f
-                                                      ,value = item['statistics']['commentCount']
-                                                      ).integer()
+                            if 'likeCount' in item['statistics']:
+                                video._likes = sh.Input (title = f
+                                                        ,value = item['statistics']['likeCount']
+                                                        ).integer()
+                            else:
+                                video._likes = -1
+                            if 'dislikeCount' in item['statistics']:
+                                video._dislikes = sh.Input (title = f
+                                                           ,value = item['statistics']['dislikeCount']
+                                                           ).integer()
+                            else:
+                                video._dislikes = -1
+                            if 'commentCount' in item['statistics']:
+                                video._com_num = sh.Input (title = f
+                                                          ,value = item['statistics']['commentCount']
+                                                          ).integer()
+                            else:
+                                video._com_num = -1
                             # We need only 1 suitable section
                             return True
                 except KeyError as e:

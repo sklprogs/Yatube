@@ -1063,16 +1063,25 @@ class Video:
             tmp.write('\n')
             tmp.write(_('Likes'))
             tmp.write(': ')
-            tmp.write(str(video._likes))
+            if video._likes < 0:
+                tmp.write(_('Disabled'))
+            else:
+                tmp.write(str(video._likes))
             tmp.write('\n')
             tmp.write(_('Dislikes'))
             tmp.write(': ')
-            tmp.write(str(video._dislikes))
+            if video._dislikes < 0:
+                tmp.write(_('Disabled'))
+            else:
+                tmp.write(str(video._dislikes))
             tmp.write('\n')
             # ':' is right here to provide a different localization item
             tmp.write(_('Comments:'))
             tmp.write(' ')
-            tmp.write(str(video._com_num))
+            if video._com_num < 0:
+                tmp.write(_('Disabled'))
+            else:
+                tmp.write(str(video._com_num))
             tmp.write('\n\n')
             tmp.write(_('Description'))
             tmp.write(':\n')
