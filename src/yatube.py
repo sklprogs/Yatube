@@ -863,12 +863,9 @@ class Comments:
             earlier, so we don't verify it here.
         '''
         self.logic.reset()
+        self.logic.fetch()
         self.Success = self.logic.Success
-        if self.Success:
-            self.logic.fetch()
-            self.update()
-        else:
-            sh.com.cancel(f)
+        self.update()
     
     def update(self):
         self.update_text()
@@ -896,24 +893,27 @@ class Comments:
     def update_text(self):
         f = '[Yatube] yatube.Comments.update_text'
         if self.Success:
-            try:
-                text = self.logic._texts[self.logic.i]
-            except IndexError:
-                text = ''
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Wrong input data!')
-                            )
-            text     = sh.Text(text).delete_unsupported()
-            old_text = self.gui.txt_com.get()
-            # A new line is inserted when read from the widget
-            text = text.strip()
-            old_text.strip()
-            # Keep a scrollbar position if there are no pages left
-            if old_text != text:
-                self.gui.txt_com.read_only(False)
-                self.gui.txt_com.reset()
-                self.gui.txt_com.insert(text)
-                self.gui.txt_com.read_only(True)
+            if self.logic._texts:
+                try:
+                    text = self.logic._texts[self.logic.i]
+                except IndexError:
+                    text = ''
+                    sh.objs.mes (f,_('WARNING')
+                                ,_('Wrong input data!')
+                                )
+                text     = sh.Text(text).delete_unsupported()
+                old_text = self.gui.txt_com.get()
+                # A new line is inserted when read from the widget
+                text = text.strip()
+                old_text.strip()
+                # Keep a scrollbar position if there are no pages left
+                if old_text != text:
+                    self.gui.txt_com.read_only(False)
+                    self.gui.txt_com.reset()
+                    self.gui.txt_com.insert(text)
+                    self.gui.txt_com.read_only(True)
+            else:
+                sh.com.empty(f)
         else:
             sh.com.cancel(f)
         
@@ -1429,8 +1429,7 @@ class Commands:
     
     def show_comments(self,event=None):
         f = '[Yatube] yatube.Commands.show_comments'
-        objs.comments().reset()
-        objs._comments.show()
+        Comments().show()
     
     def menu_update(self,event=None):
         f = '[Yatube] yatube.Commands.menu_update'
@@ -2743,8 +2742,8 @@ class Commands:
 class Objects:
     
     def __init__(self):
-        self._comments = self._videos = self._add_id = self._commands \
-                       = self._channels = self._pause = None
+        self._videos = self._add_id = self._commands = self._channels \
+                     = self._pause = None
     
     def pause(self):
         if self._pause is None:
@@ -2770,11 +2769,6 @@ class Objects:
         if self._videos is None:
             self._videos = Videos()
         return self._videos
-    
-    def comments(self):
-        if self._comments is None:
-            self._comments = Comments()
-        return self._comments
 
 
 objs = Objects()
