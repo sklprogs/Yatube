@@ -6,13 +6,13 @@ import os
 import io
 import html
 import youtube_dl
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
+import meta              as mt
 import db
-import meta      as mt
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 pattern1 = 'https://www.youtube.com/watch?v='
@@ -42,28 +42,26 @@ class Feed:
         if mt.objs.videos()._videos:
             self._token_next = mt.objs._videos._videos[-1]._fdtime
             self._token_prev = mt.objs._videos._videos[0]._fdtime
-            date_next = sh.Time (_timestamp = self._token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            date_prev = sh.Time (_timestamp = self._token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            sh.log.append (f,_('DEBUG')
-                          ,_('Previous page token: %s') % str(date_prev)
-                          )
-            sh.log.append (f,_('DEBUG')
-                          ,_('Next page token: %s') % str(date_next)
-                          )
+            date_next = sh.lg.Time (_timestamp = self._token_next
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            date_prev = sh.lg.Time (_timestamp = self._token_prev
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            mes = _('Previous page token: {}').format(date_prev)
+            sh.objs.mes(f,mes,True).debug()
+            mes = _('Next page token: {}').format(date_next)
+            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.empty(f)
             ''' This returns correct tokens for the 1st page if we are
                 out of bounds.
             '''
             self._token_prev = 0
-            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def fetch(self):
-        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         self.fetch_next()
     
     def fetch_prev(self):
@@ -105,28 +103,26 @@ class Favorites:
         if mt.objs.videos()._videos:
             self._token_next = mt.objs._videos._videos[-1]._ftime
             self._token_prev = mt.objs._videos._videos[0]._ftime
-            date_next = sh.Time (_timestamp = self._token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            date_prev = sh.Time (_timestamp = self._token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            sh.log.append (f,_('DEBUG')
-                          ,_('Previous page token: %s') % str(date_prev)
-                          )
-            sh.log.append (f,_('DEBUG')
-                          ,_('Next page token: %s') % str(date_next)
-                          )
+            date_next = sh.lg.Time (_timestamp = self._token_next
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            date_prev = sh.lg.Time (_timestamp = self._token_prev
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            mes = _('Previous page token: {}').format(date_prev)
+            sh.objs.mes(f,mes,True).debug()
+            mes = _('Next page token: {}').format(date_next)
+            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.empty(f)
             ''' This returns correct tokens for the 1st page if we are
                 out of bounds.
             '''
             self._token_prev = 0
-            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def fetch(self):
-        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         self.fetch_next()
     
     def fetch_prev(self):
@@ -168,28 +164,26 @@ class Watchlist:
         if mt.objs.videos()._videos:
             self._token_next = mt.objs._videos._videos[-1]._ltime
             self._token_prev = mt.objs._videos._videos[0]._ltime
-            date_next = sh.Time (_timestamp = self._token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            date_prev = sh.Time (_timestamp = self._token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            sh.log.append (f,_('DEBUG')
-                          ,_('Previous page token: %s') % str(date_prev)
-                          )
-            sh.log.append (f,_('DEBUG')
-                          ,_('Next page token: %s') % str(date_next)
-                          )
+            date_next = sh.lg.Time (_timestamp = self._token_next
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            date_prev = sh.lg.Time (_timestamp = self._token_prev
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            mes = _('Previous page token: {}').format(date_prev)
+            sh.objs.mes(f,mes,True).debug()
+            mes = _('Next page token: {}').format(date_next)
+            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.empty(f)
             ''' This returns correct tokens for the 1st page if we are
                 out of bounds.
             '''
             self._token_prev = 0
-            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def fetch(self):
-        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         self.fetch_next()
     
     def fetch_prev(self):
@@ -231,28 +225,26 @@ class History:
         if mt.objs.videos()._videos:
             self._token_next = mt.objs._videos._videos[-1]._dtime
             self._token_prev = mt.objs._videos._videos[0]._dtime
-            date_next = sh.Time (_timestamp = self._token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            date_prev = sh.Time (_timestamp = self._token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
-                                ).date()
-            sh.log.append (f,_('DEBUG')
-                          ,_('Previous page token: %s') % str(date_prev)
-                          )
-            sh.log.append (f,_('DEBUG')
-                          ,_('Next page token: %s') % str(date_next)
-                          )
+            date_next = sh.lg.Time (_timestamp = self._token_next
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            date_prev = sh.lg.Time (_timestamp = self._token_prev
+                                   ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                   ).date()
+            mes = _('Previous page token: {}').format(date_prev)
+            sh.objs.mes(f,mes,True).debug()
+            mes = _('Next page token: {}').format(date_next)
+            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.empty(f)
             ''' This returns correct tokens for the 1st page if we are
                 out of bounds.
             '''
             self._token_prev = 0
-            self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def fetch(self):
-        self._token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self._token_next = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         self.fetch_next()
     
     def fetch_prev(self):
@@ -329,11 +321,11 @@ class Time:
         self._year   = ''
         self._day    = ''
         self._month  = ''
-        self.itime = sh.Time(pattern='%d')
+        self.itime = sh.lg.Time(pattern='%d')
     
     def days(self):
         self._days = [str(day+1) for day in range(31)]
-        # sh.Time outputs a day number preceded by 0
+        # 'sh.lg.Time' outputs a day number preceded by 0
         self._days = tuple ('0' + day if len(day) == 1 else day \
                             for day in self._days
                            )
@@ -351,13 +343,12 @@ class Time:
         # Year of Youtube birth
         first_year = 2005
         last_year  = self.itime.year()
-        last_year  = sh.Input (title = f
-                              ,value = last_year
-                              ).integer()
+        last_year  = sh.lg.Input (title = f
+                                 ,value = last_year
+                                 ).integer()
         if not last_year > first_year:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
             last_year = 2018
         self._years = tuple (str(year) for year in range (first_year
                                                          ,last_year + 1
@@ -521,11 +512,9 @@ class Extractor:
         f = '[Yatube] logic.Extractor.page'
         if self.Success:
             if self._html or self._urls:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             else:
-                response = sh.Get(url=self._url).run()
+                response = sh.lg.Get(url=self._url).run()
                 if response:
                     self._html = response
                 else:
@@ -537,18 +526,16 @@ class Extractor:
         f = '[Yatube] logic.Extractor.urls'
         if self.Success:
             if self._urls:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             else:
-                ilinks = sh.Links (text = self._html
-                                  ,root = 'href="'
-                                  )
+                ilinks = sh.lg.Links (text = self._html
+                                     ,root = 'href="'
+                                     )
                 ilinks.poses()
                 old = list(ilinks._links)
-                ilinks = sh.Links (text = self._html
-                                  ,root = 'src="'
-                                  )
+                ilinks = sh.lg.Links (text = self._html
+                                     ,root = 'src="'
+                                     )
                 ilinks.poses()
                 ''' #note: if links from both root elements are present,
                     their order may be desynchronized.
@@ -580,9 +567,9 @@ class Extractor:
                     'youtu(be)' in its tag, and we have just ID there, so
                     this should be put after those algorithms.
                 '''
-                ilinks = sh.Links (text = self._html
-                                  ,root = 'data-pe-videoid="'
-                                  )
+                ilinks = sh.lg.Links (text = self._html
+                                     ,root = 'data-pe-videoid="'
+                                     )
                 ilinks.poses()
                 ilinks._links += old
                 ilinks._links = [URL(url=link).video_id() \
@@ -590,9 +577,8 @@ class Extractor:
                                 ]
                 ilinks.duplicates()
                 self._urls = ilinks._links
-                sh.log.append (f,_('INFO')
-                              ,_('Fetched %d links') % len(self._urls)
-                              )
+                mes = _('Fetched {} links').format(len(self._urls))
+                sh.objs.mes(f,mes,True).info()
         else:
             sh.com.cancel(f)
     
@@ -641,14 +627,14 @@ class Lists:
         f = '[Yatube] logic.Lists.load'
         if self.Success:
             # Blocked authors
-            text = sh.ReadTextFile(file=self.idefault._fblock).get()
-            text = sh.Text(text=text).delete_comments()
+            text = sh.lg.ReadTextFile(file=self.idefault._fblock).get()
+            text = sh.lg.Text(text=text).delete_comments()
             # We should allow empty files
             self._block      = text
             self._block_auth = text.splitlines()
             # Blocked words
-            text = sh.ReadTextFile(file=self.idefault._fblockw).get()
-            text = sh.Text(text=text).delete_comments()
+            text = sh.lg.ReadTextFile(file=self.idefault._fblockw).get()
+            text = sh.lg.Text(text=text).delete_comments()
             # We should allow empty files
             self._blockw      = text
             self._block_words = text.splitlines()
@@ -657,9 +643,9 @@ class Lists:
                                 ]
             # Suppress errors on empty text
             if os.path.exists(self.idefault._fsubsc):
-                dic = sh.Dic (file     = self.idefault._fsubsc
-                             ,Sortable = False
-                             )
+                dic = sh.lg.Dic (file     = self.idefault._fsubsc
+                                ,Sortable = False
+                                )
                 self.Success = dic.Success
                 if self.Success:
                     self._subsc      = dic.text
@@ -727,9 +713,8 @@ class Objects:
             if self._default.Success:
                 self._db = db.DB(path=path)
             else:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
                 self._db = db.DB()
         return self._db
     
@@ -748,7 +733,7 @@ class Objects:
     
     def online(self):
         if not self._online:
-            self._online = sh.Online()
+            self._online = sh.lg.Online()
         return self._online
         
     def lists(self):
@@ -774,10 +759,10 @@ class Video:
     
     def unsupported(self):
         video         = mt.objs.videos().current()
-        video._author = sh.Text(video._author).delete_unsupported()
-        video._title  = sh.Text(video._title).delete_unsupported()
-        video._desc   = sh.Text(video._desc).delete_unsupported()
-        video._search = sh.Text(video._search).delete_unsupported()
+        video._author = sh.lg.Text(video._author).delete_unsupported()
+        video._title  = sh.lg.Text(video._title).delete_unsupported()
+        video._desc   = sh.lg.Text(video._desc).delete_unsupported()
+        video._search = sh.lg.Text(video._search).delete_unsupported()
         video._author = html.unescape(video._author)
         video._title  = html.unescape(video._title)
         video._desc   = html.unescape(video._desc)
@@ -842,10 +827,8 @@ class Video:
                 return True
             else:
                 self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Wrong input data: "%s"!') \
-                            % str(video_id)
-                            )
+                mes = _('Wrong input data: "{}"!').format(video_id)
+                sh.objs.mes(f,mes).warning()
         else:
             self.Success = False
             sh.com.empty(f)
@@ -870,8 +853,8 @@ class Video:
                 video = mt.objs.videos().current()
                 # Do not warn about missing files
                 if os.path.exists(video._path):
-                    Success = sh.File(file=video._path).delete()
-                    idir = sh.Directory(path=video._dir)
+                    Success = sh.lg.File(file=video._path).delete()
+                    idir = sh.lg.Directory(path=video._dir)
                     if not idir.files():
                         idir.delete()
                     return Success
@@ -886,7 +869,7 @@ class Video:
             video = mt.objs.videos().current()
             if not video._page:
                 if video._url:
-                    video._page = sh.Get(url=video._url).run()
+                    video._page = sh.lg.Get(url=video._url).run()
                 else:
                     sh.com.empty(f)
             return video._page
@@ -904,7 +887,7 @@ class Video:
                 mt.VideoInfo().channel_id()
             video._search = video._author.lower() + ' ' \
                             + video._title.lower()
-            video._fdtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            video._fdtime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         else:
             sh.com.cancel(f)
                           
@@ -950,10 +933,10 @@ class Video:
                     video._ltime   = data[13]
                     video._fdtime  = data[14]
                 else:
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('The condition "%s" is not observed!')\
-                                % '%d == %d' % (len(data),data_len)
-                                )
+                    sub = '{} == {}'.format(len(data),data_len)
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    sh.objs.mes(f,mes).error()
             else:
                 sh.com.empty(f)
         else:
@@ -971,7 +954,7 @@ class Video:
         if self.Success:
             video = mt.objs.videos().current()
             if video._bytes:
-                img = sg.Image()
+                img = sh.Image()
                 img._bytes = video._bytes
                 img.loader()
                 video._image = img.image()
@@ -984,10 +967,10 @@ class Video:
         f = '[Yatube] logic.Video.image'
         if self.Success:
             video = mt.objs.videos().current()
-            image = sh.Get (url      = video._thumb
-                           ,encoding = None
-                           ,Verbose  = False
-                           ).run()
+            image = sh.lg.Get (url      = video._thumb
+                              ,encoding = None
+                              ,Verbose  = False
+                              ).run()
             if image:
                 video._bytes = image
                 self.load_image()
@@ -1002,10 +985,9 @@ class Video:
         '''
         f = '[Yatube] logic.Video.new'
         if self.Success:
-            sh.log.append (f,_('INFO')
-                          ,_('Get new video info: %s') \
-                          % str(mt.objs.videos().current()._id)
-                          )
+            mes = _('Get new video info: {}')
+            mes = mes.format(mt.objs.videos().current()._id)
+            sh.objs.mes(f,mes,True).info()
             self.assign_online()
             self.unsupported()
             self.image()
@@ -1051,11 +1033,11 @@ class Video:
             tmp.write('\n')
             tmp.write(_('Date'))
             tmp.write(': ')
-            tmp.write(str(sh.Time(_timestamp=video._ptime).date()))
+            tmp.write(str(sh.lg.Time(_timestamp=video._ptime).date()))
             tmp.write('\n')
             tmp.write(_('Length'))
             tmp.write(': ')
-            tmp.write(sh.com.human_time(video._len))
+            tmp.write(sh.lg.com.human_time(video._len))
             tmp.write('\n')
             tmp.write(_('Views'))
             tmp.write(': ')
@@ -1098,14 +1080,14 @@ class Video:
         if self.Success:
             video = mt.objs.videos().current()
             if not video._path:
-                author = sh.FixBaseName (basename = video._author
-                                        ,AllOS    = AllOS
-                                        ,max_len  = 100
-                                        ).run()
-                title  = sh.FixBaseName (basename = video._title
-                                        ,AllOS    = AllOS
-                                        ,max_len  = 100
-                                        ).run()
+                author = sh.lg.FixBaseName (basename = video._author
+                                           ,AllOS    = AllOS
+                                           ,max_len  = 100
+                                           ).run()
+                title  = sh.lg.FixBaseName (basename = video._title
+                                           ,AllOS    = AllOS
+                                           ,max_len  = 100
+                                           ).run()
                 ''' For some reason, 'youtube_dl' does not screen
                     correctly characters such as '%' and throws an error
                     when downloading videos containing such characters
@@ -1121,12 +1103,12 @@ class Video:
                                                              ,author
                                                              ,title
                                                              )
-                video._pathsh = sh.Text (text = sh.Path(video._path).basename()
-                                        ,Auto = False
-                                        ).shorten (max_len = 20
-                                                  ,FromEnd = False
-                                                  ,ShowGap = True
-                                                  )
+                video._pathsh = sh.lg.Text (text = sh.lg.Path(video._path).basename()
+                                           ,Auto = False
+                                           ).shorten (max_len = 20
+                                                     ,FromEnd = False
+                                                     ,ShowGap = True
+                                                     )
                 video._path += '.mp4'
             return video._path
         else:
@@ -1137,7 +1119,7 @@ class Video:
         if self.Success:
             video = mt.objs.videos().current()
             if video._dir:
-                self.Success = sh.Path(path=video._dir).create()
+                self.Success = sh.lg.Path(path=video._dir).create()
             else:
                 self.Success = False
                 sh.com.empty(f)
@@ -1150,9 +1132,8 @@ class Video:
         if self.Success:
             video = mt.objs.videos().current()
             if video._path:
-                sh.log.append (f,_('INFO')
-                              ,_('Download "%s"') % video._path
-                              )
+                mes = _('Download "{}"').format(video._path)
+                sh.objs.mes(f,mes,True).info()
                 #todo: select format & quality
                 options = {'outtmpl'           :video._path
                           ,'format'            :'mp4'
@@ -1200,13 +1181,11 @@ class Video:
                                 '''
                                 return info_dict['url']
                             else:
-                                sh.objs.mes (f,_('WARNING')
-                                            ,_('Wrong input data!')
-                                            )
+                                mes = _('Wrong input data!')
+                                sh.objs.mes(f,mes).warning()
                         else:
-                            sh.objs.mes (f,_('WARNING')
-                                        ,_('This video is not available.')
-                                        )
+                            mes = _('This video is not available.')
+                            sh.objs.mes(f,mes).warning()
                 except Exception as e:
                     mt.com.error(f,e)
             else:
@@ -1219,9 +1198,9 @@ class URL:
     def __init__(self,url):
         f = '[Yatube] logic.URL.__init__'
         self._url = url
-        self._url = sh.Input (title = f
-                             ,value = self._url
-                             ).not_none()
+        self._url = sh.lg.Input (title = f
+                                ,value = self._url
+                                ).not_none()
         self._url = str(self._url)
         self._url = self._url.strip()
     
@@ -1266,9 +1245,9 @@ class URL:
                                       )
         self._url = re.sub('#t=\d+','',self._url)
         if 'watch?v' in self._url:
-            search = sh.Search (text   = self._url
-                               ,search = '?'
-                               )
+            search = sh.lg.Search (text   = self._url
+                                  ,search = '?'
+                                  )
             search.next()
             i = search.next()
             # 'search.i' is updated only on a successful search
@@ -1308,7 +1287,7 @@ class DefaultConfig:
     
     def __init__(self,product='yatube'):
         self.values()
-        self.ihome   = sh.Home(app_name=product)
+        self.ihome   = sh.lg.Home(app_name=product)
         self.Success = self.ihome.create_conf()
     
     def values(self):
@@ -1323,7 +1302,7 @@ class DefaultConfig:
             self._fdb = self.ihome.add_config('yatube.db')
             if self._fdb:
                 if os.path.exists(self._fdb):
-                    self.Success = sh.File(file=self._fdb).Success
+                    self.Success = sh.lg.File(file=self._fdb).Success
             else:
                 self.Success = False
                 sh.com.empty(f)
@@ -1336,11 +1315,11 @@ class DefaultConfig:
             self._fblockw = self.ihome.add_config('block words.txt')
             if self._fblockw:
                 if os.path.exists(self._fblockw):
-                    self.Success = sh.File(file=self._fblockw).Success
+                    self.Success = sh.lg.File(file=self._fblockw).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self._fblockw
-                                              ,Rewrite = True
-                                              )
+                    iwrite = sh.lg.WriteTextFile (file    = self._fblockw
+                                                 ,Rewrite = True
+                                                 )
                     iwrite.write('# ' + _('Put here words to block in titles (case is ignored)'))
                     self.Success = iwrite.Success
             else:
@@ -1355,11 +1334,11 @@ class DefaultConfig:
             self._fblock = self.ihome.add_config('block channels.txt')
             if self._fblock:
                 if os.path.exists(self._fblock):
-                    self.Success = sh.File(file=self._fblock).Success
+                    self.Success = sh.lg.File(file=self._fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self._fblock
-                                              ,Rewrite = True
-                                              )
+                    iwrite = sh.lg.WriteTextFile (file    = self._fblock
+                                                 ,Rewrite = True
+                                                 )
                     iwrite.write(sample_block)
                     self.Success = iwrite.Success
             else:
@@ -1374,11 +1353,11 @@ class DefaultConfig:
             self._fsubsc = self.ihome.add_config('subscribe.txt')
             if self._fsubsc:
                 if os.path.exists(self._fsubsc):
-                    self.Success = sh.File(file=self._fsubsc).Success
+                    self.Success = sh.lg.File(file=self._fsubsc).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self._fsubsc
-                                              ,Rewrite = True
-                                              )
+                    iwrite = sh.lg.WriteTextFile (file    = self._fsubsc
+                                                 ,Rewrite = True
+                                                 )
                     iwrite.write(sample_subscribe)
                     self.Success = iwrite.Success
             else:
@@ -1443,19 +1422,16 @@ class ChannelHistory:
         cond2 = 0 <= self._no < len(self._authors) \
             and 0 <= self._no < len(self._urls)
         if cond1:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         elif cond2:
             return (self._authors[self._no]
                    ,self._urls[self._no]
                    )
         else:
             min_val = min(len(self._authors),len(self._urls))
-            sh.objs.mes (f,_('ERROR')
-                        ,_('The condition "%s" is not observed!') \
-                        % '%d <= %d < %d' % (0,self._no,min_val)
-                        )
+            sub = '0 <= {} < {}'.format(self._no,min_val)
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
     
     def next(self):
         f = '[Yatube] logic.ChannelHistory.next'
@@ -1465,19 +1441,16 @@ class ChannelHistory:
         cond2 = 0 <= self._no < len(self._authors) \
             and 0 <= self._no < len(self._urls)
         if cond1:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         elif cond2:
             return (self._authors[self._no]
                    ,self._urls[self._no]
                    )
         else:
             min_val = min(len(self._authors),len(self._urls))
-            sh.objs.mes (f,_('ERROR')
-                        ,_('The condition "%s" is not observed!') \
-                        % '%d <= %d < %d' % (0,self._no,min_val)
-                        )
+            sub = '0 <= {} < {}' % (self._no,min_val)
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
 
 
 objs = Objects()

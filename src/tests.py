@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import shared    as sh
-import sharedGUI as sg
-import logic     as lg
-import gui       as gi
+import skl_shared.shared as sh
+import logic             as lg
+import gui               as gi
 import db
 
 
@@ -20,12 +19,12 @@ class ImageViewer:
         self.parent.close()
     
     def bindings(self):
-        sg.bind (obj      = self.parent
-                ,bindings = ['<Escape>','<Control-w>','<Control-q>'
-                            ,'<ButtonRelease-1>'
-                            ]
-                ,action   = self.close
-                )
+        sh.com.bind (obj      = self.parent
+                    ,bindings = ('<Escape>','<Control-w>','<Control-q>'
+                                ,'<ButtonRelease-1>'
+                                )
+                    ,action   = self.close
+                    )
     
     def title(self,arg=None):
         if not arg:
@@ -42,10 +41,9 @@ class ImageViewer:
                              )
     
     def gui(self):
-        self.parent = sg.Top(sg.objs.root())
-        self.lbl    = sg.Label (parent = self.parent
+        self.parent = sh.Top()
+        self.lbl    = sh.Label (parent = self.parent
                                ,text   = _('Image:')
-                               ,Close  = False
                                ,expand = True
                                ,fill   = 'both'
                                )
@@ -105,7 +103,7 @@ def author():
     idb.close()
     
 def timestamp():
-    itime = sh.Time()
+    itime = sh.lg.Time()
     itime._date = '2007-09-01'
     result = itime.timestamp()
     idb = db.DB()
@@ -113,9 +111,9 @@ def timestamp():
                              ,Newer     = False
                              )
     if result:
-        sh.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
-                 ,rows    = result
-                 ).print()
+        sh.lg.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
+                    ,rows    = result
+                    ).print()
     idb.close()
     
 def dtime():
@@ -123,9 +121,9 @@ def dtime():
     idb.dbc.execute('select TITLE,DTIME,PTIME from VIDEOS where DTIME > ? order by DTIME desc,PTIME desc limit ?',(0,5))
     result = idb.dbc.fetchall()
     if result:
-        sh.Table (headers = ['TITLE','DTIME','PTIME']
-                 ,rows    = result
-                 ).print()
+        sh.lg.Table (headers = ['TITLE','DTIME','PTIME']
+                    ,rows    = result
+                    ).print()
     idb.close()
     
 def url():
@@ -147,7 +145,7 @@ def invalid_urls():
 def search_field():
     # An example of a complex search in the DB
     idb = db.DB(path='/home/pete/.config/yatube/yatube.db')
-    itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
+    itime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S')
     itime.add_days(-7)
     idb.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                       where SEARCH like ? and DTIME > ? and FDTIME < ?'
@@ -168,12 +166,12 @@ def search_field():
             tmp.write('\n\n')
         text = tmp.getvalue()
         tmp.close()
-        sg.fast_txt(text)
+        sh.com.fast_txt(text)
     idb.close()
 
 
 if __name__ == '__main__':
     f = 'tests.__main__'
-    sg.objs.start()
+    sh.com.start()
     
-    sg.objs.end()
+    sh.com.end()

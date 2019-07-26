@@ -2,10 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 import sqlite3
-import shared as sh
-import gettext, gettext_windows
+import skl_shared.shared as sh
+import gettext
+import skl_shared.gettext_windows
 
-gettext_windows.setup_env()
+skl_shared.gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
@@ -243,11 +244,9 @@ class DB:
     
     def fail(self,func,error):
         self.Success = False
-        sh.objs.mes (func
-                    ,_('WARNING')
-                    ,_('Database "%s" has failed!\n\nDetails: %s') \
-                    % (self._path,str(error))
-                    )
+        mes = _('Database "{}" has failed!\n\nDetails: {}')
+        mes = mes.format(self._path,error)
+        sh.objs.mes(func,mes).warning()
     
     def ids(self):
         f = '[Yatube] db.DB.ids'
@@ -432,9 +431,8 @@ class DB:
     def save(self):
         f = '[Yatube] db.DB.save'
         if self.Success:
-            sh.log.append (f,_('INFO')
-                          ,_('Save "%s"') % self._path
-                          )
+            mes = _('Save "{}"').format(self._path)
+            sh.objs.mes(f,mes,True).info()
             try:
                 self.db.commit()
             except Exception as e:
@@ -522,19 +520,19 @@ class DB:
                 self.dbc.execute('select * from VIDEOS limit ?',(5,))
             headers = [cn[0] for cn in self.dbc.description]
             rows    = self.dbc.fetchall()
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = Shorten
-                     ,MaxRow  = MaxRow
-                     ,MaxRows = MaxRows
-                     ).print()
+            sh.lg.Table (headers = headers
+                        ,rows    = rows
+                        ,Shorten = Shorten
+                        ,MaxRow  = MaxRow
+                        ,MaxRows = MaxRows
+                        ).print()
         else:
             sh.com.cancel(f)
 
 
 if __name__ == '__main__':
     f = 'db.__main__'
-    path = sh.Home('yatube').add_config('yatube.db')
+    path = sh.lg.Home('yatube').add_config('yatube.db')
     idb = DB(path)
     ids = ['vjSohj-Iclc','0BXC2-zyujI','0nNrILS7OgE']
     result = idb.get_videos(ids)

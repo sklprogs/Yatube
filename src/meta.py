@@ -4,11 +4,11 @@
 import io
 import json
 from googleapiclient.discovery import build
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 API_KEY = 'AIzaSyCIM4EzNqi1in22f4Z3Ru3iYvLaY8tc3bo'
@@ -54,9 +54,8 @@ class Trending:
                 try:
                     self._next = self._resp['nextPageToken']
                 except KeyError:
-                    sh.log.append (f,_('INFO')
-                                  ,_('The end of the channel has been reached!')
-                                  )
+                    mes = _('The end of the channel has been reached!')
+                    sh.objs.mes(f,mes,True).info()
                     self._next = ''
             else:
                 sh.com.empty(f)
@@ -97,15 +96,14 @@ class Trending:
                         video._id     = item['id']
                         video._author = item['snippet']['channelTitle']
                         video._ch_id  = item['snippet']['channelId']
-                        video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
+                        video._ptime  = sh.lg.com.yt_date(item['snippet']['publishedAt'])
                         video._title  = item['snippet']['title']
                         video._desc   = item['snippet']['description']
                         video._thumb  = item['snippet']['thumbnails']['default']['url']
                         objs.videos().add(video)
                     except KeyError as e:
-                        sh.objs.mes (f,_('WARNING')
-                                    ,_('Missing key: "%s"!') % str(e)
-                                    )
+                        mes = _('Missing key: "{}"!').format(e)
+                        sh.objs.mes(f,mes).warning()
         else:
             sh.com.cancel(f)
     
@@ -151,9 +149,8 @@ class PlayId:
                         about the wrong input (should be the real cause
                         of the error).
                     '''
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -179,9 +176,8 @@ class PlayId:
                         about the wrong input (should be the real cause
                         of the error).
                     '''
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -266,9 +262,8 @@ class Comments:
                         self._texts.append(message)
                         return message
                 except KeyError as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Missing key: "%s"!') % str(e)
-                                )
+                    mes = _('Missing key: "{}"!').format(e)
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -347,10 +342,9 @@ class Comments:
                 try:
                     self._next = self._resp['nextPageToken']
                 except KeyError:
-                    sh.log.append (f,_('INFO')
-                                  ,_('The end of the channel has been reached!')
-                                  )
                     self._next = ''
+                    mes = _('The end of the channel has been reached!')
+                    sh.objs.mes(f,mes,True).info()
             return self.comments()
         else:
             sh.com.cancel(f)
@@ -391,16 +385,15 @@ class VideoInfo:
                             '''
                             if not video._author:
                                 video._author = item['snippet']['channelTitle']
-                                video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
+                                video._ptime  = sh.lg.com.yt_date(item['snippet']['publishedAt'])
                                 video._title  = item['snippet']['title']
                                 video._desc   = item['snippet']['description']
                                 video._thumb  = item['snippet']['thumbnails']['default']['url']
                             # We need only 1 suitable section
                             return video._ch_id
                 except KeyError as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Missing key: "%s"!') % str(e)
-                                )
+                    mes = _('Missing key: "{}"!').format(e)
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -423,22 +416,20 @@ class VideoInfo:
                     for item in resp['items']:
                         if item['kind'] == "youtube#video":
                             length = item['contentDetails']['duration']
-                            length = sh.com.yt_length(length)
+                            length = sh.lg.com.yt_length(length)
                             if length:
                                 if isinstance(length,(float,int)):
                                     video._len = length
                                     return video._len
                                 else:
-                                    sh.objs.mes (f,_('ERROR')
-                                                ,_('Wrong input data: "%s"!')\
-                                                % str(length)
-                                                )
+                                    mes = _('Wrong input data: "{}"!')
+                                    mes = mes.format(length)
+                                    sh.objs.mes(f,mes).error()
                             else:
                                 sh.com.empty(f)
                 except KeyError as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Missing key: "%s"!') % str(e)
-                                )
+                    mes = _('Missing key: "{}"!').format(e)
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -460,33 +451,32 @@ class VideoInfo:
                 try:
                     for item in resp['items']:
                         if item['kind'] == "youtube#video":
-                            video._views = sh.Input (title = f
-                                                    ,value = item['statistics']['viewCount']
-                                                    ).integer()
+                            video._views = sh.lg.Input (title = f
+                                                       ,value = item['statistics']['viewCount']
+                                                       ).integer()
                             if 'likeCount' in item['statistics']:
-                                video._likes = sh.Input (title = f
-                                                        ,value = item['statistics']['likeCount']
-                                                        ).integer()
+                                video._likes = sh.lg.Input (title = f
+                                                           ,value = item['statistics']['likeCount']
+                                                           ).integer()
                             else:
                                 video._likes = -1
                             if 'dislikeCount' in item['statistics']:
-                                video._dislikes = sh.Input (title = f
-                                                           ,value = item['statistics']['dislikeCount']
-                                                           ).integer()
+                                video._dislikes = sh.lg.Input (title = f
+                                                              ,value = item['statistics']['dislikeCount']
+                                                              ).integer()
                             else:
                                 video._dislikes = -1
                             if 'commentCount' in item['statistics']:
-                                video._com_num = sh.Input (title = f
-                                                          ,value = item['statistics']['commentCount']
-                                                          ).integer()
+                                video._com_num = sh.lg.Input (title = f
+                                                             ,value = item['statistics']['commentCount']
+                                                             ).integer()
                             else:
                                 video._com_num = -1
                             # We need only 1 suitable section
                             return True
                 except KeyError as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Missing key: "%s"!') % str(e)
-                                )
+                    mes = _('Missing key: "{}"!').format(e)
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -501,10 +491,10 @@ class Stat:
         ''' Timestamp when the program was started. This can be used
             to get a daily quota cost.
         '''
-        self._started = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self._started = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def uptime(self):
-        return sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp() - self._started
+        return sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp() - self._started
     
     # Quota should be added even in case of invalid requests
     def add_quota(self,number):
@@ -512,17 +502,10 @@ class Stat:
     
     def report(self,Silent=False):
         f = '[Yatube] meta.Stat.report'
-        message = _('Uptime:') + ' ' + sh.com.human_time(self.uptime())\
-                               + '\n'
-        message += _('Used quota:') + ' %d' % self._quota
-        if Silent:
-            sh.log.append (f,_('INFO')
-                          ,message
-                          )
-        else:
-            sh.objs.mes (f,_('INFO')
-                        ,message
-                        )
+        mes = _('Uptime: {}').format(sh.lg.com.human_time(self.uptime()))
+        mes += '\n'
+        mes += _('Used quota: {}').format(self._quota)
+        sh.objs.mes(f,mes,Silent).info()
 
 
 
@@ -549,15 +532,14 @@ class Playlist:
                             video._author  = item['snippet']['channelTitle']
                             video._ch_id   = item['snippet']['channelId']
                             video._play_id = item['snippet']['playlistId']
-                            video._ptime   = sh.com.yt_date(item['snippet']['publishedAt'])
+                            video._ptime   = sh.lg.com.yt_date(item['snippet']['publishedAt'])
                             video._title   = item['snippet']['title']
                             video._desc    = item['snippet']['description']
                             video._thumb   = item['snippet']['thumbnails']['default']['url']
                             objs.videos().add(video)
                 except KeyError as e:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Missing key: "%s"!') % str(e)
-                                )
+                    mes = _('Missing key: "{}"!').format(e)
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -571,10 +553,8 @@ class Playlist:
                 return True
             else:
                 self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Wrong input data: "%s"!') \
-                            % self._play_id
-                            )
+                mes = _('Wrong input data: "{}"!').format(self._play_id)
+                sh.objs.mes(f,mes).warning()
         else:
             self.Success = False
             sh.com.empty(f)
@@ -612,10 +592,9 @@ class Playlist:
                 try:
                     self._next = self._resp['nextPageToken']
                 except KeyError:
-                    sh.log.append (f,_('INFO')
-                                  ,_('The end of the channel has been reached!')
-                                  )
                     self._next = ''
+                    mes = _('The end of the channel has been reached!')
+                    sh.objs.mes(f,mes,True).info()
             else:
                 sh.com.empty(f)
         else:
@@ -678,9 +657,8 @@ class Search:
                 try:
                     self._next = self._resp['nextPageToken']
                 except KeyError:
-                    sh.log.append (f,_('INFO')
-                                  ,_('The end of the channel has been reached!')
-                                  )
+                    mes = _('The end of the channel has been reached!')
+                    sh.objs.mes(f,mes,True).info()
                     self._next = ''
             else:
                 sh.com.empty(f)
@@ -721,15 +699,14 @@ class Search:
                         video._id     = item['id']['videoId']
                         video._author = item['snippet']['channelTitle']
                         video._ch_id  = item['snippet']['channelId']
-                        video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
+                        video._ptime  = sh.lg.com.yt_date(item['snippet']['publishedAt'])
                         video._title  = item['snippet']['title']
                         video._desc   = item['snippet']['description']
                         video._thumb  = item['snippet']['thumbnails']['default']['url']
                         objs.videos().add(video)
             except KeyError as e:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Missing key: "%s"!') % str(e)
-                            )
+                mes = _('Missing key: "{}"!').format(e)
+                sh.objs.mes(f,mes).warning()
         else:
             sh.com.cancel(f)
     
@@ -805,10 +782,9 @@ class Videos:
         if self.i < len(self._videos):
             return self._videos[self.i]
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('The condition "%s" is not observed!') \
-                        % '%s < %d' % (str(self.i),len(self._videos))
-                        )
+            sub = '{} < {}'.format(self.i,len(self._videos))
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
             return Video()
     
     def add(self,video):
@@ -847,9 +823,9 @@ class Videos:
                 istr.write('\n')
                 istr.write(_('Date:'))
                 istr.write(' ')
-                itime = sh.Time (_timestamp = self._videos[i]._ptime
-                                ,pattern    = '%Y-%m-%d %H:%M'
-                                )
+                itime = sh.lg.Time (_timestamp = self._videos[i]._ptime
+                                   ,pattern    = '%Y-%m-%d %H:%M'
+                                   )
                 istr.write(str(itime.date()))
                 istr.write('\n')
                 istr.write(_('Image:'))
@@ -858,9 +834,7 @@ class Videos:
                 istr.write('\n\n')
             message = istr.getvalue()
             istr.close()
-            sh.objs.mes (f,_('INFO')
-                        ,message
-                        )
+            sh.objs.mes(f,message).info()
         else:
             sh.com.empty(f)
 
@@ -929,18 +903,15 @@ class Commands:
         e = str(e)
         if 'you have exceeded your' in e and 'quota' in e \
         or 'Daily Limit Exceeded' in e:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('Quota has been exceeded!')
-                        )
+            mes = _('Quota has been exceeded!')
+            sh.objs.mes(f,mes).warning()
         elif 'has disabled comments' in e:
-            sh.objs.mes (f,_('INFO')
-                        ,_('Comments are disabled for this video.')
-                        )
+            mes = _('Comments are disabled for this video.')
+            sh.objs.mes(f,mes).info()
         else:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('Third-party module has failed!\n\nDetails: %s')\
-                        % e
-                        )
+            mes = _('Third-party module has failed!\n\nDetails: {}')
+            mes = mes.format(e)
+            sh.objs.mes(f,mes).warning()
 
 
 objs = Objects()
@@ -949,10 +920,10 @@ com  = Commands()
 
 if __name__ == '__main__':
     f = 'meta.__main__'
-    sg.objs.start()
+    sh.com.start()
     objs.playlist().reset('UU63-vXUchmKqP7K9WE2jCfg')
     objs._playlist.run()
     video = objs.videos().current()
     print('CHANID:',video._ch_id)
     print('PLAYID:',video._play_id)
-    sg.objs.end()
+    sh.com.end()

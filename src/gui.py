@@ -5,12 +5,12 @@
     to build the program properly
 '''
 import PIL
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows
 
-gettext_windows.setup_env()
+skl_shared.gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 VERSION = '2.1'
@@ -80,14 +80,14 @@ edit_items = (_('Edit')
              )
 
 default_entry_width = 19
-icon_path = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
+ICON = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
 class Pause:
     
     def __init__(self):
         self.values()
-        self.parent = sg.objs.new_top()
+        self.parent = sh.Top()
         self.widget = self.parent.widget
         self.gui()
         self.reset()
@@ -131,123 +131,119 @@ class Pause:
         self.ent_sec.insert('0')
     
     def frames(self):
-        self.frm_prm = sg.Frame (parent = self.parent
+        self.frm_prm = sh.Frame (parent = self.parent
                                 ,expand = False
                                 )
-        self.frm_top = sg.Frame (parent = self.frm_prm
-                                ,expand = False
-                                ,side   = 'top'
-                                )
-        self.frm_btm = sg.Frame (parent = self.frm_prm
+        self.frm_top = sh.Frame (parent = self.frm_prm
                                 ,expand = False
                                 ,side   = 'top'
                                 )
-        self.frm_hrs = sg.Frame (parent = self.frm_top
+        self.frm_btm = sh.Frame (parent = self.frm_prm
+                                ,expand = False
+                                ,side   = 'top'
+                                )
+        self.frm_hrs = sh.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,side   = 'left'
                                 )
-        self.frm_sp1 = sg.Frame (parent = self.frm_top
+        self.frm_sp1 = sh.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,side   = 'left'
                                 ,propag = False
                                 ,width  = 3
                                 )
-        self.frm_min = sg.Frame (parent = self.frm_top
+        self.frm_min = sh.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,side   = 'left'
                                 )
-        self.frm_sp2 = sg.Frame (parent = self.frm_top
+        self.frm_sp2 = sh.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,side   = 'left'
                                 ,propag = False
                                 ,width  = 3
                                 )
-        self.frm_sec = sg.Frame (parent = self.frm_top
+        self.frm_sec = sh.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,side   = 'left'
                                 )
     
     def hours(self):
-        self.btn_hru = sg.Button (parent   = self.frm_hrs
+        self.btn_hru = sh.Button (parent   = self.frm_hrs
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
                                  ,side     = 'top'
                                  )
-        self.ent_hrs = sg.Entry (parent    = self.frm_hrs
-                                ,Composite = True
+        self.ent_hrs = sh.Entry (parent    = self.frm_hrs
                                 ,width     = 2
                                 ,justify   = 'center'
                                 )
-        self.btn_hrd = sg.Button (parent   = self.frm_hrs
+        self.btn_hrd = sh.Button (parent   = self.frm_hrs
                                  ,inactive = self.icn_dn0
                                  ,active   = self.icn_dn1
                                  ,side     = 'bottom'
                                  )
     
     def delimiters(self):
-        sg.Label (parent = self.frm_sp1
+        sh.Label (parent = self.frm_sp1
                  ,text   = ':'
                  ,expand = True
-                 ,Close  = False
                  ,font   = 'Sans 14 bold'
                  )
-        sg.Label (parent = self.frm_sp2
+        sh.Label (parent = self.frm_sp2
                  ,text   = ':'
                  ,expand = True
-                 ,Close  = False
                  ,font   = 'Serif 14 bold'
                  )
     
     def minutes(self):
-        self.btn_mnu = sg.Button (parent   = self.frm_min
+        self.btn_mnu = sh.Button (parent   = self.frm_min
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
                                  ,side     = 'top'
                                  )
-        self.ent_min = sg.Entry (parent    = self.frm_min
+        self.ent_min = sh.Entry (parent    = self.frm_min
                                 ,Composite = True
                                 ,width     = 2
                                 ,justify   = 'center'
                                 )
-        self.btn_mnd = sg.Button (parent   = self.frm_min
+        self.btn_mnd = sh.Button (parent   = self.frm_min
                                  ,inactive = self.icn_dn0
                                  ,active   = self.icn_dn1
                                  ,side     = 'bottom'
                                  )
     
     def seconds(self):
-        self.btn_scu = sg.Button (parent   = self.frm_sec
+        self.btn_scu = sh.Button (parent   = self.frm_sec
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
                                  ,side     = 'top'
                                  )
-        self.ent_sec = sg.Entry (parent    = self.frm_sec
-                                ,Composite = True
+        self.ent_sec = sh.Entry (parent    = self.frm_sec
                                 ,width     = 2
                                 ,justify   = 'center'
                                 )
-        self.btn_scd = sg.Button (parent   = self.frm_sec
+        self.btn_scd = sh.Button (parent   = self.frm_sec
                                  ,inactive = self.icn_dn0
                                  ,active   = self.icn_dn1
                                  ,side     = 'bottom'
                                  )
     
     def buttons(self):
-        self.btn_del = sg.Button (parent   = self.frm_btm
+        self.btn_del = sh.Button (parent   = self.frm_btm
                                  ,text     = _('Delete')
                                  ,hint     = _('Delete & Close')
                                  ,side     = 'left'
                                  ,active   = self.icn_del
                                  ,inactive = self.icn_del
                                  )
-        self.btn_rst = sg.Button (parent   = self.frm_btm
+        self.btn_rst = sh.Button (parent   = self.frm_btm
                                  ,text     = _('Reset')
                                  ,hint     = _('Set the original time')
                                  ,side     = 'left'
                                  ,active   = self.icn_rst
                                  ,inactive = self.icn_rst
                                  )
-        self.btn_sav = sg.Button (parent   = self.frm_btm
+        self.btn_sav = sh.Button (parent   = self.frm_btm
                                  ,text     = _('Save')
                                  ,hint     = _('Save & Close')
                                  ,side     = 'left'
@@ -283,35 +279,35 @@ class Pause:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon(icon_path)
+            self.parent.icon(ICON)
 
 
 
 class AddId:
     
     def __init__(self):
-        self.parent = sg.Top(sg.objs.root())
+        self.parent = sh.Top()
         self.widget = self.parent.widget
-        sg.Geometry(self.parent).set('800x600')
+        sh.Geometry(self.parent).set('800x600')
         self.gui()
     
     def paste_ath(self,event=None):
         self.ent_ath.clear_text()
-        self.ent_ath.insert(sg.Clipboard().paste())
+        self.ent_ath.insert(sh.Clipboard().paste())
     
     def paste_pid(self,event=None):
         self.ent_pid.clear_text()
-        self.ent_pid.insert(sg.Clipboard().paste())
+        self.ent_pid.insert(sh.Clipboard().paste())
     
     def bindings(self):
-        sg.bind (obj      = self.ent_ath
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.paste_ath
-                )
-        sg.bind (obj      = self.ent_pid
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.paste_pid
-                )
+        sh.com.bind (obj      = self.ent_ath
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = self.paste_ath
+                    )
+        sh.com.bind (obj      = self.ent_pid
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = self.paste_pid
+                    )
     
     def title(self,text=None):
         if not text:
@@ -322,7 +318,7 @@ class AddId:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon(icon_path)
+            self.parent.icon(ICON)
     
     def show(self,event=None):
         self.parent.show()
@@ -339,106 +335,84 @@ class AddId:
         self.ent_ath.focus()
     
     def frames(self):
-        self.frm_prm = sg.Frame (parent = self.parent
+        self.frm_prm = sh.Frame (parent = self.parent
                                 ,side   = 'left'
                                 )
-        self.frm_rht = sg.Frame (parent = self.parent
+        self.frm_rht = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,side   = 'right'
                                 )
-        self.frm_top = sg.Frame (parent = self.frm_prm
+        self.frm_top = sh.Frame (parent = self.frm_prm
                                 ,side   = 'top'
                                 ,expand = False
                                 )
-        self.frm_bot = sg.Frame (parent = self.frm_prm)
-        self.frm_rh1 = sg.Frame (parent = self.frm_rht
+        self.frm_bot = sh.Frame (parent = self.frm_prm)
+        self.frm_rh1 = sh.Frame (parent = self.frm_rht
                                 ,side   = 'top'
                                 )
-        self.frm_rh2 = sg.Frame (parent = self.frm_rht
+        self.frm_rh2 = sh.Frame (parent = self.frm_rht
                                 ,side   = 'bottom'
                                 )
-        self.frm_bt1 = sg.Frame (parent = self.frm_bot
+        self.frm_bt1 = sh.Frame (parent = self.frm_bot
                                 ,side   = 'left'
                                 )
-        self.frm_bt2 = sg.Frame (parent = self.frm_bot
+        self.frm_bt2 = sh.Frame (parent = self.frm_bot
                                 ,side   = 'left'
                                 )
-        self.frm_bt3 = sg.Frame (parent = self.frm_bot
+        self.frm_bt3 = sh.Frame (parent = self.frm_bot
                                 ,side   = 'left'
                                 )
     
     def widgets(self):
-        self.lbl_ath = sg.Label (parent = self.frm_top
+        self.lbl_ath = sh.Label (parent = self.frm_top
                                 ,text   = _('Channel title:')
-                                ,Close  = True
                                 )
-        self.ent_ath = sg.Entry (parent    = self.frm_top
-                                ,fill      = 'x'
-                                ,Composite = True
+        self.ent_ath = sh.Entry (parent = self.frm_top
+                                ,fill   = 'x'
                                 )
-        self.lbl_pid = sg.Label (parent = self.frm_top
+        self.lbl_pid = sh.Label (parent = self.frm_top
                                 ,text   = _('Playlist ID, channel ID or Youtube user name:')
-                                ,Close  = True
                                 )
-        self.ent_pid = sg.Entry (parent    = self.frm_top
-                                ,fill      = 'x'
-                                ,Composite = True
+        self.ent_pid = sh.Entry (parent = self.frm_top
+                                ,fill   = 'x'
                                 )
-        self.lbl_id1 = sg.Label (parent = self.frm_bt1
+        self.lbl_id1 = sh.Label (parent = self.frm_bt1
                                 ,text   = _('Channel title:')
-                                ,Close  = True
                                 )
-        self.lst_id1 = sg.ListBox (parent          = self.frm_bt1
-                                  ,SelectionCloses = False
-                                  ,SingleClick     = False
-                                  ,Composite       = True
-                                  ,Scrollbar       = True
-                                  )
-        self.lbl_id2 = sg.Label (parent = self.frm_bt2
+        self.lst_id1 = sh.ListBox(self.frm_bt1)
+        self.lbl_id2 = sh.Label (parent = self.frm_bt2
                                 ,text   = _('Your ID:')
-                                ,Close  = True
                                 )
-        self.lst_id2 = sg.ListBox (parent          = self.frm_bt2
-                                  ,SelectionCloses = False
-                                  ,SingleClick     = False
-                                  ,Composite       = True
-                                  ,Scrollbar       = False
-                                  )
-        self.lbl_id3 = sg.Label (parent = self.frm_bt3
+        self.lst_id2 = sh.ListBox(self.frm_bt2)
+        self.lbl_id3 = sh.Label (parent = self.frm_bt3
                                 ,text   = _('Playlist ID:')
-                                ,Close  = True
                                 )
-        self.lst_id3 = sg.ListBox (parent          = self.frm_bt3
-                                  ,SelectionCloses = False
-                                  ,SingleClick     = False
-                                  ,Composite       = True
-                                  ,Scrollbar       = False
-                                  )
-        self.btn_opn = sg.Button (parent = self.frm_rh1
+        self.lst_id3 = sh.ListBox(self.frm_bt3)
+        self.btn_opn = sh.Button (parent = self.frm_rh1
                                  ,text   = _('Open URL')
                                  ,side   = 'top'
                                  )
-        self.btn_add = sg.Button (parent = self.frm_rh1
+        self.btn_add = sh.Button (parent = self.frm_rh1
                                  ,text   = _('Add')
                                  ,side   = 'top'
                                  )
-        self.btn_edt = sg.Button (parent = self.frm_rh1
+        self.btn_edt = sh.Button (parent = self.frm_rh1
                                  ,text   = _('Edit')
                                  ,side   = 'top'
                                  )
-        self.btn_del = sg.Button (parent = self.frm_rh1
+        self.btn_del = sh.Button (parent = self.frm_rh1
                                  ,text   = _('Delete')
                                  ,side   = 'top'
                                  )
-        self.btn_cls = sg.Button (parent = self.frm_rh2
+        self.btn_cls = sh.Button (parent = self.frm_rh2
                                  ,text   = _('Save & close')
                                  ,side   = 'bottom'
                                  )
-        self.btn_sav = sg.Button (parent = self.frm_rh2
+        self.btn_sav = sh.Button (parent = self.frm_rh2
                                  ,text   = _('Save')
                                  ,side   = 'bottom'
                                  )
-        self.btn_rst = sg.Button (parent = self.frm_rh2
+        self.btn_rst = sh.Button (parent = self.frm_rh2
                                  ,text   = _('Reset')
                                  ,side   = 'bottom'
                                  )
@@ -466,7 +440,7 @@ class Comments:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon(icon_path)
+            self.parent.icon(ICON)
     
     def values(self):
         self.icn_prv1 = sh.objs.pdir().add ('..','resources','buttons'
@@ -483,43 +457,41 @@ class Comments:
                                            )
         
     def frames(self):
-        self.frm_top = sg.Frame (parent = self.parent
+        self.frm_top = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,side   = 'top'
                                 )
-        self.frm_lft = sg.Frame (parent = self.frm_top
+        self.frm_lft = sh.Frame (parent = self.frm_top
                                 ,side   = 'left'
                                 )
-        self.frm_rht = sg.Frame (parent = self.frm_top
+        self.frm_rht = sh.Frame (parent = self.frm_top
                                 ,side   = 'right'
                                 )
-        self.frm_txt = sg.Frame (parent = self.parent
+        self.frm_txt = sh.Frame (parent = self.parent
                                 ,side   = 'top'
                                 )
     
     def widgets(self):
-        self.btn_prv = sg.Button (parent   = self.frm_rht
+        self.btn_prv = sh.Button (parent   = self.frm_rht
                                  ,hint     = _('Go to the previous page')
                                  ,inactive = self.icn_prv0
                                  ,active   = self.icn_prv1
                                  ,side     = 'left'
                                  ,bindings = '<Alt-Left>'
                                  )
-        self.btn_nxt = sg.Button (parent   = self.frm_rht
+        self.btn_nxt = sh.Button (parent   = self.frm_rht
                                  ,hint     = _('Go to the next page')
                                  ,inactive = self.icn_nxt0
                                  ,active   = self.icn_nxt1
                                  ,side     = 'left'
                                  ,bindings = '<Alt-Right>'
                                  )
-        self.txt_com = sg.TextBox (parent    = self.frm_txt
-                                  ,Composite = True
-                                  )
+        self.txt_com = sh.TextBox(self.frm_txt)
     
     def gui(self):
-        self.parent = sg.Top(sg.objs.root())
+        self.parent = sh.Top()
         self.widget = self.parent.widget
-        sg.Geometry(self.parent).set('1024x768')
+        sh.Geometry(self.parent).set('1024x768')
         self.frames()
         self.widgets()
         self.icon()
@@ -541,20 +513,20 @@ class Menu:
         self.parent.close()
     
     def frames(self):
-        self.frame1 = sg.Frame (parent = self.parent
+        self.frame1 = sh.Frame (parent = self.parent
                                ,expand = False
                                )
-        self.frame2 = sg.Frame (parent = self.parent
+        self.frame2 = sh.Frame (parent = self.parent
                                ,expand = False
                                )
-        self.frame3 = sg.Frame (parent = self.parent
+        self.frame3 = sh.Frame (parent = self.parent
                                ,expand = False
                                )
-        self.frame4 = sg.Frame (parent = self.frame3
+        self.frame4 = sh.Frame (parent = self.frame3
                                ,expand = False
                                ,side   = 'right'
                                )
-        self.framev = sg.Frame (parent = self.parent)
+        self.framev = sh.Frame (parent = self.parent)
     
     def clear_filter(self,event=None,Force=False):
         if Force or self.ent_flt.get() == _('Filter this view'):
@@ -570,132 +542,128 @@ class Menu:
         self.ent_src.focus()
     
     def tooltips(self):
-        sg.ToolTip (obj      = self.opt_max
-                   ,text     = _('Videos per page')
-                   ,hint_dir = 'bottom'
+        sh.ToolTip (obj  = self.opt_max
+                   ,text = _('Videos per page')
+                   ,hdir = 'bottom'
                    )
     
     def widgets(self):
-        self.opt_upd = sg.OptionMenu (parent  = self.frame1
+        self.opt_upd = sh.OptionMenu (parent  = self.frame1
                                      ,items   = update_items
                                      ,default = _('Update')
                                      )
-        self.opt_viw = sg.OptionMenu (parent  = self.frame1
+        self.opt_viw = sh.OptionMenu (parent  = self.frame1
                                      ,items   = view_items
                                      ,default = _('View')
                                      )
-        self.opt_sel = sg.OptionMenu (parent  = self.frame1
+        self.opt_sel = sh.OptionMenu (parent  = self.frame1
                                      ,items   = selection_items
                                      ,default = _('Selection')
                                      )
-        self.opt_edt = sg.OptionMenu (parent  = self.frame1
+        self.opt_edt = sh.OptionMenu (parent  = self.frame1
                                      ,items   = edit_items
                                      ,default = _('Edit')
                                      )
-        self.btn_prv = sg.Button (parent   = self.frame1
-                                 ,text     = _('←')
-                                 ,hint     = _('Go to the previous channel')
-                                 ,hint_dir = 'bottom'
+        self.btn_prv = sh.Button (parent = self.frame1
+                                 ,text   = _('←')
+                                 ,hint   = _('Go to the previous channel')
+                                 ,hdir   = 'bottom'
                                  )
-        self.btn_nxt = sg.Button (parent   = self.frame1
-                                 ,text     = _('→')
-                                 ,hint     = _('Go to the next channel')
-                                 ,hint_dir = 'bottom'
+        self.btn_nxt = sh.Button (parent = self.frame1
+                                 ,text   = _('→')
+                                 ,hint   = _('Go to the next channel')
+                                 ,hdir   = 'bottom'
                                  )
-        self.btn_ppg = sg.Button (parent   = self.frame1
-                                 ,text     = _('‹')
-                                 ,hint     = _('Go to the previous page')
-                                 ,hint_dir = 'bottom'
+        self.btn_ppg = sh.Button (parent = self.frame1
+                                 ,text   = _('‹')
+                                 ,hint   = _('Go to the previous page')
+                                 ,hdir   = 'bottom'
                                  )
-        self.btn_npg = sg.Button (parent   = self.frame1
-                                 ,text     = _('›')
-                                 ,hint     = _('Go to the next page')
-                                 ,hint_dir = 'bottom'
+        self.btn_npg = sh.Button (parent = self.frame1
+                                 ,text   = _('›')
+                                 ,hint   = _('Go to the next page')
+                                 ,hdir   = 'bottom'
                                  )
-        self.opt_max = sg.OptionMenu (parent  = self.frame1
+        self.opt_max = sh.OptionMenu (parent  = self.frame1
                                      ,items   = (5,10,15,30,50)
                                      ,default = 50
                                      )
-        self.chb_dat = sg.CheckBox (parent = self.frame1
+        self.chb_dat = sh.CheckBox (parent = self.frame1
                                    ,Active = False
                                    ,side   = 'left'
                                    )
-        self.opt_dat = sg.OptionMenu (parent  = self.frame1
+        self.opt_dat = sh.OptionMenu (parent  = self.frame1
                                      ,items   = (_('Newer than')
                                                 ,_('Older than')
                                                 )
                                      ,default = _('Newer than')
                                      )
-        self.opt_day = sg.OptionMenu (parent = self.frame1)
-        self.opt_mth = sg.OptionMenu (parent = self.frame1)
-        self.opt_yrs = sg.OptionMenu (parent = self.frame1)
+        self.opt_day = sh.OptionMenu (parent = self.frame1)
+        self.opt_mth = sh.OptionMenu (parent = self.frame1)
+        self.opt_yrs = sh.OptionMenu (parent = self.frame1)
         # Search Youtube
-        self.ent_src = sg.Entry (parent    = self.frame2
-                                ,Composite = True
-                                ,font      = 'Serif 10 italic'
-                                ,fg        = 'grey'
-                                ,side      = 'left'
-                                ,width     = default_entry_width
+        self.ent_src = sh.Entry (parent = self.frame2
+                                ,font   = 'Serif 10 italic'
+                                ,fg     = 'grey'
+                                ,side   = 'left'
+                                ,width  = default_entry_width
                                 )
         self.ent_src.insert(_('Search Youtube'))
-        self.btn_ytb = sg.Button (parent = self.frame2
+        self.btn_ytb = sh.Button (parent = self.frame2
                                  ,text   = _('Search')
                                  )
         # Paste URL here
-        self.ent_url = sg.Entry (parent    = self.frame2
-                                ,Composite = True
-                                ,font      = 'Serif 10 italic'
-                                ,fg        = 'grey'
-                                ,side      = 'left'
-                                ,width     = default_entry_width
+        self.ent_url = sh.Entry (parent = self.frame2
+                                ,font   = 'Serif 10 italic'
+                                ,fg     = 'grey'
+                                ,side   = 'left'
+                                ,width  = default_entry_width
                                 )
         self.ent_url.insert(_('Paste URL here'))
-        self.opt_url = sg.OptionMenu (parent = self.frame2
+        self.opt_url = sh.OptionMenu (parent = self.frame2
                                      ,items  = url_items
                                      )
         # Filter this view
-        self.ent_flt = sg.Entry (parent    = self.frame2
-                                ,Composite = True
-                                ,font      = 'Serif 10 italic'
-                                ,fg        = 'grey'
-                                ,side      = 'left'
-                                ,width     = default_entry_width
+        self.ent_flt = sh.Entry (parent = self.frame2
+                                ,font   = 'Serif 10 italic'
+                                ,fg     = 'grey'
+                                ,side   = 'left'
+                                ,width  = default_entry_width
                                 )
         self.ent_flt.insert(_('Filter this view'))
-        self.btn_flt = sg.Button (parent = self.frame2
+        self.btn_flt = sh.Button (parent = self.frame2
                                  ,text   = _('Filter')
                                  )
-        self.chb_sel = sg.CheckBox (parent = self.frame3
+        self.chb_sel = sh.CheckBox (parent = self.frame3
                                    ,Active = False
                                    ,side   = 'left'
                                    )
-        self.btn_stm = sg.Button (parent = self.frame3
+        self.btn_stm = sh.Button (parent = self.frame3
                                  ,text   = _('Stream')
                                  )
-        self.btn_ply = sg.Button (parent = self.frame3
+        self.btn_ply = sh.Button (parent = self.frame3
                                  ,text   = _('Play')
                                  )
-        self.btn_dld = sg.Button (parent = self.frame3
+        self.btn_dld = sh.Button (parent = self.frame3
                                  ,text   = _('Download')
                                  )
-        self.btn_del = sg.Button (parent = self.frame3
+        self.btn_del = sh.Button (parent = self.frame3
                                  ,text   = _('Delete')
                                  )
-        self.chb_slw = sg.CheckBox (parent = self.frame3
+        self.chb_slw = sh.CheckBox (parent = self.frame3
                                    ,Active = True
                                    ,side   = 'left'
                                    )
-        self.lab_slw = sg.Label (parent = self.frame3
+        self.lab_slw = sh.Label (parent = self.frame3
                                 ,text   = _('Slow PC')
                                 ,side   = 'left'
                                 ,font   = 'Sans 9'
-                                ,Close  = False
                                 )
-        self.opt_trd = sg.OptionMenu (parent = self.frame4
+        self.opt_trd = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
                                      ,Combo  = True
                                      )
-        self.opt_chl = sg.OptionMenu (parent = self.frame4
+        self.opt_chl = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
                                      ,Combo  = True
                                      )
@@ -708,64 +676,68 @@ class Menu:
                   
     def bindings(self):
         # Main window
-        sg.bind (obj      = self.parent
-                ,bindings = ['<Control-w>','<Control-q>']
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.parent
-                ,bindings = '<Escape>'
-                ,action   = self.minimize
-                )
+        sh.com.bind (obj      = self.parent
+                    ,bindings = ('<Control-w>','<Control-q>')
+                    ,action   = self.close
+                    )
+        sh.com.bind (obj      = self.parent
+                    ,bindings = '<Escape>'
+                    ,action   = self.minimize
+                    )
         # Search Youtube
-        sg.bind (obj      = self.ent_src
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.clear_search
-                )
-        sg.bind (obj      = self.ent_src
-                ,bindings = '<ButtonRelease-2>'
-                ,action   = self.paste_search
-                )
-        sg.bind (obj      = self.ent_src
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = lambda x:self.clear_search(Force=True)
-                )
+        sh.com.bind (obj      = self.ent_src
+                    ,bindings = '<ButtonRelease-1>'
+                    ,action   = self.clear_search
+                    )
+        sh.com.bind (obj      = self.ent_src
+                    ,bindings = '<ButtonRelease-2>'
+                    ,action   = self.paste_search
+                    )
+        sh.com.bind (obj      = self.ent_src
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = lambda x:self.clear_search(Force=True)
+                    )
         # Paste URL
-        sg.bind (obj      = self.ent_url
-                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-2>']
-                ,action   = self.paste_url
-                )
-        sg.bind (obj      = self.ent_url
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.clear_url
-                )
+        sh.com.bind (obj      = self.ent_url
+                    ,bindings = ('<ButtonRelease-1>'
+                                ,'<ButtonRelease-2>'
+                                )
+                    ,action   = self.paste_url
+                    )
+        sh.com.bind (obj      = self.ent_url
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = self.clear_url
+                    )
         # Filter this view
-        sg.bind (obj      = self.ent_flt
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.clear_filter
-                )
-        sg.bind (obj      = self.ent_flt
-                ,bindings = '<ButtonRelease-2>'
-                ,action   = self.paste_filter
-                )
-        sg.bind (obj      = self.ent_flt
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = lambda x:self.clear_filter(Force=True)
-                )
-        sg.bind (obj      = self
-                ,bindings = '<F3>'
-                ,action   = self.clear_search
-                )
-        sg.bind (obj      = self.lab_slw
-                ,bindings = ['<ButtonRelease-1>','<ButtonRelease-3>']
-                ,action   = self.chb_slw.toggle
-                )
+        sh.com.bind (obj      = self.ent_flt
+                    ,bindings = '<ButtonRelease-1>'
+                    ,action   = self.clear_filter
+                    )
+        sh.com.bind (obj      = self.ent_flt
+                    ,bindings = '<ButtonRelease-2>'
+                    ,action   = self.paste_filter
+                    )
+        sh.com.bind (obj      = self.ent_flt
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = lambda x:self.clear_filter(Force=True)
+                    )
+        sh.com.bind (obj      = self
+                    ,bindings = '<F3>'
+                    ,action   = self.clear_search
+                    )
+        sh.com.bind (obj      = self.lab_slw
+                    ,bindings = ('<ButtonRelease-1>'
+                                ,'<ButtonRelease-3>'
+                                )
+                    ,action   = self.chb_slw.toggle
+                    )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
     def title(self,text=None,selected=0,total=0):
         if not text:
-            text = sh.List(lst1=['Yatube',VERSION]).space_items()
+            text = sh.lg.List(lst1=['Yatube',VERSION]).space_items()
             if selected:
-                text += _(' (selected: %d/%d)') % (selected,total)
+                text += _(' (selected: {}/{})').format(selected,total)
         self.parent.title(text)
     
     def gui(self):
@@ -783,8 +755,8 @@ class Menu:
     
     def icon(self,path=None):
         if not path:
-            path = icon_path
-        sg.WidgetShared.icon(self.parent,path)
+            path = ICON
+        self.parent.icon(path)
     
     def clear_url(self,event=None):
         self.ent_url.clear_text()
@@ -795,15 +767,15 @@ class Menu:
         
     def paste_url(self,event=None):
         self.clear_url()
-        self.ent_url.insert(text=sg.Clipboard().paste())
+        self.ent_url.insert(text=sh.Clipboard().paste())
         
     def paste_search(self,event=None):
         self.clear_search(Force=True)
-        self.ent_src.insert(text=sg.Clipboard().paste())
+        self.ent_src.insert(text=sh.Clipboard().paste())
         
     def paste_filter(self,event=None):
         self.clear_filter()
-        self.ent_flt.insert(text=sg.Clipboard().paste())
+        self.ent_flt.insert(text=sh.Clipboard().paste())
 
 
 
@@ -851,20 +823,20 @@ class Video:
         self._image   = objs.def_image()
     
     def frames(self):
-        self.frame  = sg.Frame (parent = self.parent)
-        self.frame1 = sg.Frame (parent = self.frame
+        self.frame  = sh.Frame (parent = self.parent)
+        self.frame1 = sh.Frame (parent = self.frame
                                ,side   = 'left'
                                )
-        self.frame2 = sg.Frame (parent = self.frame
+        self.frame2 = sh.Frame (parent = self.frame
                                ,side   = 'left'
                                )
-        self.frame3 = sg.Frame (parent = self.frame
+        self.frame3 = sh.Frame (parent = self.frame
                                ,side   = 'right'
                                )
-        self.frame4 = sg.Frame (parent = self.frame3
+        self.frame4 = sh.Frame (parent = self.frame3
                                ,side   = 'left'
                                )
-        self.frame5 = sg.Frame (parent = self.frame3
+        self.frame5 = sh.Frame (parent = self.frame3
                                ,side   = 'right'
                                )
                                  
@@ -879,11 +851,10 @@ class Video:
         ''' Fixed width is set to ensure that sizes of a default and
             current video labels are the same.
         '''
-        self.label1 = sg.Label (parent = self.frame1
+        self.label1 = sh.Label (parent = self.frame1
                                ,text   = str(self._no)
                                ,side   = 'right'
                                ,anchor = 'w'
-                               ,Close  = False
                                ,font   = 'Mono 10'
                                ,width  = 4
                                )
@@ -892,49 +863,42 @@ class Video:
             will be further extended to encompass the image
             thereby distorting the GUI structure.
         '''
-        self.label2 = sg.Label (parent = self.frame2
+        self.label2 = sh.Label (parent = self.frame2
                                ,text   = _('Image')
                                ,side   = 'right'
-                               ,Close  = False
                                ,width  = 196
                                ,image  = self._image
                                )
-        self.label3 = sg.Label (parent = self.frame4
+        self.label3 = sh.Label (parent = self.frame4
                                ,text   = _('Author:')
-                               ,Close  = False
                                ,width  = 20
                                )
-        self.label4 = sg.Label (parent = self.frame5
+        self.label4 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
                                ,anchor = 'w'
-                               ,Close  = False
                                ,width  = 60
                                )
-        self.label5 = sg.Label (parent = self.frame4
+        self.label5 = sh.Label (parent = self.frame4
                                ,text   = _('Title:')
-                               ,Close  = False
                                ,width  = 20
                                )
-        self.label6 = sg.Label (parent = self.frame5
+        self.label6 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
                                ,anchor = 'w'
-                               ,Close  = False
                                ,width  = 60
                                )
-        self.label7 = sg.Label (parent = self.frame4
+        self.label7 = sh.Label (parent = self.frame4
                                ,text   = _('Date:')
-                               ,Close  = False
                                ,width  = 20
                                )
-        self.label8 = sg.Label (parent = self.frame5
+        self.label8 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
                                ,anchor = 'w'
-                               ,Close  = False
                                ,width  = 60
                                )
     
     def checkboxes(self):
-        self.cbox = sg.CheckBox (parent = self.frame1
+        self.cbox = sh.CheckBox (parent = self.frame1
                                 ,Active = False
                                 ,side   = 'left'
                                 )
@@ -985,49 +949,50 @@ class Channel:
         f = '[Yatube] gui.Channel.scroll'
         #fix: seems that another unit type is required
         value = i*112.133333333
-        sh.log.append (f,_('DEBUG')
-                      ,_('Scroll to %d') % value
-                      )
+        mes   = _('Scroll to {}').format(value)
+        sh.objs.mes(f,mes,True).debug()
         self.canvas.scroll(y=value)
         
     def bindings(self):
         #todo: elaborate the value
-        sg.bind (obj      = objs.parent()
-                ,bindings = '<Down>'
-                ,action   = self.canvas.move_down
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<Up>'
-                ,action   = self.canvas.move_up
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<Left>'
-                ,action   = self.canvas.move_left
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<Right>'
-                ,action   = self.canvas.move_right
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<Next>'
-                ,action   = self.canvas.move_page_down
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<Prior>'
-                ,action   = self.canvas.move_page_up
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<End>'
-                ,action   = self.canvas.move_bottom
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = '<Home>'
-                ,action   = self.canvas.move_top
-                )
-        sg.bind (obj      = objs._parent
-                ,bindings = ['<MouseWheel>','<Button 4>','<Button 5>']
-                ,action   = self.mouse_wheel
-                )
+        sh.com.bind (obj      = objs.parent()
+                    ,bindings = '<Down>'
+                    ,action   = self.canvas.move_down
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<Up>'
+                    ,action   = self.canvas.move_up
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<Left>'
+                    ,action   = self.canvas.move_left
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<Right>'
+                    ,action   = self.canvas.move_right
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<Next>'
+                    ,action   = self.canvas.move_page_down
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<Prior>'
+                    ,action   = self.canvas.move_page_up
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<End>'
+                    ,action   = self.canvas.move_bottom
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = '<Home>'
+                    ,action   = self.canvas.move_top
+                    )
+        sh.com.bind (obj      = objs._parent
+                    ,bindings = ('<MouseWheel>','<Button 4>'
+                                ,'<Button 5>'
+                                )
+                    ,action   = self.mouse_wheel
+                    )
         
     def values(self):
         ''' These values set the width and height of the frame that 
@@ -1040,19 +1005,19 @@ class Channel:
         self._max_y = 1120
         
     def frames(self):
-        self.frame   = sg.Frame (parent = self.parent)
-        self.frame_y = sg.Frame (parent = self.frame
+        self.frame   = sh.Frame (parent = self.parent)
+        self.frame_y = sh.Frame (parent = self.frame
                                 ,expand = False
                                 ,fill   = 'y'
                                 ,side   = 'right'
                                 )
-        self.frame_x = sg.Frame (parent = self.frame
+        self.frame_x = sh.Frame (parent = self.frame
                                 ,expand = False
                                 ,fill   = 'x'
                                 ,side   = 'bottom'
                                 )
         # A frame that contains all contents except for scrollbars
-        self.frame1  = sg.Frame (parent = self.frame
+        self.frame1  = sh.Frame (parent = self.frame
                                 ,side   = 'left'
                                 ,width  = self._max_x
                                 ,height = self._max_y
@@ -1062,16 +1027,16 @@ class Channel:
         ''' Create a canvas before an object being embedded, otherwise,
             the canvas will overlap this object.
         '''
-        self.canvas  = sg.Canvas(parent=self.frame1)
-        self.frm_emb = sg.Frame(parent=self.frame1)
+        self.canvas  = sh.Canvas(parent=self.frame1)
+        self.frm_emb = sh.Frame(parent=self.frame1)
         self.canvas.embed(self.frm_emb)
     
     def scrollbars(self):
-        sg.Scrollbar (parent = self.frame_x
+        sh.Scrollbar (parent = self.frame_x
                      ,scroll = self.canvas
                      ,Horiz  = True
                      )
-        sg.Scrollbar (parent = self.frame_y
+        sh.Scrollbar (parent = self.frame_y
                      ,scroll = self.canvas
                      ,Horiz  = False
                      )
@@ -1111,51 +1076,47 @@ class Objects:
     
     def comments(self):
         if not self._comments:
-            top = sg.Top(parent=sg.objs.root())
-            sg.Geometry(parent=top).set('1024x768')
-            self._comments = sg.TextBox (parent   = top
-                                        ,SpReturn = True
-                                        )
-            self._comments.icon(icon_path)
-            self._comments.title(_('Comments'))
+            top = sh.Top()
+            sh.Geometry(parent=top).set('1024x768')
+            self._comments = sh.TextBoxC (SpReturn = True
+                                         ,title    = _('Comments')
+                                         ,icon     = ICON
+                                         )
         return self._comments
     
     def subscribe(self):
         if not self._subscribe:
-            top = sg.Top(parent=sg.objs.root())
-            sg.Geometry(parent=top).set('1024x768')
-            self._subscribe = sg.TextBox (parent   = top
-                                         ,SpReturn = False
-                                         )
-            self._subscribe.icon(icon_path)
-            self._subscribe.title(_('Edit subscriptions:'))
+            top = sh.Top()
+            sh.Geometry(parent=top).set('1024x768')
+            self._subscribe = sh.TextBoxC (SpReturn = False
+                                          ,title    = _('Edit subscriptions:')
+                                          ,icon     = ICON
+                                          )
         return self._subscribe
     
     def blacklist(self):
         if not self._blacklist:
-            top = sg.Top(parent=sg.objs.root())
-            sg.Geometry(parent=top).set('1024x768')
-            self._blacklist = sg.TextBox (parent   = top
-                                         ,SpReturn = False
-                                         )
-            self._blacklist.icon(icon_path)
-            self._blacklist.title(_('Edit the blacklist:'))
+            top = sh.Top()
+            sh.Geometry(top).set('1024x768')
+            self._blacklist = sh.TextBoxC (SpReturn = False
+                                          ,icon     = ICON
+                                          ,title    = _('Edit the blacklist:')
+                                          )
         return self._blacklist
     
     def progress(self):
         if not self._progress:
-            self._progress = sg.ProgressBar()
-            self._progress.obj.icon(icon_path)
+            self._progress = sh.ProgressBar(icon=ICON)
             # Widget is not created yet, do not 'center' it here!
         return self._progress
     
     def summary(self):
         if not self._summary:
-            top = sg.Top(parent=sg.objs.root())
-            sg.Geometry(parent=top).set('1024x768')
-            self._summary = sg.TextBox(parent=top)
-            self._summary.icon(icon_path)
-            self._summary.title(_('Full summary:'))
+            top = sh.Top()
+            sh.Geometry(top).set('1024x768')
+            self._summary = sh.TextBoxC (title = _('Full summary:')
+                                        ,icon  = ICON
+                                        )
         return self._summary
     
     def context(self):
@@ -1164,36 +1125,33 @@ class Objects:
                 needed here only not to toggle the checkbox of
                 the parent (this is a bug and should be fixed).
             '''
-            self._context = sg.ListBox (parent          = sg.objs.new_top()
-                                       ,lst             = context_items
-                                       ,title           = _('Select an action:')
-                                       ,icon            = icon_path
-                                       ,SingleClick     = False
-                                       ,SelectionCloses = True
-                                       )
+            self._context = sh.ListBoxC (lst     = context_items
+                                        ,title   = _('Select an action:')
+                                        ,icon    = ICON
+                                        ,ScrollX = False
+                                        )
             self._context.close()
         return self._context
     
     def def_image(self):
         if not self._def_image:
             path = sh.objs.pdir().add('..','resources','nopic.png')
-            self._def_image = sg.Image().open(path=path)
+            self._def_image = sh.Image().open(path=path)
         return self._def_image
 
     def channel(self,parent=None):
         f = '[Yatube] gui.Objects.channel'
         if not self._channel:
             if parent is None:
-                sh.log.append (f,_('INFO')
-                              ,_('Set the default parent.')
-                              )
+                mes = _('Set the default parent.')
+                sh.objs.mes(f,mes,True).info()
                 parent = self.menu().framev
             self._channel = Channel(parent=parent)
         return self._channel
         
     def parent(self):
         if not self._parent:
-            self._parent = sg.Top(parent=sg.objs.root())
+            self._parent = sh.Top()
         return self._parent
     
     def menu(self):
@@ -1207,58 +1165,6 @@ objs = Objects()
 
 if __name__ == '__main__':
     # Show the menu
-    sg.objs.start()
+    sh.com.start()
     objs.menu().show()
-    sg.objs.end()
-    '''
-    # Simulate meta updating
-    sg.objs.start()
-    import time
-    wait = WaitMeta(parent=sg.objs.new_top())
-    wait.show()
-    time.sleep(2)
-    wait.reset(author=_('BLOCKED'))
-    wait.update()
-    time.sleep(2)
-    wait.close()
-    sg.objs.end()
-    '''
-    '''
-    # Simulate channel filling
-    max_videos = 29
-    sg.objs.start()
-    sg.Geometry(parent=objs.parent()).set('1024x600')
-    objs.channel(parent=objs.menu().framev)
-    for i in range(max_videos):
-        #todo: rework
-        objs._channel.add(no=i+1)
-        video_gui = objs._channel._videos[-1]
-        video_gui.reset (author = 'Author (%d)' % (i + 1)
-                        ,title  = 'Title (%d)'  % (i + 1)
-                        ,date   = '2018-12-31'
-                        )
-    sg.objs.root().idle()
-    # height = 112.133333333
-    height = objs._channel.frame.widget.winfo_reqheight()
-    sh.log.append ('[Yatube] gui.__main__'
-                  ,_('DEBUG')
-                  ,_('Widget must be at least %d pixels in height') \
-                  % height
-                  )
-    # y = max_videos * height
-    objs._channel.canvas.region (x        = 1024
-                                ,y        = height
-                                ,x_border = 20
-                                ,y_border = 20
-                                )
-    objs._channel.canvas.move_top()
-    objs._menu.show()
-    sg.objs.end()
-    '''
-    '''
-    # Progress bar
-    sg.objs.start()
-    objs.progress().add()
-    objs._progress.show()
-    sg.objs.end()
-    '''
+    sh.com.end()

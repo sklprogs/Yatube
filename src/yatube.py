@@ -3,15 +3,15 @@
 
 import os
 import subprocess
-import shared    as sh
-import sharedGUI as sg
-import logic     as lg
-import gui       as gi
-import meta      as mt
+import skl_shared.shared as sh
+import logic             as lg
+import gui               as gi
+import meta              as mt
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows
 
-gettext_windows.setup_env()
+skl_shared.gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
 
@@ -44,7 +44,7 @@ class Pause:
         self.fill()
     
     def fill(self,event=None):
-        hours, minutes, seconds = sh.com.split_time(self._pause)
+        hours, minutes, seconds = sh.lg.com.split_time(self._pause)
         self.gui.ent_hrs.reset()
         self.gui.ent_min.reset()
         self.gui.ent_sec.reset()
@@ -80,39 +80,40 @@ class Pause:
         self.gui.btn_sav.action = self.save
         self.gui.btn_scd.action = self.dec_sec
         self.gui.btn_scu.action = self.inc_sec
-        sg.bind (obj      = self.gui.ent_hrs
-                ,bindings = ('<Return>','<KP_Enter>')
-                ,action   = self.upd_hrs
-                )
-        sg.bind (obj      = self.gui.ent_min
-                ,bindings = ('<Return>','<KP_Enter>')
-                ,action   = self.upd_min
-                )
-        sg.bind (obj      = self.gui.ent_sec
-                ,bindings = ('<Return>','<KP_Enter>')
-                ,action   = self.upd_sec
-                )
-        sg.bind (obj      = self.gui.parent
-                ,bindings = ('<F2>','<Control-s>')
-                ,action   = self.save
-                )
-        sg.bind (obj      = self.gui.parent
-                ,bindings = ('<Escape>','<Control-w>','<Control-q>')
-                ,action   = self.close
-                )
+        sh.com.bind (obj      = self.gui.ent_hrs
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.upd_hrs
+                    )
+        sh.com.bind (obj      = self.gui.ent_min
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.upd_min
+                    )
+        sh.com.bind (obj      = self.gui.ent_sec
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.upd_sec
+                    )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = ('<F2>','<Control-s>')
+                    ,action   = self.save
+                    )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = ('<Escape>','<Control-w>','<Control-q>')
+                    ,action   = self.close
+                    )
         self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
     
     def get_sec(self,event=None):
         f = '[Yatube] yatube.Pause.get_sec'
-        seconds = sh.Input (title = f
-                           ,value = self.gui.ent_sec.get()
-                           ).integer()
-        # 'sh.Input.integer' already throws an error at negative values
+        seconds = sh.lg.Input (title = f
+                              ,value = self.gui.ent_sec.get()
+                              ).integer()
+        ''' 'sh.lg.Input.integer' already throws an error at negative
+            values.
+        '''
         if seconds > 59:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('The condition "%s" is not observed!') \
-                        % ('0 <= %d <= 59' % seconds)
-                        )
+            sub = '0 <= {} <= 59'.format(seconds)
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).warning()
             seconds = 59
             self.gui.ent_sec.reset()
             self.gui.ent_sec.insert(seconds)
@@ -120,15 +121,16 @@ class Pause:
     
     def get_min(self,event=None):
         f = '[Yatube] yatube.Pause.get_min'
-        minutes = sh.Input (title = f
-                           ,value = self.gui.ent_min.get()
-                           ).integer()
-        # 'sh.Input.integer' already throws an error at negative values
+        minutes = sh.lg.Input (title = f
+                               ,value = self.gui.ent_min.get()
+                               ).integer()
+        ''' 'sh.lg.Input.integer' already throws an error at negative
+            values.
+        '''
         if minutes > 59:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('The condition "%s" is not observed!') \
-                        % ('0 <= %d <= 59' % minutes)
-                        )
+            sub = '0 <= {} <= 59'.format(minutes)
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).warning()
             minutes = 59
             self.gui.ent_min.reset()
             self.gui.ent_min.insert(minutes)
@@ -136,9 +138,9 @@ class Pause:
     
     def get_hrs(self,event=None):
         f = '[Yatube] yatube.Pause.get_hrs'
-        return sh.Input (title = f
-                        ,value = self.gui.ent_hrs.get()
-                        ).integer()
+        return sh.lg.Input (title = f
+                           ,value = self.gui.ent_hrs.get()
+                           ).integer()
     
     def update(self,event=None):
         self.upd_hrs()
@@ -254,21 +256,15 @@ class Extractor:
                 mt.objs.videos().add(video)
             objs._commands.channel_gui()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
     
     def fetch_prev(self):
         f = '[Yatube] yatube.Extractor.fetch_prev'
-        sh.log.append (f,_('INFO')
-                      ,_('Nothing to do!')
-                      )
+        sh.com.lazy(f)
     
     def fetch_next(self):
         f = '[Yatube] yatube.Extractor.fetch_next'
-        sh.log.append (f,_('INFO')
-                      ,_('Nothing to do!')
-                      )
+        sh.com.lazy(f)
     
     def reset(self,url):
         self._url = url
@@ -376,14 +372,14 @@ class Videos:
         for gui in guis:
             gui.cbox.action = objs.commands().report_selection
             for obj in gui._objects:
-                sg.bind (obj      = obj
-                        ,bindings = '<ButtonRelease-1>'
-                        ,action   = objs._commands.toggle_cbox
-                        )
-                sg.bind (obj      = obj
-                        ,bindings = '<ButtonRelease-3>'
-                        ,action   = objs._commands.context
-                        )
+                sh.com.bind (obj      = obj
+                            ,bindings = '<ButtonRelease-1>'
+                            ,action   = objs._commands.toggle_cbox
+                            )
+                sh.com.bind (obj      = obj
+                            ,bindings = '<ButtonRelease-3>'
+                            ,action   = objs._commands.context
+                            )
     
     def add(self,no=1):
         ivideo = gi.Video (parent = gi.objs.channel().frm_emb
@@ -496,17 +492,12 @@ class Channels:
     def current(self):
         f = '[Yatube] yatube.Channels.current'
         if not self._channels:
-            sh.log.append (f,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
             self.add('history')
         if self.i < 0 or self.i >= len(self._channels):
-            sh.objs.mes (f,_('ERROR')
-                        ,_('The condition "%s" is not observed!') \
-                        % '%d <= %d < %d' % (0,self.i
-                                            ,len(self._channels)
-                                            )
-                        )
+            sub = '0 <= {} < {}'.format(self.i,len(self._channels))
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
             self.i = 0
         return self._channels[self.i]
     
@@ -517,9 +508,8 @@ class Channels:
             if mode in types:
                 self.i = types.index(mode)
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data: "%s"!') % str(mode)
-                            )
+                mes = _('Wrong input data: "{}"!').format(mode)
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     
@@ -546,14 +536,13 @@ class Channels:
                 self._channels.append(Extractor(arg))
             self.inc()
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Wrong input data: "%s"!') % str(mode)
-                        )
+            mes = _('Wrong input data: "{}"!').format(mode)
+            sh.objs.mes(f,mes).error()
     
     def fetch(self):
         f = '[Yatube] yatube.Channels.fetch'
         if self._channels:
-            timer = sh.Timer(f)
+            timer = sh.lg.Timer(f)
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
@@ -565,7 +554,7 @@ class Channels:
     def fetch_prev(self):
         f = '[Yatube] yatube.Channels.fetch_prev'
         if self._channels:
-            timer = sh.Timer(f)
+            timer = sh.lg.Timer(f)
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
@@ -577,7 +566,7 @@ class Channels:
     def fetch_next(self):
         f = '[Yatube] yatube.Channels.fetch_next'
         if self._channels:
-            timer = sh.Timer(f)
+            timer = sh.lg.Timer(f)
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
@@ -627,9 +616,9 @@ class AddId:
             ''' 'myid' will be a valid playlist ID since incorrect
                 values are not added when using 'AddId'.
             '''
-            myid    = self.gui.lst_id3.lst[ind]
-            url     = 'https://www.youtube.com/playlist?list=%s' % myid
-            ionline = sh.Online()
+            myid = self.gui.lst_id3.lst[ind]
+            url  = 'https://www.youtube.com/playlist?list={}'.format(myid)
+            ionline = sh.lg.Online()
             ionline._url = url
             ionline.browse()
         else:
@@ -659,10 +648,8 @@ class AddId:
         id2 = self.gui.lst_id2.lst
         id3 = self.gui.lst_id3.lst
         if self._author in id1:
-            sh.objs.mes (f,_('INFO')
-                        ,_('"%s" is already in the list!') \
-                        % self._author
-                        )
+            mes = _('"{}" is already in the list!').format(self._author)
+            sh.objs.mes(f,mes).info()
         else:
             ind = len(id1)
             Success = True
@@ -686,10 +673,9 @@ class AddId:
                     sh.com.empty(f)
             else:
                 Success = False
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                            % (str(mode),'play_id; channel_id; user')
-                            )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(mode,'play_id; channel_id; user')
+                sh.objs.mes(f,mes).error()
             if Success:
                 id1.insert(ind,self._author)
                 id2.insert(ind,self._id)
@@ -738,18 +724,18 @@ class AddId:
         self.gui.btn_rst.action = self.reset
         self.gui.btn_sav.action = self.save
         self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
-        sg.bind (obj      = self.gui
-                ,bindings = ['<Escape>','<Control-w>','<Control-q>']
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.gui.ent_ath
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.add
-                )
-        sg.bind (obj      = self.gui.ent_pid
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.add
-                )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = ('<Escape>','<Control-w>','<Control-q>')
+                    ,action   = self.close
+                    )
+        sh.com.bind (obj      = self.gui.ent_ath
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.add
+                    )
+        sh.com.bind (obj      = self.gui.ent_pid
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.add
+                    )
     
     def reset(self,event=None):
         lg.objs.lists().reset()
@@ -765,9 +751,9 @@ class AddId:
             text = '\n'.join(tmp)
         else:
             text = '# ' + _('Put here authors to subscribe to')
-        sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                         ,Rewrite = True
-                         ).write(text)
+        sh.lg.WriteTextFile (file    = lg.objs.default()._fsubsc
+                            ,Rewrite = True
+                            ).write(text)
         lg.objs._lists.reset()
     
     def show(self,event=None):
@@ -789,10 +775,9 @@ class AddId:
         if len(id1) == len(id2) == len(id3):
             pass
         else:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('The condition "%s" is not observed!') \
-                        % '%d = %d = %d' % (len(id1),len(id2),len(id3))
-                        )
+            sub = '{} = {} = {}'.format(len(id1),len(id2),len(id3))
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).warning()
         self.gui.lst_id1.reset(lst=id1)
         self.gui.lst_id2.reset(lst=id2)
         self.gui.lst_id3.reset(lst=id3)
@@ -821,22 +806,22 @@ class Comments:
         self.Success = True
     
     def bindings(self):
-        sg.bind (obj      = self.gui.parent
-                ,bindings = '<Alt-Left>'
-                ,action   = self.prev
-                )
-        sg.bind (obj      = self.gui.parent
-                ,bindings = '<Alt-Right>'
-                ,action   = self.next
-                )
-        sg.bind (obj      = self.gui.parent
-                ,bindings = ['<Escape>','<Control-w>','<Control-q>']
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.gui.txt_com
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.next
-                )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = '<Alt-Left>'
+                    ,action   = self.prev
+                    )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = '<Alt-Right>'
+                    ,action   = self.next
+                    )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = ('<Escape>','<Control-w>','<Control-q>')
+                    ,action   = self.close
+                    )
+        sh.com.bind (obj      = self.gui.txt_com
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.next
+                    )
         self.gui.btn_prv.action = self.prev
         self.gui.btn_nxt.action = self.next
         self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
@@ -898,10 +883,9 @@ class Comments:
                     text = self.logic._texts[self.logic.i]
                 except IndexError:
                     text = ''
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
-                text     = sh.Text(text).delete_unsupported()
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
+                text     = sh.lg.Text(text).delete_unsupported()
                 old_text = self.gui.txt_com.get()
                 # A new line is inserted when read from the widget
                 text = text.strip()
@@ -962,33 +946,6 @@ class Commands:
                            )
         objs._pause.show()
     
-    def show_hints(self,event=None):
-        # We need to call 'idletasks' twice in order to view changes
-        sg.objs.root().idle()
-        sg.SHOW_HINTS = True
-        sg.objs.root().idle()
-    
-    def hide_hints(self,event=None):
-        ''' - Showing/hiding a hint is managed automatically. However,
-              we may want to force hiding the hint when
-              downloading/playing/streaming since the hint will overlap
-              other windows (e.g., a player app when playing/streaming
-              or all apps when downloading for a long time).
-            - Also set sg.SHOW_HINTS to False to prevent creating new
-              hints.
-        '''
-        try:
-            self._tip_tim.leave()
-            self._tip_tit.leave()
-        except Exception as e:
-            #cur
-            #todo: del
-            print('hide_hints: NOT WORKING !!!!!!!!!!!!!!!!!')
-            print(str(e))
-        sg.objs.root().idle()
-        sg.SHOW_HINTS = False
-        sg.objs.root().idle()
-    
     def hint(self,event=None):
         f = '[Yatube] yatube.Commands.hint'
         gui = self.get_widget(event)
@@ -996,25 +953,24 @@ class Commands:
             if hasattr(gui,'label2'):
                 mt.objs.videos().set_gui(gui)
                 length = lg.Video().length()
-                length = sh.com.easy_time(length)
+                length = sh.lg.com.easy_time(length)
                 pause  = mt.objs._videos.current()._pause
                 if pause:
                     text  = length + ', ' + _('pause:') + ' ' \
-                            + sh.com.easy_time(pause)
+                            + sh.lg.com.easy_time(pause)
                     width = 210
                 else:
                     text  = length
                     width = 90
-                self._tip_tim = sg.ToolTip (obj        = gui.label2
-                                           ,text       = text
-                                           ,hint_dir   = 'bottom'
-                                           ,hint_delay = 400
+                self._tip_tim = sh.ToolTip (obj   = gui.label2
+                                           ,text  = text
+                                           ,hdir  = 'bottom'
+                                           ,delay = 400
                                            )
                 self._tip_tim.showtip()
             else:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Wrong input data!')
-                            )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -1135,12 +1091,12 @@ class Commands:
         gi.objs.progress()._item.widget['value'] = percent
         rate = int(rate) // 1000
         # Prevent from irritating message length changes
-        rate = sh.Text(text=str(rate)).grow (max_len = 4
-                                            ,FromEnd = False
-                                            )
-        eta = sh.Text(text=str(eta)).grow (max_len = 3
-                                          ,FromEnd = False
-                                          )
+        rate = sh.lg.Text(text=str(rate)).grow (max_len = 4
+                                               ,FromEnd = False
+                                               )
+        eta = sh.lg.Text(text=str(eta)).grow (max_len = 3
+                                             ,FromEnd = False
+                                             )
         gi.objs._progress._item.text (file     = mt.objs.videos().current()._pathsh
                                      ,cur_size = cur_size
                                      ,total    = total
@@ -1148,7 +1104,7 @@ class Commands:
                                      ,eta      = eta
                                      )
         # This is required to fill the progress bar on-the-fly
-        sg.objs.root().widget.update_idletasks()
+        sh.objs.root().idle()
     
     def history(self,event=None):
         objs.channels().add('history')
@@ -1236,7 +1192,7 @@ class Commands:
     def add2watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.add2watchlist'
         lg.objs.db().mark_later (video_id = mt.objs.videos().current()._id
-                                ,ltime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+                                ,ltime    = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                 )
         if Unselect:
             self.unselect()
@@ -1259,9 +1215,8 @@ class Commands:
                 if mt.objs.videos().set_gui(video_gui):
                     self.remove_from_watchlist(Unselect=Unselect)
                 else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -1282,9 +1237,8 @@ class Commands:
                 if mt.objs.videos().set_gui(video_gui):
                     self.unstar()
                 else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -1299,7 +1253,7 @@ class Commands:
     def star(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.star'
         lg.objs.db().mark_starred (video_id = mt.objs.videos().current()._id
-                                  ,ftime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+                                  ,ftime    = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                   )
         if Unselect:
             self.unselect()
@@ -1312,9 +1266,8 @@ class Commands:
                 if mt.objs.videos().set_gui(video_gui):
                     self.star(Unselect=Unselect)
                 else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -1326,13 +1279,10 @@ class Commands:
                 if mt.objs.videos().set_gui(video_gui):
                     self.mark_not_watched(Unselect=Unselect)
                 else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
     
     def sel_mark_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.sel_mark_watched'
@@ -1342,13 +1292,10 @@ class Commands:
                 if mt.objs.videos().set_gui(video_gui):
                     self.mark_watched(Unselect=Unselect)
                 else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Wrong input data!')
-                                )
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).warning()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
     
     def mark_not_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_not_watched'
@@ -1370,7 +1317,7 @@ class Commands:
         video = mt.objs.videos().current()
         gui   = video._gui
         if gui:
-            video._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            video._dtime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
             lg.objs.db().mark_downloaded (video_id = video._id
                                          ,dtime    = video._dtime
                                          )
@@ -1398,25 +1345,24 @@ class Commands:
             mt.MAX_VIDEOS = int(self._menu.opt_max.choice)
             self.reload_channel()
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Wrong input data: "%s"') \
-                        % str(self._menu.opt_max.choice)
-                        )
+            mes = _('Wrong input data: "{}"')
+            mes = mes.format(self._menu.opt_max.choice)
+            sh.objs.mes(f,mes).error()
     
     def tooltips(self):
         guis = [video._gui for video in mt.objs.videos()._videos \
                 if video._gui
                ]
         for gui in guis:
-            sg.bind (obj      = gui.label2
-                    ,bindings = '<Enter>'
-                    ,action   = self.hint
-                    )
+            sh.com.bind (obj      = gui.label2
+                        ,bindings = '<Enter>'
+                        ,action   = self.hint
+                        )
             if len(gui._title) > 60:
-                self._tip_tit = sg.ToolTip (obj       = gui.frame
-                                           ,text      = gui._title
-                                           ,hint_dir  = 'top'
-                                           ,hint_font = 'Serif 10'
+                self._tip_tit = sh.ToolTip (obj  = gui.frame
+                                           ,text = gui._title
+                                           ,hdir = 'top'
+                                           ,font = 'Serif 10'
                                            )
     
     def prev_channel(self,event=None):
@@ -1436,9 +1382,7 @@ class Commands:
         default = _('Update')
         choice  = self._menu.opt_upd.choice
         if choice == default:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         elif choice == _('Subscriptions'):
             self._menu.opt_upd.set(default)
             self.update_channels()
@@ -1446,10 +1390,9 @@ class Commands:
             self._menu.opt_upd.set(default)
             self.reload_channel()
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(choice),';'.join(gi.update_items))
-                        )
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(choice,';'.join(gi.update_items))
+            sh.objs.mes(f,mes).error()
     
     def menu_view(self,event=None):
         f = '[Yatube] yatube.Commands.menu_view'
@@ -1473,19 +1416,16 @@ class Commands:
             self._menu.opt_viw.set(default)
             self.blank()
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(choice),';'.join(gi.view_items))
-                        )
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(choice,';'.join(gi.view_items))
+            sh.objs.mes(f,mes).error()
     
     def menu_edit(self,event=None):
         f = '[Yatube] yatube.Commands.menu_edit'
         default = _('Edit')
         choice  = self._menu.opt_edt.choice
         if choice == default:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         elif choice == _('Subscriptions'):
             self._menu.opt_edt.set(default)
             self.manage_sub()
@@ -1496,10 +1436,9 @@ class Commands:
             self._menu.opt_edt.set(default)
             self.manage_blocked_words()
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(choice),';'.join(gi.edit_items))
-                        )
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(choice,';'.join(gi.edit_items))
+            sh.objs.mes(f,mes).error()
     
     def menu_selection(self,event=None):
         f = '[Yatube] yatube.Commands.menu_selection'
@@ -1550,10 +1489,9 @@ class Commands:
             if objs.channels().current()._type == 'watchlist':
                 self.reload_channel()
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(choice),';'.join(gi.selection_items))
-                        )
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(choice,';'.join(gi.selection_items))
+            sh.objs.mes(f,mes).error()
     
     def blank(self,event=None):
         # 'lg.objs.channel().reset' requires non-empty values at input
@@ -1574,10 +1512,9 @@ class Commands:
         video = mt.objs.videos().current()
         if video._author:
             if video._author in lg.objs.lists()._subsc_auth:
-                sh.log.append (f,_('INFO')
-                              ,_('Unsubscribe from channel "%s"') \
-                              % video._author
-                              )
+                mes = _('Unsubscribe from channel "{}"')
+                mes = mes.format(video._author)
+                sh.objs.mes(f,mes,True).info()
                 if video._author in lg.objs._lists._subsc_auth:
                     ind = lg.objs._lists._subsc_auth.index(video._author)
                     del lg.objs._lists._subsc_auth[ind]
@@ -1591,15 +1528,13 @@ class Commands:
                     subscriptions = '\n'.join(subscriptions)
                     if not subscriptions:
                         subscriptions = '# ' + _('Put here authors to subscribe to')
-                    sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                                     ,Rewrite = True
-                                     ).write(text=subscriptions)
+                    sh.lg.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                        ,Rewrite = True
+                                        ).write(text=subscriptions)
                     lg.objs._lists.reset()
                     self.reset_channels()
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
         else:
             sh.com.empty(f)
     
@@ -1608,9 +1543,8 @@ class Commands:
         video = mt.objs.videos().current()
         if video._author:
             if video._author in lg.objs.lists()._block_auth:
-                sh.log.append (f,_('INFO')
-                              ,_('Unblock channel "%s"') % video._author
-                              )
+                mes = _('Unblock channel "{}"').format(video._author)
+                sh.objs.mes(f,mes,True).info()
                 ''' The 'Block' boolean will actually be set after
                     reloading the channel, however, we want to inform
                     the context menu about the changes.
@@ -1621,16 +1555,14 @@ class Commands:
                 blocked = '\n'.join(blocked)
                 if not blocked:
                     blocked = '# ' + _('Put here authors to be blocked')
-                sh.WriteTextFile (file    = lg.objs.default()._fblock
-                                 ,Rewrite = True
-                                 ).write(text=blocked)
+                sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
+                                    ,Rewrite = True
+                                    ).write(text=blocked)
                 lg.objs._lists.reset()
                 self.reset_channels()
                 self.reload_channel()
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
         else:
             sh.com.empty(f)
     
@@ -1643,9 +1575,7 @@ class Commands:
                 mt.objs.videos().set_gui(gui)
                 self.delete_video()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
     
     def delete_video(self,event=None):
         f = '[Yatube] yatube.Commands.delete_video'
@@ -1686,7 +1616,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.copy_video_url'
         url = lg.Video().url()
         if url:
-            sg.Clipboard().copy(text=url)
+            sh.Clipboard().copy(text=url)
         else:
             sh.com.empty(f)
     
@@ -1696,14 +1626,11 @@ class Commands:
         lg.Video().play_id()
         if video._author and video._play_id:
             if video._author in lg.objs.lists()._subsc_auth:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Subscribe to channel "%s"') \
-                              % video._author
-                              )
+                mes = _('Subscribe to channel "{}"')
+                mes = mes.format(video._author)
+                sh.objs.mes(f,mes,True).info()
                 subscriptions = []
                 for i in range(len(lg.objs._lists._subsc_auth)):
                     subscriptions.append (lg.objs._lists._subsc_auth[i]\
@@ -1718,9 +1645,9 @@ class Commands:
                                        )
                 subscriptions = '\n'.join(subscriptions)
                 if subscriptions:
-                    sh.WriteTextFile (file    = lg.objs.default()._fsubsc
-                                     ,Rewrite = True
-                                     ).write(text=subscriptions)
+                    sh.lg.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                        ,Rewrite = True
+                                        ).write(text=subscriptions)
                     lg.objs._lists.reset()
                     self.reset_channels()
                 else:
@@ -1733,13 +1660,10 @@ class Commands:
         video = mt.objs.videos().current()
         if video._author:
             if video._author in lg.objs.lists()._block_auth:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Block channel "%s"') % video._author
-                              )
+                mes = _('Block channel "{}"').format(video._author)
+                sh.objs.mes(f,mes,True).info()
                 ''' The 'Block' boolean will actually be set after
                     reloading the channel, however, we want to inform
                     the context menu about the changes.
@@ -1752,9 +1676,9 @@ class Commands:
                                  )
                 blocked = '\n'.join(blocked)
                 if blocked:
-                    sh.WriteTextFile (file    = lg.objs.default()._fblock
-                                     ,Rewrite = True
-                                     ).write(text=blocked)
+                    sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
+                                        ,Rewrite = True
+                                        ).write(text=blocked)
                     lg.objs._lists.reset()
                     self.reset_channels()
                     self.reload_channel()
@@ -1785,7 +1709,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.copy_channel_url'
         channel_id = lg.Video().channel_id()
         if channel_id:
-            sg.Clipboard().copy(lg.pattern2+channel_id)
+            sh.Clipboard().copy(lg.pattern2+channel_id)
         else:
             sh.com.empty(f)
     
@@ -1793,14 +1717,10 @@ class Commands:
         f = '[Yatube] yatube.Commands.stream'
         selection = self.selection()
         if selection:
-            self.hide_hints()
             mt.objs.videos().set_gui(selection[0])
             self.stream_video()
-            self.show_hints()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.empty(f)
     
     def stream_video(self,event=None):
         f = '[Yatube] yatube.Commands.stream_video'
@@ -1817,9 +1737,8 @@ class Commands:
                 app = '/usr/bin/mplayer'
             else:
                 app = ''
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Unable to find a suitable application!')
-                            )
+                mes = _('Unable to find a suitable application!')
+                sh.objs.mes(f,mes).warning()
             if app:
                 if self._menu.chb_slw.get():
                     args = self._stream_slow(app)
@@ -1830,15 +1749,14 @@ class Commands:
                                         + [url]
                 else:
                     custom_args = [app,url]
-                #'sh.Launch' checks the target
+                #'sh.lg.Launch' checks the target
                 try:
                     subprocess.Popen(custom_args)
                     Success = True
-                except:
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Failed to run "%s"!') \
-                                % str(custom_args)
-                                )
+                except Exception as e:
+                    mes = _('Failed to run "{}"!\n\nDetails: {}')
+                    mes = mes.format(custom_args,e)
+                    sh.objs.mes(f,mes).error()
                     Success = False
                 if Success:
                     self.mark_downloaded()
@@ -1899,7 +1817,7 @@ class Commands:
                 month = '11'
             elif month == _('Dec'):
                 month = '12'
-            itime = sh.Time(pattern='%Y-%m-%d')
+            itime = sh.lg.Time(pattern='%Y-%m-%d')
             itime._date = year + '-' + month + '-' + day
             self._timestamp = itime.timestamp()
         return self._timestamp
@@ -1943,9 +1861,7 @@ class Commands:
                     if self._date_filter():
                         gui.red_out()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do.')
-                          )
+            sh.com.lazy(f)
     
     def get_widget(self,event=None):
         f = '[Yatube] yatube.Commands.get_widget'
@@ -2056,10 +1972,9 @@ class Commands:
             elif choice == _('Copy channel URL'):
                 self.copy_channel_url()
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                            % (str(choice),';'.join(gi.context_items))
-                            )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(choice,';'.join(gi.context_items))
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     
@@ -2120,10 +2035,9 @@ class Commands:
         if self._menu.opt_chl.choice == _('Channels'):
             self.feed()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Switch to channel "%s"') \
-                          % str(self._menu.opt_chl.choice)
-                          )
+            mes = _('Switch to channel "{}"')
+            mes = mes.format(self._menu.opt_chl.choice)
+            sh.objs.mes(f,mes,True).info()
             if self._menu.opt_chl.choice in lg.objs.lists()._subsc_auth:
                 author  = self._menu.opt_chl.choice
                 no      = lg.objs._lists._subsc_auth.index(author)
@@ -2131,19 +2045,16 @@ class Commands:
                 objs.channels().add('playlist',play_id)
                 objs._channels.fetch()
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data: "%s"') \
-                            % str(self._menu.opt_chl.choice)
-                            )
+                mes = _('Wrong input data: "{}"')
+                mes = mes.format(self._menu.opt_chl.choice)
+                sh.objs.mes(f,mes).error()
         
     def get_url(self,event=None):
         f = '[Yatube] yatube.Commands.get_url'
         result = self._menu.ent_url.get()
         if result:
             if result == _('Paste URL here'):
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             elif self._menu.opt_url.choice in gi.url_items:
                 if self._menu.opt_url.choice == _('Extract links'):
                     self.get_links(url=result)
@@ -2177,16 +2088,13 @@ class Commands:
                     else:
                         sh.com.cancel(f)
             else:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                            % (str(self._menu.opt_url.choice)
-                              ,';'.join(gi.url_items)
-                              )
-                            )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format (self._menu.opt_url.choice
+                                 ,';'.join(gi.url_items)
+                                 )
+                sh.objs.mes(f,mes).error()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def search_youtube(self,event=None):
         f = '[Yatube] yatube.Commands.search_youtube'
@@ -2207,73 +2115,70 @@ class Commands:
             gui.black_out()
         result = self._menu.ent_flt.get()
         if result and result != _('Filter this view'):
-            sh.log.append (f,_('INFO')
-                          ,_('Filter by "%s"') % result
-                          )
+            mes = _('Filter by "{}"').format(result)
+            sh.objs.mes(f,mes,True).info()
             result = result.lower()
             for gui in guis:
                 mt.objs._videos.set_gui(gui)
                 if result in mt.objs._videos.current()._search:
                     gui.red_out()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
     
     def bindings(self):
         # Menu: main window
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<F1>'
-                ,action   = self.statistics
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-Left>'
-                ,action   = self.prev_page
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-Right>'
-                ,action   = self.next_page
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Control-p>'
-                ,action   = self.play
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Control-d>'
-                ,action   = self.download
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Control-s>'
-                ,action   = self.stream
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = ['<Control-h>','<Alt-h>']
-                ,action   = self.history
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-w>'
-                ,action   = self.watchlist
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-f>'
-                ,action   = self.favorites
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Shift-Delete>'
-                ,action   = self.delete_selected
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-c>'
-                ,action   = self.feed
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-t>'
-                ,action   = self.update_trending
-                )
-        sg.bind (obj      = self._menu.parent
-                ,bindings = '<Alt-b>'
-                ,action   = self.blank
-                )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<F1>'
+                    ,action   = self.statistics
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-Left>'
+                    ,action   = self.prev_page
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-Right>'
+                    ,action   = self.next_page
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Control-p>'
+                    ,action   = self.play
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Control-d>'
+                    ,action   = self.download
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Control-s>'
+                    ,action   = self.stream
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = ('<Control-h>','<Alt-h>')
+                    ,action   = self.history
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-w>'
+                    ,action   = self.watchlist
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-f>'
+                    ,action   = self.favorites
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Shift-Delete>'
+                    ,action   = self.delete_selected
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-c>'
+                    ,action   = self.feed
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-t>'
+                    ,action   = self.update_trending
+                    )
+        sh.com.bind (obj      = self._menu.parent
+                    ,bindings = '<Alt-b>'
+                    ,action   = self.blank
+                    )
         # Menu: buttons
         self._menu.btn_del.action = self.delete_selected
         self._menu.btn_dld.action = self.download
@@ -2287,18 +2192,18 @@ class Commands:
         self._menu.btn_ytb.action = self.search_youtube
         self._menu.chb_sel.reset(action=self.toggle_select)
         # Menu: labels
-        sg.bind (obj      = self._menu.ent_flt
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.filter_view
-                )
-        sg.bind (obj      = self._menu.ent_src
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.search_youtube
-                )
-        sg.bind (obj      = self._menu.ent_url
-                ,bindings = ['<Return>','<KP_Enter>']
-                ,action   = self.get_url
-                )
+        sh.com.bind (obj      = self._menu.ent_flt
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.filter_view
+                    )
+        sh.com.bind (obj      = self._menu.ent_src
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.search_youtube
+                    )
+        sh.com.bind (obj      = self._menu.ent_url
+                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,action   = self.get_url
+                    )
         # Menu: checkboxes
         self._menu.chb_dat.widget.config(command=self.filter_by_date)
         
@@ -2308,10 +2213,10 @@ class Commands:
             This is a binding to the entire OptionMenu and will not
             interfere with bindings to OptionMenu items.
         '''
-        sg.bind (obj      = self._menu.opt_sel
-                ,bindings = '<Button-1>'
-                ,action   = self.update_sel_menu
-                )
+        sh.com.bind (obj      = self._menu.opt_sel
+                    ,bindings = '<Button-1>'
+                    ,action   = self.update_sel_menu
+                    )
         self._menu.opt_upd.action = self.menu_update
         self._menu.opt_viw.action = self.menu_view
         self._menu.opt_sel.action = self.menu_selection
@@ -2366,7 +2271,7 @@ class Commands:
                 so we don't have to additionaly tune the pause to remind
                 a user what is happening on the screen.
             '''
-            lst += ['--start=%s' % sh.com.easy_time(pause)]
+            lst += ['--start=%s' % sh.lg.com.easy_time(pause)]
         return lst
     
     def _play_slow(self,app='/usr/bin/mpv'):
@@ -2376,13 +2281,13 @@ class Commands:
             custom_args = ['-fs','-framedrop','-nocorrect-pts']
         else:
             custom_args = []
-        sh.Launch (target = lg.Video().path()
-                  ).app (custom_app  = app
-                        ,custom_args = self.mpv_start(app,custom_args)
-                        )
+        sh.lg.Launch (target = lg.Video().path()
+                     ).app (custom_app  = app
+                           ,custom_args = self.mpv_start(app,custom_args)
+                           )
                         
     def _play_default(self):
-        sh.Launch(target=lg.Video().path()).default()
+        sh.lg.Launch(target=lg.Video().path()).default()
 
     def play_video(self,event=None):
         f = '[Yatube] yatube.Commands.play_video'
@@ -2403,7 +2308,6 @@ class Commands:
         f = '[Yatube] yatube.Commands.play'
         selection = self.selection()
         if selection:
-            self.hide_hints()
             # Download all videos, play the first one only
             for i in range(len(selection)):
                 mt.objs.videos().set_gui(selection[i])
@@ -2419,16 +2323,13 @@ class Commands:
             gi.objs._progress.close()
             if objs.channels().current()._type == 'watchlist':
                 self.reload_channel()
-            self.show_hints()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         
     def mark_downloaded(self,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_downloaded'
         video = mt.objs.videos().current()
-        video._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        video._dtime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         lg.objs.db().mark_downloaded (video_id = video._id
                                      ,dtime    = video._dtime
                                      )
@@ -2463,7 +2364,7 @@ class Commands:
                     the program is downloading something.
                 '''
                 if self.FirstVideo:
-                    sg.Geometry(parent=gi.objs._progress.obj).activate()
+                    sh.Geometry(gi.objs._progress.obj).activate()
                     gi.objs._progress.obj.center()
                     self.FirstVideo = False
                 if logic.download(self.progress):
@@ -2475,7 +2376,6 @@ class Commands:
         f = '[Yatube] yatube.Commands.download'
         selection = self.selection()
         if selection:
-            self.hide_hints()
             for i in range(len(selection)):
                 mt.objs.videos().set_gui(selection[i])
                 gi.objs.progress().title (_('Download progress') \
@@ -2486,11 +2386,8 @@ class Commands:
                 self.download_video()
             gi.objs._progress.title()
             gi.objs._progress.close()
-            self.show_hints()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.empty(f)
         
     def update_channels(self,event=None):
         f = '[Yatube] yatube.Commands.update_channels'
@@ -2516,16 +2413,14 @@ class Commands:
         if choice == _('Trending'):
             country = 'RU'
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Switch to channel "%s"') % str(choice)
-                          )
+            mes = _('Switch to channel "{}"').format(choice)
+            sh.objs.mes(f,mes,True).info()
             if choice in lg.objs.const()._countries:
                 country = lg.objs._const._countries[choice]
             else:
                 country = 'RU'
-            sh.log.append (f,_('DEBUG')
-                          ,_('Country: %s') % country
-                          )
+            mes = _('Country: {}').format(country)
+            sh.objs.mes(f,mes,True).debug()
         self.update_trending(country=country)
         
     def reset_channel_gui(self):
@@ -2542,7 +2437,7 @@ class Commands:
     def fill_default(self):
         f = '[Yatube] yatube.Commands.fill_default'
         # Operation takes ~0,56s but there seems nothing to speed up
-        #timer = sh.Timer(f)
+        #timer = sh.lg.Timer(f)
         #timer.start()
         gi.objs.channel(parent=gi.objs.menu().framev)
         if mt.objs.videos()._videos:
@@ -2555,16 +2450,15 @@ class Commands:
             
     def dimensions(self):
         f = '[Yatube] yatube.Commands.dimensions'
-        sg.objs.root().idle()
-        height = gi.objs._channel.frm_emb.widget.winfo_reqheight()
+        sh.objs.root().idle()
+        height = gi.objs._channel.frm_emb.reqheight()
         ''' #NOTE: Extra space can be caused by a difference of
             the default and loaded pictures.
         '''
         #height = len(lg.objs.channel()._urls) * 112.133333333
-        sh.log.append (f,_('DEBUG')
-                      ,_('Widget must be at least %d pixels in height')\
-                      % height
-                      )
+        mes = _('Widget must be at least {} pixels in height')
+        mes = mes.format(height)
+        sh.objs.mes(f,mes,True).debug()
         gi.objs._channel.canvas.region (x        = 1024
                                        ,y        = height
                                        ,x_border = 20
@@ -2573,7 +2467,7 @@ class Commands:
     
     def fill_unknown(self):
         f = '[Yatube] yatube.Commands.fill_unknown'
-        #timer = sh.Timer(f)
+        #timer = sh.lg.Timer(f)
         #timer.start()
         unknown = []
         for i in range(len(mt.objs.videos()._videos)):
@@ -2587,9 +2481,7 @@ class Commands:
                 self.update_video(i=unknown[i])
             lg.objs.db().save()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         #timer.end()
     
     def set_block(self):
@@ -2608,9 +2500,9 @@ class Commands:
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.videos().current()
         if video._gui:
-            date = sh.Time (_timestamp = video._ptime
-                           ,pattern    = '%Y-%m-%d %H:%M'
-                           ).date()
+            date = sh.lg.Time (_timestamp = video._ptime
+                              ,pattern    = '%Y-%m-%d %H:%M'
+                              ).date()
             author, title = self.set_block()
             video._gui.reset (author = author
                              ,title  = title
@@ -2630,17 +2522,16 @@ class Commands:
     
     def fill_known(self):
         f = '[Yatube] yatube.Commands.fill_known'
-        #timer = sh.Timer(f)
+        #timer = sh.lg.Timer(f)
         #timer.start()
         if mt.objs.videos()._videos:
             ids = [vid._id for vid in mt.objs._videos._videos]
             result = lg.objs.db().get_videos(ids)
             if result:
                 matches = [item[0] for item in result if item]
-                sh.log.append (f,_('INFO')
-                              ,_('%d/%d links are already stored in DB.')\
-                              % (len(matches),len(ids))
-                              )
+                mes = _('{}/{} links are already stored in DB.')
+                mes = mes.format(len(matches),len(ids))
+                sh.objs.mes(f,mes,True).info()
                 for i in range(len(ids)):
                     mt.objs._videos.i = i
                     if result[i]:
@@ -2674,7 +2565,7 @@ class Commands:
             must be done after creating all video widgets and
             reading/updating images.
         '''
-        sg.objs.root().idle()
+        sh.objs.root().idle()
         if Unknown:
             self.fill_unknown()
         # Using the canvas is fast, no need to time this
@@ -2692,7 +2583,7 @@ class Commands:
         self.reset_channels()
                              
     def manage_blocked_authors(self,event=None):
-        words = sh.Words(text=lg.objs.lists()._block)
+        words = sh.lg.Words(text=lg.objs.lists()._block)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._block)
         gi.objs._blacklist.show()
@@ -2703,19 +2594,19 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file    = lg.objs.default()._fblock
-                             ,Rewrite = True
-                             ).write(text=text)
+            sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
+                                ,Rewrite = True
+                                ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here authors to be blocked')
-            sh.WriteTextFile (file    = lg.objs.default()._fblock
-                             ,Rewrite = True
-                             ).write(text=text)
+            sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
+                                ,Rewrite = True
+                                ).write(text=text)
         lg.objs._lists.reset()
     
     def manage_blocked_words(self,event=None):
-        words = sh.Words(text=lg.objs.lists()._blockw)
+        words = sh.lg.Words(text=lg.objs.lists()._blockw)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._blockw)
         gi.objs._blacklist.show()
@@ -2726,15 +2617,15 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.WriteTextFile (file    = lg.objs.default()._fblockw
-                             ,Rewrite = True
-                             ).write(text=text)
+            sh.lg.WriteTextFile (file    = lg.objs.default()._fblockw
+                                ,Rewrite = True
+                                ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here words to block in titles (case is ignored)')
-            sh.WriteTextFile (file    = lg.objs.default()._fblockw
-                             ,Rewrite = True
-                             ).write(text=text)
+            sh.lg.WriteTextFile (file    = lg.objs.default()._fblockw
+                                ,Rewrite = True
+                                ).write(text=text)
         lg.objs._lists.reset()
 
 
@@ -2776,8 +2667,8 @@ objs = Objects()
 
 if __name__ == '__main__':
     f = '[Yatube] yatube.__main__'
-    sg.objs.start()
-    sg.Geometry(parent=gi.objs.parent()).set('1024x600')
+    sh.com.start()
+    sh.Geometry(gi.objs.parent()).set('1024x600')
     lg.objs.default(product='yatube')
     if lg.objs._default.Success:
         objs.commands().bindings()
@@ -2787,11 +2678,9 @@ if __name__ == '__main__':
         lg.objs.db().save()
         lg.objs._db.close()
     else:
-        sh.objs.mes (f,_('WARNING')
-                    ,_('Unable to continue due to an invalid configuration.')
-                    )
+        mes = _('Unable to continue due to an invalid configuration.')
+        sh.objs.mes(f,mes).warning()
     objs.commands().statistics(Silent=True)
-    sh.log.append (f,_('DEBUG')
-                  ,_('Goodbye!')
-                  )
-    sg.objs.end()
+    mes = _('Goodbye!')
+    sh.objs.mes(f,mes,True).debug()
+    sh.com.end()
