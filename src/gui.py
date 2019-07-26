@@ -1086,8 +1086,6 @@ class Objects:
     
     def subscribe(self):
         if not self._subscribe:
-            top = sh.Top()
-            sh.Geometry(parent=top).set('1024x768')
             self._subscribe = sh.TextBoxC (SpReturn = False
                                           ,title    = _('Edit subscriptions:')
                                           ,icon     = ICON
@@ -1096,8 +1094,6 @@ class Objects:
     
     def blacklist(self):
         if not self._blacklist:
-            top = sh.Top()
-            sh.Geometry(top).set('1024x768')
             self._blacklist = sh.TextBoxC (SpReturn = False
                                           ,icon     = ICON
                                           ,title    = _('Edit the blacklist:')
@@ -1112,8 +1108,6 @@ class Objects:
     
     def summary(self):
         if not self._summary:
-            top = sh.Top()
-            sh.Geometry(top).set('1024x768')
             self._summary = sh.TextBoxC (title = _('Full summary:')
                                         ,icon  = ICON
                                         )

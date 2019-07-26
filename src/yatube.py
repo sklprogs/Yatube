@@ -2587,6 +2587,7 @@ class Commands:
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._block)
         gi.objs._blacklist.show()
+        gi.objs._blacklist.Save = True
         text = gi.objs._blacklist.get()
         if text:
             text = text.splitlines()
@@ -2610,6 +2611,7 @@ class Commands:
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._blockw)
         gi.objs._blacklist.show()
+        gi.objs._blacklist.Save = True
         text = gi.objs._blacklist.get()
         if text:
             text = text.splitlines()
