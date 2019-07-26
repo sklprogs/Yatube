@@ -2673,7 +2673,6 @@ if __name__ == '__main__':
     if lg.objs._default.Success:
         objs.commands().bindings()
         gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
-        gi.objs.progress()
         gi.objs._menu.show()
         lg.objs.db().save()
         lg.objs._db.close()
