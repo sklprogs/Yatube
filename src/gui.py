@@ -201,10 +201,9 @@ class Pause:
                                  ,active   = self.icn_up1
                                  ,side     = 'top'
                                  )
-        self.ent_min = sh.Entry (parent    = self.frm_min
-                                ,Composite = True
-                                ,width     = 2
-                                ,justify   = 'center'
+        self.ent_min = sh.Entry (parent  = self.frm_min
+                                ,width   = 2
+                                ,justify = 'center'
                                 )
         self.btn_mnd = sh.Button (parent   = self.frm_min
                                  ,inactive = self.icn_dn0
@@ -1124,7 +1123,6 @@ class Objects:
                                         ,icon    = ICON
                                         ,ScrollX = False
                                         )
-            self._context.close()
         return self._context
     
     def def_image(self):

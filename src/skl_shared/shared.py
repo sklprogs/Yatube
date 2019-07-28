@@ -1637,7 +1637,7 @@ class ProgressBar:
         self.gui.close()
     
     def add_gui(self):
-        self.parent = Top(Lock=False)
+        self.parent = self.obj = Top(Lock=False)
         self.widget = self.parent.widget
         Geometry(self.parent).set('%dx%d' % (self._width,self._height))
         self.frames()

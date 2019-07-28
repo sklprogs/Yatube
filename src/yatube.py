@@ -796,8 +796,7 @@ class Comments:
             should not show the number of comments in GUI at all.
         '''
         self.values()
-        self.gui = gi.Comments()
-        self.gui.close()
+        self.gui   = gi.Comments()
         self.logic = mt.Comments()
         self.bindings()
         self.reset()
@@ -892,28 +891,20 @@ class Comments:
                 old_text.strip()
                 # Keep a scrollbar position if there are no pages left
                 if old_text != text:
-                    self.gui.txt_com.read_only(False)
+                    self.gui.txt_com.enable()
                     self.gui.txt_com.reset()
                     self.gui.txt_com.insert(text)
-                    self.gui.txt_com.read_only(True)
+                    self.gui.txt_com.disable()
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
         
     def show(self,event=None):
-        f = '[Yatube] yatube.Comments.show'
-        if self.Success:
-            self.gui.show()
-        else:
-            sh.com.cancel(f)
+        self.gui.show()
     
     def close(self,event=None):
-        f = '[Yatube] yatube.Comments.close'
-        if self.Success:
-            self.gui.close()
-        else:
-            sh.com.cancel(f)
+        self.gui.close()
 
 
 
@@ -1979,13 +1970,13 @@ class Commands:
             sh.com.empty(f)
     
     def _color_context(self,message,color='green'):
-        if message in gi.objs.context().lst:
-            ind = gi.objs._context.lst.index(message)
-            gi.objs._context.widget.itemconfig(ind,fg=color)
+        if message in gi.objs.context().lbx_prm.lst:
+            ind = gi.objs._context.lbx_prm.lst.index(message)
+            gi.objs._context.lbx_prm.widget.itemconfig(ind,fg=color)
     
     def color_context(self):
         f = '[Yatube] yatube.Commands.color_context'
-        if gi.objs.context().lst:
+        if gi.objs.context().lbx_prm.lst:
             self._color_context(_('Download'),'green')
             self._color_context(_('Delete the downloaded file'),'red')
             self._color_context(_('Mark as watched'),'green')
@@ -2017,8 +2008,7 @@ class Commands:
             gi.objs._context.reset(lst=items)
             self.color_context()
             gi.objs._context.show()
-            choice = gi.objs._context._get
-            self._context(choice)
+            self._context(gi.objs._context.get())
         else:
             sh.com.empty(f)
         
