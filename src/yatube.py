@@ -44,7 +44,7 @@ class Pause:
         self.fill()
     
     def fill(self,event=None):
-        hours, minutes, seconds = sh.lg.com.split_time(self._pause)
+        hours, minutes, seconds = sh.com.split_time(self._pause)
         self.gui.ent_hrs.reset()
         self.gui.ent_min.reset()
         self.gui.ent_sec.reset()
@@ -104,12 +104,10 @@ class Pause:
     
     def get_sec(self,event=None):
         f = '[Yatube] yatube.Pause.get_sec'
-        seconds = sh.lg.Input (title = f
-                              ,value = self.gui.ent_sec.get()
-                              ).integer()
-        ''' 'sh.lg.Input.integer' already throws an error at negative
-            values.
-        '''
+        seconds = sh.Input (title = f
+                           ,value = self.gui.ent_sec.get()
+                           ).integer()
+        # 'sh.Input.integer' already throws an error at negative values
         if seconds > 59:
             sub = '0 <= {} <= 59'.format(seconds)
             mes = _('The condition "{}" is not observed!').format(sub)
@@ -121,12 +119,10 @@ class Pause:
     
     def get_min(self,event=None):
         f = '[Yatube] yatube.Pause.get_min'
-        minutes = sh.lg.Input (title = f
-                               ,value = self.gui.ent_min.get()
-                               ).integer()
-        ''' 'sh.lg.Input.integer' already throws an error at negative
-            values.
-        '''
+        minutes = sh.Input (title = f
+                           ,value = self.gui.ent_min.get()
+                           ).integer()
+        # 'sh.Input.integer' already throws an error at negative values
         if minutes > 59:
             sub = '0 <= {} <= 59'.format(minutes)
             mes = _('The condition "{}" is not observed!').format(sub)
@@ -138,9 +134,9 @@ class Pause:
     
     def get_hrs(self,event=None):
         f = '[Yatube] yatube.Pause.get_hrs'
-        return sh.lg.Input (title = f
-                           ,value = self.gui.ent_hrs.get()
-                           ).integer()
+        return sh.Input (title = f
+                        ,value = self.gui.ent_hrs.get()
+                        ).integer()
     
     def update(self,event=None):
         self.upd_hrs()
@@ -542,7 +538,7 @@ class Channels:
     def fetch(self):
         f = '[Yatube] yatube.Channels.fetch'
         if self._channels:
-            timer = sh.lg.Timer(f)
+            timer = sh.Timer(f)
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
@@ -554,7 +550,7 @@ class Channels:
     def fetch_prev(self):
         f = '[Yatube] yatube.Channels.fetch_prev'
         if self._channels:
-            timer = sh.lg.Timer(f)
+            timer = sh.Timer(f)
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
@@ -566,7 +562,7 @@ class Channels:
     def fetch_next(self):
         f = '[Yatube] yatube.Channels.fetch_next'
         if self._channels:
-            timer = sh.lg.Timer(f)
+            timer = sh.Timer(f)
             timer.start()
             objs.commands().reset_channel_gui()
             mt.objs.videos().reset()
@@ -618,7 +614,7 @@ class AddId:
             '''
             myid = self.gui.lst_id3.lst[ind]
             url  = 'https://www.youtube.com/playlist?list={}'.format(myid)
-            ionline = sh.lg.Online()
+            ionline = sh.Online()
             ionline._url = url
             ionline.browse()
         else:
@@ -751,9 +747,9 @@ class AddId:
             text = '\n'.join(tmp)
         else:
             text = '# ' + _('Put here authors to subscribe to')
-        sh.lg.WriteTextFile (file    = lg.objs.default()._fsubsc
-                            ,Rewrite = True
-                            ).write(text)
+        sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                         ,Rewrite = True
+                         ).write(text)
         lg.objs._lists.reset()
     
     def show(self,event=None):
@@ -884,7 +880,7 @@ class Comments:
                     text = ''
                     mes = _('Wrong input data!')
                     sh.objs.mes(f,mes).warning()
-                text     = sh.lg.Text(text).delete_unsupported()
+                text     = sh.Text(text).delete_unsupported()
                 old_text = self.gui.txt_com.get()
                 # A new line is inserted when read from the widget
                 text = text.strip()
@@ -944,11 +940,11 @@ class Commands:
             if hasattr(gui,'label2'):
                 mt.objs.videos().set_gui(gui)
                 length = lg.Video().length()
-                length = sh.lg.com.easy_time(length)
+                length = sh.com.easy_time(length)
                 pause  = mt.objs._videos.current()._pause
                 if pause:
                     text  = length + ', ' + _('pause:') + ' ' \
-                            + sh.lg.com.easy_time(pause)
+                            + sh.com.easy_time(pause)
                     width = 210
                 else:
                     text  = length
@@ -1082,12 +1078,12 @@ class Commands:
         gi.objs.progress()._item.widget['value'] = percent
         rate = int(rate) // 1000
         # Prevent from irritating message length changes
-        rate = sh.lg.Text(text=str(rate)).grow (max_len = 4
-                                               ,FromEnd = False
-                                               )
-        eta = sh.lg.Text(text=str(eta)).grow (max_len = 3
-                                             ,FromEnd = False
-                                             )
+        rate = sh.Text(text=str(rate)).grow (max_len = 4
+                                            ,FromEnd = False
+                                            )
+        eta = sh.Text(text=str(eta)).grow (max_len = 3
+                                          ,FromEnd = False
+                                          )
         gi.objs._progress._item.text (file     = mt.objs.videos().current()._pathsh
                                      ,cur_size = cur_size
                                      ,total    = total
@@ -1183,7 +1179,7 @@ class Commands:
     def add2watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.add2watchlist'
         lg.objs.db().mark_later (video_id = mt.objs.videos().current()._id
-                                ,ltime    = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+                                ,ltime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                 )
         if Unselect:
             self.unselect()
@@ -1244,7 +1240,7 @@ class Commands:
     def star(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.star'
         lg.objs.db().mark_starred (video_id = mt.objs.videos().current()._id
-                                  ,ftime    = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+                                  ,ftime    = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
                                   )
         if Unselect:
             self.unselect()
@@ -1308,7 +1304,7 @@ class Commands:
         video = mt.objs.videos().current()
         gui   = video._gui
         if gui:
-            video._dtime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+            video._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
             lg.objs.db().mark_downloaded (video_id = video._id
                                          ,dtime    = video._dtime
                                          )
@@ -1519,9 +1515,9 @@ class Commands:
                     subscriptions = '\n'.join(subscriptions)
                     if not subscriptions:
                         subscriptions = '# ' + _('Put here authors to subscribe to')
-                    sh.lg.WriteTextFile (file    = lg.objs.default()._fsubsc
-                                        ,Rewrite = True
-                                        ).write(text=subscriptions)
+                    sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                     ,Rewrite = True
+                                     ).write(text=subscriptions)
                     lg.objs._lists.reset()
                     self.reset_channels()
             else:
@@ -1546,9 +1542,9 @@ class Commands:
                 blocked = '\n'.join(blocked)
                 if not blocked:
                     blocked = '# ' + _('Put here authors to be blocked')
-                sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
-                                    ,Rewrite = True
-                                    ).write(text=blocked)
+                sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                 ,Rewrite = True
+                                 ).write(text=blocked)
                 lg.objs._lists.reset()
                 self.reset_channels()
                 self.reload_channel()
@@ -1636,9 +1632,9 @@ class Commands:
                                        )
                 subscriptions = '\n'.join(subscriptions)
                 if subscriptions:
-                    sh.lg.WriteTextFile (file    = lg.objs.default()._fsubsc
-                                        ,Rewrite = True
-                                        ).write(text=subscriptions)
+                    sh.WriteTextFile (file    = lg.objs.default()._fsubsc
+                                     ,Rewrite = True
+                                     ).write(text=subscriptions)
                     lg.objs._lists.reset()
                     self.reset_channels()
                 else:
@@ -1667,9 +1663,9 @@ class Commands:
                                  )
                 blocked = '\n'.join(blocked)
                 if blocked:
-                    sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
-                                        ,Rewrite = True
-                                        ).write(text=blocked)
+                    sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                     ,Rewrite = True
+                                     ).write(text=blocked)
                     lg.objs._lists.reset()
                     self.reset_channels()
                     self.reload_channel()
@@ -1740,7 +1736,7 @@ class Commands:
                                         + [url]
                 else:
                     custom_args = [app,url]
-                #'sh.lg.Launch' checks the target
+                #'sh.Launch' checks the target
                 try:
                     subprocess.Popen(custom_args)
                     Success = True
@@ -1808,7 +1804,7 @@ class Commands:
                 month = '11'
             elif month == _('Dec'):
                 month = '12'
-            itime = sh.lg.Time(pattern='%Y-%m-%d')
+            itime = sh.Time(pattern='%Y-%m-%d')
             itime._date = year + '-' + month + '-' + day
             self._timestamp = itime.timestamp()
         return self._timestamp
@@ -2261,7 +2257,7 @@ class Commands:
                 so we don't have to additionaly tune the pause to remind
                 a user what is happening on the screen.
             '''
-            lst += ['--start=%s' % sh.lg.com.easy_time(pause)]
+            lst += ['--start={}'.format(sh.com.easy_time(pause))]
         return lst
     
     def _play_slow(self,app='/usr/bin/mpv'):
@@ -2271,13 +2267,13 @@ class Commands:
             custom_args = ['-fs','-framedrop','-nocorrect-pts']
         else:
             custom_args = []
-        sh.lg.Launch (target = lg.Video().path()
-                     ).app (custom_app  = app
-                           ,custom_args = self.mpv_start(app,custom_args)
-                           )
+        sh.Launch (target = lg.Video().path()
+                  ).app (custom_app  = app
+                        ,custom_args = self.mpv_start(app,custom_args)
+                        )
                         
     def _play_default(self):
-        sh.lg.Launch(target=lg.Video().path()).default()
+        sh.Launch(target=lg.Video().path()).default()
 
     def play_video(self,event=None):
         f = '[Yatube] yatube.Commands.play_video'
@@ -2319,7 +2315,7 @@ class Commands:
     def mark_downloaded(self,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_downloaded'
         video = mt.objs.videos().current()
-        video._dtime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        video._dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
         lg.objs.db().mark_downloaded (video_id = video._id
                                      ,dtime    = video._dtime
                                      )
@@ -2427,7 +2423,7 @@ class Commands:
     def fill_default(self):
         f = '[Yatube] yatube.Commands.fill_default'
         # Operation takes ~0,56s but there seems nothing to speed up
-        #timer = sh.lg.Timer(f)
+        #timer = sh.Timer(f)
         #timer.start()
         gi.objs.channel(parent=gi.objs.menu().framev)
         if mt.objs.videos()._videos:
@@ -2457,7 +2453,7 @@ class Commands:
     
     def fill_unknown(self):
         f = '[Yatube] yatube.Commands.fill_unknown'
-        #timer = sh.lg.Timer(f)
+        #timer = sh.Timer(f)
         #timer.start()
         unknown = []
         for i in range(len(mt.objs.videos()._videos)):
@@ -2490,9 +2486,9 @@ class Commands:
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.videos().current()
         if video._gui:
-            date = sh.lg.Time (_timestamp = video._ptime
-                              ,pattern    = '%Y-%m-%d %H:%M'
-                              ).date()
+            date = sh.Time (_timestamp = video._ptime
+                           ,pattern    = '%Y-%m-%d %H:%M'
+                           ).date()
             author, title = self.set_block()
             video._gui.reset (author = author
                              ,title  = title
@@ -2512,7 +2508,7 @@ class Commands:
     
     def fill_known(self):
         f = '[Yatube] yatube.Commands.fill_known'
-        #timer = sh.lg.Timer(f)
+        #timer = sh.Timer(f)
         #timer.start()
         if mt.objs.videos()._videos:
             ids = [vid._id for vid in mt.objs._videos._videos]
@@ -2573,7 +2569,7 @@ class Commands:
         self.reset_channels()
                              
     def manage_blocked_authors(self,event=None):
-        words = sh.lg.Words(text=lg.objs.lists()._block)
+        words = sh.Words(text=lg.objs.lists()._block)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._block)
         gi.objs._blacklist.show()
@@ -2585,19 +2581,19 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
-                                ,Rewrite = True
-                                ).write(text=text)
+            sh.WriteTextFile (file    = lg.objs.default()._fblock
+                             ,Rewrite = True
+                             ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here authors to be blocked')
-            sh.lg.WriteTextFile (file    = lg.objs.default()._fblock
-                                ,Rewrite = True
-                                ).write(text=text)
+            sh.WriteTextFile (file    = lg.objs.default()._fblock
+                             ,Rewrite = True
+                             ).write(text=text)
         lg.objs._lists.reset()
     
     def manage_blocked_words(self,event=None):
-        words = sh.lg.Words(text=lg.objs.lists()._blockw)
+        words = sh.Words(text=lg.objs.lists()._blockw)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._blockw)
         gi.objs._blacklist.show()
@@ -2609,15 +2605,15 @@ class Commands:
                           ,key = lambda x:x[0].lower()
                           )
             text = '\n'.join(text)
-            sh.lg.WriteTextFile (file    = lg.objs.default()._fblockw
-                                ,Rewrite = True
-                                ).write(text=text)
+            sh.WriteTextFile (file    = lg.objs.default()._fblockw
+                             ,Rewrite = True
+                             ).write(text=text)
         else:
             # 'WriteTextFile' cannot write an empty text
             text = '# ' + _('Put here words to block in titles (case is ignored)')
-            sh.lg.WriteTextFile (file    = lg.objs.default()._fblockw
-                                ,Rewrite = True
-                                ).write(text=text)
+            sh.WriteTextFile (file    = lg.objs.default()._fblockw
+                             ,Rewrite = True
+                             ).write(text=text)
         lg.objs._lists.reset()
 
 

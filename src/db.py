@@ -520,19 +520,19 @@ class DB:
                 self.dbc.execute('select * from VIDEOS limit ?',(5,))
             headers = [cn[0] for cn in self.dbc.description]
             rows    = self.dbc.fetchall()
-            sh.lg.Table (headers = headers
-                        ,rows    = rows
-                        ,Shorten = Shorten
-                        ,MaxRow  = MaxRow
-                        ,MaxRows = MaxRows
-                        ).print()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = Shorten
+                     ,MaxRow  = MaxRow
+                     ,MaxRows = MaxRows
+                     ).print()
         else:
             sh.com.cancel(f)
 
 
 if __name__ == '__main__':
     f = 'db.__main__'
-    path = sh.lg.Home('yatube').add_config('yatube.db')
+    path = sh.Home('yatube').add_config('yatube.db')
     idb = DB(path)
     ids = ['vjSohj-Iclc','0BXC2-zyujI','0nNrILS7OgE']
     result = idb.get_videos(ids)

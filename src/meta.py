@@ -96,7 +96,7 @@ class Trending:
                         video._id     = item['id']
                         video._author = item['snippet']['channelTitle']
                         video._ch_id  = item['snippet']['channelId']
-                        video._ptime  = sh.lg.com.yt_date(item['snippet']['publishedAt'])
+                        video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
                         video._title  = item['snippet']['title']
                         video._desc   = item['snippet']['description']
                         video._thumb  = item['snippet']['thumbnails']['default']['url']
@@ -385,7 +385,7 @@ class VideoInfo:
                             '''
                             if not video._author:
                                 video._author = item['snippet']['channelTitle']
-                                video._ptime  = sh.lg.com.yt_date(item['snippet']['publishedAt'])
+                                video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
                                 video._title  = item['snippet']['title']
                                 video._desc   = item['snippet']['description']
                                 video._thumb  = item['snippet']['thumbnails']['default']['url']
@@ -416,7 +416,7 @@ class VideoInfo:
                     for item in resp['items']:
                         if item['kind'] == "youtube#video":
                             length = item['contentDetails']['duration']
-                            length = sh.lg.com.yt_length(length)
+                            length = sh.com.yt_length(length)
                             if length:
                                 if isinstance(length,(float,int)):
                                     video._len = length
@@ -451,25 +451,25 @@ class VideoInfo:
                 try:
                     for item in resp['items']:
                         if item['kind'] == "youtube#video":
-                            video._views = sh.lg.Input (title = f
-                                                       ,value = item['statistics']['viewCount']
-                                                       ).integer()
+                            video._views = sh.Input (title = f
+                                                    ,value = item['statistics']['viewCount']
+                                                    ).integer()
                             if 'likeCount' in item['statistics']:
-                                video._likes = sh.lg.Input (title = f
-                                                           ,value = item['statistics']['likeCount']
-                                                           ).integer()
+                                video._likes = sh.Input (title = f
+                                                        ,value = item['statistics']['likeCount']
+                                                        ).integer()
                             else:
                                 video._likes = -1
                             if 'dislikeCount' in item['statistics']:
-                                video._dislikes = sh.lg.Input (title = f
-                                                              ,value = item['statistics']['dislikeCount']
-                                                              ).integer()
+                                video._dislikes = sh.Input (title = f
+                                                           ,value = item['statistics']['dislikeCount']
+                                                           ).integer()
                             else:
                                 video._dislikes = -1
                             if 'commentCount' in item['statistics']:
-                                video._com_num = sh.lg.Input (title = f
-                                                             ,value = item['statistics']['commentCount']
-                                                             ).integer()
+                                video._com_num = sh.Input (title = f
+                                                          ,value = item['statistics']['commentCount']
+                                                          ).integer()
                             else:
                                 video._com_num = -1
                             # We need only 1 suitable section
@@ -491,10 +491,10 @@ class Stat:
         ''' Timestamp when the program was started. This can be used
             to get a daily quota cost.
         '''
-        self._started = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
+        self._started = sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp()
     
     def uptime(self):
-        return sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp() - self._started
+        return sh.Time(pattern='%Y-%m-%d %H:%M:%S').timestamp() - self._started
     
     # Quota should be added even in case of invalid requests
     def add_quota(self,number):
@@ -502,7 +502,7 @@ class Stat:
     
     def report(self,Silent=False):
         f = '[Yatube] meta.Stat.report'
-        mes = _('Uptime: {}').format(sh.lg.com.human_time(self.uptime()))
+        mes = _('Uptime: {}').format(sh.com.human_time(self.uptime()))
         mes += '\n'
         mes += _('Used quota: {}').format(self._quota)
         sh.objs.mes(f,mes,Silent).info()
@@ -532,7 +532,7 @@ class Playlist:
                             video._author  = item['snippet']['channelTitle']
                             video._ch_id   = item['snippet']['channelId']
                             video._play_id = item['snippet']['playlistId']
-                            video._ptime   = sh.lg.com.yt_date(item['snippet']['publishedAt'])
+                            video._ptime   = sh.com.yt_date(item['snippet']['publishedAt'])
                             video._title   = item['snippet']['title']
                             video._desc    = item['snippet']['description']
                             video._thumb   = item['snippet']['thumbnails']['default']['url']
@@ -699,7 +699,7 @@ class Search:
                         video._id     = item['id']['videoId']
                         video._author = item['snippet']['channelTitle']
                         video._ch_id  = item['snippet']['channelId']
-                        video._ptime  = sh.lg.com.yt_date(item['snippet']['publishedAt'])
+                        video._ptime  = sh.com.yt_date(item['snippet']['publishedAt'])
                         video._title  = item['snippet']['title']
                         video._desc   = item['snippet']['description']
                         video._thumb  = item['snippet']['thumbnails']['default']['url']
@@ -823,9 +823,9 @@ class Videos:
                 istr.write('\n')
                 istr.write(_('Date:'))
                 istr.write(' ')
-                itime = sh.lg.Time (_timestamp = self._videos[i]._ptime
-                                   ,pattern    = '%Y-%m-%d %H:%M'
-                                   )
+                itime = sh.Time (_timestamp = self._videos[i]._ptime
+                                ,pattern    = '%Y-%m-%d %H:%M'
+                                )
                 istr.write(str(itime.date()))
                 istr.write('\n')
                 istr.write(_('Image:'))

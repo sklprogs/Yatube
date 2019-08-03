@@ -17,7 +17,7 @@ class DB:
         self._data   = ()
         self._path   = path
         self._clone  = clone
-        self.Success = self._clone and sh.lg.File(file=self._path).Success
+        self.Success = self._clone and sh.File(file=self._path).Success
     
     def update_unescape(self,vid,author,title,desc,search):
         f = '[Yatube] utils.DB.update_unescape'
@@ -315,7 +315,7 @@ class Commands:
         
     def unescape(self):
         f = '[Yatube] utils.Commands.unescape'
-        sh.lg.File(self._path,self._clone).copy()
+        sh.File(self._path,self._clone).copy()
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )
@@ -357,7 +357,7 @@ class Commands:
         idb.closew()
     
     def del_author(self,author):
-        sh.lg.File(self._path,self._clone).copy()
+        sh.File(self._path,self._clone).copy()
         idb = DB (path  = self._path
                  ,clone = self._clone
                  )
@@ -368,10 +368,10 @@ class Commands:
     
     def change_ftime(self):
         f = '[Yatube] utils.Commands.change_ftime'
-        Success = sh.lg.File (file    = self._path
-                             ,dest    = self._clone
-                             ,Rewrite = True
-                             ).copy()
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
+                          ).copy()
         if Success:
             idb = DB (path  = self._path
                      ,clone = self._clone
@@ -391,9 +391,9 @@ class Commands:
                         ind = ftm.index(ftm[i])
                 '''
                 for i in range(len(ftm)):
-                    ltm[i] = sh.lg.Time (_timestamp = ftm[i]
-                                        ,pattern    = '%y-%m-%d %H:%M:%S'
-                                        ).date()
+                    ltm[i] = sh.Time (_timestamp = ftm[i]
+                                     ,pattern    = '%y-%m-%d %H:%M:%S'
+                                     ).date()
                 for i in range(len(ids)):
                     print('ID: {}, FTIME: {}'.format(ids[i],ftm[i]))
                 '''
@@ -409,10 +409,10 @@ class Commands:
     
     def change_ltime(self):
         f = '[Yatube] utils.Commands.change_ltime'
-        Success = sh.lg.File (file    = self._path
-                             ,dest    = self._clone
-                             ,Rewrite = True
-                             ).copy()
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
+                          ).copy()
         if Success:
             idb = DB (path  = self._path
                      ,clone = self._clone
@@ -432,9 +432,9 @@ class Commands:
                         ind = ltm.index(ltm[i])
                 '''
                 for i in range(len(ltm)):
-                    ltm[i] = sh.lg.Time (_timestamp = ltm[i]
-                                        ,pattern    = '%y-%m-%d %H:%M:%S'
-                                        ).date()
+                    ltm[i] = sh.Time (_timestamp = ltm[i]
+                                     ,pattern    = '%y-%m-%d %H:%M:%S'
+                                     ).date()
                 for i in range(len(ids)):
                     print('ID: %s, LTIME: %s' % (ids[i],ltm[i]))
                 '''
@@ -450,10 +450,10 @@ class Commands:
     
     def repair_urls(self):
         f = '[Yatube] utils.Commands.repair_urls'
-        Success = sh.lg.File (file    = self._path
-                             ,dest    = self._clone
-                             ,Rewrite = True
-                             ).copy()
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
+                          ).copy()
         if Success:
             idb = DB (path  = self._path
                      ,clone = self._clone
@@ -467,10 +467,10 @@ class Commands:
     
     def down_markw(self):
         f = '[Yatube] utils.Commands.down_markw'
-        Success = sh.lg.File (file    = self._path
-                             ,dest    = self._clone
-                             ,Rewrite = True
-                             ).copy()
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
+                          ).copy()
         if Success:
             idb = DB (path  = self._path
                      ,clone = self._clone
@@ -542,10 +542,10 @@ class Commands:
     
     def empty_author(self):
         f = '[Yatube] utils.Commands.empty_author'
-        Success = sh.lg.File (file    = self._path
-                             ,dest    = self._clone
-                             ,Rewrite = True
-                             ).copy()
+        Success = sh.File (file    = self._path
+                          ,dest    = self._clone
+                          ,Rewrite = True
+                          ).copy()
         if Success:
             idb = DB (path  = self._path
                      ,clone = self._clone

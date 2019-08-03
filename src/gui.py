@@ -637,9 +637,6 @@ class Menu:
                                    ,Active = False
                                    ,side   = 'left'
                                    )
-        self.btn_stm = sh.Button (parent = self.frame3
-                                 ,text   = _('Stream')
-                                 )
         self.btn_ply = sh.Button (parent = self.frame3
                                  ,text   = _('Play')
                                  )
@@ -648,6 +645,9 @@ class Menu:
                                  )
         self.btn_del = sh.Button (parent = self.frame3
                                  ,text   = _('Delete')
+                                 )
+        self.btn_stm = sh.Button (parent = self.frame3
+                                 ,text   = _('Stream')
                                  )
         self.chb_slw = sh.CheckBox (parent = self.frame3
                                    ,Active = True
@@ -734,7 +734,7 @@ class Menu:
     
     def title(self,text=None,selected=0,total=0):
         if not text:
-            text = sh.lg.List(lst1=['Yatube',VERSION]).space_items()
+            text = sh.List(lst1=['Yatube',VERSION]).space_items()
             if selected:
                 text += _(' (selected: {}/{})').format(selected,total)
         self.parent.title(text)

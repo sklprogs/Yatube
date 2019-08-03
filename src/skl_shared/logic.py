@@ -3905,8 +3905,8 @@ class Objects:
                          = self._pdir = self._online = self._tmpfile \
                          = self._os = self._mes = None
 
-    def mes (self,func='Logic error'
-            ,message='Logic error'
+    def mes (self,func=_('Logic error!')
+            ,message=_('Logic error!')
             ,Silent=False
             ):
         if self._mes is None:
@@ -4559,6 +4559,13 @@ class Commands:
     def __init__(self):
         self.lang()
     
+    def failed (self,f='Logic error'
+               ,e='Logic error'
+               ,Silent=False
+               ):
+        mes = _('Operation has failed!\n\nDetails: {}').format(e)
+        objs.mes(f,mes,Silent).error()
+    
     def sanitize(self,text):
         if text is None:
             text = ''
@@ -4585,18 +4592,22 @@ class Commands:
         options['title']       = _('Save As:')
         return options
     
-    def lazy(self,func):
+    def lazy(self,func=_('Logic error!')):
         Message (func    = func
                 ,message = _('Nothing to do!')
                 ).info()
     
-    def warning(self,func,message):
+    def warning (self,func=_('Logic error!')
+                ,message=_('Logic error!')
+                ):
         objs.mes (func    = func
                  ,level   = _('WARNING')
                  ,message = message
                  )
     
-    def info(self,func,message):
+    def info (self,func=_('Logic error!')
+             ,message=_('Logic error!')
+             ):
         objs.mes (func    = func
                  ,level   = _('INFO')
                  ,message = message

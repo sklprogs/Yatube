@@ -15,6 +15,272 @@ gettext.install('shared','../resources/locale')
 GUI_MES = True
 
 
+class CreateInstance(lg.CreateInstance):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Config(lg.Config):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Decline(lg.Decline):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Dic(lg.Dic):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Diff(lg.Diff):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Directory(lg.Directory):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Email(lg.Email):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class File(lg.File):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class FilterList(lg.FilterList):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class FixBaseName(lg.FixBaseName):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Get(lg.Get):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Grep(lg.Grep):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Home(lg.Home):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Hotkeys(lg.Hotkeys):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Input(lg.Input):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Launch(lg.Launch):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Links(lg.Links):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class List(lg.List):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Log(lg.Log):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class MessagePool(lg.MessagePool):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class OCR(lg.OCR):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class OSSpecific(lg.OSSpecific):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Online(lg.Online):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Path(lg.Path):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class ProgramDir(lg.ProgramDir):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class ReadBinary(lg.ReadBinary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class ReadTextFile(lg.ReadTextFile):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class References(lg.References):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Search(lg.Search):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Shortcut(lg.Shortcut):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Table(lg.Table):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Text(lg.Text):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class TextDic(lg.TextDic):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Time(lg.Time):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Timer(lg.Timer):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class Words(lg.Words):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class WriteBinary(lg.WriteBinary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
+class WriteTextFile(lg.WriteTextFile):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+
+
 class Panes:
     
     def __init__ (self,bg='old lace'
@@ -1016,7 +1282,7 @@ class TextBox:
 
     def clear_selection(self,event=None):
         f = '[shared] shared.TextBox.clear_selection'
-        pos1, pos2 = self.selection.get()
+        pos1, pos2 = self.select.get()
         if pos1 and pos2:
             self.clear_text (pos1 = pos1
                             ,pos2 = pos2
@@ -1737,8 +2003,8 @@ class ProgressBarItem:
     def text (self,file='',cur_size=0
              ,total=0,rate=0,eta=0
              ):
-        mes=_('File: "{}"; {}/{} MB; Rate: {} kbps; ETA: {}s')
-        mes = mes.format(file,cur_size,total,rate,eta)
+        mes = _('File: "{}"; {}/{} MB; Rate: {} kbps; ETA: {}s')
+        mes = mes.format(file,int(cur_size),int(total),rate,eta)
         self.label.text(mes)
 
 
@@ -2724,10 +2990,11 @@ class ToolTip(ToolTipBase):
 
 class WaitBox:
 
-    def __init__(self):
+    def __init__(self,icon=''):
         self.type   = 'WaitBox'
         self.parent = Top (Lock   = False
                           ,AutoCr = True
+                          ,icon   = icon
                           )
         self.widget = self.parent.widget
         self.gui    = gi.WaitBox(self.parent)
@@ -3414,6 +3681,7 @@ class Top:
 
     def __init__ (self,Maximize=False
                  ,AutoCr=True,Lock=True
+                 ,icon='',title=''
                  ):
         ''' 'Lock = True': the further program execution is blocked
             until an attempt to close the widget. 'Lock = False' allows
@@ -3430,6 +3698,10 @@ class Top:
         self.widget = self.gui.widget
         if Maximize:
             Geometry(parent=self).maximize()
+        if icon:
+            self.icon(icon)
+        if title:
+            self.title(title)
         
     def idle(self,event=None):
         self.gui.idle()
@@ -3485,23 +3757,18 @@ class Top:
 
 
 
-class Objects:
+class Objects(lg.Objects):
     
     def __init__(self):
+        super().__init__()
         self._question = self._info = self._warning = self._debug \
                        = self._error = self._mes = self._waitbox \
                        = self._txt = None
-        self._pdir = self.pdir()
-        self._os   = self.os()
-        self._root = self.root()
     
     def txt(self):
         if self._txt is None:
-            self._txt = sh.TextBoxC(title=_('Test:'))
+            self._txt = TextBoxC(title=_('Test:'))
         return self._txt
-    
-    def pdir(self):
-        return lg.objs.pdir()
     
     def mes (self,func='Logic error'
             ,message='Logic error'
@@ -3511,13 +3778,10 @@ class Objects:
             self._mes = Message
         return self._mes(func,message,Silent)
     
-    def waitbox(self):
+    def waitbox(self,icon=''):
         if self._waitbox is None:
-            self._waitbox = WaitBox()
+            self._waitbox = WaitBox(icon)
         return self._waitbox
-    
-    def os(self):
-        return lg.objs.os()
     
     def root(self,Close=True):
         return gi.objs.root(Close)
@@ -3779,26 +4043,10 @@ class Message:
 
 
 
-class Commands:
+class Commands(lg.Commands):
     
     def __init__(self):
-        pass
-    
-    def lazy(self,f='Logic error'):
-        lg.com.lazy(f)
-    
-    def cancel(self,f='Logic error'):
-        lg.com.cancel(f)
-    
-    def empty(self,f='Logic error'):
-        lg.com.empty(f)
-    
-    def failed (self,f='Logic error'
-               ,e='Logic error'
-               ,Silent=True
-               ):
-        mes = _('Operation has failed!\n\nDetails: {}').format(e)
-        objs.mes(f,mes,Silent).error()
+        super().__init__()
     
     def mod_color(self,color,delta=76): # ~30%
         ''' Make a color (a color name (/usr/share/X11/rgb.txt) or

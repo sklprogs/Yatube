@@ -103,7 +103,7 @@ def author():
     idb.close()
     
 def timestamp():
-    itime = sh.lg.Time()
+    itime = sh.Time()
     itime._date = '2007-09-01'
     result = itime.timestamp()
     idb = db.DB()
@@ -111,9 +111,9 @@ def timestamp():
                              ,Newer     = False
                              )
     if result:
-        sh.lg.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
-                    ,rows    = result
-                    ).print()
+        sh.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
+                 ,rows    = result
+                 ).print()
     idb.close()
     
 def dtime():
@@ -121,9 +121,9 @@ def dtime():
     idb.dbc.execute('select TITLE,DTIME,PTIME from VIDEOS where DTIME > ? order by DTIME desc,PTIME desc limit ?',(0,5))
     result = idb.dbc.fetchall()
     if result:
-        sh.lg.Table (headers = ['TITLE','DTIME','PTIME']
-                    ,rows    = result
-                    ).print()
+        sh.Table (headers = ['TITLE','DTIME','PTIME']
+                 ,rows    = result
+                 ).print()
     idb.close()
     
 def url():
@@ -145,7 +145,7 @@ def invalid_urls():
 def search_field():
     # An example of a complex search in the DB
     idb = db.DB(path='/home/pete/.config/yatube/yatube.db')
-    itime = sh.lg.Time(pattern='%Y-%m-%d %H:%M:%S')
+    itime = sh.Time(pattern='%Y-%m-%d %H:%M:%S')
     itime.add_days(-7)
     idb.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                       where SEARCH like ? and DTIME > ? and FDTIME < ?'
