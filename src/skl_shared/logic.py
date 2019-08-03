@@ -102,7 +102,7 @@ class MessageBuilder:
             self._icon = objs.pdir().add('..','resources',prefix+'.gif')
         if not os.path.exists(self._icon):
             self._icon = ''
-            message = _('File {} was not found!').format(self._icon)
+            message = _('File "{}" was not found!').format(self._icon)
             Message (func    = f
                     ,message = message
                     ).error()
