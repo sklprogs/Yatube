@@ -2069,7 +2069,7 @@ class Commands:
                         elif self._menu.opt_url.choice == _('Full menu'):
                             gi.objs.context().title(_('Selected video'))
                             gi.objs._context.show()
-                            choice = gi.objs._context._get
+                            choice = gi.objs._context.get()
                             self._context(choice)
                     else:
                         sh.com.cancel(f)
