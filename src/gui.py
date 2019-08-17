@@ -1077,26 +1077,23 @@ class Objects:
         if not self._comments:
             top = sh.Top()
             sh.Geometry(parent=top).set('1024x768')
-            self._comments = sh.TextBoxC (SpReturn = True
-                                         ,title    = _('Comments')
-                                         ,icon     = ICON
-                                         )
+            self._comments = sh.TextBoxRO (title = _('Comments')
+                                          ,icon  = ICON
+                                          )
         return self._comments
     
     def subscribe(self):
         if not self._subscribe:
-            self._subscribe = sh.TextBoxC (SpReturn = False
-                                          ,title    = _('Edit subscriptions:')
-                                          ,icon     = ICON
-                                          )
+            self._subscribe = sh.TextBoxRW (title = _('Edit subscriptions:')
+                                           ,icon  = ICON
+                                           )
         return self._subscribe
     
     def blacklist(self):
         if not self._blacklist:
-            self._blacklist = sh.TextBoxC (SpReturn = False
-                                          ,icon     = ICON
-                                          ,title    = _('Edit the blacklist:')
-                                          )
+            self._blacklist = sh.TextBoxRW (icon  = ICON
+                                           ,title = _('Edit the blacklist:')
+                                           )
         return self._blacklist
     
     def progress(self):
@@ -1107,9 +1104,9 @@ class Objects:
     
     def summary(self):
         if not self._summary:
-            self._summary = sh.TextBoxC (title = _('Full summary:')
-                                        ,icon  = ICON
-                                        )
+            self._summary = sh.TextBoxRO (title = _('Full summary:')
+                                         ,icon  = ICON
+                                         )
         return self._summary
     
     def context(self):

@@ -2569,52 +2569,60 @@ class Commands:
         self.reset_channels()
                              
     def manage_blocked_authors(self,event=None):
+        f = '[Yatube] yatube.Commands.manage_blocked_authors'
         words = sh.Words(text=lg.objs.lists()._block)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._block)
         gi.objs._blacklist.show()
-        gi.objs._blacklist.Save = True
         text = gi.objs._blacklist.get()
-        if text:
-            text = text.splitlines()
-            text = sorted (text
-                          ,key = lambda x:x[0].lower()
-                          )
-            text = '\n'.join(text)
-            sh.WriteTextFile (file    = lg.objs.default()._fblock
-                             ,Rewrite = True
-                             ).write(text=text)
+        # We should allow an empty input
+        if gi.objs._blacklist.Save:
+            if text:
+                text = text.splitlines()
+                text = sorted (text
+                              ,key = lambda x:x[0].lower()
+                              )
+                text = '\n'.join(text)
+                sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                 ,Rewrite = True
+                                 ).write(text=text)
+            else:
+                text = '# ' + _('Put here authors to be blocked')
+                sh.WriteTextFile (file    = lg.objs.default()._fblock
+                                 ,Rewrite = True
+                                 ).write(text=text)
+            lg.objs._lists.reset()
         else:
-            # 'WriteTextFile' cannot write an empty text
-            text = '# ' + _('Put here authors to be blocked')
-            sh.WriteTextFile (file    = lg.objs.default()._fblock
-                             ,Rewrite = True
-                             ).write(text=text)
-        lg.objs._lists.reset()
+            mes = _('Operation has been canceled by the user.')
+            sh.objs.mes(f,mes,True).info()
     
     def manage_blocked_words(self,event=None):
+        f = '[Yatube] yatube.Commands.manage_blocked_words'
         words = sh.Words(text=lg.objs.lists()._blockw)
         gi.objs.blacklist().reset(words=words)
         gi.objs._blacklist.insert(text=lg.objs._lists._blockw)
         gi.objs._blacklist.show()
-        gi.objs._blacklist.Save = True
         text = gi.objs._blacklist.get()
-        if text:
-            text = text.splitlines()
-            text = sorted (text
-                          ,key = lambda x:x[0].lower()
-                          )
-            text = '\n'.join(text)
-            sh.WriteTextFile (file    = lg.objs.default()._fblockw
-                             ,Rewrite = True
-                             ).write(text=text)
+        # We should allow an empty input
+        if gi.objs._blacklist.Save:    
+            if text:
+                text = text.splitlines()
+                text = sorted (text
+                              ,key = lambda x:x[0].lower()
+                              )
+                text = '\n'.join(text)
+                sh.WriteTextFile (file    = lg.objs.default()._fblockw
+                                 ,Rewrite = True
+                                 ).write(text=text)
+            else:
+                text = '# ' + _('Put here words to block in titles (case is ignored)')
+                sh.WriteTextFile (file    = lg.objs.default()._fblockw
+                                 ,Rewrite = True
+                                 ).write(text=text)
+            lg.objs._lists.reset()
         else:
-            # 'WriteTextFile' cannot write an empty text
-            text = '# ' + _('Put here words to block in titles (case is ignored)')
-            sh.WriteTextFile (file    = lg.objs.default()._fblockw
-                             ,Rewrite = True
-                             ).write(text=text)
-        lg.objs._lists.reset()
+            mes = _('Operation has been canceled by the user.')
+            sh.objs.mes(f,mes,True).info()
 
 
 
