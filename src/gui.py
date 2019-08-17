@@ -1121,7 +1121,9 @@ class Objects:
             self._context = sh.ListBoxC (lst     = context_items
                                         ,title   = _('Select an action:')
                                         ,icon    = ICON
+                                        ,ScrollY = False
                                         ,ScrollX = False
+                                        ,width   = 250
                                         )
         return self._context
     
