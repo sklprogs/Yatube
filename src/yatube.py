@@ -604,6 +604,10 @@ class AddId:
         self.gui = gi.AddId()
         self.bindings()
     
+    def save_close(self,event=None):
+        self.save()
+        self.close()
+    
     def open(self,event=None):
         f = '[Yatube] yatube.AddId.open'
         author = self.gui.lst_id1.get()
@@ -705,9 +709,9 @@ class AddId:
         author = self.gui.lst_id1.get()
         ind    = self.gui.lst_id1.lst.index(author)
         pid    = self.gui.lst_id3.lst[ind]
-        self.gui.ent_ath.clear_text()
+        self.gui.ent_ath.clear()
         self.gui.ent_ath.insert(author)
-        self.gui.ent_pid.clear_text()
+        self.gui.ent_pid.clear()
         self.gui.ent_pid.insert(pid)
         self.delete()
     
@@ -718,8 +722,15 @@ class AddId:
         self.gui.btn_edt.action = self.edit
         self.gui.btn_opn.action = self.open
         self.gui.btn_rst.action = self.reset
-        self.gui.btn_sav.action = self.save
-        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
+        self.gui.btn_sav.action = self.save_close
+        sh.com.bind (obj      = self.gui
+                    ,bindings = ('<F5>','<Control-r>')
+                    ,action   = self.reset
+                    )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = ('<F2>','<Control-s>')
+                    ,action   = self.save_close
+                    )
         sh.com.bind (obj      = self.gui
                     ,bindings = ('<Escape>','<Control-w>','<Control-q>')
                     ,action   = self.close
@@ -756,7 +767,6 @@ class AddId:
         self.gui.show()
     
     def close(self,event=None):
-        self.save()
         self.gui.close()
         # Do not forget to run 'Commands.reset_channels' afterwards
 

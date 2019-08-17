@@ -403,17 +403,25 @@ class AddId:
                                  ,text   = _('Delete')
                                  ,side   = 'top'
                                  )
-        self.btn_cls = sh.Button (parent = self.frm_rh2
-                                 ,text   = _('Save & close')
-                                 ,side   = 'bottom'
+        self.btn_cls = sh.Button (parent   = self.frm_rh2
+                                 ,text     = _('Close')
+                                 ,hint     = _('Reject and close')
+                                 ,bindings = ('<Escape>','<Control-w>'
+                                             ,'<Control-q>'
+                                             )
+                                 ,side     = 'bottom'
                                  )
-        self.btn_sav = sh.Button (parent = self.frm_rh2
-                                 ,text   = _('Save')
-                                 ,side   = 'bottom'
+        self.btn_sav = sh.Button (parent   = self.frm_rh2
+                                 ,text     = _('Save')
+                                 ,hint     = _('Save and close')
+                                 ,bindings = ('<F2>','<Control-s>')
+                                 ,side     = 'bottom'
                                  )
-        self.btn_rst = sh.Button (parent = self.frm_rh2
-                                 ,text   = _('Reset')
-                                 ,side   = 'bottom'
+        self.btn_rst = sh.Button (parent   = self.frm_rh2
+                                 ,text     = _('Reset')
+                                 ,hint     = _('Reset all fields')
+                                 ,bindings = ('<F5>','<Control-r>')
+                                 ,side     = 'bottom'
                                  )
 
 
