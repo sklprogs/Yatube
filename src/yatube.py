@@ -2456,7 +2456,7 @@ class Commands:
         sh.objs.mes(f,mes,True).debug()
         gi.objs._channel.canvas.region (x        = 1024
                                        ,y        = height
-                                       ,x_border = 0
+                                       ,x_border = 20
                                        ,y_border = 20
                                        )
     

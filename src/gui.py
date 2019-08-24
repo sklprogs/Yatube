@@ -83,6 +83,20 @@ default_entry_width = 19
 ICON = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
+class Commands:
+    
+    def __init__(self):
+        self._width = 0
+    
+    def label_width(self):
+        if not self._width:
+            fixed = [_('Author:'),_('Title:'),_('Date:')]
+            fixed.sort(key=len,reverse=True)
+            self._width = len(fixed[0])
+        return self._width
+
+
+
 class Pause:
     
     def __init__(self):
@@ -831,18 +845,23 @@ class Video:
     
     def frames(self):
         self.frame  = sh.Frame (parent = self.parent)
+        # Video #
         self.frame1 = sh.Frame (parent = self.frame
                                ,side   = 'left'
                                )
+        # Image
         self.frame2 = sh.Frame (parent = self.frame
                                ,side   = 'left'
                                )
+        # Author, title, date (fixed length + random length)
         self.frame3 = sh.Frame (parent = self.frame
                                ,side   = 'right'
                                )
+        # Author, title, date (fixed length)
         self.frame4 = sh.Frame (parent = self.frame3
                                ,side   = 'left'
                                )
+        # Author, title, date (random length)
         self.frame5 = sh.Frame (parent = self.frame3
                                ,side   = 'right'
                                )
@@ -877,30 +896,30 @@ class Video:
                                )
         self.label3 = sh.Label (parent = self.frame4
                                ,text   = _('Author:')
-                               ,width  = 15
+                               ,width  = com.label_width()
                                )
         self.label4 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
                                ,anchor = 'w'
-                               ,width  = 60
+                               ,width  = 75
                                )
         self.label5 = sh.Label (parent = self.frame4
                                ,text   = _('Title:')
-                               ,width  = 15
+                               ,width  = com.label_width()
                                )
         self.label6 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
                                ,anchor = 'w'
-                               ,width  = 60
+                               ,width  = 75
                                )
         self.label7 = sh.Label (parent = self.frame4
                                ,text   = _('Date:')
-                               ,width  = 15
+                               ,width  = com.label_width()
                                )
         self.label8 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
                                ,anchor = 'w'
-                               ,width  = 60
+                               ,width  = 75
                                )
     
     def checkboxes(self):
@@ -1159,6 +1178,7 @@ class Objects:
 
 
 objs = Objects()
+com  = Commands()
 
 
 if __name__ == '__main__':
