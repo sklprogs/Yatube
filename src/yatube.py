@@ -366,7 +366,7 @@ class Videos:
                 if video._gui
                ]
         for gui in guis:
-            gui.cbox.action = objs.commands().report_selection
+            gui.cbx_vno.action = objs.commands().report_selection
             for obj in gui._objects:
                 sh.com.bind (obj      = obj
                             ,bindings = '<ButtonRelease-1>'
@@ -947,7 +947,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.hint'
         gui = self.get_widget(event)
         if gui:
-            if hasattr(gui,'label2'):
+            if hasattr(gui,'lbl_img'):
                 mt.objs.videos().set_gui(gui)
                 length = lg.Video().length()
                 length = sh.com.easy_time(length)
@@ -959,7 +959,7 @@ class Commands:
                 else:
                     text  = length
                     width = 90
-                self._tip_tim = sh.ToolTip (obj   = gui.label2
+                self._tip_tim = sh.ToolTip (obj   = gui.lbl_img
                                            ,text  = text
                                            ,hdir  = 'bottom'
                                            ,delay = 400
@@ -1019,7 +1019,7 @@ class Commands:
         f = '[Yatube] Commands.toggle_cbox'
         gui = self.get_widget(event=event)
         if gui:
-            gui.cbox.toggle()
+            gui.cbx_vno.toggle()
             objs.commands().report_selection()
         else:
             sh.com.empty(f)
@@ -1030,10 +1030,10 @@ class Commands:
                ]
         if self._menu.chb_sel.get():
             for gui in guis:
-                gui.cbox.enable()
+                gui.cbx_vno.enable()
         else:
             for gui in guis:
-                gui.cbox.disable()
+                gui.cbx_vno.disable()
         self.report_selection()
     
     def report_selection(self,event=None):
@@ -1221,7 +1221,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.unselect'
         gui = mt.objs.videos().current()._gui
         if gui:
-            gui.cbox.disable()
+            gui.cbx_vno.disable()
             self.report_selection()
         else:
             sh.com.empty(f)
@@ -1332,7 +1332,7 @@ class Commands:
                 if video._gui
                ]
         for gui in guis:
-            if gui.cbox.get():
+            if gui.cbx_vno.get():
                 selected.append(gui)
         return selected
     
@@ -1351,12 +1351,12 @@ class Commands:
                 if video._gui
                ]
         for gui in guis:
-            sh.com.bind (obj      = gui.label2
+            sh.com.bind (obj      = gui.lbl_img
                         ,bindings = '<Enter>'
                         ,action   = self.hint
                         )
             if len(gui._title) > 60:
-                self._tip_tit = sh.ToolTip (obj  = gui.frame
+                self._tip_tit = sh.ToolTip (obj  = gui.frm_prm
                                            ,text = gui._title
                                            ,hdir = 'top'
                                            ,font = 'Serif 10'
@@ -1502,7 +1502,7 @@ class Commands:
         gi.objs.parent().focus()
         self._menu.opt_chl.set(_('Channels'))
         self._menu.opt_trd.set(_('Trending'))
-        gi.objs.channel().canvas.move_top()
+        gi.objs.channel().cvs_prm.move_top()
     
     def unsubscribe(self,event=None):
         f = '[Yatube] yatube.Commands.unsubscribe'
@@ -1584,7 +1584,7 @@ class Commands:
                 the file was not removed, e.g., the user selected all
                 videos on the channel and pressed 'Shift-Del'.
             '''
-            mt.objs._videos.current()._gui.cbox.disable()
+            mt.objs._videos.current()._gui.cbx_vno.disable()
             self.report_selection()
         return lg.Video().delete()
     
@@ -2250,14 +2250,14 @@ class Commands:
         for gui in guis:
             mt.objs._videos.set_gui(gui)
             # Drop all previous selections
-            gui.cbox.disable()
+            gui.cbx_vno.disable()
             if self._menu.chb_dat.get():
                 cond = not video._dtime and not video.Block and \
                        self._date_filter()
             else:
                 cond = not video._dtime and not video.Block
             if cond:
-                gui.cbox.enable()
+                gui.cbx_vno.enable()
         self.report_selection()
         
     def mpv_start(self,app,lst=[]):
@@ -2425,7 +2425,7 @@ class Commands:
                 if video._gui
                ]
         for gui in guis:
-            gui.frame.widget.destroy()
+            gui.frm_prm.widget.destroy()
         self._menu.title()
         #todo: rework
         #self.save_url()
@@ -2435,7 +2435,7 @@ class Commands:
         # Operation takes ~0,56s but there seems nothing to speed up
         #timer = sh.Timer(f)
         #timer.start()
-        gi.objs.channel(parent=gi.objs.menu().framev)
+        gi.objs.channel(gi.objs.menu().framev)
         if mt.objs.videos()._videos:
             for i in range(len(mt.objs._videos._videos)):
                 mt.objs._videos.i = i
@@ -2454,11 +2454,11 @@ class Commands:
         mes = _('Widget must be at least {} pixels in height')
         mes = mes.format(height)
         sh.objs.mes(f,mes,True).debug()
-        gi.objs._channel.canvas.region (x        = 1024
-                                       ,y        = height
-                                       ,x_border = 20
-                                       ,y_border = 20
-                                       )
+        gi.objs._channel.cvs_prm.region (x        = 1024
+                                        ,y        = height
+                                        ,x_border = 20
+                                        ,y_border = 20
+                                        )
     
     def fill_unknown(self):
         f = '[Yatube] yatube.Commands.fill_unknown'
@@ -2553,7 +2553,7 @@ class Commands:
             a canvas region first, and this need an extra
             'root().idle()'.
         '''
-        gi.objs._channel.canvas.widget.xview_moveto(0)
+        gi.objs._channel.cvs_prm.widget.xview_moveto(0)
         self.fill_known()
         ''' The less we use GUI update, the faster will be the program.
             Updating tkinter idle tasks may take ~0,4-1,7s, but this
@@ -2566,10 +2566,10 @@ class Commands:
         # Using the canvas is fast, no need to time this
         objs.videos().bindings()
         self.dimensions()
-        gi.objs._channel.canvas.move_top()
-        gi.objs._channel.canvas.widget.xview_moveto(0)
+        gi.objs._channel.cvs_prm.move_top()
+        gi.objs._channel.cvs_prm.widget.xview_moveto(0)
         # Move focus away from 'ttk.Combobox' (OptionMenu)
-        gi.objs._channel.canvas.focus()
+        gi.objs._channel.cvs_prm.focus()
         self.tooltips()
     
     def manage_sub(self):

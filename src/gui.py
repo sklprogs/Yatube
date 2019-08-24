@@ -83,20 +83,6 @@ default_entry_width = 19
 ICON = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
-class Commands:
-    
-    def __init__(self):
-        self._width = 0
-    
-    def label_width(self):
-        if not self._width:
-            fixed = [_('Author:'),_('Title:'),_('Date:')]
-            fixed.sort(key=len,reverse=True)
-            self._width = len(fixed[0])
-        return self._width
-
-
-
 class Pause:
     
     def __init__(self):
@@ -766,8 +752,6 @@ class Menu:
         self.frames()
         self.widgets()
         self.tooltips()
-        self.icon()
-        self.title()
         self.bindings()
         self.update()
     
@@ -826,13 +810,12 @@ class Video:
             label.widget.config(fg='green')
     
     def objects(self):
-        # Do not include 'self.cbox'. Children must come first.
-        self._labels  = [self.label1,self.label2,self.label3,self.label4
-                        ,self.label5,self.label6,self.label7,self.label8
+        # Do not include 'self.cbx_vno'. Children must come first.
+        self._labels  = [self.lbl_vno,self.lbl_img,self.lbl_aut
+                        ,self.lbl_tit,self.lbl_dat
                         ]
-        self._objects = self._labels + [self.frame,self.frame1
-                                       ,self.frame2,self.frame3
-                                       ,self.frame4,self.frame5
+        self._objects = self._labels + [self.frm_prm,self.frm_vno
+                                       ,self.frm_img,self.frm_inf
                                        ]
 
     def values(self):
@@ -844,89 +827,68 @@ class Video:
         self._image   = objs.def_image()
     
     def frames(self):
-        self.frame  = sh.Frame (parent = self.parent)
-        # Video #
-        self.frame1 = sh.Frame (parent = self.frame
-                               ,side   = 'left'
-                               )
-        # Image
-        self.frame2 = sh.Frame (parent = self.frame
-                               ,side   = 'left'
-                               )
-        # Author, title, date (fixed length + random length)
-        self.frame3 = sh.Frame (parent = self.frame
-                               ,side   = 'right'
-                               )
-        # Author, title, date (fixed length)
-        self.frame4 = sh.Frame (parent = self.frame3
-                               ,side   = 'left'
-                               )
-        # Author, title, date (random length)
-        self.frame5 = sh.Frame (parent = self.frame3
-                               ,side   = 'right'
-                               )
+        self.frm_prm = sh.Frame (parent = self.parent)
+        self.frm_vno = sh.Frame (parent = self.frm_prm
+                                ,side   = 'left'
+                                )
+        self.frm_img = sh.Frame (parent = self.frm_prm
+                                ,side   = 'left'
+                                )
+        self.frm_inf = sh.Frame (parent = self.frm_prm
+                                ,side   = 'left'
+                                )
                                  
     def pic(self):
         if not self._image:
             self._image = objs.def_image()
-        self.label2.widget.config(image=self._image)
+        self.lbl_img.widget.config(image=self._image)
         # This prevents the garbage collector from deleting the image
-        self.label2.widget.image = self._image
+        self.lbl_img.widget.image = self._image
     
     def labels(self):
         ''' Fixed width is set to ensure that sizes of a default and
             current video labels are the same.
         '''
-        self.label1 = sh.Label (parent = self.frame1
-                               ,text   = str(self._no)
-                               ,side   = 'right'
-                               ,anchor = 'w'
-                               ,font   = 'Mono 10'
-                               ,width  = 3
-                               )
+        self.lbl_vno = sh.Label (parent = self.frm_vno
+                                ,text   = str(self._no)
+                                ,side   = 'left'
+                                ,font   = 'Mono 10'
+                                ,width  = 3
+                                ,justify = 'center'
+                                )
         ''' 'image' argument must be specified even when the label
             is further configured with such image, otherwise, frames
             will be further extended to encompass the image
             thereby distorting the GUI structure.
         '''
-        self.label2 = sh.Label (parent = self.frame2
-                               ,text   = _('Image')
-                               ,side   = 'right'
-                               ,image  = self._image
-                               )
-        self.label3 = sh.Label (parent = self.frame4
-                               ,text   = _('Author:')
-                               ,width  = com.label_width()
-                               )
-        self.label4 = sh.Label (parent = self.frame5
-                               ,text   = _('Not Available')
-                               ,anchor = 'w'
-                               ,width  = 75
-                               )
-        self.label5 = sh.Label (parent = self.frame4
-                               ,text   = _('Title:')
-                               ,width  = com.label_width()
-                               )
-        self.label6 = sh.Label (parent = self.frame5
-                               ,text   = _('Not Available')
-                               ,anchor = 'w'
-                               ,width  = 75
-                               )
-        self.label7 = sh.Label (parent = self.frame4
-                               ,text   = _('Date:')
-                               ,width  = com.label_width()
-                               )
-        self.label8 = sh.Label (parent = self.frame5
-                               ,text   = _('Not Available')
-                               ,anchor = 'w'
-                               ,width  = 75
-                               )
+        self.lbl_img = sh.Label (parent = self.frm_img
+                                ,text   = _('Image')
+                                ,image  = self._image
+                                )
+        self.lbl_aut = sh.Label (parent = self.frm_inf
+                                ,text   = _('Not Available')
+                                ,anchor = 'w'
+                                ,width  = 85
+                                ,padx   = 10
+                                )
+        self.lbl_tit = sh.Label (parent = self.frm_inf
+                                ,text   = _('Not Available')
+                                ,anchor = 'w'
+                                ,width  = 85
+                                ,padx   = 10
+                                )
+        self.lbl_dat = sh.Label (parent = self.frm_inf
+                                ,text   = _('Not Available')
+                                ,anchor = 'w'
+                                ,width  = 85
+                                ,padx   = 10
+                                )
     
     def checkboxes(self):
-        self.cbox = sh.CheckBox (parent = self.frame1
-                                ,Active = False
-                                ,side   = 'left'
-                                )
+        self.cbx_vno = sh.CheckBox (parent = self.frm_vno
+                                   ,Active = False
+                                   ,side   = 'left'
+                                   )
 
     def gui(self):
         self.frames()
@@ -951,21 +913,21 @@ class Video:
         #note #todo For some reason, using 'widget.config' or 
         'Label.text' resets config options here.
         '''
-        self.label1._text = str(self._no)
-        self.label1.reset()
-        self.label4._text = self._author
-        self.label4.reset()
-        self.label6._text = self._title
-        self.label6.reset()
-        self.label8._text = self._date
-        self.label8.reset()
+        self.lbl_vno._text = str(self._no)
+        self.lbl_vno.reset()
+        self.lbl_aut._text = self._author
+        self.lbl_aut.reset()
+        self.lbl_tit._text = self._title
+        self.lbl_tit.reset()
+        self.lbl_dat._text = self._date
+        self.lbl_dat.reset()
         self.pic()
 
 
 
 class Channel:
     
-    def __init__(self,parent=None):
+    def __init__(self,parent):
         self.values()
         self.parent = parent
         self.gui()
@@ -973,51 +935,11 @@ class Channel:
     def scroll(self,i):
         f = '[Yatube] gui.Channel.scroll'
         #fix: seems that another unit type is required
+        #cur
         value = i*112.133333333
         mes   = _('Scroll to {}').format(value)
         sh.objs.mes(f,mes,True).debug()
-        self.canvas.scroll(y=value)
-        
-    def bindings(self):
-        #todo: elaborate the value
-        sh.com.bind (obj      = objs.parent()
-                    ,bindings = '<Down>'
-                    ,action   = self.canvas.move_down
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<Up>'
-                    ,action   = self.canvas.move_up
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<Left>'
-                    ,action   = self.canvas.move_left
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<Right>'
-                    ,action   = self.canvas.move_right
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<Next>'
-                    ,action   = self.canvas.move_page_down
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<Prior>'
-                    ,action   = self.canvas.move_page_up
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<End>'
-                    ,action   = self.canvas.move_bottom
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = '<Home>'
-                    ,action   = self.canvas.move_top
-                    )
-        sh.com.bind (obj      = objs._parent
-                    ,bindings = ('<MouseWheel>','<Button 4>'
-                                ,'<Button 5>'
-                                )
-                    ,action   = self.mouse_wheel
-                    )
+        self.cvs_prm.scroll(y=value)
         
     def values(self):
         ''' These values set the width and height of the frame that 
@@ -1030,19 +952,19 @@ class Channel:
         self._max_y = 920
         
     def frames(self):
-        self.frame   = sh.Frame (parent = self.parent)
-        self.frame_y = sh.Frame (parent = self.frame
+        self.frm_prm = sh.Frame (parent = self.parent)
+        self.frm_ver = sh.Frame (parent = self.frm_prm
                                 ,expand = False
                                 ,fill   = 'y'
                                 ,side   = 'right'
                                 )
-        self.frame_x = sh.Frame (parent = self.frame
+        self.frm_hor = sh.Frame (parent = self.frm_prm
                                 ,expand = False
                                 ,fill   = 'x'
                                 ,side   = 'bottom'
                                 )
         # A frame that contains all contents except for scrollbars
-        self.frame1  = sh.Frame (parent = self.frame
+        self.frm_cnt = sh.Frame (parent = self.frm_prm
                                 ,side   = 'left'
                                 ,width  = self._max_x
                                 ,height = self._max_y
@@ -1052,17 +974,17 @@ class Channel:
         ''' Create a canvas before an object being embedded, otherwise,
             the canvas will overlap this object.
         '''
-        self.canvas  = sh.Canvas(parent=self.frame1)
-        self.frm_emb = sh.Frame(parent=self.frame1)
-        self.canvas.embed(self.frm_emb)
+        self.cvs_prm = sh.Canvas(parent=self.frm_cnt)
+        self.frm_emb = sh.Frame(parent=self.frm_cnt)
+        self.cvs_prm.embed(self.frm_emb)
     
     def scrollbars(self):
-        sh.Scrollbar (parent = self.frame_x
-                     ,scroll = self.canvas
+        sh.Scrollbar (parent = self.frm_hor
+                     ,scroll = self.cvs_prm
                      ,Horiz  = True
                      )
-        sh.Scrollbar (parent = self.frame_y
-                     ,scroll = self.canvas
+        sh.Scrollbar (parent = self.frm_ver
+                     ,scroll = self.cvs_prm
                      ,Horiz  = False
                      )
     
@@ -1071,23 +993,14 @@ class Channel:
         self.frames()
         self.canvases()
         self.scrollbars()
-        self.canvas.focus()
-        self.bindings()
+        self.cvs_prm.focus()
+        self.cvs_prm.top_bindings (top  = objs.parent()
+                                  ,Ctrl = False
+                                  )
         # This shows the 1st video
-        self.canvas.region (x = self._max_x
-                           ,y = self._max_y
-                           )
-        
-    def mouse_wheel(self,event=None):
-        ''' #todo: fix: too small delta in Windows
-            Delta is -120 in Windows XP, however, it is different
-            in other versions.
-        '''
-        if event.num == 5 or event.delta < 0:
-            self.canvas.move_down()
-        if event.num == 4 or event.delta > 0:
-            self.canvas.move_up()
-        return 'break'
+        self.cvs_prm.region (x = self._max_x
+                            ,y = self._max_y
+                            )
 
 
 
@@ -1163,12 +1076,15 @@ class Objects:
                 mes = _('Set the default parent.')
                 sh.objs.mes(f,mes,True).info()
                 parent = self.menu().framev
-            self._channel = Channel(parent=parent)
+            self._channel = Channel(parent)
         return self._channel
         
     def parent(self):
         if not self._parent:
-            self._parent = sh.Top()
+            title = sh.List(lst1=['Yatube',VERSION]).space_items()
+            self._parent = sh.Top (icon  = ICON
+                                  ,title = title
+                                  )
         return self._parent
     
     def menu(self):
@@ -1178,7 +1094,6 @@ class Objects:
 
 
 objs = Objects()
-com  = Commands()
 
 
 if __name__ == '__main__':
