@@ -2451,13 +2451,12 @@ class Commands:
         ''' #NOTE: Extra space can be caused by a difference of
             the default and loaded pictures.
         '''
-        #height = len(lg.objs.channel()._urls) * 112.133333333
         mes = _('Widget must be at least {} pixels in height')
         mes = mes.format(height)
         sh.objs.mes(f,mes,True).debug()
         gi.objs._channel.canvas.region (x        = 1024
                                        ,y        = height
-                                       ,x_border = 20
+                                       ,x_border = 0
                                        ,y_border = 20
                                        )
     

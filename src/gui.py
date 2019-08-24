@@ -863,7 +863,7 @@ class Video:
                                ,side   = 'right'
                                ,anchor = 'w'
                                ,font   = 'Mono 10'
-                               ,width  = 4
+                               ,width  = 3
                                )
         ''' 'image' argument must be specified even when the label
             is further configured with such image, otherwise, frames
@@ -873,12 +873,11 @@ class Video:
         self.label2 = sh.Label (parent = self.frame2
                                ,text   = _('Image')
                                ,side   = 'right'
-                               ,width  = 196
                                ,image  = self._image
                                )
         self.label3 = sh.Label (parent = self.frame4
                                ,text   = _('Author:')
-                               ,width  = 20
+                               ,width  = 15
                                )
         self.label4 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
@@ -887,7 +886,7 @@ class Video:
                                )
         self.label5 = sh.Label (parent = self.frame4
                                ,text   = _('Title:')
-                               ,width  = 20
+                               ,width  = 15
                                )
         self.label6 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
@@ -896,7 +895,7 @@ class Video:
                                )
         self.label7 = sh.Label (parent = self.frame4
                                ,text   = _('Date:')
-                               ,width  = 20
+                               ,width  = 15
                                )
         self.label8 = sh.Label (parent = self.frame5
                                ,text   = _('Not Available')
@@ -1005,11 +1004,11 @@ class Channel:
         ''' These values set the width and height of the frame that 
             contains videos and therefore the scrolling region.
             The default Youtube video picture has the dimensions of
-            196x110, therefore, the channel frame embedding 10 videos
-            will have the height of at least 1100.
+            120x90, therefore, the channel frame embedding 10 videos
+            will have the height of at least 900.
         '''
         self._max_x = 1024
-        self._max_y = 1120
+        self._max_y = 920
         
     def frames(self):
         self.frame   = sh.Frame (parent = self.parent)
@@ -1062,8 +1061,8 @@ class Channel:
         
     def mouse_wheel(self,event=None):
         ''' #todo: fix: too small delta in Windows
-            В Windows XP delta == -120, однако, в других версиях оно
-            другое
+            Delta is -120 in Windows XP, however, it is different
+            in other versions.
         '''
         if event.num == 5 or event.delta < 0:
             self.canvas.move_down()
