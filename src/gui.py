@@ -651,9 +651,6 @@ class Menu:
         self.btn_dld = sh.Button (parent = self.frame3
                                  ,text   = _('Download')
                                  )
-        self.btn_del = sh.Button (parent = self.frame3
-                                 ,text   = _('Delete')
-                                 )
         self.btn_stm = sh.Button (parent = self.frame3
                                  ,text   = _('Stream')
                                  )

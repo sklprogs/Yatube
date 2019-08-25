@@ -1355,6 +1355,7 @@ class Commands:
                         ,bindings = '<Enter>'
                         ,action   = self.hint
                         )
+            #cur
             if len(gui._title) > 60:
                 self._tip_tit = sh.ToolTip (obj  = gui.frm_prm
                                            ,text = gui._title
@@ -2176,7 +2177,6 @@ class Commands:
                     ,action   = self.blank
                     )
         # Menu: buttons
-        self._menu.btn_del.action = self.delete_selected
         self._menu.btn_dld.action = self.download
         self._menu.btn_flt.action = self.filter_view
         self._menu.btn_npg.action = self.next_page
