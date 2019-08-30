@@ -920,7 +920,6 @@ class Commands:
         self._mode      = None
         self._timestamp = None
         self._tip_tim   = None
-        self._tip_tit   = None
         self.FirstVideo = True
         self._menu      = gi.objs.menu()
         itime           = lg.Time()
@@ -1355,13 +1354,10 @@ class Commands:
                         ,bindings = '<Enter>'
                         ,action   = self.hint
                         )
-            #cur
-            if len(gui._title) > 60:
-                self._tip_tit = sh.ToolTip (obj  = gui.frm_prm
-                                           ,text = gui._title
-                                           ,hdir = 'top'
-                                           ,font = 'Serif 10'
-                                           )
+            ifont = sh.Font (name    = 'Sans 11'
+                            ,xborder = 10
+                            )
+            ifont.set_text(gui._title)
     
     def prev_channel(self,event=None):
         objs.channels().dec()

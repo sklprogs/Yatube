@@ -1,5 +1,10 @@
 
 
+2.2
+* Refactor the code
+* Make GUI more concise
+* Remove a tooltip for too long video titles
+
 2.1
 * Speed up loading new videos
 * Sort Feed more accurately

@@ -13,7 +13,7 @@ import skl_shared.gettext_windows
 skl_shared.gettext_windows.setup_env()
 gettext.install('yatube','../resources/locale')
 
-VERSION = '2.1'
+VERSION = '2.2'
 
 context_items = (_('Show the full summary')
                 ,_('Stream')
@@ -1012,7 +1012,7 @@ class Objects:
     def comments(self):
         if not self._comments:
             top = sh.Top()
-            sh.Geometry(parent=top).set('1024x768')
+            sh.Geometry(parent=top).set('1024x600')
             self._comments = sh.TextBoxRO (title = _('Comments')
                                           ,icon  = ICON
                                           )
