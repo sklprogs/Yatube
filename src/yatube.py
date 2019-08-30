@@ -1016,7 +1016,7 @@ class Commands:
     
     def toggle_cbox(self,event=None):
         f = '[Yatube] Commands.toggle_cbox'
-        gui = self.get_widget(event=event)
+        gui = self.get_widget(event)
         if gui:
             gui.cbx_vno.toggle()
             objs.commands().report_selection()
@@ -1354,10 +1354,6 @@ class Commands:
                         ,bindings = '<Enter>'
                         ,action   = self.hint
                         )
-            ifont = sh.Font (name    = 'Sans 11'
-                            ,xborder = 10
-                            )
-            ifont.set_text(gui._title)
     
     def prev_channel(self,event=None):
         objs.channels().dec()
@@ -1860,19 +1856,21 @@ class Commands:
     def get_widget(self,event=None):
         f = '[Yatube] yatube.Commands.get_widget'
         if event:
-            ''' Widgets must be in a string format to be compared
-                (otherwise, we will have, for example,
-                'Tkinter.Frame object' vs 'string').
-                For some reason, Tkinter adds some information to
-                the address of the widget got as 'event.widget'
-                (original widget address will be shorter)
+            ''' 'event' will be 'tuple' if it's a callback from
+                'Button.click'.
             '''
+            if isinstance(event,tuple):
+                event = event[0]
             guis = [video._gui for video in mt.objs.videos()._videos \
                     if video._gui
                    ]
             for gui in guis:
                 for obj in gui._objects:
-                    if str(obj.widget) in str(event.widget):
+                    ''' This works for Python 3.7.3 and Tkinter 8.6.
+                        In previous versions I had to use
+                        'if str(obj.widget) in str(event.widget)'.
+                    '''
+                    if obj.widget == event.widget:
                         return gui
         else:
             sh.com.empty(f)
@@ -1997,13 +1995,10 @@ class Commands:
     
     def context(self,event=None):
         f = '[Yatube] yatube.Commands.context'
-        # 'event' will be 'tuple' if it's a callback from 'Button.click'
-        if isinstance(event,tuple):
-            event = event[0]
-        gui = self.get_widget(event=event)
+        gui = self.get_widget(event)
         if gui:
             mt.objs.videos().set_gui(gui)
-            message = _('Video #%d:') % gui._no
+            message = _('Video #{}:').format(gui._no)
             gi.objs.context().title(message)
             items = self.update_context()
             if not items:

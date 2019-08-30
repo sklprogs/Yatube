@@ -846,11 +846,11 @@ class Video:
         ''' Fixed width is set to ensure that sizes of a default and
             current video labels are the same.
         '''
-        self.lbl_vno = sh.Label (parent = self.frm_vno
-                                ,text   = str(self._no)
-                                ,side   = 'left'
-                                ,font   = 'Mono 10'
-                                ,width  = 3
+        self.lbl_vno = sh.Label (parent  = self.frm_vno
+                                ,text    = str(self._no)
+                                ,side    = 'left'
+                                ,font    = 'Mono 10'
+                                ,width   = 3
                                 ,justify = 'center'
                                 )
         ''' 'image' argument must be specified even when the label
