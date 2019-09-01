@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-30 21:12+0300\n"
+"POT-Creation-Date: 2019-09-01 06:04+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -264,7 +264,7 @@ msgstr "Запомнить и выйти"
 msgid "Reset all fields"
 msgstr "Восстановить все поля"
 
-#: gui.py:443 gui.py:1016
+#: gui.py:443 gui.py:1039
 msgid "Comments"
 msgstr "Комментарии"
 
@@ -332,55 +332,67 @@ msgstr "Вставьте URL сюда"
 msgid "Filter"
 msgstr "Применить"
 
+#: gui.py:661 gui.py:664
+msgid "Best quality"
+msgstr "Лучшее качество"
+
 #: gui.py:662
+msgid "Worst quality"
+msgstr "Худшее качество"
+
+#: gui.py:671 gui.py:675
+msgid "Auto"
+msgstr "Авто"
+
+#: gui.py:683
 msgid "Slow PC"
 msgstr "Медленный ПК"
 
-#: gui.py:744
+#: gui.py:767
 msgid " (selected: {}/{})"
 msgstr " (выбрано: {}/{})"
 
-#: gui.py:821 logic.py:1026
+#: gui.py:844 logic.py:1026
 msgid "Author"
 msgstr "Автор"
 
-#: gui.py:822 logic.py:1030
+#: gui.py:845 logic.py:1030
 msgid "Title"
 msgstr "Заголовок"
 
-#: gui.py:823 logic.py:1034
+#: gui.py:846 logic.py:1034
 msgid "Date"
 msgstr "Дата"
 
-#: gui.py:862
+#: gui.py:885
 msgid "Image"
 msgstr "Изображение"
 
-#: gui.py:866 gui.py:872 gui.py:878
+#: gui.py:889 gui.py:895 gui.py:901
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: gui.py:937
+#: gui.py:960
 msgid "Scroll to {}"
 msgstr "Прокрутка до {}"
 
-#: gui.py:1023
+#: gui.py:1046
 msgid "Edit subscriptions:"
 msgstr "Отредактируйте подписки:"
 
-#: gui.py:1031
+#: gui.py:1054
 msgid "Edit the blacklist:"
 msgstr "Отредактируйте черный список"
 
-#: gui.py:1043
+#: gui.py:1066
 msgid "Full summary:"
 msgstr "Полная сводка:"
 
-#: gui.py:1055
+#: gui.py:1078
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: gui.py:1073
+#: gui.py:1096
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
