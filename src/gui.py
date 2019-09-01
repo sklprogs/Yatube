@@ -654,6 +654,27 @@ class Menu:
         self.btn_stm = sh.Button (parent = self.frame3
                                  ,text   = _('Stream')
                                  )
+        self.opt_qal = sh.OptionMenu (parent  = self.frame3
+                                     ,side    = 'left'
+                                     ,Combo   = True
+                                     ,width   = 10
+                                     ,items   = (_('Best quality')
+                                                ,_('Worst quality')
+                                                )
+                                     ,default = _('Best quality')
+                                     ,font    = 'Serif 10'
+                                     )
+        self.opt_res = sh.OptionMenu (parent  = self.frame3
+                                     ,side    = 'left'
+                                     ,Combo   = True
+                                     ,width   = 7
+                                     ,items   = (_('Auto'),'<=1080p'
+                                                ,'<=720p','<=480p'
+                                                ,'<=360p'
+                                                )
+                                     ,default = _('Auto')
+                                     ,font    = 'Serif 10'
+                                     )
         self.chb_slw = sh.CheckBox (parent = self.frame3
                                    ,Active = True
                                    ,side   = 'left'
@@ -661,12 +682,12 @@ class Menu:
         self.lab_slw = sh.Label (parent = self.frame3
                                 ,text   = _('Slow PC')
                                 ,side   = 'left'
-                                ,font   = 'Sans 9'
+                                ,font   = 'Sans 8'
                                 )
         self.opt_trd = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
                                      ,Combo  = True
-                                     ,width  = 15
+                                     ,width  = 14
                                      )
         self.opt_chl = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
@@ -1098,5 +1119,6 @@ objs = Objects()
 if __name__ == '__main__':
     # Show the menu
     sh.com.start()
+    sh.Geometry(objs.parent()).set('1024x600')
     objs.menu().show()
     sh.com.end()
