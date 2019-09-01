@@ -666,10 +666,12 @@ class Menu:
         self.opt_trd = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
                                      ,Combo  = True
+                                     ,width  = 15
                                      )
         self.opt_chl = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'
                                      ,Combo  = True
+                                     ,width  = 15
                                      )
     
     def update(self,event=None):
