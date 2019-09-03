@@ -662,7 +662,7 @@ class Menu:
                                                 ,_('Worst quality')
                                                 )
                                      ,default = _('Best quality')
-                                     ,font    = 'Serif 10'
+                                     ,font    = 'Sans 10'
                                      )
         self.opt_res = sh.OptionMenu (parent  = self.frame3
                                      ,side    = 'left'
@@ -673,7 +673,7 @@ class Menu:
                                                 ,'<=360p'
                                                 )
                                      ,default = _('Auto')
-                                     ,font    = 'Serif 10'
+                                     ,font    = 'Sans 10'
                                      )
         self.chb_slw = sh.CheckBox (parent = self.frame3
                                    ,Active = True
