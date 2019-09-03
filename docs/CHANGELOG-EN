@@ -4,6 +4,7 @@
 * Refactor the code
 * Make GUI more concise
 * Remove a tooltip for too long video titles
+* Select streaming quality
 
 2.1
 * Speed up loading new videos

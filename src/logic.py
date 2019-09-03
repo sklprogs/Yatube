@@ -1156,17 +1156,20 @@ class Video:
         else:
             sh.com.cancel(f)
     
-    def stream(self):
+    def stream(self,quality='best'):
+        ''' Stream a video with preset parameters. Examples of 'quality'
+            settings: 'best', 'worst', 'worst[height<=1080]',
+            'best[height<=480]'.
+        '''
         f = '[Yatube] logic.Video.stream'
         if self.Success:
             video = mt.objs.videos().current()
             if video._id:
-                #todo: select quality
                 ''' If we do not set 'format', then 'youtube_dl'
                     will not provide info_dict['url']. Instead, it will
                     generate 'url' for each available format.
                 '''
-                options = {'format'            :'best'
+                options = {'format'            :quality
                           ,'ignoreerrors'      :True
                           ,'nocheckcertificate':True
                           ,'socket_timeout'    :7
@@ -1176,8 +1179,8 @@ class Video:
                         info_dict = ydl.extract_info(video._id,download=False)
                         if info_dict:
                             if 'url' in info_dict:
-                                ''' Since the stream url will expire, we do
-                                    not create a permanent variable.
+                                ''' Since the stream url will expire, we
+                                    do not create a permanent variable.
                                 '''
                                 return info_dict['url']
                             else:

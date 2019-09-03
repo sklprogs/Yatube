@@ -79,6 +79,14 @@ edit_items = (_('Edit')
              ,_('Blocked words')
              )
 
+qual_items = (_('Best')
+             ,_('Worst')
+             )
+
+res_items = (_('Auto'),'<=1080p','<=720p'
+            ,'<=480p','<=360p'
+            )
+
 default_entry_width = 19
 ICON = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
 
@@ -656,22 +664,15 @@ class Menu:
                                  )
         self.opt_qal = sh.OptionMenu (parent  = self.frame3
                                      ,side    = 'left'
-                                     ,Combo   = True
                                      ,width   = 10
-                                     ,items   = (_('Best quality')
-                                                ,_('Worst quality')
-                                                )
-                                     ,default = _('Best quality')
+                                     ,items   = qual_items
+                                     ,default = _('Best')
                                      ,font    = 'Sans 10'
                                      )
         self.opt_res = sh.OptionMenu (parent  = self.frame3
                                      ,side    = 'left'
-                                     ,Combo   = True
                                      ,width   = 7
-                                     ,items   = (_('Auto'),'<=1080p'
-                                                ,'<=720p','<=480p'
-                                                ,'<=360p'
-                                                )
+                                     ,items   = res_items
                                      ,default = _('Auto')
                                      ,font    = 'Sans 10'
                                      )
@@ -694,6 +695,14 @@ class Menu:
                                      ,Combo  = True
                                      ,width  = 15
                                      )
+        sh.ToolTip (obj  = self.opt_qal
+                   ,text = _('Select streaming quality')
+                   ,hdir = 'bottom'
+                   )
+        sh.ToolTip (obj  = self.opt_res
+                   ,text = _('Select streaming quality')
+                   ,hdir = 'bottom'
+                   )
     
     def update(self,event=None):
         pass

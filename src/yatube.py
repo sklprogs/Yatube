@@ -936,6 +936,38 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def quality(self,event=None):
+        f = '[Yatube] yatube.Commands.quality'
+        qual = gi.objs.menu().opt_qal.choice
+        res  = gi.objs._menu.opt_res.choice
+        if qual == _('Best'):
+            qual = 'best'
+        elif qual == _('Worst'):
+            qual = 'worst'
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(qual,gi.qual_items)
+            sh.objs.mes(f,mes).error()
+            qual = 'best'
+        if res == _('Auto'):
+            res = ''
+        elif res == '<=1080p':
+            res = '[height<=1080]'
+        elif res == '<=720p':
+            res = '[height<=720]'
+        elif res == '<=480p':
+            res = '[height<=480]'
+        elif res == '<=360p':
+            res = '[height<=360]'
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(res,gi.res_items)
+            sh.objs.mes(f,mes).error()
+            res = ''
+        result = qual + res
+        sh.objs.mes(f,result,True).debug()
+        return result
+    
     def set_pause(self,event=None):
         objs.pause().reset (video_id = mt.objs.videos().current()._id
                            ,pause    = mt.objs._videos.current()._pause
@@ -1714,7 +1746,7 @@ class Commands:
     
     def stream_video(self,event=None):
         f = '[Yatube] yatube.Commands.stream_video'
-        url = lg.Video().stream()
+        url = lg.Video().stream(self.quality())
         if url:
             ''' Consider using newer python/OS builds if you have
                 SSL/TLS problems here.
