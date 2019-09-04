@@ -31,6 +31,18 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class Commands:
+    
+    def extract_resolution(self,text):
+        # '<=1080p' -> '1080'
+        match = re.match('<=(\d+)p',text)
+        if match:
+            return match.group(1)
+        else:
+            return ''
+
+
+
 class Feed:
     
     def __init__(self):
@@ -1156,15 +1168,10 @@ class Video:
         else:
             sh.com.cancel(f)
     
-    def stream(self,quality='best'):
-        ''' Stream a video with preset parameters. Examples of 'quality'
-            settings: 'best', 'worst', 'worst[height<=1080]',
-            'best[height<=480]'.
-        '''
-        f = '[Yatube] logic.Video.stream'
+    def generate_url(self,video_id,quality='best'):
+        f = '[Yatube] logic.Video.generate_url'
         if self.Success:
-            video = mt.objs.videos().current()
-            if video._id:
+            if video_id:
                 ''' If we do not set 'format', then 'youtube_dl'
                     will not provide info_dict['url']. Instead, it will
                     generate 'url' for each available format.
@@ -1175,24 +1182,46 @@ class Video:
                           ,'socket_timeout'    :7
                           }
                 try:
-                    with youtube_dl.YoutubeDL(options) as ydl:
-                        info_dict = ydl.extract_info(video._id,download=False)
-                        if info_dict:
-                            if 'url' in info_dict:
-                                ''' Since the stream url will expire, we
-                                    do not create a permanent variable.
-                                '''
-                                return info_dict['url']
-                            else:
-                                mes = _('Wrong input data!')
-                                sh.objs.mes(f,mes).warning()
+                    ydl = youtube_dl.YoutubeDL(options)
+                    info_dict = ydl.extract_info(video_id,download=False)
+                    if info_dict:
+                        if 'url' in info_dict:
+                            ''' Since the stream url will expire, we
+                                do not create a permanent variable.
+                            '''
+                            return info_dict['url']
                         else:
-                            mes = _('This video is not available.')
+                            mes = _('Wrong input data!')
                             sh.objs.mes(f,mes).warning()
                 except Exception as e:
                     mt.com.error(f,e)
             else:
                 sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def stream(self,quality='best'):
+        ''' Stream a video with preset parameters. Examples of 'quality'
+            settings: 'best', 'worst', 'worst[height<=1080]',
+            'best[height<=480]'.
+        '''
+        f = '[Yatube] logic.Video.stream'
+        if self.Success:
+            video   = mt.objs.videos().current()
+            gen_url = self.generate_url(video._id,quality)
+            if gen_url:
+                return gen_url
+            else:
+                gen_url = self.generate_url(video._id)
+                if gen_url:
+                    mes = _('Selected quality is not available, using default quality.')
+                    sh.objs.mes(f,mes).warning()
+                    return gen_url
+                else:
+                    mes = _('This video is not available.')
+                    sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
 
 
 
@@ -1457,6 +1486,7 @@ class ChannelHistory:
 
 
 objs = Objects()
+com  = Commands()
 mt.objs.stat()
 
 

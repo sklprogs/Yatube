@@ -79,12 +79,14 @@ edit_items = (_('Edit')
              ,_('Blocked words')
              )
 
-qual_items = (_('Best')
-             ,_('Worst')
+qual_items = (_('Best qual.')
+             ,_('Worst qual.')
              )
 
-res_items = (_('Auto'),'<=1080p','<=720p'
-            ,'<=480p','<=360p'
+res_items = (_('Auto'),'<=2160p'
+            ,'<=1440p','<=1080p'
+            ,'<=720p','<=480p'
+            ,'<=360p','<=240p'
             )
 
 default_entry_width = 19
@@ -664,9 +666,9 @@ class Menu:
                                  )
         self.opt_qal = sh.OptionMenu (parent  = self.frame3
                                      ,side    = 'left'
-                                     ,width   = 10
+                                     ,width   = 11
                                      ,items   = qual_items
-                                     ,default = _('Best')
+                                     ,default = _('Best qual.')
                                      ,font    = 'Sans 10'
                                      )
         self.opt_res = sh.OptionMenu (parent  = self.frame3
@@ -696,11 +698,11 @@ class Menu:
                                      ,width  = 15
                                      )
         sh.ToolTip (obj  = self.opt_qal
-                   ,text = _('Select streaming quality')
+                   ,text = _('Streaming quality')
                    ,hdir = 'bottom'
                    )
         sh.ToolTip (obj  = self.opt_res
-                   ,text = _('Select streaming quality')
+                   ,text = _('Streaming quality')
                    ,hdir = 'bottom'
                    )
     
