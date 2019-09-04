@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-04 04:20+0300\n"
+"POT-Creation-Date: 2019-09-04 04:30+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -933,6 +933,10 @@ msgid "Comments are disabled for this video."
 msgstr "Комментарии под этим видео отключены."
 
 #: meta.py:912
+msgid "This channel is not available!"
+msgstr "Этот канал недоступен!"
+
+#: meta.py:915
 msgid ""
 "Third-party module has failed!\n"
 "\n"
