@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-04 02:53+0300\n"
+"POT-Creation-Date: 2019-09-04 04:20+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -29,857 +29,861 @@ msgstr ""
 msgid "Save \"{}\""
 msgstr "Сохранение \"{}\""
 
-#: gui.py:18 yatube.py:1924
+#: gui.py:18 yatube.py:1919
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
-#: gui.py:19 gui.py:44 gui.py:663 yatube.py:1935 yatube.py:2098
+#: gui.py:19 gui.py:44 gui.py:665 yatube.py:1930 yatube.py:2093
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: gui.py:20 gui.py:45 gui.py:657 yatube.py:1930 yatube.py:2094
+#: gui.py:20 gui.py:45 gui.py:659 yatube.py:1925 yatube.py:2089
 msgid "Play"
 msgstr "Воспроизвести"
 
-#: gui.py:21 gui.py:282 yatube.py:1926
+#: gui.py:21 gui.py:284 yatube.py:1921
 msgid "Set pause time"
 msgstr "Задать время паузы"
 
-#: gui.py:22 gui.py:48 yatube.py:1976 yatube.py:2079
+#: gui.py:22 gui.py:48 yatube.py:1971 yatube.py:2074
 msgid "Extract links"
 msgstr "Извлечь ссылки"
 
-#: gui.py:23 yatube.py:1978
+#: gui.py:23 yatube.py:1973
 msgid "Load this channel"
 msgstr "Загрузить этот канал"
 
-#: gui.py:24 yatube.py:1988
+#: gui.py:24 yatube.py:1983
 msgid "Open video URL"
 msgstr "Открыть URL видео"
 
-#: gui.py:25 yatube.py:1990
+#: gui.py:25 yatube.py:1985
 msgid "Copy video URL"
 msgstr "Копировать URL видео"
 
-#: gui.py:26 yatube.py:1994
+#: gui.py:26 yatube.py:1989
 msgid "Open channel URL"
 msgstr "Открыть URL канала"
 
-#: gui.py:27 yatube.py:1996
+#: gui.py:27 yatube.py:1991
 msgid "Copy channel URL"
 msgstr "Копировать URL канала"
 
-#: gui.py:28 yatube.py:1992
+#: gui.py:28 yatube.py:1987
 msgid "Show comments"
 msgstr "Показать комментарии"
 
-#: gui.py:29 gui.py:46 gui.py:660 yatube.py:1175 yatube.py:1928 yatube.py:2013
-#: yatube.py:2091
+#: gui.py:29 gui.py:46 gui.py:662 yatube.py:1170 yatube.py:1923 yatube.py:2008
+#: yatube.py:2086
 msgid "Download"
 msgstr "Загрузить"
 
-#: gui.py:30 yatube.py:1177 yatube.py:1974 yatube.py:2014
+#: gui.py:30 yatube.py:1172 yatube.py:1969 yatube.py:2009
 msgid "Delete the downloaded file"
 msgstr "Удалить загруженный файл"
 
-#: gui.py:31 gui.py:68 yatube.py:1030 yatube.py:1155 yatube.py:1474
-#: yatube.py:1937 yatube.py:2015
+#: gui.py:31 gui.py:68 yatube.py:1025 yatube.py:1150 yatube.py:1469
+#: yatube.py:1932 yatube.py:2010
 msgid "Mark as watched"
 msgstr "Пометить как просмотренное"
 
-#: gui.py:32 gui.py:69 yatube.py:1032 yatube.py:1157 yatube.py:1479
-#: yatube.py:1941 yatube.py:2016
+#: gui.py:32 gui.py:69 yatube.py:1027 yatube.py:1152 yatube.py:1474
+#: yatube.py:1936 yatube.py:2011
 msgid "Mark as not watched"
 msgstr "Пометить как непросмотренное"
 
-#: gui.py:33 gui.py:70 yatube.py:1038 yatube.py:1163 yatube.py:1501
-#: yatube.py:1958 yatube.py:2019
+#: gui.py:33 gui.py:70 yatube.py:1033 yatube.py:1158 yatube.py:1496
+#: yatube.py:1953 yatube.py:2014
 msgid "Add to watchlist"
 msgstr "Отложить"
 
-#: gui.py:34 gui.py:71 yatube.py:1040 yatube.py:1165 yatube.py:1504
-#: yatube.py:1966 yatube.py:2020
+#: gui.py:34 gui.py:71 yatube.py:1035 yatube.py:1160 yatube.py:1499
+#: yatube.py:1961 yatube.py:2015
 msgid "Remove from watchlist"
 msgstr "Убрать из отложенного"
 
-#: gui.py:35 gui.py:72 yatube.py:1034 yatube.py:1159 yatube.py:1487
-#: yatube.py:1949 yatube.py:2017
+#: gui.py:35 gui.py:72 yatube.py:1029 yatube.py:1154 yatube.py:1482
+#: yatube.py:1944 yatube.py:2012
 msgid "Add to favorites"
 msgstr "Добавить в избранное"
 
-#: gui.py:36 gui.py:73 yatube.py:1036 yatube.py:1161 yatube.py:1490
-#: yatube.py:1951 yatube.py:2018
+#: gui.py:36 gui.py:73 yatube.py:1031 yatube.py:1156 yatube.py:1485
+#: yatube.py:1946 yatube.py:2013
 msgid "Remove from favorites"
 msgstr "Убрать из избранного"
 
-#: gui.py:37 yatube.py:1169 yatube.py:1980 yatube.py:2021
+#: gui.py:37 yatube.py:1164 yatube.py:1975 yatube.py:2016
 msgid "Block this channel"
 msgstr "Блокировать этот канал"
 
-#: gui.py:38 yatube.py:1171 yatube.py:1982 yatube.py:2022
+#: gui.py:38 yatube.py:1166 yatube.py:1977 yatube.py:2017
 msgid "Unblock"
 msgstr "Разблокировать"
 
-#: gui.py:39 yatube.py:1182 yatube.py:1984 yatube.py:2023
+#: gui.py:39 yatube.py:1177 yatube.py:1979 yatube.py:2018
 msgid "Subscribe to this channel"
 msgstr "Подписаться на этот канал"
 
-#: gui.py:40 yatube.py:1184 yatube.py:1986 yatube.py:2024
+#: gui.py:40 yatube.py:1179 yatube.py:1981 yatube.py:2019
 msgid "Unsubscribe"
 msgstr "Отписаться"
 
-#: gui.py:43 yatube.py:2089
+#: gui.py:43 yatube.py:2084
 msgid "Show summary"
 msgstr "Показать сводку"
 
-#: gui.py:47 gui.py:240 gui.py:411 yatube.py:2100
+#: gui.py:47 gui.py:242 gui.py:413 yatube.py:2095
 msgid "Delete"
 msgstr "Удалить"
 
-#: gui.py:49 yatube.py:2103
+#: gui.py:49 yatube.py:2098
 msgid "Full menu"
 msgstr "Полное меню"
 
-#: gui.py:52 gui.py:568 yatube.py:1404
+#: gui.py:52 gui.py:570 yatube.py:1399
 msgid "Update"
 msgstr "Обновить"
 
-#: gui.py:53 yatube.py:1411
+#: gui.py:53 yatube.py:1406
 msgid "Channel"
 msgstr "Канал"
 
-#: gui.py:54 gui.py:77 yatube.py:1408 yatube.py:1451
+#: gui.py:54 gui.py:77 yatube.py:1403 yatube.py:1446
 msgid "Subscriptions"
 msgstr "Подписки"
 
-#: gui.py:57 gui.py:572 yatube.py:1421
+#: gui.py:57 gui.py:574 yatube.py:1416
 msgid "View"
 msgstr "Вид"
 
-#: gui.py:58 yatube.py:1428
+#: gui.py:58 yatube.py:1423
 msgid "All feed"
 msgstr "Вся лента"
 
-#: gui.py:59 yatube.py:1425
+#: gui.py:59 yatube.py:1420
 msgid "History"
 msgstr "История"
 
-#: gui.py:60 yatube.py:1434
+#: gui.py:60 yatube.py:1429
 msgid "Watchlist"
 msgstr "Отложенное"
 
-#: gui.py:61 yatube.py:1431
+#: gui.py:61 yatube.py:1426
 msgid "Favorites"
 msgstr "Избранное"
 
-#: gui.py:62 yatube.py:1437
+#: gui.py:62 yatube.py:1432
 msgid "Welcome screen"
 msgstr "Начальный экран"
 
-#: gui.py:65 gui.py:576 yatube.py:1042 yatube.py:1046 yatube.py:1467
+#: gui.py:65 gui.py:578 yatube.py:1037 yatube.py:1041 yatube.py:1462
 msgid "Selection"
 msgstr "Выбранное"
 
-#: gui.py:66 yatube.py:1043 yatube.py:1471
+#: gui.py:66 yatube.py:1038 yatube.py:1466
 msgid "Select all new videos"
 msgstr "Выбрать все новые видео"
 
-#: gui.py:67 yatube.py:1018 yatube.py:1498
+#: gui.py:67 yatube.py:1013 yatube.py:1493
 msgid "Delete selected"
 msgstr "Удалить выбранное"
 
-#: gui.py:76 gui.py:407 gui.py:580 yatube.py:1447
+#: gui.py:76 gui.py:409 gui.py:582 yatube.py:1442
 msgid "Edit"
 msgstr "Править"
 
-#: gui.py:78 yatube.py:1454
+#: gui.py:78 yatube.py:1449
 msgid "Blocked authors"
 msgstr "Заблокированные авторы"
 
-#: gui.py:79 yatube.py:1457
+#: gui.py:79 yatube.py:1452
 msgid "Blocked words"
 msgstr "Заблокированные слова"
 
-#: gui.py:82 gui.py:669 yatube.py:943
+#: gui.py:82 gui.py:671 yatube.py:954
 msgid "Best qual."
 msgstr "Лучшее кач."
 
-#: gui.py:83 yatube.py:945
+#: gui.py:83
 msgid "Worst qual."
 msgstr "Худшее кач."
 
-#: gui.py:86 gui.py:676 yatube.py:952
+#: gui.py:86 gui.py:678
 msgid "Auto"
 msgstr "Авто"
 
-#: gui.py:241
+#: gui.py:243
 msgid "Delete & Close"
 msgstr "Удалить и закрыть"
 
-#: gui.py:247 gui.py:429
+#: gui.py:249 gui.py:431
 msgid "Reset"
 msgstr "Сброс"
 
-#: gui.py:248
+#: gui.py:250
 msgid "Set the original time"
 msgstr "Установить первоначальное время"
 
-#: gui.py:254 gui.py:423
+#: gui.py:256 gui.py:425
 msgid "Save"
 msgstr "Сохранить"
 
-#: gui.py:255
+#: gui.py:257
 msgid "Save & Close"
 msgstr "Сохранить и закрыть"
 
-#: gui.py:321
+#: gui.py:323
 msgid "Add or remove IDs"
 msgstr "Добавить или удалить ИД"
 
-#: gui.py:375 gui.py:387
+#: gui.py:377 gui.py:389
 msgid "Channel title:"
 msgstr "Название канала:"
 
-#: gui.py:381
+#: gui.py:383
 msgid "Playlist ID, channel ID or Youtube user name:"
 msgstr "ИД плейлиста, ИД канала или имя пользователя Youtube:"
 
-#: gui.py:391
+#: gui.py:393
 msgid "Your ID:"
 msgstr "Ваш ИД:"
 
-#: gui.py:395
+#: gui.py:397
 msgid "Playlist ID:"
 msgstr "ИД плейлиста:"
 
-#: gui.py:399
+#: gui.py:401
 msgid "Open URL"
 msgstr "Открыть URL"
 
-#: gui.py:403
+#: gui.py:405
 msgid "Add"
 msgstr "Добавить"
 
-#: gui.py:415
+#: gui.py:417
 msgid "Close"
 msgstr "Закрыть"
 
-#: gui.py:416
+#: gui.py:418
 msgid "Reject and close"
 msgstr "Отказаться и закрыть"
 
-#: gui.py:424
+#: gui.py:426
 msgid "Save and close"
 msgstr "Запомнить и выйти"
 
-#: gui.py:430
+#: gui.py:432
 msgid "Reset all fields"
 msgstr "Восстановить все поля"
 
-#: gui.py:451 gui.py:1048
+#: gui.py:453 gui.py:1050
 msgid "Comments"
 msgstr "Комментарии"
 
-#: gui.py:491 gui.py:594
+#: gui.py:493 gui.py:596
 msgid "Go to the previous page"
 msgstr "Перейти на предыдущую страницу"
 
-#: gui.py:498 gui.py:599
+#: gui.py:500 gui.py:601
 msgid "Go to the next page"
 msgstr "Перейти на следующую страницу"
 
-#: gui.py:547 gui.py:648 yatube.py:2137
+#: gui.py:549 gui.py:650 yatube.py:2132
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
-#: gui.py:554 gui.py:626 yatube.py:2122
+#: gui.py:556 gui.py:628 yatube.py:2117
 msgid "Search Youtube"
 msgstr "Поиск в Youtube"
 
-#: gui.py:561
+#: gui.py:563
 msgid "Videos per page"
 msgstr "Число видео на страницу"
 
-#: gui.py:583
+#: gui.py:585
 msgid "←"
 msgstr "←"
 
-#: gui.py:584
+#: gui.py:586
 msgid "Go to the previous channel"
 msgstr "Перейти на предыдущий канал"
 
-#: gui.py:588
+#: gui.py:590
 msgid "→"
 msgstr "→"
 
-#: gui.py:589
+#: gui.py:591
 msgid "Go to the next channel"
 msgstr "Перейти на следующий канал"
 
-#: gui.py:593
+#: gui.py:595
 msgid "‹"
 msgstr "‹"
 
-#: gui.py:598
+#: gui.py:600
 msgid "›"
 msgstr "›"
 
-#: gui.py:611 gui.py:614 yatube.py:1849
+#: gui.py:613 gui.py:616 yatube.py:1844
 msgid "Newer than"
 msgstr "Новее"
 
-#: gui.py:612
+#: gui.py:614
 msgid "Older than"
 msgstr "Старше"
 
-#: gui.py:628
+#: gui.py:630
 msgid "Search"
 msgstr "Найти"
 
-#: gui.py:637 yatube.py:2076
+#: gui.py:639 yatube.py:2071
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
-#: gui.py:650
+#: gui.py:652
 msgid "Filter"
 msgstr "Применить"
 
-#: gui.py:684
+#: gui.py:686
 msgid "Slow PC"
 msgstr "Медленный ПК"
 
-#: gui.py:699 gui.py:703
+#: gui.py:701 gui.py:705
 msgid "Streaming quality"
 msgstr "Качество потокового видео"
 
-#: gui.py:776
+#: gui.py:778
 msgid " (selected: {}/{})"
 msgstr " (выбрано: {}/{})"
 
-#: gui.py:853 logic.py:1026
+#: gui.py:855 logic.py:1038
 msgid "Author"
 msgstr "Автор"
 
-#: gui.py:854 logic.py:1030
+#: gui.py:856 logic.py:1042
 msgid "Title"
 msgstr "Заголовок"
 
-#: gui.py:855 logic.py:1034
+#: gui.py:857 logic.py:1046
 msgid "Date"
 msgstr "Дата"
 
-#: gui.py:894
+#: gui.py:896
 msgid "Image"
 msgstr "Изображение"
 
-#: gui.py:898 gui.py:904 gui.py:910
+#: gui.py:900 gui.py:906 gui.py:912
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: gui.py:969
+#: gui.py:971
 msgid "Scroll to {}"
 msgstr "Прокрутка до {}"
 
-#: gui.py:1055
+#: gui.py:1057
 msgid "Edit subscriptions:"
 msgstr "Отредактируйте подписки:"
 
-#: gui.py:1063
+#: gui.py:1065
 msgid "Edit the blacklist:"
 msgstr "Отредактируйте черный список"
 
-#: gui.py:1075
+#: gui.py:1077
 msgid "Full summary:"
 msgstr "Полная сводка:"
 
-#: gui.py:1087
+#: gui.py:1089
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: gui.py:1105
+#: gui.py:1107
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
-#: logic.py:51 logic.py:112 logic.py:173 logic.py:234
+#: logic.py:63 logic.py:124 logic.py:185 logic.py:246
 msgid "Previous page token: {}"
 msgstr "Метка предыдущей страницы: {}"
 
-#: logic.py:53 logic.py:114 logic.py:175 logic.py:236
+#: logic.py:65 logic.py:126 logic.py:187 logic.py:248
 msgid "Next page token: {}"
 msgstr "Метка следующей страницы: {}"
 
-#: logic.py:335 yatube.py:1818
+#: logic.py:347 yatube.py:1813
 msgid "Jan"
 msgstr "янв"
 
-#: logic.py:335 yatube.py:1820
+#: logic.py:347 yatube.py:1815
 msgid "Feb"
 msgstr "фев"
 
-#: logic.py:335 yatube.py:1822
+#: logic.py:347 yatube.py:1817
 msgid "Mar"
 msgstr "мар"
 
-#: logic.py:335 yatube.py:1824
+#: logic.py:347 yatube.py:1819
 msgid "Apr"
 msgstr "апр"
 
-#: logic.py:335 yatube.py:1826
+#: logic.py:347 yatube.py:1821
 msgid "May"
 msgstr "май"
 
-#: logic.py:336 yatube.py:1828
+#: logic.py:348 yatube.py:1823
 msgid "Jun"
 msgstr "июн"
 
-#: logic.py:336 yatube.py:1830
+#: logic.py:348 yatube.py:1825
 msgid "Jul"
 msgstr "июл"
 
-#: logic.py:336 yatube.py:1832
+#: logic.py:348 yatube.py:1827
 msgid "Aug"
 msgstr "авг"
 
-#: logic.py:336 yatube.py:1834
+#: logic.py:348 yatube.py:1829
 msgid "Sep"
 msgstr "сен"
 
-#: logic.py:336 yatube.py:1836
+#: logic.py:348 yatube.py:1831
 msgid "Oct"
 msgstr "окт"
 
-#: logic.py:337 yatube.py:1838
+#: logic.py:349 yatube.py:1833
 msgid "Nov"
 msgstr "ноя"
 
-#: logic.py:337 yatube.py:1840
+#: logic.py:349 yatube.py:1835
 msgid "Dec"
 msgstr "дек"
 
-#: logic.py:350 logic.py:716 logic.py:1187 meta.py:152 meta.py:179
-#: yatube.py:891 yatube.py:1000 yatube.py:1246 yatube.py:1268 yatube.py:1297
-#: yatube.py:1310 yatube.py:1323
+#: logic.py:362 logic.py:728 logic.py:1194 meta.py:152 meta.py:179
+#: yatube.py:892 yatube.py:995 yatube.py:1241 yatube.py:1263 yatube.py:1292
+#: yatube.py:1305 yatube.py:1318
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
-#: logic.py:374
+#: logic.py:386
 msgid "Algeria"
 msgstr "Алжир"
 
-#: logic.py:375
+#: logic.py:387
 msgid "Argentina"
 msgstr "Аргентина"
 
-#: logic.py:376
+#: logic.py:388
 msgid "Australia"
 msgstr "Австралия"
 
-#: logic.py:377
+#: logic.py:389
 msgid "Austria"
 msgstr "Австрия"
 
-#: logic.py:378
+#: logic.py:390
 msgid "Azerbaijan"
 msgstr "Азербайджан"
 
-#: logic.py:379
+#: logic.py:391
 msgid "Bahrain"
 msgstr "Бахрейн"
 
-#: logic.py:380
+#: logic.py:392
 msgid "Belarus"
 msgstr "Беларусь"
 
-#: logic.py:381
+#: logic.py:393
 msgid "Belgium"
 msgstr "Бельгия"
 
-#: logic.py:382
+#: logic.py:394
 msgid "Bosnia and Herzegovina"
 msgstr "Босния и Герцеговина"
 
-#: logic.py:383
+#: logic.py:395
 msgid "Brazil"
 msgstr "Бразилия"
 
-#: logic.py:384
+#: logic.py:396
 msgid "Bulgaria"
 msgstr "Болгария"
 
-#: logic.py:385
+#: logic.py:397
 msgid "Canada"
 msgstr "Канада"
 
-#: logic.py:386
+#: logic.py:398
 msgid "Chile"
 msgstr "Чили"
 
-#: logic.py:387
+#: logic.py:399
 msgid "Colombia"
 msgstr "Колумбия"
 
-#: logic.py:388
+#: logic.py:400
 msgid "Croatia"
 msgstr "Хорватия"
 
-#: logic.py:389
+#: logic.py:401
 msgid "Czechia"
 msgstr "Чехия"
 
-#: logic.py:390
+#: logic.py:402
 msgid "Denmark"
 msgstr "Дания"
 
-#: logic.py:391
+#: logic.py:403
 msgid "Egypt"
 msgstr "Египет"
 
-#: logic.py:392
+#: logic.py:404
 msgid "Estonia"
 msgstr "Эстония"
 
-#: logic.py:393
+#: logic.py:405
 msgid "Finland"
 msgstr "Финляндия"
 
-#: logic.py:394
+#: logic.py:406
 msgid "France"
 msgstr "Франция"
 
-#: logic.py:395
+#: logic.py:407
 msgid "Georgia"
 msgstr "Грузия"
 
-#: logic.py:396
+#: logic.py:408
 msgid "Germany"
 msgstr "Германия"
 
-#: logic.py:397
+#: logic.py:409
 msgid "Ghana"
 msgstr "Гана"
 
-#: logic.py:398
+#: logic.py:410
 msgid "Greece"
 msgstr "Греция"
 
-#: logic.py:399
+#: logic.py:411
 msgid "Hong Kong"
 msgstr "Гонконг"
 
-#: logic.py:400
+#: logic.py:412
 msgid "Hungary"
 msgstr "Венгрия"
 
-#: logic.py:401
+#: logic.py:413
 msgid "Iceland"
 msgstr "Исландия"
 
-#: logic.py:402
+#: logic.py:414
 msgid "India"
 msgstr "Индия"
 
-#: logic.py:403
+#: logic.py:415
 msgid "Indonesia"
 msgstr "Индонезия"
 
-#: logic.py:404
+#: logic.py:416
 msgid "Iraq"
 msgstr "Ирак"
 
-#: logic.py:405
+#: logic.py:417
 msgid "Ireland"
 msgstr "Ирландия"
 
-#: logic.py:406
+#: logic.py:418
 msgid "Israel"
 msgstr "Израиль"
 
-#: logic.py:407
+#: logic.py:419
 msgid "Itality"
 msgstr "Италия"
 
-#: logic.py:408
+#: logic.py:420
 msgid "Jamaica"
 msgstr "Ямайка"
 
-#: logic.py:409
+#: logic.py:421
 msgid "Japan"
 msgstr "Япония"
 
-#: logic.py:410
+#: logic.py:422
 msgid "Jordan"
 msgstr "Иордан"
 
-#: logic.py:411
+#: logic.py:423
 msgid "Kazakhstan"
 msgstr "Казахстан"
 
-#: logic.py:412
+#: logic.py:424
 msgid "Kenya"
 msgstr "Кения"
 
-#: logic.py:413
+#: logic.py:425
 msgid "Kuwait"
 msgstr "Кувейт"
 
-#: logic.py:414
+#: logic.py:426
 msgid "Latvia"
 msgstr "Латвия"
 
-#: logic.py:415
+#: logic.py:427
 msgid "Lebanon"
 msgstr "Лебанон"
 
-#: logic.py:416
+#: logic.py:428
 msgid "Libya"
 msgstr "Ливия"
 
-#: logic.py:417
+#: logic.py:429
 msgid "Lithuania"
 msgstr "Литва"
 
-#: logic.py:418
+#: logic.py:430
 msgid "Luxembourg"
 msgstr "Люксембург"
 
-#: logic.py:419
+#: logic.py:431
 msgid "Macedonia"
 msgstr "Македония"
 
-#: logic.py:420
+#: logic.py:432
 msgid "Malaysia"
 msgstr "Малайзия"
 
-#: logic.py:421
+#: logic.py:433
 msgid "Mexico"
 msgstr "Мексика"
 
-#: logic.py:422
+#: logic.py:434
 msgid "Montenegro"
 msgstr "Монтенегро"
 
-#: logic.py:423
+#: logic.py:435
 msgid "Morocco"
 msgstr "Марокко"
 
-#: logic.py:424
+#: logic.py:436
 msgid "Nepal"
 msgstr "Непал"
 
-#: logic.py:425
+#: logic.py:437
 msgid "Netherlands"
 msgstr "Нидерланды"
 
-#: logic.py:426
+#: logic.py:438
 msgid "New Zealand"
 msgstr "Новая Зеландия"
 
-#: logic.py:427
+#: logic.py:439
 msgid "Nigeria"
 msgstr "Нигерия"
 
-#: logic.py:428
+#: logic.py:440
 msgid "Norway"
 msgstr "Норвегия"
 
-#: logic.py:429
+#: logic.py:441
 msgid "Oman"
 msgstr "Оман"
 
-#: logic.py:430
+#: logic.py:442
 msgid "Pakistan"
 msgstr "Пакистан"
 
-#: logic.py:431
+#: logic.py:443
 msgid "Peru"
 msgstr "Перу"
 
-#: logic.py:432
+#: logic.py:444
 msgid "Philippines"
 msgstr "Филиппины"
 
-#: logic.py:433
+#: logic.py:445
 msgid "Poland"
 msgstr "Польша"
 
-#: logic.py:434
+#: logic.py:446
 msgid "Portugal"
 msgstr "Португалия"
 
-#: logic.py:435
+#: logic.py:447
 msgid "Puerto Rico"
 msgstr "Пуэрто-Рико"
 
-#: logic.py:436
+#: logic.py:448
 msgid "Qatar"
 msgstr "Катар"
 
-#: logic.py:437
+#: logic.py:449
 msgid "Romania"
 msgstr "Румыния"
 
-#: logic.py:438
+#: logic.py:450
 msgid "Russia"
 msgstr "Россия"
 
-#: logic.py:439
+#: logic.py:451
 msgid "Saudi Arabia"
 msgstr "Саудовская Аравия"
 
-#: logic.py:440
+#: logic.py:452
 msgid "Senegal"
 msgstr "Сенегал"
 
-#: logic.py:441
+#: logic.py:453
 msgid "Serbia"
 msgstr "Сербия"
 
-#: logic.py:442
+#: logic.py:454
 msgid "Singapore"
 msgstr "Сингапур"
 
-#: logic.py:443
+#: logic.py:455
 msgid "Slovakia"
 msgstr "Словакия"
 
-#: logic.py:444
+#: logic.py:456
 msgid "Slovenia"
 msgstr "Словения"
 
-#: logic.py:445
+#: logic.py:457
 msgid "South Africa"
 msgstr "Южная Африка"
 
-#: logic.py:446
+#: logic.py:458
 msgid "South Korea"
 msgstr "Южная Корея"
 
-#: logic.py:447
+#: logic.py:459
 msgid "Spain"
 msgstr "Испания"
 
-#: logic.py:448
+#: logic.py:460
 msgid "Sri Lanka"
 msgstr "Шри-Ланка"
 
-#: logic.py:449
+#: logic.py:461
 msgid "Sweden"
 msgstr "Швеция"
 
-#: logic.py:450
+#: logic.py:462
 msgid "Switzerland"
 msgstr "Швейцария"
 
-#: logic.py:451
+#: logic.py:463
 msgid "Taiwan"
 msgstr "Тайвань"
 
-#: logic.py:452
+#: logic.py:464
 msgid "Tanzania"
 msgstr "Танзания"
 
-#: logic.py:453
+#: logic.py:465
 msgid "Thailand"
 msgstr "Тайланд"
 
-#: logic.py:454
+#: logic.py:466
 msgid "Tunisia"
 msgstr "Тунис"
 
-#: logic.py:455
+#: logic.py:467
 msgid "Turkey"
 msgstr "Турция"
 
-#: logic.py:456
+#: logic.py:468
 msgid "Uganda"
 msgstr "Уганда"
 
-#: logic.py:457
+#: logic.py:469
 msgid "Ukraine"
 msgstr "Украина"
 
-#: logic.py:458
+#: logic.py:470
 msgid "United Arab Emirates"
 msgstr "Объединённые Арабские Эмираты"
 
-#: logic.py:459
+#: logic.py:471
 msgid "United Kingdom"
 msgstr "Соединённое Королевство"
 
-#: logic.py:460
+#: logic.py:472
 msgid "United States"
 msgstr "Соединённые Штаты Америки"
 
-#: logic.py:461
+#: logic.py:473
 msgid "Vietnam"
 msgstr "Вьетнам"
 
-#: logic.py:462
+#: logic.py:474
 msgid "Yemen"
 msgstr "Йемен"
 
-#: logic.py:463
+#: logic.py:475
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: logic.py:468 yatube.py:1529 yatube.py:2258 yatube.py:2432
+#: logic.py:480 yatube.py:1524 yatube.py:2253 yatube.py:2427
 msgid "Trending"
 msgstr "Популярное"
 
-#: logic.py:580
+#: logic.py:592
 msgid "Fetched {} links"
 msgstr "Получено {} ссылок"
 
-#: logic.py:830 meta.py:425 meta.py:556 yatube.py:507 yatube.py:535
+#: logic.py:842 meta.py:425 meta.py:556 yatube.py:508 yatube.py:536
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: logic.py:937 logic.py:1436 logic.py:1455 meta.py:786 yatube.py:113
-#: yatube.py:128 yatube.py:495 yatube.py:785
+#: logic.py:949 logic.py:1465 logic.py:1484 meta.py:786 yatube.py:114
+#: yatube.py:129 yatube.py:496 yatube.py:786
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: logic.py:988
+#: logic.py:1000
 msgid "Get new video info: {}"
 msgstr "Загрузка информации о новом видео: {}"
 
-#: logic.py:1038
+#: logic.py:1050
 msgid "Length"
 msgstr "Длина"
 
-#: logic.py:1042
+#: logic.py:1054
 msgid "Views"
 msgstr "Просмотров"
 
-#: logic.py:1046
+#: logic.py:1058
 msgid "Likes"
 msgstr "Нравится"
 
-#: logic.py:1049 logic.py:1056 logic.py:1064
+#: logic.py:1061 logic.py:1068 logic.py:1076
 msgid "Disabled"
 msgstr "Отключено"
 
-#: logic.py:1053
+#: logic.py:1065
 msgid "Dislikes"
 msgstr "Не нравится"
 
-#: logic.py:1061
+#: logic.py:1073
 msgid "Comments:"
 msgstr "Комментариев:"
 
-#: logic.py:1068
+#: logic.py:1080
 msgid "Description"
 msgstr "Описание"
 
-#: logic.py:1135
+#: logic.py:1147
 msgid "Download \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: logic.py:1190
+#: logic.py:1217
+msgid "Selected quality is not available, using default quality."
+msgstr "Видео в выбранном качестве недоступно, используются настройки по умолчанию."
+
+#: logic.py:1221
 msgid "This video is not available."
 msgstr "Это видео недоступно."
 
-#: logic.py:1326 yatube.py:2650
+#: logic.py:1355 yatube.py:2645
 msgid "Put here words to block in titles (case is ignored)"
 msgstr "Вставьте сюда слова из заголовков для блокировки (регистр игнорируется)"
 
@@ -958,12 +962,12 @@ msgstr "Обновление {}"
 msgid "{} records have been found."
 msgstr "Найдено {} записей."
 
-#: yatube.py:651
+#: yatube.py:652
 msgid "\"{}\" is already in the list!"
 msgstr "\"{}\" уже в списке!"
 
-#: yatube.py:676 yatube.py:948 yatube.py:963 yatube.py:1415 yatube.py:1441
-#: yatube.py:1461 yatube.py:1514 yatube.py:1999 yatube.py:2111
+#: yatube.py:677 yatube.py:1410 yatube.py:1436 yatube.py:1456 yatube.py:1509
+#: yatube.py:1994 yatube.py:2106
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -973,47 +977,47 @@ msgstr ""
 "\n"
 "Поддерживаются следующие режимы: \"{}\"."
 
-#: yatube.py:760 yatube.py:1552
+#: yatube.py:761 yatube.py:1547
 msgid "Put here authors to subscribe to"
 msgstr "Вставьте сюда авторов, на которых нужно подписаться"
 
-#: yatube.py:987
+#: yatube.py:982
 msgid "pause:"
 msgstr "пауза:"
 
-#: yatube.py:1376 yatube.py:2068
+#: yatube.py:1371 yatube.py:2063
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: yatube.py:1528 yatube.py:1617 yatube.py:1624 yatube.py:2055 yatube.py:2244
+#: yatube.py:1523 yatube.py:1612 yatube.py:1619 yatube.py:2050 yatube.py:2239
 msgid "Channels"
 msgstr "Каналы"
 
-#: yatube.py:1537
+#: yatube.py:1532
 msgid "Unsubscribe from channel \"{}\""
 msgstr "Отписка от канала \"{}\""
 
-#: yatube.py:1568
+#: yatube.py:1563
 msgid "Unblock channel \"{}\""
 msgstr "Разблокировка канала \"{}\""
 
-#: yatube.py:1579 yatube.py:2622
+#: yatube.py:1574 yatube.py:2617
 msgid "Put here authors to be blocked"
 msgstr "Вставьте сюда авторов, которых нужно заблокировать"
 
-#: yatube.py:1653
+#: yatube.py:1648
 msgid "Subscribe to channel \"{}\""
 msgstr "Подписка на канал \"{}\""
 
-#: yatube.py:1687
+#: yatube.py:1682
 msgid "Block channel \"{}\""
 msgstr "Блокировка канала \"{}\""
 
-#: yatube.py:1762
+#: yatube.py:1757
 msgid "Unable to find a suitable application!"
 msgstr "Не удалось найти подходящее приложение!"
 
-#: yatube.py:1779
+#: yatube.py:1774
 msgid ""
 "Failed to run \"{}\"!\n"
 "\n"
@@ -1023,51 +1027,51 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: yatube.py:2033
+#: yatube.py:2028
 msgid "Video #{}:"
 msgstr "Видео №{}:"
 
-#: yatube.py:2058 yatube.py:2435
+#: yatube.py:2053 yatube.py:2430
 msgid "Switch to channel \"{}\""
 msgstr "Переключение на канал \"{}\""
 
-#: yatube.py:2104
+#: yatube.py:2099
 msgid "Selected video"
 msgstr "Выбранное видео"
 
-#: yatube.py:2138
+#: yatube.py:2133
 msgid "Filter by \"{}\""
 msgstr "Применение фильтра \"{}\""
 
-#: yatube.py:2333 yatube.py:2400
+#: yatube.py:2328 yatube.py:2395
 msgid "Download progress"
 msgstr "Ход загрузок"
 
-#: yatube.py:2441
+#: yatube.py:2436
 msgid "Country: {}"
 msgstr "Страна: {}"
 
-#: yatube.py:2477
+#: yatube.py:2472
 msgid "Widget must be at least {} pixels in height"
 msgstr "Виджет должен быть минимум {} пикселей в высоту"
 
-#: yatube.py:2512
+#: yatube.py:2507
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
-#: yatube.py:2550
+#: yatube.py:2545
 msgid "{}/{} links are already stored in DB."
 msgstr "{}/{} ссылок уже хранятся в БД."
 
-#: yatube.py:2628 yatube.py:2656
+#: yatube.py:2623 yatube.py:2651
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: yatube.py:2708
+#: yatube.py:2703
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
 
-#: yatube.py:2711
+#: yatube.py:2706
 msgid "Goodbye!"
 msgstr "До свидания!"
 
