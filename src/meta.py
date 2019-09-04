@@ -908,6 +908,9 @@ class Commands:
         elif 'has disabled comments' in e:
             mes = _('Comments are disabled for this video.')
             sh.objs.mes(f,mes).info()
+        elif 'The playlist identified with the requests <code>playlistId</code> parameter cannot be found.' in e:
+            mes = _('This channel is not available!')
+            sh.objs.mes(f,mes).warning()
         else:
             mes = _('Third-party module has failed!\n\nDetails: {}')
             mes = mes.format(e)
