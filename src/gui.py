@@ -685,7 +685,7 @@ class Menu:
         self.lab_slw = sh.Label (parent = self.frame3
                                 ,text   = _('Slow PC')
                                 ,side   = 'left'
-                                ,font   = 'Sans 8'
+                                ,font   = 'Sans 10'
                                 )
         self.opt_trd = sh.OptionMenu (parent = self.frame4
                                      ,side   = 'left'

@@ -346,7 +346,7 @@ msgstr "Применить"
 
 #: gui.py:686
 msgid "Slow PC"
-msgstr "Медленный ПК"
+msgstr "Медл. ПК"
 
 #: gui.py:701 gui.py:705
 msgid "Streaming quality"
