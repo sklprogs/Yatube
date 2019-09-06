@@ -487,6 +487,10 @@ class Comments:
         self.frm_txt = sh.Frame (parent = self.parent
                                 ,side   = 'top'
                                 )
+        self.frm_btm = sh.Frame (parent = self.parent
+                                ,expand = False
+                                ,side   = 'bottom'
+                                )
     
     def widgets(self):
         self.btn_prv = sh.Button (parent   = self.frm_rht
@@ -504,6 +508,15 @@ class Comments:
                                  ,bindings = '<Alt-Right>'
                                  )
         self.txt_com = sh.TextBox(self.frm_txt)
+        self.btn_cls = sh.Button (parent   = self.frm_btm
+                                 ,action   = self.close
+                                 ,text     = _('Close')
+                                 ,hint     = _('Reject and close')
+                                 ,bindings = ('<Escape>','<Control-w>'
+                                             ,'<Control-q>'
+                                             )
+                                 ,expand   = True
+                                 )
     
     def gui(self):
         self.parent = sh.Top()
