@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-04 04:30+0300\n"
+"POT-Creation-Date: 2019-09-19 23:08+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -33,11 +33,11 @@ msgstr "Сохранение \"{}\""
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
-#: gui.py:19 gui.py:44 gui.py:665 yatube.py:1930 yatube.py:2093
+#: gui.py:19 gui.py:44 gui.py:678 yatube.py:1930 yatube.py:2093
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: gui.py:20 gui.py:45 gui.py:659 yatube.py:1925 yatube.py:2089
+#: gui.py:20 gui.py:45 gui.py:672 yatube.py:1925 yatube.py:2089
 msgid "Play"
 msgstr "Воспроизвести"
 
@@ -73,7 +73,7 @@ msgstr "Копировать URL канала"
 msgid "Show comments"
 msgstr "Показать комментарии"
 
-#: gui.py:29 gui.py:46 gui.py:662 yatube.py:1170 yatube.py:1923 yatube.py:2008
+#: gui.py:29 gui.py:46 gui.py:675 yatube.py:1170 yatube.py:1923 yatube.py:2008
 #: yatube.py:2086
 msgid "Download"
 msgstr "Загрузить"
@@ -140,7 +140,7 @@ msgstr "Удалить"
 msgid "Full menu"
 msgstr "Полное меню"
 
-#: gui.py:52 gui.py:570 yatube.py:1399
+#: gui.py:52 gui.py:583 yatube.py:1399
 msgid "Update"
 msgstr "Обновить"
 
@@ -152,7 +152,7 @@ msgstr "Канал"
 msgid "Subscriptions"
 msgstr "Подписки"
 
-#: gui.py:57 gui.py:574 yatube.py:1416
+#: gui.py:57 gui.py:587 yatube.py:1416
 msgid "View"
 msgstr "Вид"
 
@@ -176,7 +176,7 @@ msgstr "Избранное"
 msgid "Welcome screen"
 msgstr "Начальный экран"
 
-#: gui.py:65 gui.py:578 yatube.py:1037 yatube.py:1041 yatube.py:1462
+#: gui.py:65 gui.py:591 yatube.py:1037 yatube.py:1041 yatube.py:1462
 msgid "Selection"
 msgstr "Выбранное"
 
@@ -188,7 +188,7 @@ msgstr "Выбрать все новые видео"
 msgid "Delete selected"
 msgstr "Удалить выбранное"
 
-#: gui.py:76 gui.py:409 gui.py:582 yatube.py:1442
+#: gui.py:76 gui.py:409 gui.py:595 yatube.py:1442
 msgid "Edit"
 msgstr "Править"
 
@@ -200,7 +200,7 @@ msgstr "Заблокированные авторы"
 msgid "Blocked words"
 msgstr "Заблокированные слова"
 
-#: gui.py:82 gui.py:671 yatube.py:954
+#: gui.py:82 gui.py:684 yatube.py:954
 msgid "Best qual."
 msgstr "Лучшее кач."
 
@@ -208,7 +208,7 @@ msgstr "Лучшее кач."
 msgid "Worst qual."
 msgstr "Худшее кач."
 
-#: gui.py:86 gui.py:678
+#: gui.py:86 gui.py:691
 msgid "Auto"
 msgstr "Авто"
 
@@ -260,7 +260,7 @@ msgstr "Открыть URL"
 msgid "Add"
 msgstr "Добавить"
 
-#: gui.py:417
+#: gui.py:417 gui.py:513
 msgid "Close"
 msgstr "Закрыть"
 
@@ -276,127 +276,131 @@ msgstr "Запомнить и выйти"
 msgid "Reset all fields"
 msgstr "Восстановить все поля"
 
-#: gui.py:453 gui.py:1050
+#: gui.py:453 gui.py:1063
 msgid "Comments"
 msgstr "Комментарии"
 
-#: gui.py:493 gui.py:596
+#: gui.py:497 gui.py:609
 msgid "Go to the previous page"
 msgstr "Перейти на предыдущую страницу"
 
-#: gui.py:500 gui.py:601
+#: gui.py:504 gui.py:614
 msgid "Go to the next page"
 msgstr "Перейти на следующую страницу"
 
-#: gui.py:549 gui.py:650 yatube.py:2132
+#: gui.py:514
+msgid "Close this window"
+msgstr "Закрыть это окно"
+
+#: gui.py:562 gui.py:663 yatube.py:2132
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
-#: gui.py:556 gui.py:628 yatube.py:2117
+#: gui.py:569 gui.py:641 yatube.py:2117
 msgid "Search Youtube"
 msgstr "Поиск в Youtube"
 
-#: gui.py:563
+#: gui.py:576
 msgid "Videos per page"
 msgstr "Число видео на страницу"
 
-#: gui.py:585
+#: gui.py:598
 msgid "←"
 msgstr "←"
 
-#: gui.py:586
+#: gui.py:599
 msgid "Go to the previous channel"
 msgstr "Перейти на предыдущий канал"
 
-#: gui.py:590
+#: gui.py:603
 msgid "→"
 msgstr "→"
 
-#: gui.py:591
+#: gui.py:604
 msgid "Go to the next channel"
 msgstr "Перейти на следующий канал"
 
-#: gui.py:595
+#: gui.py:608
 msgid "‹"
 msgstr "‹"
 
-#: gui.py:600
+#: gui.py:613
 msgid "›"
 msgstr "›"
 
-#: gui.py:613 gui.py:616 yatube.py:1844
+#: gui.py:626 gui.py:629 yatube.py:1844
 msgid "Newer than"
 msgstr "Новее"
 
-#: gui.py:614
+#: gui.py:627
 msgid "Older than"
 msgstr "Старше"
 
-#: gui.py:630
+#: gui.py:643
 msgid "Search"
 msgstr "Найти"
 
-#: gui.py:639 yatube.py:2071
+#: gui.py:652 yatube.py:2071
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
-#: gui.py:652
+#: gui.py:665
 msgid "Filter"
 msgstr "Применить"
 
-#: gui.py:686
+#: gui.py:699
 msgid "Slow PC"
 msgstr "Медл. ПК"
 
-#: gui.py:701 gui.py:705
+#: gui.py:714 gui.py:718
 msgid "Streaming quality"
 msgstr "Качество потокового видео"
 
-#: gui.py:778
+#: gui.py:791
 msgid " (selected: {}/{})"
 msgstr " (выбрано: {}/{})"
 
-#: gui.py:855 logic.py:1038
+#: gui.py:868 logic.py:1038
 msgid "Author"
 msgstr "Автор"
 
-#: gui.py:856 logic.py:1042
+#: gui.py:869 logic.py:1042
 msgid "Title"
 msgstr "Заголовок"
 
-#: gui.py:857 logic.py:1046
+#: gui.py:870 logic.py:1046
 msgid "Date"
 msgstr "Дата"
 
-#: gui.py:896
+#: gui.py:909
 msgid "Image"
 msgstr "Изображение"
 
-#: gui.py:900 gui.py:906 gui.py:912
+#: gui.py:913 gui.py:919 gui.py:925
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: gui.py:971
+#: gui.py:984
 msgid "Scroll to {}"
 msgstr "Прокрутка до {}"
 
-#: gui.py:1057
+#: gui.py:1070
 msgid "Edit subscriptions:"
 msgstr "Отредактируйте подписки:"
 
-#: gui.py:1065
+#: gui.py:1078
 msgid "Edit the blacklist:"
 msgstr "Отредактируйте черный список"
 
-#: gui.py:1077
+#: gui.py:1090
 msgid "Full summary:"
 msgstr "Полная сводка:"
 
-#: gui.py:1089
+#: gui.py:1102
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: gui.py:1107
+#: gui.py:1120
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
@@ -1489,9 +1493,6 @@ msgstr "До свидания!"
 
 #~ msgid "Mark/unmark all checkboxes"
 #~ msgstr "Переключить все галки"
-
-#~ msgid "Close this window"
-#~ msgstr "Закрыть это окно"
 
 #~ msgid "Select files:"
 #~ msgstr "Выберите файлы:"

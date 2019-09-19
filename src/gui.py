@@ -511,7 +511,7 @@ class Comments:
         self.btn_cls = sh.Button (parent   = self.frm_btm
                                  ,action   = self.close
                                  ,text     = _('Close')
-                                 ,hint     = _('Reject and close')
+                                 ,hint     = _('Close this window')
                                  ,bindings = ('<Escape>','<Control-w>'
                                              ,'<Control-q>'
                                              )
