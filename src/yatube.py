@@ -1743,8 +1743,10 @@ class Commands:
         f = '[Yatube] yatube.Commands.stream_video'
         url = lg.Video().stream(self.quality())
         if url:
-            ''' Consider using newer python/OS builds if you have
-                SSL/TLS problems here.
+            ''' - Consider using newer python/OS builds if you have
+                  SSL/TLS problems here.
+                - If streaming fails, try streaming with another quality
+                  or downloading a different format.
             '''
             if os.path.exists('/usr/bin/mpv'):
                 app = '/usr/bin/mpv'

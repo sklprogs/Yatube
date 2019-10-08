@@ -1121,6 +1121,13 @@ class Video:
                                                   ,FromEnd = False
                                                   ,ShowGap = True
                                                   )
+                ''' #NOTE: youtube_dl may try to use ffmpeg to merge
+                    audio and video, but ffmpeg reacts to file
+                    extentions rather than to magic numbers and that
+                    causes files with a wrong extension to be
+                    unplayable.
+                '''
+                #cur
                 video._path += '.mp4'
             return video._path
         else:
@@ -1138,7 +1145,7 @@ class Video:
         else:
             sh.com.cancel(f)
     
-    def download(self,callback=None):
+    def download(self,callback=None,vformat='mp4'):
         f = '[Yatube] logic.Video.download'
         self.make_dir()
         if self.Success:
@@ -1146,10 +1153,12 @@ class Video:
             if video._path:
                 mes = _('Download "{}"').format(video._path)
                 sh.objs.mes(f,mes,True).info()
-                #todo: select format & quality
+                #todo: select quality
+                ''' There was a video for which 'webm' downloaded
+                    successfully, but 'mp4' failed.
+                '''
                 options = {'outtmpl'           :video._path
-                          ,'format'            :'mp4'
-                          ,'ignoreerrors'      :True
+                          ,'format'            :vformat
                           ,'nooverwrites'      :True
                           ,'noplaylist'        :True
                           ,'nocheckcertificate':True

@@ -1,3 +1,5 @@
+- If streaming fails, try streaming with another quality or downloading
+  a different format
 - All local lists (Watchlist, Favorites, History, etc.): since we fetch
   MAX_VIDEOS results instead of all results, reaching the end of
   the list, then going to the empty screen (outbounds, no more results),
