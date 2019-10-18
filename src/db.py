@@ -200,7 +200,7 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def mark_later(self,video_id,ltime=0):
+    def mark_later(self,video_id,ltime=0.0):
         f = '[Yatube] db.DB.mark_later'
         if self.Success:
             try:
@@ -229,7 +229,7 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def mark_starred(self,video_id,ftime=0):
+    def mark_starred(self,video_id,ftime=0.0):
         f = '[Yatube] db.DB.mark_starred'
         if self.Success:
             try:

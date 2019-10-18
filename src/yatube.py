@@ -1206,9 +1206,15 @@ class Commands:
     
     def remove_from_watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.remove_from_watchlist'
-        lg.objs.db().mark_later (video_id = mt.objs.videos().current()._id
-                                ,ltime    = 0
+        ivideo = mt.objs.videos().current()
+        lg.objs.db().mark_later (video_id = ivideo._id
+                                ,ltime    = 0.0
                                 )
+        ivideo._ltime = 0.0
+        ivideo._pause = 0
+        lg.objs.db().update_pause (video_id = ivideo._id
+                                  ,pause    = ivideo._pause
+                                  )
         if Unselect:
             self.unselect()
     
