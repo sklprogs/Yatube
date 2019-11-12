@@ -1053,21 +1053,21 @@ class Video:
             tmp.write('\n')
             tmp.write(_('Views'))
             tmp.write(': ')
-            tmp.write(str(video._views))
+            tmp.write(sh.com.figure_commas(video._views))
             tmp.write('\n')
             tmp.write(_('Likes'))
             tmp.write(': ')
             if video._likes < 0:
                 tmp.write(_('Disabled'))
             else:
-                tmp.write(str(video._likes))
+                tmp.write(sh.com.figure_commas(video._likes))
             tmp.write('\n')
             tmp.write(_('Dislikes'))
             tmp.write(': ')
             if video._dislikes < 0:
                 tmp.write(_('Disabled'))
             else:
-                tmp.write(str(video._dislikes))
+                tmp.write(sh.com.figure_commas(video._dislikes))
             tmp.write('\n')
             # ':' is right here to provide a different localization item
             tmp.write(_('Comments:'))
@@ -1075,7 +1075,7 @@ class Video:
             if video._com_num < 0:
                 tmp.write(_('Disabled'))
             else:
-                tmp.write(str(video._com_num))
+                tmp.write(sh.com.figure_commas(video._com_num))
             tmp.write('\n\n')
             tmp.write(_('Description'))
             tmp.write(':\n')
@@ -1127,7 +1127,6 @@ class Video:
                     causes files with a wrong extension to be
                     unplayable.
                 '''
-                #cur
                 video._path += '.mp4'
             return video._path
         else:
