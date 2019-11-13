@@ -891,10 +891,11 @@ class Comments:
                     text = ''
                     mes = _('Wrong input data!')
                     sh.objs.mes(f,mes).warning()
-                text     = sh.Text(text).delete_unsupported()
-                old_text = self.gui.txt_com.get()
+                text = sh.Text(text).delete_unsupported()
                 # A new line is inserted when read from the widget
-                text = text.strip()
+                text     = text.strip()
+                text     = sh.Text(text).convert_line_breaks()
+                old_text = self.gui.txt_com.get()
                 old_text.strip()
                 # Keep a scrollbar position if there are no pages left
                 if old_text != text:
