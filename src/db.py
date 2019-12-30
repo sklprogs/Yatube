@@ -3,11 +3,7 @@
 
 import sqlite3
 import skl_shared.shared as sh
-import gettext
-import skl_shared.gettext_windows
-
-skl_shared.gettext_windows.setup_env()
-gettext.install('yatube','../resources/locale')
+from skl_shared.localize import _
 
 
 class DB:
@@ -514,7 +510,7 @@ class DB:
         f = '[Yatube] db.DB.print'
         if self.Success:
             ''' 'self.dbc.description' is 'None' without performing 
-                'select' first
+                'select' first.
              '''
             if not Selected:
                 self.dbc.execute('select * from VIDEOS limit ?',(5,))

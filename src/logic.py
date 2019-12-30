@@ -9,11 +9,7 @@ import youtube_dl
 import skl_shared.shared as sh
 import meta              as mt
 import db
-
-import gettext
-import skl_shared.gettext_windows
-skl_shared.gettext_windows.setup_env()
-gettext.install('yatube','../resources/locale')
+from skl_shared.localize import _
 
 pattern1 = 'https://www.youtube.com/watch?v='
 pattern2 = 'https://www.youtube.com/channel/'

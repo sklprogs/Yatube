@@ -5,11 +5,7 @@ import io
 import json
 from googleapiclient.discovery import build
 import skl_shared.shared as sh
-
-import gettext
-import skl_shared.gettext_windows
-skl_shared.gettext_windows.setup_env()
-gettext.install('yatube','../resources/locale')
+from skl_shared.localize import _
 
 API_KEY = 'AIzaSyCIM4EzNqi1in22f4Z3Ru3iYvLaY8tc3bo'
 ''' Default number of videos to be fetched: 5, max: 50.

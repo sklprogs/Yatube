@@ -5,6 +5,7 @@ import skl_shared.shared as sh
 import logic             as lg
 import gui               as gi
 import db
+from skl_shared.localize import _
 
 
 class ImageViewer:
