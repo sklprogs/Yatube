@@ -11,6 +11,32 @@ import meta              as mt
 from skl_shared.localize import _
 
 
+class Config:
+    
+    def __init__(self):
+        ''' Do not use 'super' here since 'lg.Config' and
+            'lg.DefaultConfig' are widely used in 'logic'.
+        '''
+        self.Success = lg.objs.config().Success
+    
+    def restore_keys(self):
+        f = '[Yatube] yatube.Config.restore_keys'
+        if self.Success:
+            mt.MAX_VIDEOS = sh.lg.globs['int']['max_videos']
+            gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
+            if sh.lg.globs['var']['quality'] == 'worst':
+                gi.objs._menu.opt_qal.set(_('Worst qual.'))
+            else:
+                gi.objs._menu.opt_qal.set(_('Best qual.'))
+            if sh.lg.globs['var']['resolution'] == 'Auto':
+                choice = _('Auto')
+            else:
+                choice = sh.lg.globs['var']['resolution']
+            gi.objs._menu.opt_res.set(choice)
+        else:
+            sh.com.cancel(f)
+
+
 
 class Pause:
     
@@ -932,19 +958,6 @@ class Commands:
         self._day    = itime._day
         lg.objs.lists().reset()
         self.reset_channels()
-    
-    def restore_keys(self):
-        mt.MAX_VIDEOS = sh.lg.globs['int']['max_videos']
-        gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
-        if sh.lg.globs['var']['quality'] == 'worst':
-            gi.objs._menu.opt_qal.set(_('Worst qual.'))
-        else:
-            gi.objs._menu.opt_qal.set(_('Best qual.'))
-        if sh.lg.globs['var']['resolution'] == 'Auto':
-            choice = _('Auto')
-        else:
-            choice = sh.lg.globs['var']['resolution']
-        gi.objs._menu.opt_res.set(choice)
     
     def quality(self,event=None):
         ''' Generate a quality argument for youtube_dl.
@@ -2674,7 +2687,12 @@ class Objects:
     
     def __init__(self):
         self._videos = self._add_id = self._commands = self._channels \
-                     = self._pause = None
+                     = self._pause = self._config = None
+    
+    def config(self):
+        if self._config is None:
+            self._config = Config()
+        return self._config
     
     def pause(self):
         if self._pause is None:
@@ -2709,10 +2727,9 @@ if __name__ == '__main__':
     f = '[Yatube] yatube.__main__'
     sh.com.start()
     sh.Geometry(gi.objs.parent()).set('1024x600')
-    lg.objs.default(product='yatube')
-    if lg.objs._default.Success:
+    if objs.config().Success:
         objs.commands().bindings()
-        objs._commands.restore_keys()
+        objs._config.restore_keys()
         gi.objs._menu.show()
         lg.objs.db().save()
         lg.objs._db.close()

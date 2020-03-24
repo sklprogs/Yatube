@@ -31,31 +31,40 @@ class Config(sh.Config):
 
     def __init__(self):
         super().__init__()
-        self.sections = [sh.lg.SectionIntegers,sh.lg.SectionVariables]
-        self.sections_abbr = [sh.lg.SectionIntegers_abbr
-                             ,sh.lg.SectionVariables_abbr
-                             ]
-        self.sections_func = [sh.lg.config_parser.getint
-                             ,sh.lg.config_parser.get
-                             ]
-        self.message = _('The following sections and/or keys are missing:') + '\n'
-        self.total_keys = 0
-        self.changed_keys = 0
-        self.missing_keys = 0
-        self.missing_sections = 0
-        # Create these keys before reading the config
-        self.path = objs.default().ihome.add_config('yatube.cfg')
-        self.reset()
-        iread = sh.ReadTextFile(self.path)
-        self.text = iread.get()
-        self.Success = iread.Success
-        self._default()
-        if os.path.exists(self.path):
-            self.open()
+        self.Success = objs.default().Success
+        
+    def run(self):
+        f = '[Yatube] logic.Config.run'
+        if self.Success:
+            self.sections = [sh.lg.SectionIntegers
+                            ,sh.lg.SectionVariables
+                            ]
+            self.sections_abbr = [sh.lg.SectionIntegers_abbr
+                                 ,sh.lg.SectionVariables_abbr
+                                 ]
+            self.sections_func = [sh.lg.config_parser.getint
+                                 ,sh.lg.config_parser.get
+                                 ]
+            self.message = _('The following sections and/or keys are missing:') + '\n'
+            self.total_keys = 0
+            self.changed_keys = 0
+            self.missing_keys = 0
+            self.missing_sections = 0
+            # Create these keys before reading the config
+            self.path = objs.default().ihome.add_config('yatube.cfg')
+            self.reset()
+            iread = sh.ReadTextFile(self.path)
+            self.text = iread.get()
+            self.Success = iread.Success
+            self._default()
+            if os.path.exists(self.path):
+                self.open()
+            else:
+                self.Success = False
+            self.check()
+            self.load()
         else:
-            self.Success = False
-        self.check()
-        self.load()
+            sh.com.cancel(f)
 
     # Do not rename, this procedure is called by 'shared'
     def _default(self):
@@ -670,7 +679,7 @@ class Lists:
         self._block_auth  = []
         self._block_words = []
         self._subsc_auth  = []
-        self._subsc_ids  = []
+        self._subsc_ids   = []
     
     def match_blocked_word(self,word):
         f = '[Yatube] logic.Lists.match_blocked_word'
@@ -736,7 +745,13 @@ class Objects:
                      = self._db = self._channels = self._channel \
                      = self._extractor = self._history \
                      = self._watchlist = self._favorites = self._feed \
-                     = None
+                     = self._config = None
+    
+    def config(self):
+        if self._config is None:
+            self._config = Config()
+            self._config.run()
+        return self._config
     
     def feed(self):
         if self._feed is None:
