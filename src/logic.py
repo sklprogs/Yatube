@@ -1402,6 +1402,18 @@ class DefaultConfig:
         self._fdb     = ''
         self._fdconf  = ''
         self._fconf   = ''
+        self.api_key  = ''
+    
+    def get_api_key(self):
+        f = '[MClient] logic.DefaultConfig.get_api_key'
+        if self.Success:
+            if not self.api_key:
+                file = self.ihome.add_config('api-key.txt')
+                self.api_key = sh.ReadTextFile(file).get()
+                self.api_key = self.api_key.strip()
+        else:
+            sh.com.cancel(f)
+        return self.api_key
     
     def config(self):
         f = '[MClient] logic.DefaultConfig.config'
@@ -1596,6 +1608,7 @@ class ChannelHistory:
 objs = Objects()
 com  = Commands()
 Config()
+mt.API_KEY = objs.default().get_api_key()
 mt.objs.stat()
 
 
