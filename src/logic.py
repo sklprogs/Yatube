@@ -27,6 +27,60 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class Config(sh.Config):
+
+    def __init__(self):
+        super().__init__()
+        self.sections = [sh.lg.SectionIntegers,sh.lg.SectionVariables]
+        self.sections_abbr = [sh.lg.SectionIntegers_abbr
+                             ,sh.lg.SectionVariables_abbr
+                             ]
+        self.sections_func = [sh.lg.config_parser.getint
+                             ,sh.lg.config_parser.get
+                             ]
+        self.message = _('The following sections and/or keys are missing:') + '\n'
+        self.total_keys = 0
+        self.changed_keys = 0
+        self.missing_keys = 0
+        self.missing_sections = 0
+        # Create these keys before reading the config
+        self.path = objs.default().ihome.add_config('yatube.cfg')
+        self.reset()
+        iread = sh.ReadTextFile(self.path)
+        self.text = iread.get()
+        self.Success = iread.Success
+        self._default()
+        if os.path.exists(self.path):
+            self.open()
+        else:
+            self.Success = False
+        self.check()
+        self.load()
+
+    # Do not rename, this procedure is called by 'shared'
+    def _default(self):
+        self._default_int()
+        self._default_var()
+    
+    def _default_int(self):
+        sh.lg.globs['int'].update ({
+            'max_videos' :50
+                                  })
+    
+    def _default_var(self):
+        sh.lg.globs['var'].update ({
+            'resolution' :'auto'
+           ,'quality'    :'best'
+                                  })
+
+    def reset(self):
+        sh.lg.globs['bool']  = {}
+        sh.lg.globs['float'] = {}
+        sh.lg.globs['int']   = {}
+        sh.lg.globs['var']   = {}
+
+
+
 class Commands:
     
     def extract_resolution(self,text):
@@ -1331,6 +1385,39 @@ class DefaultConfig:
         self._fblock  = ''
         self._fblockw = ''
         self._fdb     = ''
+        self._fdconf  = ''
+        self._fconf   = ''
+    
+    def config(self):
+        f = '[MClient] logic.DefaultConfig.config'
+        if self.Success:
+            if not self._fconf:
+                self._fconf = self.ihome.add_config('yatube.cfg')
+                if os.path.exists(self._fconf):
+                    self.Success = sh.File(file=self._fconf).Success
+                else:
+                    self.default_config()
+                    if self.Success:
+                        self.Success = sh.File (file = self._fdconf
+                                               ,dest = self._fconf
+                                               ).copy()
+                    else:
+                        sh.com.cancel(f)
+            return self._fconf
+        else:
+            sh.com.cancel(f)
+    
+    def default_config(self):
+        f = '[Yatube] logic.DefaultConfig.default_config'
+        if self.Success:
+            if not self._fdconf:
+                self._fdconf = sh.objs.pdir().add ('..','resources'
+                                                  ,'default.cfg'
+                                                  )
+                self.Success = sh.File(file=self._fdconf).Success
+            return self._fdconf
+        else:
+            sh.com.cancel(f)
     
     def db(self):
         f = '[Yatube] logic.DefaultConfig.db'
@@ -1405,6 +1492,8 @@ class DefaultConfig:
     def run(self):
         f = '[Yatube] logic.DefaultConfig.run'
         if self.Success:
+            self.default_config()
+            self.config()
             self.subscribe()
             self.block_channels()
             self.block_words()
@@ -1491,6 +1580,7 @@ class ChannelHistory:
 
 objs = Objects()
 com  = Commands()
+Config()
 mt.objs.stat()
 
 

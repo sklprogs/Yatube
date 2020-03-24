@@ -933,6 +933,19 @@ class Commands:
         lg.objs.lists().reset()
         self.reset_channels()
     
+    def restore_keys(self):
+        mt.MAX_VIDEOS = sh.lg.globs['int']['max_videos']
+        gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
+        if sh.lg.globs['var']['quality'] == 'worst':
+            gi.objs._menu.opt_qal.set(_('Worst qual.'))
+        else:
+            gi.objs._menu.opt_qal.set(_('Best qual.'))
+        if sh.lg.globs['var']['resolution'] == 'Auto':
+            choice = _('Auto')
+        else:
+            choice = sh.lg.globs['var']['resolution']
+        gi.objs._menu.opt_res.set(choice)
+    
     def quality(self,event=None):
         ''' Generate a quality argument for youtube_dl.
             Youtube's recommended resolution ratios:
@@ -2699,7 +2712,7 @@ if __name__ == '__main__':
     lg.objs.default(product='yatube')
     if lg.objs._default.Success:
         objs.commands().bindings()
-        gi.objs.menu().opt_max.set(mt.MAX_VIDEOS)
+        objs._commands.restore_keys()
         gi.objs._menu.show()
         lg.objs.db().save()
         lg.objs._db.close()
