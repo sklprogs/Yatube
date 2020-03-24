@@ -7,7 +7,11 @@ from googleapiclient.discovery import build
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-API_KEY = 'AIzaSyCIM4EzNqi1in22f4Z3Ru3iYvLaY8tc3bo'
+''' Yes, I know, this is probably stupid to store this key as
+    plain text. I just do that so you won't have to set it yourself.
+    Please don't abuse this key, or I will have to regenerate it.
+'''
+API_KEY = 'AIzaSyB-JmQlYwwacXpxv4Y36lEkgTzHcoIe-XU'
 ''' Default number of videos to be fetched: 5, max: 50.
     Default number of comments to be fetched: 20, max: 100.
 '''
