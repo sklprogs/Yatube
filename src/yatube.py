@@ -19,6 +19,56 @@ class Config:
         '''
         self.Success = lg.objs.config().Success
     
+    def set(self):
+        f = '[Yatube] yatube.Config.set'
+        if self.Success:
+            mes = _('Update config options')
+            sh.objs.mes(f,mes,True).info()
+            try:
+                sh.lg.config_parser.set (sh.lg.SectionIntegers
+                                        ,'max_videos'
+                                        ,gi.objs.menu().opt_max.choice
+                                        )
+                choice = gi.objs._menu.opt_res.choice
+                if choice == _('Auto'):
+                    choice = 'auto'
+                sh.lg.config_parser.set (sh.lg.SectionVariables
+                                        ,'resolution'
+                                        ,choice
+                                        )
+                choice = gi.objs._menu.opt_qal.choice
+                if choice == _('Best qual.'):
+                    choice = 'best'
+                elif choice == _('Worst qual.'):
+                    choice = 'worst'
+                sh.lg.config_parser.set (sh.lg.SectionVariables
+                                        ,'quality'
+                                        ,choice
+                                        )
+            except Exception as e:
+                self.Success = False
+                mes = _('Third-party module has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes).error()
+        else:
+            sh.com.cancel(f)
+    
+    def save(self):
+        f = '[Yatube] yatube.Config.save'
+        if self.Success:
+            mes = _('Save config options')
+            sh.objs.mes(f,mes,True).info()
+            try:
+                with open(lg.objs.config().path,'w') as cf:
+                    sh.lg.config_parser.write(cf)
+            except Exception as e:
+                self.Success = False
+                mes = _('Third-party module has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes).error()
+        else:
+            sh.com.cancel(f)
+    
     def restore_keys(self):
         f = '[Yatube] yatube.Config.restore_keys'
         if self.Success:
@@ -28,7 +78,7 @@ class Config:
                 gi.objs._menu.opt_qal.set(_('Worst qual.'))
             else:
                 gi.objs._menu.opt_qal.set(_('Best qual.'))
-            if sh.lg.globs['var']['resolution'] == 'Auto':
+            if sh.lg.globs['var']['resolution'] == 'auto':
                 choice = _('Auto')
             else:
                 choice = sh.lg.globs['var']['resolution']
@@ -2731,6 +2781,8 @@ if __name__ == '__main__':
         objs.commands().bindings()
         objs._config.restore_keys()
         gi.objs._menu.show()
+        objs._config.set()
+        objs._config.save()
         lg.objs.db().save()
         lg.objs._db.close()
     else:
