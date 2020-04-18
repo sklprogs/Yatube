@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
+import skl_shared2.shared as sh
 import logic             as lg
 import gui               as gi
 import db
-from skl_shared.localize import _
+from skl_shared2.localize import _
 
 
 class ImageViewer:
     
     def __init__(self):
-        self.gui()
+        self.set_gui()
     
     def show(self,event=None):
         self.parent.show()
@@ -19,7 +19,7 @@ class ImageViewer:
     def close(self,event=None):
         self.parent.close()
     
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.parent
                     ,bindings = ('<Escape>','<Control-w>','<Control-q>'
                                 ,'<ButtonRelease-1>'
@@ -27,50 +27,50 @@ class ImageViewer:
                     ,action   = self.close
                     )
     
-    def title(self,arg=None):
+    def set_title(self,arg=None):
         if not arg:
             arg = _('Image:')
-        self.parent.title(arg)
+        self.parent.set_title(arg)
     
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.parent.icon(path)
+            self.parent.set_icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('..','resources'
-                                                 ,'unmusic.gif'
-                                                 )
-                             )
+            self.parent.set_icon (sh.objs.get_pdir().add ('..','resources'
+                                                         ,'unmusic.gif'
+                                                         )
+                                 )
     
-    def gui(self):
+    def set_gui(self):
         self.parent = sh.Top()
         self.lbl    = sh.Label (parent = self.parent
                                ,text   = _('Image:')
                                ,expand = True
                                ,fill   = 'both'
                                )
-        self.title()
-        self.icon()
-        self.bindings()
+        self.set_title()
+        self.set_icon()
+        self.set_bindings()
 
 
 def time():
     itime = lg.Time()
     itime.set_date(DaysDelta=0)
     print('Current time:')
-    print('Year:',itime._year)
-    print('Month:',itime._month)
-    print('Day:',itime._day)
+    print('Year:',itime.year)
+    print('Month:',itime.month)
+    print('Day:',itime.day)
     itime.set_date(DaysDelta=7)
     print()
     print('A week ago:')
-    print('Year:',itime._year)
-    print('Month:',itime._month)
-    print('Day:',itime._day)
+    print('Year:',itime.year)
+    print('Month:',itime.month)
+    print('Day:',itime.day)
     
 def constants():
     cs = lg.Constants()
     print('Countries:')
-    print(cs.countries())
+    print(cs.get_countries())
     print()
     print('Trending:')
     print(cs.trending())
@@ -83,11 +83,11 @@ def lists():
     lists = lg.Lists()
     lists.load()
     print('Subscribe to authors:')
-    print(lists._subsc_auth)
+    print(lists.subauth)
     print('URLs:')
-    print(lists._subsc_urls)
+    print(lists.subsc_urls)
     print('Block authors:')
-    print(lists._block_auth)
+    print(lists.blauth)
     
 def all():
     print('Run all tests')
@@ -105,8 +105,8 @@ def author():
     
 def timestamp():
     itime = sh.Time()
-    itime._date = '2007-09-01'
-    result = itime.timestamp()
+    itime.date = '2007-09-01'
+    result = itime.get_timestamp()
     idb = db.DB()
     result = idb.date_filter (timestamp = result
                              ,Newer     = False
@@ -150,7 +150,7 @@ def search_field():
     itime.add_days(-7)
     idb.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                       where SEARCH like ? and DTIME > ? and FDTIME < ?'
-                    ,('%дерев%',0,itime.timestamp(),)
+                    ,('%дерев%',0,itime.get_timestamp(),)
                     )
     result = idb.dbc.fetchall()
     if result:

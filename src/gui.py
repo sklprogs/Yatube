@@ -5,10 +5,10 @@
     to build the program properly
 '''
 import PIL
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
-VERSION = '2.2'
+VERSION = '2.2.1'
 
 context_items = (_('Show the full summary')
                 ,_('Stream')
@@ -85,57 +85,55 @@ res_items = (_('Auto'),'<=2160p'
             )
 
 default_entry_width = 19
-ICON = sh.objs.pdir().add('..','resources','icon_64x64_yatube.gif')
+ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_yatube.gif')
 
 
 class Pause:
     
     def __init__(self):
-        self.values()
-        self.parent = sh.Top()
-        self.widget = self.parent.widget
-        self.gui()
+        self.set_values()
+        self.set_gui()
         self.reset()
     
-    def values(self):
-        self.icn_up0 = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_up_off.gif'
-                                          )
-        self.icn_up1 = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_up.gif'
-                                          )
-        self.icn_dn0 = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_down_off.gif'
-                                          )
-        self.icn_dn1 = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_down.gif'
-                                          )
-        self.icn_del = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_delete.gif'
-                                          )
-        self.icn_rst = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_reload.gif'
-                                          )
-        self.icn_sav = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_save.gif'
-                                          )
+    def set_values(self):
+        self.icn_up0 = sh.objs.get_pdir().add ('..','resources','buttons'
+                                              ,'icon_36x36_up_off.gif'
+                                              )
+        self.icn_up1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_up.gif'
+                                        )
+        self.icn_dn0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_down_off.gif'
+                                        )
+        self.icn_dn1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_down.gif'
+                                        )
+        self.icn_del = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_delete.gif'
+                                        )
+        self.icn_rst = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_reload.gif'
+                                        )
+        self.icn_sav = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_save.gif'
+                                        )
         
     
     def reset(self):
-        self.btn_hrd.inactive()
-        self.btn_hru.active()
+        self.btn_hrd.inactivate()
+        self.btn_hru.activate()
         self.ent_hrs.reset()
         self.ent_hrs.insert('0')
-        self.btn_mnd.inactive()
-        self.btn_mnu.active()
+        self.btn_mnd.inactivate()
+        self.btn_mnu.activate()
         self.ent_min.reset()
         self.ent_min.insert('0')
-        self.btn_scd.inactive()
-        self.btn_scu.active()
+        self.btn_scd.inactivate()
+        self.btn_scu.activate()
         self.ent_sec.reset()
         self.ent_sec.insert('0')
     
-    def frames(self):
+    def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent
                                 ,expand = False
                                 )
@@ -172,7 +170,7 @@ class Pause:
                                 ,side   = 'left'
                                 )
     
-    def hours(self):
+    def set_hours(self):
         self.btn_hru = sh.Button (parent   = self.frm_hrs
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
@@ -188,7 +186,7 @@ class Pause:
                                  ,side     = 'bottom'
                                  )
     
-    def delimiters(self):
+    def set_delimiters(self):
         sh.Label (parent = self.frm_sp1
                  ,text   = ':'
                  ,expand = True
@@ -200,7 +198,7 @@ class Pause:
                  ,font   = 'Serif 14 bold'
                  )
     
-    def minutes(self):
+    def set_minutes(self):
         self.btn_mnu = sh.Button (parent   = self.frm_min
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
@@ -216,7 +214,7 @@ class Pause:
                                  ,side     = 'bottom'
                                  )
     
-    def seconds(self):
+    def set_seconds(self):
         self.btn_scu = sh.Button (parent   = self.frm_sec
                                  ,inactive = self.icn_up0
                                  ,active   = self.icn_up1
@@ -232,7 +230,7 @@ class Pause:
                                  ,side     = 'bottom'
                                  )
     
-    def buttons(self):
+    def set_buttons(self):
         self.btn_del = sh.Button (parent   = self.frm_btm
                                  ,text     = _('Delete')
                                  ,hint     = _('Delete & Close')
@@ -255,18 +253,20 @@ class Pause:
                                  ,inactive = self.icn_sav
                                  )
     
-    def widgets(self):
-        self.hours()
-        self.minutes()
-        self.seconds()
-        self.delimiters()
-        self.buttons()
+    def set_widgets(self):
+        self.set_hours()
+        self.set_minutes()
+        self.set_seconds()
+        self.set_delimiters()
+        self.set_buttons()
     
-    def gui(self):
-        self.frames()
-        self.widgets()
-        self.icon()
-        self.title()
+    def set_gui(self):
+        self.parent = sh.Top (icon  = ICON
+                             ,title = _('Set pause time')
+                             )
+        self.widget = self.parent.widget
+        self.set_frames()
+        self.set_widgets()
     
     def show(self,event=None):
         self.parent.show()
@@ -274,26 +274,23 @@ class Pause:
     def close(self,event=None):
         self.parent.close()
     
-    def title(self,text=None):
+    def set_title(self,text=None):
         if not text:
             text = _('Set pause time')
-        self.parent.title(text=text)
+        self.parent.set_title(text=text)
     
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.parent.icon(path)
+            self.parent.set_icon(path)
         else:
-            self.parent.icon(ICON)
+            self.parent.set_icon(ICON)
 
 
 
 class AddId:
     
     def __init__(self):
-        self.parent = sh.Top()
-        self.widget = self.parent.widget
-        sh.Geometry(self.parent).set('800x600')
-        self.gui()
+        self.set_gui()
     
     def paste_ath(self,event=None):
         self.ent_ath.clear_text()
@@ -303,7 +300,7 @@ class AddId:
         self.ent_pid.clear_text()
         self.ent_pid.insert(sh.Clipboard().paste())
     
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.ent_ath
                     ,bindings = '<ButtonRelease-3>'
                     ,action   = self.paste_ath
@@ -313,16 +310,16 @@ class AddId:
                     ,action   = self.paste_pid
                     )
     
-    def title(self,text=None):
+    def set_title(self,text=None):
         if not text:
             text = _('Add or remove IDs')
-        self.parent.title(text=text)
+        self.parent.set_title(text=text)
     
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.parent.icon(path)
+            self.parent.set_icon(path)
         else:
-            self.parent.icon(ICON)
+            self.parent.set_icon(ICON)
     
     def show(self,event=None):
         self.parent.show()
@@ -330,15 +327,18 @@ class AddId:
     def close(self,event=None):
         self.parent.close()
     
-    def gui(self):
-        self.frames()
-        self.widgets()
-        self.icon()
-        self.title()
-        self.bindings()
-        self.ent_ath.focus()
+    def set_gui(self):
+        self.parent = sh.Top (icon  = ICON
+                             ,title = _('Add or remove IDs')
+                             )
+        self.widget = self.parent.widget
+        sh.Geometry(self.parent).set('800x600')
+        self.set_frames()
+        self.set_widgets()
+        self.set_bindings()
+        self.ent_ath.set_focus()
     
-    def frames(self):
+    def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent
                                 ,side   = 'left'
                                 )
@@ -367,7 +367,7 @@ class AddId:
                                 ,side   = 'left'
                                 )
     
-    def widgets(self):
+    def set_widgets(self):
         self.lbl_ath = sh.Label (parent = self.frm_top
                                 ,text   = _('Channel title:')
                                 )
@@ -434,8 +434,8 @@ class AddId:
 class Comments:
     
     def __init__(self):
-        self.values()
-        self.gui()
+        self.set_values()
+        self.set_gui()
     
     def show(self,event=None):
         self.parent.show()
@@ -443,32 +443,32 @@ class Comments:
     def close(self,event=None):
         self.parent.close()
     
-    def title(self,text=None):
+    def set_title(self,text=None):
         if not text:
             text = _('Comments')
-        self.parent.title(text=text)
+        self.parent.set_title(text=text)
     
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.parent.icon(path)
+            self.parent.set_icon(path)
         else:
-            self.parent.icon(ICON)
+            self.parent.set_icon(ICON)
     
-    def values(self):
-        self.icn_prv1 = sh.objs.pdir().add ('..','resources','buttons'
+    def set_values(self):
+        self.icn_prv1 = sh.objs.get_pdir().add ('..','resources','buttons'
                                            ,'icon_36x36_go_back.gif'
                                            )
-        self.icn_prv0 = sh.objs.pdir().add ('..','resources','buttons'
-                                           ,'icon_36x36_go_back_off.gif'
-                                           )
-        self.icn_nxt1 = sh.objs.pdir().add ('..','resources','buttons'
-                                           ,'icon_36x36_go_forward.gif'
-                                           )
-        self.icn_nxt0 = sh.objs.pdir().add ('..','resources','buttons'
-                                           ,'icon_36x36_go_forward_off.gif'
-                                           )
+        self.icn_prv0 = sh.objs.pdir.add ('..','resources','buttons'
+                                         ,'icon_36x36_go_back_off.gif'
+                                         )
+        self.icn_nxt1 = sh.objs.pdir.add ('..','resources','buttons'
+                                         ,'icon_36x36_go_forward.gif'
+                                         )
+        self.icn_nxt0 = sh.objs.pdir.add ('..','resources','buttons'
+                                         ,'icon_36x36_go_forward_off.gif'
+                                         )
         
-    def frames(self):
+    def set_frames(self):
         self.frm_top = sh.Frame (parent = self.parent
                                 ,expand = False
                                 ,side   = 'top'
@@ -487,7 +487,7 @@ class Comments:
                                 ,side   = 'bottom'
                                 )
     
-    def widgets(self):
+    def set_widgets(self):
         self.btn_prv = sh.Button (parent   = self.frm_rht
                                  ,hint     = _('Go to the previous page')
                                  ,inactive = self.icn_prv0
@@ -513,15 +513,15 @@ class Comments:
                                  ,expand   = True
                                  )
     
-    def gui(self):
-        self.parent = sh.Top()
+    def set_gui(self):
+        self.parent = sh.Top (icon  = ICON
+                             ,title = _('Comments')
+                             )
         self.widget = self.parent.widget
         sh.Geometry(self.parent).set('1024x768')
-        self.frames()
-        self.widgets()
-        self.icon()
-        self.title()
-        self.txt_com.focus()
+        self.set_frames()
+        self.set_widgets()
+        self.txt_com.set_focus()
 
 
 
@@ -529,7 +529,7 @@ class Menu:
     
     def __init__(self,parent):
         self.parent = parent
-        self.gui()
+        self.set_gui()
         
     def show(self,event=None):
         self.parent.show()
@@ -537,7 +537,7 @@ class Menu:
     def close(self,event=None):
         self.parent.close()
     
-    def frames(self):
+    def set_frames(self):
         self.frame1 = sh.Frame (parent = self.parent
                                ,expand = False
                                )
@@ -557,22 +557,22 @@ class Menu:
         if Force or self.ent_flt.get() == _('Filter this view'):
             self.ent_flt.clear_text()
         self.ent_flt.widget.config(fg='black',font='Serif 10')
-        self.ent_flt.focus()
-        #todo: Restore filtered videos here
+        self.ent_flt.set_focus()
+        #TODO: Restore filtered videos here
                    
     def clear_search(self,event=None,Force=False):
         if Force or self.ent_src.get() == _('Search Youtube'):
             self.ent_src.clear_text()
         self.ent_src.widget.config(fg='black',font='Serif 10')
-        self.ent_src.focus()
+        self.ent_src.set_focus()
     
-    def tooltips(self):
+    def set_tooltips(self):
         sh.ToolTip (obj  = self.opt_max
                    ,text = _('Videos per page')
                    ,hdir = 'bottom'
                    )
     
-    def widgets(self):
+    def set_widgets(self):
         self.opt_upd = sh.OptionMenu (parent  = self.frame1
                                      ,items   = update_items
                                      ,default = _('Update')
@@ -720,10 +720,10 @@ class Menu:
         #self.btn_dld.widget.config(state='disabled')
         #self.btn_ply.widget.config(state='disabled')
                   
-    def bindings(self):
+    def set_bindings(self):
         # Main window
         sh.com.bind (obj      = self.parent
-                    ,bindings = ('<Control-w>','<Control-q>')
+                    ,bindings = '<Control-q>'
                     ,action   = self.close
                     )
         sh.com.bind (obj      = self.parent
@@ -779,35 +779,35 @@ class Menu:
                     )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
-    def title(self,text=None,selected=0,total=0):
+    def set_title(self,text=None,selected=0,total=0):
         if not text:
             text = sh.List(lst1=['Yatube',VERSION]).space_items()
             if selected:
                 text += _(' (selected: {}/{})').format(selected,total)
-        self.parent.title(text)
+        self.parent.set_title(text)
     
-    def gui(self):
+    def set_gui(self):
         self.widget = self.parent.widget
-        self.frames()
-        self.widgets()
-        self.tooltips()
-        self.bindings()
+        self.set_frames()
+        self.set_widgets()
+        self.set_tooltips()
+        self.set_bindings()
         self.update()
     
     def minimize(self,event=None):
         self.widget.iconify()
     
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if not path:
             path = ICON
-        self.parent.icon(path)
+        self.parent.set_icon(path)
     
     def clear_url(self,event=None):
         self.ent_url.clear_text()
         self.ent_url.widget.config (fg   = 'black'
                                    ,font = 'Serif 10'
                                    )
-        self.ent_url.focus()
+        self.ent_url.set_focus()
         
     def paste_url(self,event=None):
         self.clear_url()
@@ -827,45 +827,45 @@ class Video:
     
     def __init__(self,parent,no=1):
         # 'no' does not involve logic, it's merely a part of GUI
-        self._no    = no
+        self.no = no
         self.parent = parent
-        self.values()
-        self.gui()
+        self.set_values()
+        self.set_gui()
     
     def gray_out(self,event=None):
-        for label in self._labels:
+        for label in self.labels:
             label.widget.config(fg='gray40')
             
     def black_out(self,event=None):
-        for label in self._labels:
+        for label in self.labels:
             label.widget.config(fg='black')
             
     def red_out(self,event=None):
-        for label in self._labels:
+        for label in self.labels:
             label.widget.config(fg='red')
     
     def green_out(self,event=None):
-        for label in self._labels:
+        for label in self.labels:
             label.widget.config(fg='green')
     
-    def objects(self):
+    def set_objects(self):
         # Do not include 'self.cbx_vno'. Children must come first.
-        self._labels  = [self.lbl_vno,self.lbl_img,self.lbl_aut
-                        ,self.lbl_tit,self.lbl_dat
-                        ]
-        self._objects = self._labels + [self.frm_prm,self.frm_vno
-                                       ,self.frm_img,self.frm_inf
-                                       ]
+        self.labels  = [self.lbl_vno,self.lbl_img,self.lbl_aut
+                       ,self.lbl_tit,self.lbl_dat
+                       ]
+        self.objects = self.labels + [self.frm_prm,self.frm_vno
+                                     ,self.frm_img,self.frm_inf
+                                     ]
 
-    def values(self):
-        self._objects = []
-        self._widgets = []
-        self._author  = _('Author')
-        self._title   = _('Title')
-        self._date    = _('Date')
-        self._image   = objs.def_image()
+    def set_values(self):
+        self.objects = []
+        self.widgets = []
+        self.author  = _('Author')
+        self.title   = _('Title')
+        self.date    = _('Date')
+        self.image   = objs.get_def_image()
     
-    def frames(self):
+    def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent)
         self.frm_vno = sh.Frame (parent = self.frm_prm
                                 ,side   = 'left'
@@ -877,19 +877,19 @@ class Video:
                                 ,side   = 'left'
                                 )
                                  
-    def pic(self):
-        if not self._image:
-            self._image = objs.def_image()
-        self.lbl_img.widget.config(image=self._image)
+    def set_pic(self):
+        if not self.image:
+            self.image = objs.get_def_image()
+        self.lbl_img.widget.config(image=self.image)
         # This prevents the garbage collector from deleting the image
-        self.lbl_img.widget.image = self._image
+        self.lbl_img.widget.image = self.image
     
-    def labels(self):
+    def set_labels(self):
         ''' Fixed width is set to ensure that sizes of a default and
             current video labels are the same.
         '''
         self.lbl_vno = sh.Label (parent  = self.frm_vno
-                                ,text    = str(self._no)
+                                ,text    = str(self.no)
                                 ,side    = 'left'
                                 ,font    = 'Mono 10'
                                 ,width   = 3
@@ -902,7 +902,7 @@ class Video:
         '''
         self.lbl_img = sh.Label (parent = self.frm_img
                                 ,text   = _('Image')
-                                ,image  = self._image
+                                ,image  = self.image
                                 )
         self.lbl_aut = sh.Label (parent = self.frm_inf
                                 ,text   = _('Not Available')
@@ -923,74 +923,73 @@ class Video:
                                 ,padx   = 10
                                 )
     
-    def checkboxes(self):
+    def set_cboxes(self):
         self.cbx_vno = sh.CheckBox (parent = self.frm_vno
                                    ,Active = False
                                    ,side   = 'left'
                                    )
 
-    def gui(self):
-        self.frames()
-        self.checkboxes()
-        self.labels()
-        self.objects()
+    def set_gui(self):
+        self.set_frames()
+        self.set_cboxes()
+        self.set_labels()
+        self.set_objects()
         
     def reset (self,author,title,date
               ,image=None,no=0
               ):
-        self._author = author
-        self._title  = title
-        self._date   = date
-        self._image  = image
+        self.author = author
+        self.title  = title
+        self.date   = date
+        self.image  = image
         ''' 'no' normally remains unmodified, so we check the input
             so we don't have to set 'no' again and again each time
             'self.reset' is called.
         '''
         if no:
-            self._no = no
+            self.no = no
         '''
-        #note #todo For some reason, using 'widget.config' or 
+        #NOTE: #TODO: For some reason, using 'widget.config' or 
         'Label.text' resets config options here.
         '''
-        self.lbl_vno._text = str(self._no)
+        self.lbl_vno.text = str(self.no)
         self.lbl_vno.reset()
-        self.lbl_aut._text = self._author
+        self.lbl_aut.text = self.author
         self.lbl_aut.reset()
-        self.lbl_tit._text = self._title
+        self.lbl_tit.text = self.title
         self.lbl_tit.reset()
-        self.lbl_dat._text = self._date
+        self.lbl_dat.text = self.date
         self.lbl_dat.reset()
-        self.pic()
+        self.set_pic()
 
 
 
 class Channel:
     
     def __init__(self,parent):
-        self.values()
+        self.set_values()
         self.parent = parent
-        self.gui()
+        self.set_gui()
         
     def scroll(self,i):
         f = '[Yatube] gui.Channel.scroll'
-        #fix: seems that another unit type is required
-        #cur
+        #FIX: seems that another unit type is required
         value = i*112.133333333
-        mes   = _('Scroll to {}').format(value)
-        sh.objs.mes(f,mes,True).debug()
+        mes = _('Scroll to {}').format(value)
+        sh.objs.get_mes(f,mes,True).show_debug()
         self.cvs_prm.scroll(y=value)
         
-    def values(self):
+    def set_values(self):
         ''' These values set the width and height of the frame that 
             contains videos and therefore the scrolling region.
             The default Youtube video picture has the dimensions of
             120x90, therefore, the channel frame embedding 10 videos
             will have the height of at least 900.
         '''
-        self._max_x = 1024
-        self._max_y = 920
+        self.max_x = 1024
+        self.max_y = 920
         
-    def frames(self):
+    def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent)
         self.frm_ver = sh.Frame (parent = self.frm_prm
                                 ,expand = False
@@ -1005,11 +1004,11 @@ class Channel:
         # A frame that contains all contents except for scrollbars
         self.frm_cnt = sh.Frame (parent = self.frm_prm
                                 ,side   = 'left'
-                                ,width  = self._max_x
-                                ,height = self._max_y
+                                ,width  = self.max_x
+                                ,height = self.max_y
                                 )
     
-    def canvases(self):
+    def set_canvases(self):
         ''' Create a canvas before an object being embedded, otherwise,
             the canvas will overlap this object.
         '''
@@ -1017,7 +1016,7 @@ class Channel:
         self.frm_emb = sh.Frame(parent=self.frm_cnt)
         self.cvs_prm.embed(self.frm_emb)
     
-    def scrollbars(self):
+    def set_scroll(self):
         sh.Scrollbar (parent = self.frm_hor
                      ,scroll = self.cvs_prm
                      ,Horiz  = True
@@ -1027,109 +1026,107 @@ class Channel:
                      ,Horiz  = False
                      )
     
-    def gui(self):
+    def set_gui(self):
         self.widget = self.parent.widget
-        self.frames()
-        self.canvases()
-        self.scrollbars()
-        self.cvs_prm.focus()
-        self.cvs_prm.top_bindings (top  = objs.parent()
-                                  ,Ctrl = False
-                                  )
+        self.set_frames()
+        self.set_canvases()
+        self.set_scroll()
+        self.cvs_prm.set_focus()
+        self.cvs_prm.set_top_bindings (top  = objs.get_parent()
+                                      ,Ctrl = False
+                                      )
         # This shows the 1st video
-        self.cvs_prm.region (x = self._max_x
-                            ,y = self._max_y
-                            )
+        self.cvs_prm.set_region (x = self.max_x
+                                ,y = self.max_y
+                                )
 
 
 
 class Objects:
     
     def __init__(self):
-        self._def_image = self._channel = self._menu = self._parent \
-                        = self._context = self._summary \
-                        = self._progress = self._blacklist \
-                        = self._subscribe = self._comments = None
+        self.def_image = self.channel = self.menu = self.parent \
+                       = self.context = self.summary \
+                       = self.progress = self.blacklist \
+                       = self.subscribe = self.comments = None
     
-    def comments(self):
-        if not self._comments:
-            top = sh.Top()
-            sh.Geometry(parent=top).set('1024x600')
-            self._comments = sh.TextBoxRO (title = _('Comments')
-                                          ,icon  = ICON
-                                          )
-        return self._comments
-    
-    def subscribe(self):
-        if not self._subscribe:
-            self._subscribe = sh.TextBoxRW (title = _('Edit subscriptions:')
-                                           ,icon  = ICON
-                                           )
-        return self._subscribe
-    
-    def blacklist(self):
-        if not self._blacklist:
-            self._blacklist = sh.TextBoxRW (icon  = ICON
-                                           ,title = _('Edit the blacklist:')
-                                           )
-        return self._blacklist
-    
-    def progress(self):
-        if not self._progress:
-            self._progress = sh.ProgressBar(icon=ICON)
-            # Widget is not created yet, do not 'center' it here!
-        return self._progress
-    
-    def summary(self):
-        if not self._summary:
-            self._summary = sh.TextBoxRO (title = _('Full summary:')
+    def get_comments(self):
+        if self.comments is None:
+            self.comments = sh.TextBoxRO (title = _('Comments')
                                          ,icon  = ICON
                                          )
-        return self._summary
+        return self.comments
     
-    def context(self):
-        if not self._context:
-            ''' #fix: Modifying 'SingleClick' and 'SelectionCloses' is
+    def get_subscribe(self):
+        if self.subscribe is None:
+            self.subscribe = sh.TextBoxRW (title = _('Edit subscriptions:')
+                                           ,icon  = ICON
+                                           )
+        return self.subscribe
+    
+    def get_blacklist(self):
+        if self.blacklist is None:
+            self.blacklist = sh.TextBoxRW (icon  = ICON
+                                           ,title = _('Edit the blacklist:')
+                                           )
+        return self.blacklist
+    
+    def get_progress(self):
+        if self.progress is None:
+            self.progress = sh.ProgressBar(icon=ICON)
+            # Widget is not created yet, do not 'center' it here!
+        return self.progress
+    
+    def get_summary(self):
+        if self.summary is None:
+            self.summary = sh.TextBoxRO (title = _('Full summary:')
+                                        ,icon  = ICON
+                                        )
+        return self.summary
+    
+    def get_context(self):
+        if self.context is None:
+            ''' #FIX: Modifying 'SingleClick' and 'SelectionCloses' is
                 needed here only not to toggle the checkbox of
                 the parent (this is a bug and should be fixed).
             '''
-            self._context = sh.ListBoxC (lst     = context_items
-                                        ,title   = _('Select an action:')
-                                        ,icon    = ICON
-                                        ,ScrollY = False
-                                        ,ScrollX = False
-                                        ,width   = 250
-                                        )
-        return self._context
+            self.context = sh.ListBoxC (lst     = context_items
+                                       ,title   = _('Select an action:')
+                                       ,icon    = ICON
+                                       ,ScrollY = False
+                                       ,ScrollX = False
+                                       ,width   = 250
+                                       )
+        return self.context
     
-    def def_image(self):
-        if not self._def_image:
-            path = sh.objs.pdir().add('..','resources','nopic.png')
-            self._def_image = sh.Image().open(path=path)
-        return self._def_image
+    def get_def_image(self):
+        if self.def_image is None:
+            path = sh.objs.get_pdir().add('..','resources','nopic.png')
+            self.def_image = sh.Image().open(path=path)
+        return self.def_image
 
-    def channel(self,parent=None):
-        f = '[Yatube] gui.Objects.channel'
-        if not self._channel:
+    def get_channel(self,parent=None):
+        f = '[Yatube] gui.Objects.get_channel'
+        if self.channel is None:
             if parent is None:
                 mes = _('Set the default parent.')
-                sh.objs.mes(f,mes,True).info()
+                sh.objs.get_mes(f,mes,True).show_info()
                 parent = self.menu().framev
-            self._channel = Channel(parent)
-        return self._channel
+            self.channel = Channel(parent)
+        return self.channel
         
-    def parent(self):
-        if not self._parent:
+    def get_parent(self):
+        if not self.parent:
             title = sh.List(lst1=['Yatube',VERSION]).space_items()
-            self._parent = sh.Top (icon  = ICON
-                                  ,title = title
-                                  )
-        return self._parent
+            self.parent = sh.Top (icon  = ICON
+                                 ,title = title
+                                 )
+        return self.parent
     
-    def menu(self):
-        if not self._menu:
-            self._menu = Menu(parent=self.parent())
-        return self._menu
+    def get_menu(self):
+        if not self.menu:
+            self.menu = Menu(parent=self.get_parent())
+        return self.menu
 
 
 objs = Objects()
@@ -1138,6 +1135,6 @@ objs = Objects()
 if __name__ == '__main__':
     # Show the menu
     sh.com.start()
-    sh.Geometry(objs.parent()).set('1024x600')
-    objs.menu().show()
+    sh.Geometry(objs.get_parent()).set('1024x600')
+    objs.get_menu().show()
     sh.com.end()

@@ -2,47 +2,47 @@
 # -*- coding: UTF-8 -*-
 
 import sqlite3
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 
 class DB:
     
     def __init__(self,path):
         self.Success = True
-        self._user   = ''
-        self._path   = path
+        self.user    = ''
+        self.path    = path
         self.connect()
         self.create_videos()
     
-    def update_pause(self,video_id,pause=0):
+    def update_pause(self,videoid,pause=0):
         f = '[Yatube] db.DB.update_pause'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   PAUSE = ? \
                                                  where ID    = ?'
-                                 ,(pause,video_id,)
+                                 ,(pause,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def update_ch_id(self,video_id,channel_id):
+    def update_ch_id(self,videoid,channel_id):
         f = '[Yatube] db.DB.update_ch_id'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   CHANID = ? \
                                                  where ID     = ?'
-                                 ,(channel_id,video_id,)
+                                 ,(channel_id,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def feed_next(self,fdtime=0,limit=50):
-        f = '[Yatube] db.DB.feed_next'
+    def get_feed_next(self,fdtime=0,limit=50):
+        f = '[Yatube] db.DB.get_feed_next'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
@@ -59,11 +59,11 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def feed_prev(self,fdtime=0,limit=50):
-        f = '[Yatube] db.DB.feed_prev'
+    def get_feed_prev(self,fdtime=0,limit=50):
+        f = '[Yatube] db.DB.get_feed_prev'
         if self.Success:
             try:
-                ''' #note: videos are sorted from newest to oldest
+                ''' #NOTE: videos are sorted from newest to oldest
                     (new fdtime > old fdtime), therefore, we cannot use
                     'desc' because otherwise the first page will be
                     returned each time we use 'feed_prev'. Thus, we
@@ -82,8 +82,8 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def fav_next(self,ftime=0,limit=50):
-        f = '[Yatube] db.DB.fav_next'
+    def get_fav_next(self,ftime=0,limit=50):
+        f = '[Yatube] db.DB.get_fav_next'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
@@ -100,16 +100,16 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def fav_prev(self,ftime=0,limit=50):
-        f = '[Yatube] db.DB.fav_prev'
+    def get_fav_prev(self,ftime=0,limit=50):
+        f = '[Yatube] db.DB.get_fav_prev'
         if self.Success:
             try:
-                ''' #note: videos are sorted from newest to oldest
+                ''' #NOTE: videos are sorted from newest to oldest
                     (new ftime > old ftime), therefore, we cannot use
                     'desc' because otherwise the first page will be
                     returned each time we use 'fav_prev'. Thus, we
                     manually sort the return output.
-                    #note: also sort by PTIME everywhere, because DB
+                    #NOTE: also sort by PTIME everywhere, because DB
                     inherits equal FTIME fields from previous versions,
                     and 'sqlite' may randomize output.
                 '''
@@ -126,16 +126,16 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def watch_prev(self,ltime=0,limit=50):
-        f = '[Yatube] db.DB.watch_prev'
+    def get_watch_prev(self,ltime=0,limit=50):
+        f = '[Yatube] db.DB.get_watch_prev'
         if self.Success:
             try:
-                ''' #note: videos are sorted from newest to oldest
+                ''' #NOTE: videos are sorted from newest to oldest
                     (new ltime > old ltime), therefore, we cannot use
                     'desc' because otherwise the first page will be
                     returned each time we use 'watch_prev'. Thus, we
                     manually sort the return output.
-                    #note: also sort by PTIME everywhere, because DB
+                    #NOTE: also sort by PTIME everywhere, because DB
                     inherits equal LTIME fields from previous versions,
                     and 'sqlite' may randomize output.
                 '''
@@ -152,8 +152,8 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def watch_next(self,ltime=0,limit=50):
-        f = '[Yatube] db.DB.watch_next'
+    def get_watch_next(self,ltime=0,limit=50):
+        f = '[Yatube] db.DB.get_watch_next'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
@@ -170,47 +170,47 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def update_len(self,video_id,length):
+    def update_len(self,videoid,length):
         f = '[Yatube] db.DB.update_len'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   LENGTH = ? \
                                                  where ID     = ?'
-                                 ,(length,video_id,)
+                                 ,(length,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def update_play_id(self,video_id,play_id):
-        f = '[Yatube] db.DB.update_play_id'
+    def update_playid(self,videoid,playid):
+        f = '[Yatube] db.DB.update_playid'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   PLAYID = ? \
                                                  where ID     = ?'
-                                 ,(play_id,video_id,)
+                                 ,(playid,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def mark_later(self,video_id,ltime=0.0):
+    def mark_later(self,videoid,ltime=0.0):
         f = '[Yatube] db.DB.mark_later'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   LTIME = ? \
                                                  where ID    = ?'
-                                 ,(ltime,video_id,)
+                                 ,(ltime,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def starred(self):
-        f = '[Yatube] db.DB.starred'
+    def get_starred(self):
+        f = '[Yatube] db.DB.get_starred'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
@@ -225,13 +225,13 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def mark_starred(self,video_id,ftime=0.0):
+    def mark_starred(self,videoid,ftime=0.0):
         f = '[Yatube] db.DB.mark_starred'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   FTIME = ? \
                                                  where ID    = ?'
-                                 ,(ftime,video_id,)
+                                 ,(ftime,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
@@ -241,11 +241,11 @@ class DB:
     def fail(self,func,error):
         self.Success = False
         mes = _('Database "{}" has failed!\n\nDetails: {}')
-        mes = mes.format(self._path,error)
-        sh.objs.mes(func,mes).warning()
+        mes = mes.format(self.path,error)
+        sh.objs.get_mes(func,mes).show_warning()
     
-    def ids(self):
-        f = '[Yatube] db.DB.ids'
+    def get_ids(self):
+        f = '[Yatube] db.DB.get_ids'
         if self.Success:
             try:
                 self.dbc.execute('select ID from VIDEOS')
@@ -257,11 +257,11 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def history_prev(self,dtime=0,limit=50):
-        f = '[Yatube] db.DB.history_prev'
+    def get_history_prev(self,dtime=0,limit=50):
+        f = '[Yatube] db.DB.get_history_prev'
         if self.Success:
             try:
-                ''' #note: videos are sorted from newest to oldest
+                ''' #NOTE: videos are sorted from newest to oldest
                     (new dtime > old dtime), therefore, we cannot use
                     'desc' because otherwise the first page will be
                     returned each time we use 'history_prev'. Thus, we
@@ -281,8 +281,8 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def history_next(self,dtime=0,limit=50):
-        f = '[Yatube] db.DB.history_next'
+    def get_history_next(self,dtime=0,limit=50):
+        f = '[Yatube] db.DB.get_history_next'
         if self.Success:
             try:
                 self.dbc.execute ('select   ID from VIDEOS \
@@ -299,46 +299,46 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def _filt1(self,timestamp):
+    def _run_filt1(self,timestamp):
         self.dbc.execute ('select   ID,AUTHOR,TITLE from VIDEOS \
                            where    PTIME >= ? \
                            order by AUTHOR,PTIME',(timestamp,)
                          )
                          
-    def _filt2(self,timestamp):
+    def _run_filt2(self,timestamp):
         self.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                            where DTIME = ? and PTIME >= ? \
                            order by AUTHOR,PTIME',(0,timestamp,)
                          )
     
-    def _filt3(self,timestamp):
+    def _run_filt3(self,timestamp):
         self.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                            where PTIME <= ? \
                            order by AUTHOR,PTIME',(timestamp,)
                          )
                          
-    def _filt4(self,timestamp):
+    def _run_filt4(self,timestamp):
         self.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                            where DTIME = ? and PTIME <= ? \
                            order by AUTHOR,PTIME',(0,timestamp,)
                          )
     
-    def date_filter (self,timestamp
+    def filter_date (self,timestamp
                     ,Newer=True,WithReady=False
                     ):
-        f = '[Yatube] db.DB.date_filter'
+        f = '[Yatube] db.DB.filter_date'
         if self.Success:
             try:
                 if Newer:
                     if WithReady:
-                        self._filt1(timestamp)
+                        self._run_filt1(timestamp)
                     else:
-                        self._filt2(timestamp)
+                        self._run_filt2(timestamp)
                 else:
                     if WithReady:
-                        self._filt3(timestamp)
+                        self._run_filt3(timestamp)
                     else:
-                        self._filt4(timestamp)
+                        self._run_filt4(timestamp)
                 return self.dbc.fetchall()
             except Exception as e:
                 self.fail(f,e)
@@ -349,15 +349,15 @@ class DB:
         f = '[Yatube] db.DB.connect'
         if self.Success:
             try:
-                self.db  = sqlite3.connect(self._path)
+                self.db  = sqlite3.connect(self.path)
                 self.dbc = self.db.cursor()
             except Exception as e:
                 self.fail(f,e)
         else:
             sh.com.cancel(f)
     
-    def channel_videos(self,author):
-        f = '[Yatube] db.DB.channel_videos'
+    def get_channel_videos(self,author):
+        f = '[Yatube] db.DB.get_channel_videos'
         if self.Success:
             try:
                 self.dbc.execute ('select ID from VIDEOS where AUTHOR=?'
@@ -369,13 +369,13 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def mark_downloaded(self,video_id,dtime):
+    def mark_downloaded(self,videoid,dtime):
         f = '[Yatube] db.DB.mark_downloaded'
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   DTIME = ? \
                                                  where ID    = ?'
-                                 ,(dtime,video_id,)
+                                 ,(dtime,videoid,)
                                  )
             except Exception as e:
                 self.fail(f,e)
@@ -427,8 +427,8 @@ class DB:
     def save(self):
         f = '[Yatube] db.DB.save'
         if self.Success:
-            mes = _('Save "{}"').format(self._path)
-            sh.objs.mes(f,mes,True).info()
+            mes = _('Save "{}"').format(self.path)
+            sh.objs.get_mes(f,mes,True).show_info()
             try:
                 self.db.commit()
             except Exception as e:
@@ -436,7 +436,7 @@ class DB:
         else:
             sh.com.cancel(f)
                           
-    def get_video(self,video_id):
+    def get_video(self,videoid):
         ''' This is very slow (~0,28s per a video).
             Use 'self.get_videos' for a batch.
         '''
@@ -448,7 +448,7 @@ class DB:
                                          ,IMAGE,PTIME,DTIME,FTIME,LTIME\
                                          ,FDTIME\
                                    from   VIDEOS\
-                                   where  ID = ?',(video_id,)
+                                   where  ID = ?',(videoid,)
                                  )
                 return self.dbc.fetchone()
             except Exception as e:
@@ -490,7 +490,7 @@ class DB:
                             data.append(())
                     return data
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -536,5 +536,5 @@ if __name__ == '__main__':
         dtimes = [item[10] for item in result if item[10]]
         print(dtimes)
     else:
-        sh.com.empty(f)
+        sh.com.rep_empty(f)
     idb.close()

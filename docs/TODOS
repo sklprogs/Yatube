@@ -1,4 +1,5 @@
 
+- Support playlists like https://www.youtube.com/playlist?list=PLmUwzUIyHXs_D13mhLz57ZVdvRj7mBpXM
 - Support extracting URLs from fragments like 'source=youtube&amp;vid=XWu1wmTHpVM&amp'
 - Support URLs like:
   https://www.youtube.com/watch?time_continue=4&v=3AbzmEja7N4
