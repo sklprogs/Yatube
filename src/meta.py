@@ -4,8 +4,8 @@
 import io
 import json
 from googleapiclient.discovery import build
-import skl_shared2.shared as sh
-from skl_shared2.localize import _
+import skl_shared.shared as sh
+from skl_shared.localize import _
 
 API_KEY = ''
 ''' Default number of videos to be fetched: 5, max: 50.

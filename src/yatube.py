@@ -4,11 +4,11 @@
 import re
 import os
 import subprocess
-import skl_shared2.shared as sh
+import skl_shared.shared as sh
 import logic             as lg
 import gui               as gi
 import meta              as mt
-from skl_shared2.localize import _
+from skl_shared.localize import _
 
 
 class Config:

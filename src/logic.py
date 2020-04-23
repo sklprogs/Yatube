@@ -6,10 +6,10 @@ import os
 import io
 import html
 import youtube_dl
-import skl_shared2.shared as sh
+import skl_shared.shared as sh
 import meta              as mt
 import db
-from skl_shared2.localize import _
+from skl_shared.localize import _
 
 pattern1 = 'https://www.youtube.com/watch?v='
 pattern2 = 'https://www.youtube.com/channel/'
@@ -137,26 +137,26 @@ class Feed:
     
     def fetch_prev(self):
         f = '[Yatube] logic.Feed.fetch_prev'
-        ids = objs.get_db().feed_prev (fdtime = self.token_prev
-                                  ,limit  = mt.MAX_VIDEOS
-                                  )
+        ids = objs.get_db().get_feed_prev (fdtime = self.token_prev
+                                          ,limit  = mt.MAX_VIDEOS
+                                          )
         if ids:
-            for vid in ids:
+            for id_ in ids:
                 video = mt.Video()
-                video.id_ = vid
+                video.id_ = id_
                 mt.objs.videos.add(video)
         else:
             sh.com.rep_empty(f)
     
     def fetch_next(self):
         f = '[Yatube] logic.Feed.fetch_next'
-        ids = objs.get_db().feed_next (fdtime = self.token_next
-                                  ,limit  = mt.MAX_VIDEOS
-                                  )
+        ids = objs.get_db().get_feed_next (fdtime = self.token_next
+                                          ,limit  = mt.MAX_VIDEOS
+                                          )
         if ids:
-            for vid in ids:
+            for id_ in ids:
                 video = mt.Video()
-                video.id_ = vid
+                video.id_ = id_
                 mt.objs.videos.add(video)
         else:
             sh.com.rep_empty(f)

@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared2.shared as sh
+import skl_shared.shared as sh
 import logic             as lg
 import gui               as gi
 import db
-from skl_shared2.localize import _
+from skl_shared.localize import _
 
 
 class ImageViewer:
