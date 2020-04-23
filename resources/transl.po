@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-30 23:24+0300\n"
+"POT-Creation-Date: 2020-04-23 14:52+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: db.py:243 utils.py:113 utils.py:119
+#: db.py:243 utils.py:115 utils.py:121
 msgid ""
 "Database \"{}\" has failed!\n"
 "\n"
@@ -29,1076 +29,210 @@ msgstr ""
 msgid "Save \"{}\""
 msgstr "Сохранение \"{}\""
 
-#: del/gui.py:1252 del/logic.py:249 del/logic.py:294 del/logic.py:809
-#: del/logic.py:828 del/logic.py:4825 del/shared.py:4139
-msgid "WARNING"
-msgstr "ПРЕДУПРЕЖДЕНИЕ"
-
-#: del/gui.py:1259 del/logic.py:288 del/logic.py:809 del/shared.py:4131
-msgid "ERROR"
-msgstr "ОШИБКА"
-
-#: del/gui.py:1266 del/logic.py:251 del/logic.py:312 del/shared.py:4164
-#: del/shared.py:4368
-msgid "QUESTION"
-msgstr "ВОПРОС"
-
-#: del/gui.py:1273 del/logic.py:247 del/logic.py:272 del/logic.py:300
-#: del/logic.py:799 del/logic.py:834 del/logic.py:4833 del/shared.py:4148
-#: del/shared.py:4156
-msgid "INFO"
-msgstr "ИНФОРМАЦИЯ"
-
-#: del/logic.py:104 del/logic.py:4260
-msgid "Set the max number of rows to {}"
-msgstr "Задать максимальное число столбцов: {}"
-
-#: del/logic.py:117
-msgid "Set the max column width to {} symbols"
-msgstr "Ограничить максимальную ширину столбца {} символами"
-
-#: del/logic.py:153 del/logic.py:948 del/logic.py:967 del/logic.py:2368
-#: del/logic.py:2388 del/logic.py:4484 del/logic.py:4502 del/logic.py:4546
-#: del/shared.py:4403 logic.py:945 logic.py:1469 logic.py:1488 meta.py:782
-#: yatube.py:109 yatube.py:124 yatube.py:491 yatube.py:781
-msgid "The condition \"{}\" is not observed!"
-msgstr "Условие \"{}\" не выполнено!"
-
-#: del/logic.py:217
-msgid "Only iterable objects are supported!"
-msgstr "Поддерживаются только итерируемые объекты!"
-
-#: del/logic.py:247 del/logic.py:306
-msgid "DEBUG"
-msgstr "ОТЛАДКА"
-
-#: del/logic.py:258
-msgid "File \"{}\" was not found!"
-msgstr "Файл \"{}\" не найден!"
-
-#: del/logic.py:393 del/logic.py:421 del/logic.py:2076 del/logic.py:2543
-#: del/logic.py:3779 del/logic.py:4757 del/logic.py:4939 del/logic.py:5025
-#: del/shared.py:2711 del/shared.py:2747 logic.py:838 meta.py:421 meta.py:552
-#: yatube.py:503 yatube.py:531
-msgid "Wrong input data: \"{}\"!"
-msgstr "Недопустимые входные данные: \"{}\"!"
-
-#: del/logic.py:491 del/logic.py:494
-msgid "Left mouse button"
-msgstr "Левая кнопка мыши"
-
-#: del/logic.py:497 del/logic.py:500
-msgid "Middle mouse button"
-msgstr "Средняя кнопка мыши"
-
-#: del/logic.py:503 del/logic.py:506
-msgid "Right mouse button"
-msgstr "Правая кнопка мыши"
-
-#: del/logic.py:509
-msgid "Space"
-msgstr "Пробел"
-
-#: del/logic.py:648
-msgid "Custom arguments: \"{}\""
-msgstr "Дополнительные параметры: \"{}\""
-
-#: del/logic.py:657 del/logic.py:3198 del/logic.py:3226
-msgid "Failed to run \"{}\"!"
-msgstr "Не удалось запустить \"{}\"!"
-
-#: del/logic.py:667 del/logic.py:675 del/logic.py:683
-msgid ""
-"Unable to open the file in an external program. You should probably check "
-"the file associations."
-msgstr ""
-"Не удается открыть файл во внешней программе. Возможно, Вам стоит проверить "
-"ассоциации файлов."
-
-#: del/logic.py:740 del/logic.py:771 del/logic.py:786 del/regexp.py:45
-#: del/regexp.py:107
-msgid "Not enough input data!"
-msgstr "Недостаточно входных данных!"
-
-#: del/logic.py:746 del/logic.py:2210
-msgid "Write file \"{}\""
-msgstr "Запись файла \"{}\""
-
-#: del/logic.py:753
-msgid "Unable to write file \"{}\"!"
-msgstr "Не удается записать файл \"{}\"!"
-
-#: del/logic.py:756 del/logic.py:2225 del/shared.py:1405 del/shared.py:2698
-#: del/shared.py:3238 del/shared.py:3624 del/shared.py:3703 yatube.py:672
-#: yatube.py:1412 yatube.py:1438 yatube.py:1458 yatube.py:1511 yatube.py:1998
-#: yatube.py:2110
-msgid ""
-"An unknown mode \"{}\"!\n"
-"\n"
-"The following modes are supported: \"{}\"."
-msgstr ""
-"Неизвестный режим \"{}\"!\n"
-"\n"
-"Поддерживаются следующие режимы: \"{}\"."
-
-#: del/logic.py:829
-msgid "Cannot print the message!"
-msgstr "Не удаётся показать сообщение!"
-
-#: del/logic.py:866 del/logic.py:2275
-msgid "Entries deleted: {} ({}-{})"
-msgstr "Удалено вхождений: {} ({}-{})"
-
-#: del/logic.py:875 del/logic.py:1016 del/logic.py:2284 del/logic.py:2441
-msgid "File \"{}\" is not sortable!"
-msgstr "Файл \"{}\" не подлежит сортировке!"
-
-#: del/logic.py:890 del/logic.py:1070 del/logic.py:1167 del/logic.py:1837
-#: del/logic.py:2299 del/logic.py:2929 del/logic.py:2996 del/logic.py:3847
-#: del/logic.py:4607 del/shared.py:667 del/shared.py:2479 del/shared.py:3170
-#: del/shared.py:3617 del/shared.py:4448 logic.py:358 logic.py:724
-#: logic.py:1198 meta.py:148 meta.py:175 yatube.py:887 yatube.py:991
-#: yatube.py:1243 yatube.py:1265 yatube.py:1294 yatube.py:1307 yatube.py:1320
-msgid "Wrong input data!"
-msgstr "Недопустимые входные данные!"
-
-#: del/logic.py:913
-msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
-msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
-
-#: del/logic.py:1062 del/logic.py:1899 del/logic.py:5038
-msgid "Empty input is not allowed!"
-msgstr "Пустые входные данные не допускаются!"
-
-#: del/logic.py:1066 del/logic.py:1903 del/shared.py:3336 del/shared.py:4046
-msgid "File \"{}\" has not been found!"
-msgstr "Файл \"{}\" не найден!"
-
-#: del/logic.py:1121 del/logic.py:2485
-msgid "Load file \"{}\""
-msgstr "Загрузка файла \"{}\""
-
-#: del/logic.py:1138
-msgid "Unable to read file \"{}\"!"
-msgstr "Не удается прочитать файл \"{}\"!"
-
-#: del/logic.py:1157
-msgid "Float is required at input, but found \"{}\"! Return 0.0"
-msgstr ""
-"На входе должно быть число с плавающей запятой, но получено \"{}\"! "
-"Возвращаю 0.0"
-
-#: del/logic.py:1179 del/logic.py:1188
-msgid "Convert \"{}\" to an integer"
-msgstr "Конвертация \"{}\" в целое число"
-
-#: del/logic.py:1191
-msgid "Integer is required at input, but found \"{}\"! Return 0"
-msgstr "На входе должно быть целое число, но получено \"{}\"! Возвращаю 0"
-
-#: del/logic.py:1365
-msgid ""
-"Different number of opening and closing brackets: \"{}\": {}; \"{}\": {}!"
-msgstr "Разное число открывающих и закрывающих скобок: \"{}\": {}; \"{}\": {}!"
-
-#: del/logic.py:1512
-msgid ""
-"Commas and/or semicolons or line breaks can be used, but not altogether!"
-msgstr ""
-"Можно использовать запятые и/или точки с запятой или переносы строк, но не "
-"все сразу!"
-
-#: del/logic.py:1536
-msgid "Failed to convert \"{}\" to an integer!"
-msgstr "Не удалось конвертировать \"{}\" в целое число!"
-
-#: del/logic.py:1547
-msgid "Failed to convert \"{}\" to a floating-point number!"
-msgstr "Не удалось конвертировать \"{}\" в число с плавающей точкой!"
-
-#: del/logic.py:1735 del/logic.py:1749 del/logic.py:1780 del/logic.py:1867
-msgid "Set time parameters are incorrect or not supported."
-msgstr "Заданные параметры времени неверны или не поддерживаются."
-
-#: del/logic.py:1764
-msgid ""
-"Set time parameters are incorrect or not supported.\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Заданные параметры времени неверны или не поддерживаются.\n"
-"\n"
-"Подробности: {}"
-
-#: del/logic.py:1813 logic.py:343 yatube.py:1817
-msgid "Jan"
-msgstr "янв"
-
-#: del/logic.py:1815 logic.py:343 yatube.py:1819
-msgid "Feb"
-msgstr "фев"
-
-#: del/logic.py:1817 logic.py:343 yatube.py:1821
-msgid "Mar"
-msgstr "мар"
-
-#: del/logic.py:1819 logic.py:343 yatube.py:1823
-msgid "Apr"
-msgstr "апр"
-
-#: del/logic.py:1821 logic.py:343 yatube.py:1825
-msgid "May"
-msgstr "май"
-
-#: del/logic.py:1823 logic.py:344 yatube.py:1827
-msgid "Jun"
-msgstr "июн"
-
-#: del/logic.py:1825 logic.py:344 yatube.py:1829
-msgid "Jul"
-msgstr "июл"
-
-#: del/logic.py:1827 logic.py:344 yatube.py:1831
-msgid "Aug"
-msgstr "авг"
-
-#: del/logic.py:1829 logic.py:344 yatube.py:1833
-msgid "Sep"
-msgstr "сен"
-
-#: del/logic.py:1831 logic.py:344 yatube.py:1835
-msgid "Oct"
-msgstr "окт"
-
-#: del/logic.py:1833 logic.py:345 yatube.py:1837
-msgid "Nov"
-msgstr "ноя"
-
-#: del/logic.py:1835 logic.py:345 yatube.py:1839
-msgid "Dec"
-msgstr "дек"
-
-#: del/logic.py:1907
-msgid "The object \"{}\" is not a file!"
-msgstr "Объект \"{}\" не является файлом!"
-
-#: del/logic.py:1926 del/logic.py:2072 del/logic.py:2565 del/logic.py:3169
-msgid ""
-"Operation has failed!\n"
-"Details: {}"
-msgstr ""
-"Операция завершилась с ошибкой!\n"
-"Подробности: {}"
-
-#: del/logic.py:1935 del/logic.py:2704 utils.py:217
-msgid "Copy \"{}\" to \"{}\""
-msgstr "Копирование \"{}\" в \"{}\""
-
-#: del/logic.py:1941
-msgid "Failed to copy file \"{}\" to \"{}\"!"
-msgstr "Не удалось скопировать файл \"{}\" в \"{}\"!"
-
-#: del/logic.py:1949
-msgid "Move \"{}\" to \"{}\""
-msgstr "Перемещение \"{}\" в \"{}\""
-
-#: del/logic.py:1955
-msgid "Failed to move \"{}\" to \"{}\"!"
-msgstr "Не удалось переместить \"{}\" в \"{}\"!"
-
-#: del/logic.py:1968 del/logic.py:2015
-msgid "Failed to get the date of the file \"{}\"!"
-msgstr "Не удалось определить дату файла \"{}\"!"
-
-#: del/logic.py:1979
-msgid "Unable to copy the file \"{}\" to iself!"
-msgstr "Нельзя скопировать файл \"{}\" сам в себя!"
-
-#: del/logic.py:1987 del/logic.py:2034 del/logic.py:2248 del/shared.py:2297
-#: yatube.py:2627 yatube.py:2655
-msgid "Operation has been canceled by the user."
-msgstr "Операция отменена пользователем."
-
-#: del/logic.py:1996 del/logic.py:2616
-msgid "Delete \"{}\""
-msgstr "Удаление \"{}\""
-
-#: del/logic.py:2002
-msgid "Failed to delete file \"{}\"!"
-msgstr "Не удается удалить файл \"{}\"!"
-
-#: del/logic.py:2026
-msgid ""
-"Moving is not necessary, because the source and destination are identical "
-"({})."
-msgstr ""
-"Перемещение не требуется, поскольку на входе и выходе указан один и тот же "
-"объект ({})."
-
-#: del/logic.py:2044
-msgid "Change the time of the file \"{}\" to {}"
-msgstr "Изменение времени файла \"{}\" на {}"
-
-#: del/logic.py:2050
-msgid "Failed to change the time of the file \"{}\" to \"{}\"!"
-msgstr "Не удалось изменить время файла \"{}\" на \"{}\"!"
-
-#: del/logic.py:2100 del/logic.py:2694
-msgid "Directory \"{}\" already exists."
-msgstr "Каталог \"{}\" уже существует."
-
-#: del/logic.py:2105
-msgid "The path \"{}\" is invalid!"
-msgstr "Путь \"{}\" неверен!"
-
-#: del/logic.py:2109
-msgid "Create directory \"{}\""
-msgstr "Создание каталога \"{}\""
-
-#: del/logic.py:2116
-msgid "Failed to create directory \"{}\"!"
-msgstr "Не удается создать каталог \"{}\"!"
-
-#: del/logic.py:2221
-msgid ""
-"Unable to write file \"{}\"!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Не удается записать файл \"{}\"!\n"
-"\n"
-"Подробности: {}"
-
-#: del/logic.py:2334
-msgid "The following lines cannot be parsed:"
-msgstr "Не удается обработать следующие строки:"
-
-#: del/logic.py:2495
-msgid ""
-"Unable to read file \"{}\"!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Не удается прочитать файл \"{}\"!\n"
-"\n"
-"Подробности: {}"
-
-#: del/logic.py:2622
-msgid "Failed to delete directory \"{}\"! Delete it manually."
-msgstr "Не удается удалить каталог \"{}\"! Удалите его вручную."
-
-#: del/logic.py:2691
-msgid "Unable to copy \"{}\" to iself!"
-msgstr "Нельзя скопировать \"{}\" сам в себя!"
-
-#: del/logic.py:2710
-msgid "Failed to copy \"{}\" to \"{}\"!"
-msgstr "Не удалось скопировать \"{}\" в \"{}\"!"
-
-#: del/logic.py:2726
-msgid "The following sections and/or keys are missing:"
-msgstr "Отсутствуют следующие разделы и/или ключи:"
-
-#: del/logic.py:2739
-msgid "New value of the key \"{}\" has been loaded."
-msgstr "Загружено новое значение ключа \"{}\"."
-
-#: del/logic.py:2744
-msgid "Keys loaded in total: {}, whereas {} are modified."
-msgstr "Всего загружено ключей: {}, из них измененных: {}"
-
-#: del/logic.py:2769
-msgid "Missing sections: {}"
-msgstr "Отсутствующих разделов: {}"
-
-#: del/logic.py:2771
-msgid "Missing keys: {}"
-msgstr "Отсутствующих ключей: {}"
-
-#: del/logic.py:2773
-msgid "The default configuration has been loaded."
-msgstr "Загружена конфигурация по умолчанию."
-
-#: del/logic.py:2786
-msgid ""
-"Failed to read the configuration file \"{}\". This file must share the same "
-"directory with the program and have UTF-8 encoding (no BOM) and UNIX line "
-"break type."
-msgstr ""
-"Не удается прочитать конфигурационный файл \"{}\". Этот файл должен "
-"находиться в одном каталоге с программой и иметь кодировку UTF-8 (без BOM), "
-"тип разрыва строки - UNIX."
-
-#: del/logic.py:2823
-msgid ""
-"Failed to open URL \"{}\" in a default browser!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Не удалось открыть адрес \"{}\" в браузере по умолчанию!\n"
-"\n"
-"Подробности: {}"
-
-#: del/logic.py:2880
-msgid "Differences:"
-msgstr "Различия:"
-
-#: del/logic.py:2904
-msgid "Texts are identical!"
-msgstr "Различий нет!"
-
-#: del/logic.py:2960
-msgid "Delete the symbolic link \"{}\""
-msgstr "Удаление ярлыка \"{}\""
-
-#: del/logic.py:2965
-msgid "Failed to remove shortcut \"{}\". Remove it manually and press OK."
-msgstr "Не удается удалить ярлык \"{}\". Удалите его вручную и нажмите OK."
-
-#: del/logic.py:2979 del/logic.py:3003
-msgid "Create a symbolic link \"{}\""
-msgstr "Создание ярлыка \"{}\""
-
-#: del/logic.py:2984 del/logic.py:3012
-msgid "Failed to create shortcut \"{}\". Create it manually and press OK."
-msgstr "Не удается создать ярлык \"{}\". Создайте его вручную и нажмите OK."
-
-#: del/logic.py:3134
-msgid "Failed to load an e-mail client."
-msgstr "Не удалось загрузить почтовый клиент."
-
-#: del/logic.py:3172
-msgid "This operation cannot be executed on your operating system."
-msgstr "Эта операция не может быть выполнена на вашей операционной системе."
-
-#: del/logic.py:3517
-msgid "Analyze the text"
-msgstr "Анализ текста"
-
-#: del/logic.py:3803
-msgid "Failed to find words of paragraph #{}!"
-msgstr "Не удалось найти слова абзаца №{}!"
-
-#: del/logic.py:4088 del/logic.py:4089 del/logic.py:4816 del/logic.py:4821
-#: del/logic.py:4822 del/logic.py:4829 del/logic.py:4830
-msgid "Logic error!"
-msgstr "Логическая ошибка!"
-
-#: del/logic.py:4173 del/logic.py:4181
-msgid "The pool is empty!"
-msgstr "Пул пуст!"
-
-#: del/logic.py:4216
-msgid "The operation has taken {} s."
-msgstr "Операция завершена за {} с."
-
-#: del/logic.py:4392
-msgid "Unable to use unverified certificates!"
-msgstr "Не удается использовать неподтвержденные сертификаты!"
-
-#: del/logic.py:4410
-msgid "[OK]: \"{}\""
-msgstr "[Успешно]: \"{}\""
-
-#: del/logic.py:4414
-msgid "[FAILED]: \"{}\". Details: {}"
-msgstr "[ОШИБКА]: \"{}\". Подробности: {}"
-
-#: del/logic.py:4430
-msgid "Unable to decode \"{}\"!"
-msgstr "Не удается изменить кодировку \"{}\"!"
-
-#: del/logic.py:4449
-msgid "Wrong input data: {}!"
-msgstr "Недопустимые входные данные: \"{}\"!"
-
-#: del/logic.py:4514
-msgid "No references have been found!"
-msgstr "Ориентиры не найдены!"
-
-#: del/logic.py:4518
-msgid "No references to the right!"
-msgstr "Справа ориентиров нет!"
-
-#: del/logic.py:4522
-msgid "No references to the left!"
-msgstr "Слева ориентиров нет!"
-
-#: del/logic.py:4599
-msgid "Unexpected end of text!"
-msgstr "Неожиданный конец текста!"
-
-#: del/logic.py:4775
-msgid ","
-msgstr "."
-
-#: del/logic.py:4787
-msgid ""
-"Operation has failed!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Операция завершилась неудачно!\n"
-"\n"
-"Подробности: {}"
-
-#: del/logic.py:4805
-msgid "Plain text (UTF-8)"
-msgstr "Обычный текст (UTF-8)"
-
-#: del/logic.py:4806 del/logic.py:4807
-msgid "Web-page"
-msgstr "Веб-страница"
-
-#: del/logic.py:4808
-msgid "All files"
-msgstr "Все файлы"
-
-#: del/logic.py:4813
-msgid "Save As:"
-msgstr "Сохранить как:"
-
-#: del/logic.py:4818
-msgid "Nothing to do!"
-msgstr "Действие не требуется."
-
-#: del/logic.py:4839 del/logic.py:4861
-msgid "B"
-msgstr "Б"
-
-#: del/logic.py:4852
-msgid "TiB"
-msgstr "ТиБ"
-
-#: del/logic.py:4854
-msgid "GiB"
-msgstr "ГиБ"
-
-#: del/logic.py:4856
-msgid "MiB"
-msgstr "МиБ"
-
-#: del/logic.py:4859
-msgid "KiB"
-msgstr "КиБ"
-
-#: del/logic.py:4957
-msgid "ATTENTION: Do yo really want to rewrite file \"{}\"?"
-msgstr "ВНИМАНИЕ: Перезаписать файл \"{}\"?"
-
-#: del/logic.py:4987 del/logic.py:5020
-msgid "sec"
-msgstr "сек"
-
-#: del/logic.py:5008
-msgid "yrs"
-msgstr "лет"
-
-#: del/logic.py:5010
-msgid "mths"
-msgstr "мес"
-
-#: del/logic.py:5012
-msgid "wks"
-msgstr "нед"
-
-#: del/logic.py:5014
-msgid "days"
-msgstr "дн"
-
-#: del/logic.py:5016
-msgid "hrs"
-msgstr "ч"
-
-#: del/logic.py:5018
-msgid "min"
-msgstr "мин"
-
-#: del/logic.py:5033
-msgid "Operation has been canceled."
-msgstr "Операция отменена."
-
-#: del/logic.py:5043
-msgid "Not implemented yet!"
-msgstr "Еще не реализовано!"
-
-#: del/regexp.py:56
-msgid "A syntax error in the regular expression (id: {})!"
-msgstr "Синтаксическая ошибка в регулярном выражении (запись: {})!"
-
-#: del/regexp.py:69
-msgid ""
-"Regular expression {} has failed: we were expecting\n"
-"\"{}\",\n"
-"but received\n"
-"\"{}\"."
-msgstr ""
-"Неудачное вычисление регулярного выражения {}: ожидалось\n"
-"\"{}\",\n"
-"получили\n"
-"\"{}\"."
-
-#: del/shared.py:390
-msgid "Compare texts:"
-msgstr "Сравните тексты:"
-
-#: del/shared.py:574
-msgid "Find:"
-msgstr "Найти:"
-
-#: del/shared.py:621 del/shared.py:720 del/shared.py:743
-msgid "No matches!"
-msgstr "Совпадений нет!"
-
-#: del/shared.py:712 del/shared.py:734
-msgid "Only one match has been found!"
-msgstr "Найдено 1 совпадение!"
-
-#: del/shared.py:716
-msgid "No more matches, continuing from the top!"
-msgstr "Совпадений больше нет, поиск продолжен с начала!"
-
-#: del/shared.py:739
-msgid "No more matches, continuing from the bottom!"
-msgstr "Совпадений больше нет, поиск продолжен с конца!"
-
-#: del/shared.py:1012
-msgid "{} tags to assign"
-msgstr "Создание {} тэгов"
-
-#: del/shared.py:1018
-msgid "Spelling seems to be correct."
-msgstr "Ошибок правописания не обнаружено."
-
-#: del/shared.py:1081 del/shared.py:1153 del/shared.py:1651 del/shared.py:1932
-#: del/shared.py:3036 gui.py:412 gui.py:508
-msgid "Close"
-msgstr "Закрыть"
-
-#: del/shared.py:1082 del/shared.py:1933 gui.py:509
-msgid "Close this window"
-msgstr "Закрыть это окно"
-
-#: del/shared.py:1154 del/shared.py:1650 del/shared.py:3035 del/shared.py:4246
-#: gui.py:413
-msgid "Reject and close"
-msgstr "Отказаться и закрыть"
-
-#: del/shared.py:1162 gui.py:244 gui.py:426
-msgid "Reset"
-msgstr "Сброс"
-
-#: del/shared.py:1163
-msgid "Restore the text"
-msgstr "Восстановить текст"
-
-#: del/shared.py:1169 gui.py:251 gui.py:420
-msgid "Save"
-msgstr "Сохранить"
-
-#: del/shared.py:1170 del/shared.py:1664 del/shared.py:3043 del/shared.py:4238
-#: del/shared.py:4252
-msgid "Accept and close"
-msgstr "Принять и закрыть"
-
-#: del/shared.py:1657
-msgid "Clear the field"
-msgstr "Очистить поле"
-
-#: del/shared.py:1658
-msgid "Clear"
-msgstr "Очистить"
-
-#: del/shared.py:1665 del/shared.py:3044 gui.py:421
-msgid "Save and close"
-msgstr "Запомнить и выйти"
-
-#: del/shared.py:1926
-msgid "Toggle all"
-msgstr "Переключить все"
-
-#: del/shared.py:1927
-msgid "Mark/unmark all checkboxes"
-msgstr "Переключить все галки"
-
-#: del/shared.py:1959
-msgid "Select files:"
-msgstr "Выберите файлы:"
-
-#: del/shared.py:2121 yatube.py:2332 yatube.py:2399
-msgid "Download progress"
-msgstr "Ход загрузок"
-
-#: del/shared.py:2269
-msgid "File: \"{}\"; {}/{} MB; Rate: {} kbps; ETA: {}s"
-msgstr "Файл: \"{}\"; {}/{} Мб; Скорость: {} Кб/с; Осталось: {}с"
-
-#: del/shared.py:2284 meta.py:911
-msgid ""
-"Third-party module has failed!\n"
-"\n"
-"Details: {}"
-msgstr ""
-"Ошибка модуля третьей стороны!\n"
-"\n"
-"Детали: {}"
-
-#: del/shared.py:2552
-msgid "Paste a special symbol"
-msgstr "Вставить специальный символ"
-
-#: del/shared.py:2827
-msgid "Remove item #{}"
-msgstr "Удаление элемента №{}"
-
-#: del/shared.py:2830
-msgid "No item #{}!"
-msgstr "Элемент №{} отсутствует!"
-
-#: del/shared.py:2898
-msgid "Item \"{}\" is not in list!"
-msgstr "Элемент \"{}\" не в списке!"
-
-#: del/shared.py:3244
-msgid "Set the geometry to \"{}x{}+{}+{}\""
-msgstr "Изменение геометрии виджета на \"{}x{}+{}+{}\""
-
-#: del/shared.py:3326 del/shared.py:3369 del/shared.py:3371
-msgid "Please wait..."
-msgstr "Подождите..."
-
-#: del/shared.py:3727
-msgid "Widget 1 geometry: {}x{}+{}+{}"
-msgstr "Геометрия виджета 1: {}x{}+{}+{}"
-
-#: del/shared.py:3733
-msgid "Widget 2 geometry: {}x{}+{}+{}"
-msgstr "Геометрия виджета 2: {}x{}+{}+{}"
-
-#: del/shared.py:3830
-msgid "Wrong font: \"{}\"!"
-msgstr "Неправильный шрифт: \"{}\"!"
-
-#: del/shared.py:3880
-msgid "Save geometry: {}"
-msgstr "Сохранение геометрии: {}"
-
-#: del/shared.py:3889
-msgid "Restore geometry: {}"
-msgstr "Восстановление геометрии: {}"
-
-#: del/shared.py:3893
-msgid "Failed to restore geometry!"
-msgstr "Не удалось восстановить геометрию!"
-
-#: del/shared.py:3911
-msgid "Failed to change window properties!"
-msgstr "Не удалось изменить свойства окна!"
-
-#: del/shared.py:3994
-msgid "Failed to get the window handle!"
-msgstr "Не удалось получить дескриптор окна!"
-
-#: del/shared.py:4105
-msgid "Test:"
-msgstr "Тест:"
-
-#: del/shared.py:4230
-msgid "Yes"
-msgstr "Да"
-
-#: del/shared.py:4231
-msgid "No"
-msgstr "Нет"
-
-#: del/shared.py:4234
-msgid "Cancel"
-msgstr "Отмена"
-
-#: del/shared.py:4399
-msgid "An unknown color \"{}\"!"
-msgstr "Неизвестный цвет \"{}\"!"
-
-#: del/shared.py:4425
-msgid "Failed to select a file!"
-msgstr "Не удалось выбрать файл!"
-
-#: del/shared.py:4441
-msgid "Failed to enable key combination \"{}\"!"
-msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
-
-#: del/shared.py:4445 yatube.py:1373 yatube.py:2067
-msgid "Wrong input data: \"{}\""
-msgstr "Недопустимые входные данные: \"{}\"!"
-
-#: del/tests.py:20 del/tests.py:37 del/tests.py:57 del/tests.py:76
-msgid "Variant #{}"
-msgstr "Вариант №{}"
-
-#: del/tests.py:23
-msgid "Description: no settings"
-msgstr "Описание: нет настроек"
-
-#: del/tests.py:40
-msgid "Description: headers"
-msgstr "Описание: заголовки"
-
-#: del/tests.py:60
-msgid "Description: transposition"
-msgstr "Описание: транспозиция"
-
-#: del/tests.py:79
-msgid "Description: transposition and headers"
-msgstr "Описание: транспозиция и заголовки"
-
-#: del/tests.py:345
-msgid "Copy something to clipboard"
-msgstr "Скопируйте что-нибудь в буфер обмена"
-
-#: del/tests.py:348 del/tests.py:355
-msgid "Clipboard contents: \"{}\""
-msgstr "Содержание буфера обмена: \"{}\""
-
-#: del/tests.py:351
-msgid "The following will be copied: \"{}\""
-msgstr "Будет скопировано следующее: \"{}\""
-
-#: del/tests.py:387
-msgid "New settings"
-msgstr "Новые настройки"
-
-#: del/tests.py:513
-msgid "The event has been triggered!"
-msgstr "Событие вызвано!"
-
-#: del/tests.py:528
-msgid "Button"
-msgstr "Кнопка"
-
-#: del/tests.py:532
-msgid "Trigger an event"
-msgstr "Вызвать событие"
-
-#: del/tests.py:593
-msgid "Screen resolution: {}x{}"
-msgstr "Разрешение экрана: {}x{}"
-
-#: del/tests.py:599
-msgid "Random coordinates: x: {}; y: {}"
-msgstr "Случайные координаты: x: {}; y: {}"
-
-#: del/tests.py:877 del/tests.py:910
-msgid "Press Return to place widgets randomly"
-msgstr "Нажмите Ввод, чтобы расположить виджеты случайным образом"
-
-#: del/tests.py:881
-msgid ""
-"Anchor: {}\n"
-"Press Return to adjust Widget 2"
-msgstr ""
-"Привязка: {}\n"
-"Нажмите Ввод для подгонки Виджета 2"
-
-#: del/tests.py:933
-msgid "Anchor: {}"
-msgstr "Привязка: {}"
-
-#: gui.py:13 yatube.py:1923
+#: gui.py:13 yatube.py:1993
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
-#: gui.py:14 gui.py:39 gui.py:673 yatube.py:1934 yatube.py:2097
+#: gui.py:14 gui.py:39 gui.py:673 yatube.py:2004 yatube.py:2167
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: gui.py:15 gui.py:40 gui.py:667 yatube.py:1929 yatube.py:2093
+#: gui.py:15 gui.py:40 gui.py:667 yatube.py:1999 yatube.py:2163
 msgid "Play"
 msgstr "Воспроизвести"
 
-#: gui.py:16 gui.py:279 yatube.py:1925
+#: gui.py:16 gui.py:265 gui.py:279 yatube.py:1995
 msgid "Set pause time"
 msgstr "Задать время паузы"
 
-#: gui.py:17 gui.py:43 yatube.py:1975 yatube.py:2078
+#: gui.py:17 gui.py:43 yatube.py:2045 yatube.py:2148
 msgid "Extract links"
 msgstr "Извлечь ссылки"
 
-#: gui.py:18 yatube.py:1977
+#: gui.py:18 yatube.py:2047
 msgid "Load this channel"
 msgstr "Загрузить этот канал"
 
-#: gui.py:19 yatube.py:1987
+#: gui.py:19 yatube.py:2057
 msgid "Open video URL"
 msgstr "Открыть URL видео"
 
-#: gui.py:20 yatube.py:1989
+#: gui.py:20 yatube.py:2059
 msgid "Copy video URL"
 msgstr "Копировать URL видео"
 
-#: gui.py:21 yatube.py:1993
+#: gui.py:21 yatube.py:2063
 msgid "Open channel URL"
 msgstr "Открыть URL канала"
 
-#: gui.py:22 yatube.py:1995
+#: gui.py:22 yatube.py:2065
 msgid "Copy channel URL"
 msgstr "Копировать URL канала"
 
-#: gui.py:23 yatube.py:1991
+#: gui.py:23 yatube.py:2061
 msgid "Show comments"
 msgstr "Показать комментарии"
 
-#: gui.py:24 gui.py:41 gui.py:670 yatube.py:1166 yatube.py:1927 yatube.py:2012
-#: yatube.py:2090
+#: gui.py:24 gui.py:41 gui.py:670 yatube.py:1239 yatube.py:1997 yatube.py:2082
+#: yatube.py:2160
 msgid "Download"
 msgstr "Загрузить"
 
-#: gui.py:25 yatube.py:1168 yatube.py:1973 yatube.py:2013
+#: gui.py:25 yatube.py:1241 yatube.py:2043 yatube.py:2083
 msgid "Delete the downloaded file"
 msgstr "Удалить загруженный файл"
 
-#: gui.py:26 gui.py:63 yatube.py:1021 yatube.py:1146 yatube.py:1471
-#: yatube.py:1936 yatube.py:2014
+#: gui.py:26 gui.py:63 yatube.py:1094 yatube.py:1219 yatube.py:1544
+#: yatube.py:2006 yatube.py:2084
 msgid "Mark as watched"
 msgstr "Пометить как просмотренное"
 
-#: gui.py:27 gui.py:64 yatube.py:1023 yatube.py:1148 yatube.py:1476
-#: yatube.py:1940 yatube.py:2015
+#: gui.py:27 gui.py:64 yatube.py:1096 yatube.py:1221 yatube.py:1549
+#: yatube.py:2010 yatube.py:2085
 msgid "Mark as not watched"
 msgstr "Пометить как непросмотренное"
 
-#: gui.py:28 gui.py:65 yatube.py:1029 yatube.py:1154 yatube.py:1498
-#: yatube.py:1957 yatube.py:2018
+#: gui.py:28 gui.py:65 yatube.py:1102 yatube.py:1227 yatube.py:1571
+#: yatube.py:2027 yatube.py:2088
 msgid "Add to watchlist"
 msgstr "Отложить"
 
-#: gui.py:29 gui.py:66 yatube.py:1031 yatube.py:1156 yatube.py:1501
-#: yatube.py:1965 yatube.py:2019
+#: gui.py:29 gui.py:66 yatube.py:1104 yatube.py:1229 yatube.py:1574
+#: yatube.py:2035 yatube.py:2089
 msgid "Remove from watchlist"
 msgstr "Убрать из отложенного"
 
-#: gui.py:30 gui.py:67 yatube.py:1025 yatube.py:1150 yatube.py:1484
-#: yatube.py:1948 yatube.py:2016
+#: gui.py:30 gui.py:67 yatube.py:1098 yatube.py:1223 yatube.py:1557
+#: yatube.py:2018 yatube.py:2086
 msgid "Add to favorites"
 msgstr "Добавить в избранное"
 
-#: gui.py:31 gui.py:68 yatube.py:1027 yatube.py:1152 yatube.py:1487
-#: yatube.py:1950 yatube.py:2017
+#: gui.py:31 gui.py:68 yatube.py:1100 yatube.py:1225 yatube.py:1560
+#: yatube.py:2020 yatube.py:2087
 msgid "Remove from favorites"
 msgstr "Убрать из избранного"
 
-#: gui.py:32 yatube.py:1160 yatube.py:1979 yatube.py:2020
+#: gui.py:32 yatube.py:1233 yatube.py:2049 yatube.py:2090
 msgid "Block this channel"
 msgstr "Блокировать этот канал"
 
-#: gui.py:33 yatube.py:1162 yatube.py:1981 yatube.py:2021
+#: gui.py:33 yatube.py:1235 yatube.py:2051 yatube.py:2091
 msgid "Unblock"
 msgstr "Разблокировать"
 
-#: gui.py:34 yatube.py:1173 yatube.py:1983 yatube.py:2022
+#: gui.py:34 yatube.py:1246 yatube.py:2053 yatube.py:2092
 msgid "Subscribe to this channel"
 msgstr "Подписаться на этот канал"
 
-#: gui.py:35 yatube.py:1175 yatube.py:1985 yatube.py:2023
+#: gui.py:35 yatube.py:1248 yatube.py:2055 yatube.py:2093
 msgid "Unsubscribe"
 msgstr "Отписаться"
 
-#: gui.py:38 yatube.py:2088
+#: gui.py:38 yatube.py:2158
 msgid "Show summary"
 msgstr "Показать сводку"
 
-#: gui.py:42 gui.py:237 gui.py:408 yatube.py:2099
+#: gui.py:42 gui.py:235 gui.py:408 yatube.py:2169
 msgid "Delete"
 msgstr "Удалить"
 
-#: gui.py:44 yatube.py:2102
+#: gui.py:44 yatube.py:2172
 msgid "Full menu"
 msgstr "Полное меню"
 
-#: gui.py:47 gui.py:578 yatube.py:1401
+#: gui.py:47 gui.py:578 yatube.py:1474
 msgid "Update"
 msgstr "Обновить"
 
-#: gui.py:48 yatube.py:1408
+#: gui.py:48 yatube.py:1481
 msgid "Channel"
 msgstr "Канал"
 
-#: gui.py:49 gui.py:72 yatube.py:1405 yatube.py:1448
+#: gui.py:49 gui.py:72 yatube.py:1478 yatube.py:1521
 msgid "Subscriptions"
 msgstr "Подписки"
 
-#: gui.py:52 gui.py:582 yatube.py:1418
+#: gui.py:52 gui.py:582 yatube.py:1491
 msgid "View"
 msgstr "Вид"
 
-#: gui.py:53 yatube.py:1425
+#: gui.py:53 yatube.py:1498
 msgid "All feed"
 msgstr "Вся лента"
 
-#: gui.py:54 yatube.py:1422
+#: gui.py:54 yatube.py:1495
 msgid "History"
 msgstr "История"
 
-#: gui.py:55 yatube.py:1431
+#: gui.py:55 yatube.py:1504
 msgid "Watchlist"
 msgstr "Отложенное"
 
-#: gui.py:56 yatube.py:1428
+#: gui.py:56 yatube.py:1501
 msgid "Favorites"
 msgstr "Избранное"
 
-#: gui.py:57 yatube.py:1434
+#: gui.py:57 yatube.py:1507
 msgid "Welcome screen"
 msgstr "Начальный экран"
 
-#: gui.py:60 gui.py:586 yatube.py:1033 yatube.py:1037 yatube.py:1464
+#: gui.py:60 gui.py:586 yatube.py:1106 yatube.py:1110 yatube.py:1537
 msgid "Selection"
 msgstr "Выбранное"
 
-#: gui.py:61 yatube.py:1034 yatube.py:1468
+#: gui.py:61 yatube.py:1107 yatube.py:1541
 msgid "Select all new videos"
 msgstr "Выбрать все новые видео"
 
-#: gui.py:62 yatube.py:1009 yatube.py:1495
+#: gui.py:62 yatube.py:1082 yatube.py:1568
 msgid "Delete selected"
 msgstr "Удалить выбранное"
 
-#: gui.py:71 gui.py:404 gui.py:590 yatube.py:1444
+#: gui.py:71 gui.py:404 gui.py:590 yatube.py:1517
 msgid "Edit"
 msgstr "Править"
 
-#: gui.py:73 yatube.py:1451
+#: gui.py:73 yatube.py:1524
 msgid "Blocked authors"
 msgstr "Заблокированные авторы"
 
-#: gui.py:74 yatube.py:1454
+#: gui.py:74 yatube.py:1527
 msgid "Blocked words"
 msgstr "Заблокированные слова"
 
-#: gui.py:77 gui.py:679 yatube.py:950
+#: gui.py:77 gui.py:679 yatube.py:40 yatube.py:80 yatube.py:1023
 msgid "Best qual."
 msgstr "Лучшее кач."
 
-#: gui.py:78
+#: gui.py:78 yatube.py:42 yatube.py:78
 msgid "Worst qual."
 msgstr "Худшее кач."
 
-#: gui.py:81 gui.py:686
+#: gui.py:81 gui.py:686 yatube.py:33 yatube.py:82
 msgid "Auto"
 msgstr "Авто"
 
-#: gui.py:238
+#: gui.py:236
 msgid "Delete & Close"
 msgstr "Удалить и закрыть"
 
-#: gui.py:245
+#: gui.py:242 gui.py:426
+msgid "Reset"
+msgstr "Сброс"
+
+#: gui.py:243
 msgid "Set the original time"
 msgstr "Установить первоначальное время"
 
-#: gui.py:252
+#: gui.py:249 gui.py:420
+msgid "Save"
+msgstr "Сохранить"
+
+#: gui.py:250
 msgid "Save & Close"
 msgstr "Сохранить и закрыть"
 
-#: gui.py:318
+#: gui.py:315 gui.py:332
 msgid "Add or remove IDs"
 msgstr "Добавить или удалить ИД"
 
@@ -1126,11 +260,23 @@ msgstr "Открыть URL"
 msgid "Add"
 msgstr "Добавить"
 
+#: gui.py:412 gui.py:508
+msgid "Close"
+msgstr "Закрыть"
+
+#: gui.py:413
+msgid "Reject and close"
+msgstr "Отказаться и закрыть"
+
+#: gui.py:421
+msgid "Save and close"
+msgstr "Запомнить и выйти"
+
 #: gui.py:427
 msgid "Reset all fields"
 msgstr "Восстановить все поля"
 
-#: gui.py:448 gui.py:1058
+#: gui.py:448 gui.py:518 gui.py:1055
 msgid "Comments"
 msgstr "Комментарии"
 
@@ -1142,11 +288,15 @@ msgstr "Перейти на предыдущую страницу"
 msgid "Go to the next page"
 msgstr "Перейти на следующую страницу"
 
-#: gui.py:557 gui.py:658 yatube.py:2136
+#: gui.py:509
+msgid "Close this window"
+msgstr "Закрыть это окно"
+
+#: gui.py:557 gui.py:658 yatube.py:2206
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
-#: gui.py:564 gui.py:636 yatube.py:2121
+#: gui.py:564 gui.py:636 yatube.py:2191
 msgid "Search Youtube"
 msgstr "Поиск в Youtube"
 
@@ -1178,7 +328,7 @@ msgstr "‹"
 msgid "›"
 msgstr "›"
 
-#: gui.py:621 gui.py:624 yatube.py:1848
+#: gui.py:621 gui.py:624 yatube.py:1918
 msgid "Newer than"
 msgstr "Новее"
 
@@ -1190,7 +340,7 @@ msgstr "Старше"
 msgid "Search"
 msgstr "Найти"
 
-#: gui.py:647 yatube.py:2075
+#: gui.py:647 yatube.py:2145
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
@@ -1210,15 +360,15 @@ msgstr "Качество потокового видео"
 msgid " (selected: {}/{})"
 msgstr " (выбрано: {}/{})"
 
-#: gui.py:863 logic.py:1034
+#: gui.py:863 logic.py:1099
 msgid "Author"
 msgstr "Автор"
 
-#: gui.py:864 logic.py:1038
+#: gui.py:864 logic.py:1103
 msgid "Title"
 msgstr "Заголовок"
 
-#: gui.py:865 logic.py:1042
+#: gui.py:865 logic.py:1107
 msgid "Date"
 msgstr "Дата"
 
@@ -1230,470 +380,535 @@ msgstr "Изображение"
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: gui.py:979
+#: gui.py:978
 msgid "Scroll to {}"
 msgstr "Прокрутка до {}"
 
-#: gui.py:1065
+#: gui.py:1062
 msgid "Edit subscriptions:"
 msgstr "Отредактируйте подписки:"
 
-#: gui.py:1073
+#: gui.py:1070
 msgid "Edit the blacklist:"
 msgstr "Отредактируйте черный список"
 
-#: gui.py:1085
+#: gui.py:1082
 msgid "Full summary:"
 msgstr "Полная сводка:"
 
-#: gui.py:1097
+#: gui.py:1094
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: gui.py:1115
+#: gui.py:1112
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
-#: logic.py:59 logic.py:120 logic.py:181 logic.py:242
+#: logic.py:48
+msgid "The following sections and/or keys are missing:"
+msgstr "Отсутствуют следующие разделы и/или ключи:"
+
+#: logic.py:122 logic.py:183 logic.py:244 logic.py:305
 msgid "Previous page token: {}"
 msgstr "Метка предыдущей страницы: {}"
 
-#: logic.py:61 logic.py:122 logic.py:183 logic.py:244
+#: logic.py:124 logic.py:185 logic.py:246 logic.py:307
 msgid "Next page token: {}"
 msgstr "Метка следующей страницы: {}"
 
-#: logic.py:382
+#: logic.py:406 yatube.py:1887
+msgid "Jan"
+msgstr "янв"
+
+#: logic.py:406 yatube.py:1889
+msgid "Feb"
+msgstr "фев"
+
+#: logic.py:406 yatube.py:1891
+msgid "Mar"
+msgstr "мар"
+
+#: logic.py:406 yatube.py:1893
+msgid "Apr"
+msgstr "апр"
+
+#: logic.py:406 yatube.py:1895
+msgid "May"
+msgstr "май"
+
+#: logic.py:407 yatube.py:1897
+msgid "Jun"
+msgstr "июн"
+
+#: logic.py:407 yatube.py:1899
+msgid "Jul"
+msgstr "июл"
+
+#: logic.py:407 yatube.py:1901
+msgid "Aug"
+msgstr "авг"
+
+#: logic.py:407 yatube.py:1903
+msgid "Sep"
+msgstr "сен"
+
+#: logic.py:407 yatube.py:1905
+msgid "Oct"
+msgstr "окт"
+
+#: logic.py:408 yatube.py:1907
+msgid "Nov"
+msgstr "ноя"
+
+#: logic.py:408 yatube.py:1909
+msgid "Dec"
+msgstr "дек"
+
+#: logic.py:419 logic.py:789 logic.py:1263 meta.py:148 meta.py:175
+#: yatube.py:960 yatube.py:1064 yatube.py:1316 yatube.py:1338 yatube.py:1367
+#: yatube.py:1380 yatube.py:1393
+msgid "Wrong input data!"
+msgstr "Недопустимые входные данные!"
+
+#: logic.py:443
 msgid "Algeria"
 msgstr "Алжир"
 
-#: logic.py:383
+#: logic.py:444
 msgid "Argentina"
 msgstr "Аргентина"
 
-#: logic.py:384
+#: logic.py:445
 msgid "Australia"
 msgstr "Австралия"
 
-#: logic.py:385
+#: logic.py:446
 msgid "Austria"
 msgstr "Австрия"
 
-#: logic.py:386
+#: logic.py:447
 msgid "Azerbaijan"
 msgstr "Азербайджан"
 
-#: logic.py:387
+#: logic.py:448
 msgid "Bahrain"
 msgstr "Бахрейн"
 
-#: logic.py:388
+#: logic.py:449
 msgid "Belarus"
 msgstr "Беларусь"
 
-#: logic.py:389
+#: logic.py:450
 msgid "Belgium"
 msgstr "Бельгия"
 
-#: logic.py:390
+#: logic.py:451
 msgid "Bosnia and Herzegovina"
 msgstr "Босния и Герцеговина"
 
-#: logic.py:391
+#: logic.py:452
 msgid "Brazil"
 msgstr "Бразилия"
 
-#: logic.py:392
+#: logic.py:453
 msgid "Bulgaria"
 msgstr "Болгария"
 
-#: logic.py:393
+#: logic.py:454
 msgid "Canada"
 msgstr "Канада"
 
-#: logic.py:394
+#: logic.py:455
 msgid "Chile"
 msgstr "Чили"
 
-#: logic.py:395
+#: logic.py:456
 msgid "Colombia"
 msgstr "Колумбия"
 
-#: logic.py:396
+#: logic.py:457
 msgid "Croatia"
 msgstr "Хорватия"
 
-#: logic.py:397
+#: logic.py:458
 msgid "Czechia"
 msgstr "Чехия"
 
-#: logic.py:398
+#: logic.py:459
 msgid "Denmark"
 msgstr "Дания"
 
-#: logic.py:399
+#: logic.py:460
 msgid "Egypt"
 msgstr "Египет"
 
-#: logic.py:400
+#: logic.py:461
 msgid "Estonia"
 msgstr "Эстония"
 
-#: logic.py:401
+#: logic.py:462
 msgid "Finland"
 msgstr "Финляндия"
 
-#: logic.py:402
+#: logic.py:463
 msgid "France"
 msgstr "Франция"
 
-#: logic.py:403
+#: logic.py:464
 msgid "Georgia"
 msgstr "Грузия"
 
-#: logic.py:404
+#: logic.py:465
 msgid "Germany"
 msgstr "Германия"
 
-#: logic.py:405
+#: logic.py:466
 msgid "Ghana"
 msgstr "Гана"
 
-#: logic.py:406
+#: logic.py:467
 msgid "Greece"
 msgstr "Греция"
 
-#: logic.py:407
+#: logic.py:468
 msgid "Hong Kong"
 msgstr "Гонконг"
 
-#: logic.py:408
+#: logic.py:469
 msgid "Hungary"
 msgstr "Венгрия"
 
-#: logic.py:409
+#: logic.py:470
 msgid "Iceland"
 msgstr "Исландия"
 
-#: logic.py:410
+#: logic.py:471
 msgid "India"
 msgstr "Индия"
 
-#: logic.py:411
+#: logic.py:472
 msgid "Indonesia"
 msgstr "Индонезия"
 
-#: logic.py:412
+#: logic.py:473
 msgid "Iraq"
 msgstr "Ирак"
 
-#: logic.py:413
+#: logic.py:474
 msgid "Ireland"
 msgstr "Ирландия"
 
-#: logic.py:414
+#: logic.py:475
 msgid "Israel"
 msgstr "Израиль"
 
-#: logic.py:415
+#: logic.py:476
 msgid "Itality"
 msgstr "Италия"
 
-#: logic.py:416
+#: logic.py:477
 msgid "Jamaica"
 msgstr "Ямайка"
 
-#: logic.py:417
+#: logic.py:478
 msgid "Japan"
 msgstr "Япония"
 
-#: logic.py:418
+#: logic.py:479
 msgid "Jordan"
 msgstr "Иордан"
 
-#: logic.py:419
+#: logic.py:480
 msgid "Kazakhstan"
 msgstr "Казахстан"
 
-#: logic.py:420
+#: logic.py:481
 msgid "Kenya"
 msgstr "Кения"
 
-#: logic.py:421
+#: logic.py:482
 msgid "Kuwait"
 msgstr "Кувейт"
 
-#: logic.py:422
+#: logic.py:483
 msgid "Latvia"
 msgstr "Латвия"
 
-#: logic.py:423
+#: logic.py:484
 msgid "Lebanon"
 msgstr "Лебанон"
 
-#: logic.py:424
+#: logic.py:485
 msgid "Libya"
 msgstr "Ливия"
 
-#: logic.py:425
+#: logic.py:486
 msgid "Lithuania"
 msgstr "Литва"
 
-#: logic.py:426
+#: logic.py:487
 msgid "Luxembourg"
 msgstr "Люксембург"
 
-#: logic.py:427
+#: logic.py:488
 msgid "Macedonia"
 msgstr "Македония"
 
-#: logic.py:428
+#: logic.py:489
 msgid "Malaysia"
 msgstr "Малайзия"
 
-#: logic.py:429
+#: logic.py:490
 msgid "Mexico"
 msgstr "Мексика"
 
-#: logic.py:430
+#: logic.py:491
 msgid "Montenegro"
 msgstr "Монтенегро"
 
-#: logic.py:431
+#: logic.py:492
 msgid "Morocco"
 msgstr "Марокко"
 
-#: logic.py:432
+#: logic.py:493
 msgid "Nepal"
 msgstr "Непал"
 
-#: logic.py:433
+#: logic.py:494
 msgid "Netherlands"
 msgstr "Нидерланды"
 
-#: logic.py:434
+#: logic.py:495
 msgid "New Zealand"
 msgstr "Новая Зеландия"
 
-#: logic.py:435
+#: logic.py:496
 msgid "Nigeria"
 msgstr "Нигерия"
 
-#: logic.py:436
+#: logic.py:497
 msgid "Norway"
 msgstr "Норвегия"
 
-#: logic.py:437
+#: logic.py:498
 msgid "Oman"
 msgstr "Оман"
 
-#: logic.py:438
+#: logic.py:499
 msgid "Pakistan"
 msgstr "Пакистан"
 
-#: logic.py:439
+#: logic.py:500
 msgid "Peru"
 msgstr "Перу"
 
-#: logic.py:440
+#: logic.py:501
 msgid "Philippines"
 msgstr "Филиппины"
 
-#: logic.py:441
+#: logic.py:502
 msgid "Poland"
 msgstr "Польша"
 
-#: logic.py:442
+#: logic.py:503
 msgid "Portugal"
 msgstr "Португалия"
 
-#: logic.py:443
+#: logic.py:504
 msgid "Puerto Rico"
 msgstr "Пуэрто-Рико"
 
-#: logic.py:444
+#: logic.py:505
 msgid "Qatar"
 msgstr "Катар"
 
-#: logic.py:445
+#: logic.py:506
 msgid "Romania"
 msgstr "Румыния"
 
-#: logic.py:446
+#: logic.py:507
 msgid "Russia"
 msgstr "Россия"
 
-#: logic.py:447
+#: logic.py:508
 msgid "Saudi Arabia"
 msgstr "Саудовская Аравия"
 
-#: logic.py:448
+#: logic.py:509
 msgid "Senegal"
 msgstr "Сенегал"
 
-#: logic.py:449
+#: logic.py:510
 msgid "Serbia"
 msgstr "Сербия"
 
-#: logic.py:450
+#: logic.py:511
 msgid "Singapore"
 msgstr "Сингапур"
 
-#: logic.py:451
+#: logic.py:512
 msgid "Slovakia"
 msgstr "Словакия"
 
-#: logic.py:452
+#: logic.py:513
 msgid "Slovenia"
 msgstr "Словения"
 
-#: logic.py:453
+#: logic.py:514
 msgid "South Africa"
 msgstr "Южная Африка"
 
-#: logic.py:454
+#: logic.py:515
 msgid "South Korea"
 msgstr "Южная Корея"
 
-#: logic.py:455
+#: logic.py:516
 msgid "Spain"
 msgstr "Испания"
 
-#: logic.py:456
+#: logic.py:517
 msgid "Sri Lanka"
 msgstr "Шри-Ланка"
 
-#: logic.py:457
+#: logic.py:518
 msgid "Sweden"
 msgstr "Швеция"
 
-#: logic.py:458
+#: logic.py:519
 msgid "Switzerland"
 msgstr "Швейцария"
 
-#: logic.py:459
+#: logic.py:520
 msgid "Taiwan"
 msgstr "Тайвань"
 
-#: logic.py:460
+#: logic.py:521
 msgid "Tanzania"
 msgstr "Танзания"
 
-#: logic.py:461
+#: logic.py:522
 msgid "Thailand"
 msgstr "Тайланд"
 
-#: logic.py:462
+#: logic.py:523
 msgid "Tunisia"
 msgstr "Тунис"
 
-#: logic.py:463
+#: logic.py:524
 msgid "Turkey"
 msgstr "Турция"
 
-#: logic.py:464
+#: logic.py:525
 msgid "Uganda"
 msgstr "Уганда"
 
-#: logic.py:465
+#: logic.py:526
 msgid "Ukraine"
 msgstr "Украина"
 
-#: logic.py:466
+#: logic.py:527
 msgid "United Arab Emirates"
 msgstr "Объединённые Арабские Эмираты"
 
-#: logic.py:467
+#: logic.py:528
 msgid "United Kingdom"
 msgstr "Соединённое Королевство"
 
-#: logic.py:468
+#: logic.py:529
 msgid "United States"
 msgstr "Соединённые Штаты Америки"
 
-#: logic.py:469
+#: logic.py:530
 msgid "Vietnam"
 msgstr "Вьетнам"
 
-#: logic.py:470
+#: logic.py:531
 msgid "Yemen"
 msgstr "Йемен"
 
-#: logic.py:471
+#: logic.py:532
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: logic.py:476 yatube.py:1526 yatube.py:2257 yatube.py:2431
+#: logic.py:537 yatube.py:1599 yatube.py:2327 yatube.py:2496
 msgid "Trending"
 msgstr "Популярное"
 
-#: logic.py:588
+#: logic.py:649
 msgid "Fetched {} links"
 msgstr "Получено {} ссылок"
 
-#: logic.py:996
+#: logic.py:903 meta.py:421 meta.py:552 yatube.py:576 yatube.py:604
+msgid "Wrong input data: \"{}\"!"
+msgstr "Недопустимые входные данные: \"{}\"!"
+
+#: logic.py:1010 logic.py:1579 logic.py:1598 meta.py:782 yatube.py:183
+#: yatube.py:197 yatube.py:564 yatube.py:854
+msgid "The condition \"{}\" is not observed!"
+msgstr "Условие \"{}\" не выполнено!"
+
+#: logic.py:1061
 msgid "Get new video info: {}"
 msgstr "Загрузка информации о новом видео: {}"
 
-#: logic.py:1046
+#: logic.py:1111
 msgid "Length"
 msgstr "Длина"
 
-#: logic.py:1050
+#: logic.py:1115
 msgid "Views"
 msgstr "Просмотров"
 
-#: logic.py:1054
+#: logic.py:1119
 msgid "Likes"
 msgstr "Нравится"
 
-#: logic.py:1057 logic.py:1064 logic.py:1072
+#: logic.py:1122 logic.py:1129 logic.py:1137
 msgid "Disabled"
 msgstr "Отключено"
 
-#: logic.py:1061
+#: logic.py:1126
 msgid "Dislikes"
 msgstr "Не нравится"
 
-#: logic.py:1069
+#: logic.py:1134
 msgid "Comments:"
 msgstr "Комментариев:"
 
-#: logic.py:1076
+#: logic.py:1141
 msgid "Description"
 msgstr "Описание"
 
-#: logic.py:1149
+#: logic.py:1214
 msgid "Download \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: logic.py:1221
+#: logic.py:1286
 msgid "Selected quality is not available, using default quality."
-msgstr ""
-"Видео в выбранном качестве недоступно, используются настройки по умолчанию."
+msgstr "Видео в выбранном качестве недоступно, используются настройки по умолчанию."
 
-#: logic.py:1225
+#: logic.py:1290
 msgid "This video is not available."
 msgstr "Это видео недоступно."
 
-#: logic.py:1359 yatube.py:2649
+#: logic.py:1467 yatube.py:2714
 msgid "Put here words to block in titles (case is ignored)"
-msgstr ""
-"Вставьте сюда слова из заголовков для блокировки (регистр игнорируется)"
+msgstr "Вставьте сюда слова из заголовков для блокировки (регистр игнорируется)"
 
 #: meta.py:53 meta.py:342 meta.py:592 meta.py:656
 msgid "The end of the channel has been reached!"
 msgstr "Достигнут конец канала!"
 
-#: meta.py:101 meta.py:261 meta.py:391 meta.py:427 meta.py:474 meta.py:537
+#: meta.py:101 meta.py:261 meta.py:391 meta.py:427 meta.py:474 meta.py:538
 #: meta.py:704
 msgid "Missing key: \"{}\"!"
 msgstr "Отсутствует ключ: \"{}\"!"
 
-#: meta.py:501
+#: meta.py:502
 msgid "Uptime: {}"
 msgstr "Время работы: {}"
 
-#: meta.py:503
+#: meta.py:504
 msgid "Used quota: {}"
 msgstr "Использовано квоты: {}"
 
@@ -1729,63 +944,100 @@ msgstr "Комментарии под этим видео отключены."
 msgid "This channel is not available!"
 msgstr "Этот канал недоступен!"
 
-#: utils.py:326
+#: meta.py:911 yatube.py:50 yatube.py:66
+msgid ""
+"Third-party module has failed!\n"
+"\n"
+"Details: {}"
+msgstr ""
+"Ошибка модуля третьей стороны!\n"
+"\n"
+"Детали: {}"
+
+#: utils.py:219
+msgid "Copy \"{}\" to \"{}\""
+msgstr "Копирование \"{}\" в \"{}\""
+
+#: utils.py:328
 msgid "Get data"
 msgstr "Получение данных"
 
-#: utils.py:334
+#: utils.py:336
 msgid "Process data"
 msgstr "Обработка данных"
 
-#: utils.py:341
+#: utils.py:343
 msgid "Update {}"
 msgstr "Обновление {}"
 
-#: utils.py:522 utils.py:535
+#: utils.py:524 utils.py:537
 msgid "{} records have been found."
 msgstr "Найдено {} записей."
 
-#: yatube.py:647
+#: yatube.py:25
+msgid "Update config options"
+msgstr "Обновление настроек конфигурационного файла"
+
+#: yatube.py:59
+msgid "Save config options"
+msgstr "Сохранение настроек конфигурационного файла"
+
+#: yatube.py:720
 msgid "\"{}\" is already in the list!"
 msgstr "\"{}\" уже в списке!"
 
-#: yatube.py:756 yatube.py:1549
+#: yatube.py:745 yatube.py:1485 yatube.py:1511 yatube.py:1531 yatube.py:1584
+#: yatube.py:2068 yatube.py:2180
+msgid ""
+"An unknown mode \"{}\"!\n"
+"\n"
+"The following modes are supported: \"{}\"."
+msgstr ""
+"Неизвестный режим \"{}\"!\n"
+"\n"
+"Поддерживаются следующие режимы: \"{}\"."
+
+#: yatube.py:829 yatube.py:1622
 msgid "Put here authors to subscribe to"
 msgstr "Вставьте сюда авторов, на которых нужно подписаться"
 
-#: yatube.py:978
+#: yatube.py:1051
 msgid "pause:"
 msgstr "пауза:"
 
-#: yatube.py:1525 yatube.py:1614 yatube.py:1621 yatube.py:2054 yatube.py:2243
+#: yatube.py:1446 yatube.py:2137
+msgid "Wrong input data: \"{}\""
+msgstr "Недопустимые входные данные: \"{}\"!"
+
+#: yatube.py:1598 yatube.py:1687 yatube.py:1693 yatube.py:2124 yatube.py:2313
 msgid "Channels"
 msgstr "Каналы"
 
-#: yatube.py:1534
+#: yatube.py:1607
 msgid "Unsubscribe from channel \"{}\""
 msgstr "Отписка от канала \"{}\""
 
-#: yatube.py:1565
+#: yatube.py:1638
 msgid "Unblock channel \"{}\""
 msgstr "Разблокировка канала \"{}\""
 
-#: yatube.py:1576 yatube.py:2621
+#: yatube.py:1649 yatube.py:2686
 msgid "Put here authors to be blocked"
 msgstr "Вставьте сюда авторов, которых нужно заблокировать"
 
-#: yatube.py:1650
+#: yatube.py:1722
 msgid "Subscribe to channel \"{}\""
 msgstr "Подписка на канал \"{}\""
 
-#: yatube.py:1684
+#: yatube.py:1754
 msgid "Block channel \"{}\""
 msgstr "Блокировка канала \"{}\""
 
-#: yatube.py:1761
+#: yatube.py:1831
 msgid "Unable to find a suitable application!"
 msgstr "Не удалось найти подходящее приложение!"
 
-#: yatube.py:1778
+#: yatube.py:1848
 msgid ""
 "Failed to run \"{}\"!\n"
 "\n"
@@ -1795,45 +1047,594 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: yatube.py:2032
+#: yatube.py:2102
 msgid "Video #{}:"
 msgstr "Видео №{}:"
 
-#: yatube.py:2057 yatube.py:2434
+#: yatube.py:2127 yatube.py:2499
 msgid "Switch to channel \"{}\""
 msgstr "Переключение на канал \"{}\""
 
-#: yatube.py:2103
+#: yatube.py:2173
 msgid "Selected video"
 msgstr "Выбранное видео"
 
-#: yatube.py:2137
+#: yatube.py:2207
 msgid "Filter by \"{}\""
 msgstr "Применение фильтра \"{}\""
 
-#: yatube.py:2440
+#: yatube.py:2402 yatube.py:2467
+msgid "Download progress"
+msgstr "Ход загрузок"
+
+#: yatube.py:2505
 msgid "Country: {}"
 msgstr "Страна: {}"
 
-#: yatube.py:2476
+#: yatube.py:2541
 msgid "Widget must be at least {} pixels in height"
 msgstr "Виджет должен быть минимум {} пикселей в высоту"
 
-#: yatube.py:2511
+#: yatube.py:2576
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
-#: yatube.py:2549
+#: yatube.py:2614
 msgid "{}/{} links are already stored in DB."
 msgstr "{}/{} ссылок уже хранятся в БД."
 
-#: yatube.py:2707
+#: yatube.py:2692 yatube.py:2720
+msgid "Operation has been canceled by the user."
+msgstr "Операция отменена пользователем."
+
+#: yatube.py:2778
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
 
-#: yatube.py:2710
+#: yatube.py:2781
 msgid "Goodbye!"
 msgstr "До свидания!"
+
+#~ msgid "WARNING"
+#~ msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+#~ msgid "ERROR"
+#~ msgstr "ОШИБКА"
+
+#~ msgid "QUESTION"
+#~ msgstr "ВОПРОС"
+
+#~ msgid "INFO"
+#~ msgstr "ИНФОРМАЦИЯ"
+
+#~ msgid "Set the max number of rows to {}"
+#~ msgstr "Задать максимальное число столбцов: {}"
+
+#~ msgid "Set the max column width to {} symbols"
+#~ msgstr "Ограничить максимальную ширину столбца {} символами"
+
+#~ msgid "Only iterable objects are supported!"
+#~ msgstr "Поддерживаются только итерируемые объекты!"
+
+#~ msgid "DEBUG"
+#~ msgstr "ОТЛАДКА"
+
+#~ msgid "File \"{}\" was not found!"
+#~ msgstr "Файл \"{}\" не найден!"
+
+#~ msgid "Left mouse button"
+#~ msgstr "Левая кнопка мыши"
+
+#~ msgid "Middle mouse button"
+#~ msgstr "Средняя кнопка мыши"
+
+#~ msgid "Right mouse button"
+#~ msgstr "Правая кнопка мыши"
+
+#~ msgid "Space"
+#~ msgstr "Пробел"
+
+#~ msgid "Custom arguments: \"{}\""
+#~ msgstr "Дополнительные параметры: \"{}\""
+
+#~ msgid "Failed to run \"{}\"!"
+#~ msgstr "Не удалось запустить \"{}\"!"
+
+#~ msgid "Unable to open the file in an external program. You should probably check the file associations."
+#~ msgstr "Не удается открыть файл во внешней программе. Возможно, Вам стоит проверить ассоциации файлов."
+
+#~ msgid "Not enough input data!"
+#~ msgstr "Недостаточно входных данных!"
+
+#~ msgid "Write file \"{}\""
+#~ msgstr "Запись файла \"{}\""
+
+#~ msgid "Unable to write file \"{}\"!"
+#~ msgstr "Не удается записать файл \"{}\"!"
+
+#~ msgid "Cannot print the message!"
+#~ msgstr "Не удаётся показать сообщение!"
+
+#~ msgid "Entries deleted: {} ({}-{})"
+#~ msgstr "Удалено вхождений: {} ({}-{})"
+
+#~ msgid "File \"{}\" is not sortable!"
+#~ msgstr "Файл \"{}\" не подлежит сортировке!"
+
+#~ msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
+#~ msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
+
+#~ msgid "Empty input is not allowed!"
+#~ msgstr "Пустые входные данные не допускаются!"
+
+#~ msgid "File \"{}\" has not been found!"
+#~ msgstr "Файл \"{}\" не найден!"
+
+#~ msgid "Load file \"{}\""
+#~ msgstr "Загрузка файла \"{}\""
+
+#~ msgid "Unable to read file \"{}\"!"
+#~ msgstr "Не удается прочитать файл \"{}\"!"
+
+#~ msgid "Float is required at input, but found \"{}\"! Return 0.0"
+#~ msgstr "На входе должно быть число с плавающей запятой, но получено \"{}\"! Возвращаю 0.0"
+
+#~ msgid "Convert \"{}\" to an integer"
+#~ msgstr "Конвертация \"{}\" в целое число"
+
+#~ msgid "Integer is required at input, but found \"{}\"! Return 0"
+#~ msgstr "На входе должно быть целое число, но получено \"{}\"! Возвращаю 0"
+
+#~ msgid "Different number of opening and closing brackets: \"{}\": {}; \"{}\": {}!"
+#~ msgstr "Разное число открывающих и закрывающих скобок: \"{}\": {}; \"{}\": {}!"
+
+#~ msgid "Commas and/or semicolons or line breaks can be used, but not altogether!"
+#~ msgstr "Можно использовать запятые и/или точки с запятой или переносы строк, но не все сразу!"
+
+#~ msgid "Failed to convert \"{}\" to an integer!"
+#~ msgstr "Не удалось конвертировать \"{}\" в целое число!"
+
+#~ msgid "Failed to convert \"{}\" to a floating-point number!"
+#~ msgstr "Не удалось конвертировать \"{}\" в число с плавающей точкой!"
+
+#~ msgid "Set time parameters are incorrect or not supported."
+#~ msgstr "Заданные параметры времени неверны или не поддерживаются."
+
+#~ msgid ""
+#~ "Set time parameters are incorrect or not supported.\n"
+#~ "\n"
+#~ "Details: {}"
+#~ msgstr ""
+#~ "Заданные параметры времени неверны или не поддерживаются.\n"
+#~ "\n"
+#~ "Подробности: {}"
+
+#~ msgid "The object \"{}\" is not a file!"
+#~ msgstr "Объект \"{}\" не является файлом!"
+
+#~ msgid ""
+#~ "Operation has failed!\n"
+#~ "Details: {}"
+#~ msgstr ""
+#~ "Операция завершилась с ошибкой!\n"
+#~ "Подробности: {}"
+
+#~ msgid "Failed to copy file \"{}\" to \"{}\"!"
+#~ msgstr "Не удалось скопировать файл \"{}\" в \"{}\"!"
+
+#~ msgid "Move \"{}\" to \"{}\""
+#~ msgstr "Перемещение \"{}\" в \"{}\""
+
+#~ msgid "Failed to move \"{}\" to \"{}\"!"
+#~ msgstr "Не удалось переместить \"{}\" в \"{}\"!"
+
+#~ msgid "Failed to get the date of the file \"{}\"!"
+#~ msgstr "Не удалось определить дату файла \"{}\"!"
+
+#~ msgid "Unable to copy the file \"{}\" to iself!"
+#~ msgstr "Нельзя скопировать файл \"{}\" сам в себя!"
+
+#~ msgid "Delete \"{}\""
+#~ msgstr "Удаление \"{}\""
+
+#~ msgid "Failed to delete file \"{}\"!"
+#~ msgstr "Не удается удалить файл \"{}\"!"
+
+#~ msgid "Moving is not necessary, because the source and destination are identical ({})."
+#~ msgstr "Перемещение не требуется, поскольку на входе и выходе указан один и тот же объект ({})."
+
+#~ msgid "Change the time of the file \"{}\" to {}"
+#~ msgstr "Изменение времени файла \"{}\" на {}"
+
+#~ msgid "Failed to change the time of the file \"{}\" to \"{}\"!"
+#~ msgstr "Не удалось изменить время файла \"{}\" на \"{}\"!"
+
+#~ msgid "Directory \"{}\" already exists."
+#~ msgstr "Каталог \"{}\" уже существует."
+
+#~ msgid "The path \"{}\" is invalid!"
+#~ msgstr "Путь \"{}\" неверен!"
+
+#~ msgid "Create directory \"{}\""
+#~ msgstr "Создание каталога \"{}\""
+
+#~ msgid "Failed to create directory \"{}\"!"
+#~ msgstr "Не удается создать каталог \"{}\"!"
+
+#~ msgid ""
+#~ "Unable to write file \"{}\"!\n"
+#~ "\n"
+#~ "Details: {}"
+#~ msgstr ""
+#~ "Не удается записать файл \"{}\"!\n"
+#~ "\n"
+#~ "Подробности: {}"
+
+#~ msgid "The following lines cannot be parsed:"
+#~ msgstr "Не удается обработать следующие строки:"
+
+#~ msgid ""
+#~ "Unable to read file \"{}\"!\n"
+#~ "\n"
+#~ "Details: {}"
+#~ msgstr ""
+#~ "Не удается прочитать файл \"{}\"!\n"
+#~ "\n"
+#~ "Подробности: {}"
+
+#~ msgid "Failed to delete directory \"{}\"! Delete it manually."
+#~ msgstr "Не удается удалить каталог \"{}\"! Удалите его вручную."
+
+#~ msgid "Unable to copy \"{}\" to iself!"
+#~ msgstr "Нельзя скопировать \"{}\" сам в себя!"
+
+#~ msgid "Failed to copy \"{}\" to \"{}\"!"
+#~ msgstr "Не удалось скопировать \"{}\" в \"{}\"!"
+
+#~ msgid "New value of the key \"{}\" has been loaded."
+#~ msgstr "Загружено новое значение ключа \"{}\"."
+
+#~ msgid "Keys loaded in total: {}, whereas {} are modified."
+#~ msgstr "Всего загружено ключей: {}, из них измененных: {}"
+
+#~ msgid "Missing sections: {}"
+#~ msgstr "Отсутствующих разделов: {}"
+
+#~ msgid "Missing keys: {}"
+#~ msgstr "Отсутствующих ключей: {}"
+
+#~ msgid "The default configuration has been loaded."
+#~ msgstr "Загружена конфигурация по умолчанию."
+
+#~ msgid "Failed to read the configuration file \"{}\". This file must share the same directory with the program and have UTF-8 encoding (no BOM) and UNIX line break type."
+#~ msgstr "Не удается прочитать конфигурационный файл \"{}\". Этот файл должен находиться в одном каталоге с программой и иметь кодировку UTF-8 (без BOM), тип разрыва строки - UNIX."
+
+#~ msgid ""
+#~ "Failed to open URL \"{}\" in a default browser!\n"
+#~ "\n"
+#~ "Details: {}"
+#~ msgstr ""
+#~ "Не удалось открыть адрес \"{}\" в браузере по умолчанию!\n"
+#~ "\n"
+#~ "Подробности: {}"
+
+#~ msgid "Differences:"
+#~ msgstr "Различия:"
+
+#~ msgid "Texts are identical!"
+#~ msgstr "Различий нет!"
+
+#~ msgid "Delete the symbolic link \"{}\""
+#~ msgstr "Удаление ярлыка \"{}\""
+
+#~ msgid "Failed to remove shortcut \"{}\". Remove it manually and press OK."
+#~ msgstr "Не удается удалить ярлык \"{}\". Удалите его вручную и нажмите OK."
+
+#~ msgid "Create a symbolic link \"{}\""
+#~ msgstr "Создание ярлыка \"{}\""
+
+#~ msgid "Failed to create shortcut \"{}\". Create it manually and press OK."
+#~ msgstr "Не удается создать ярлык \"{}\". Создайте его вручную и нажмите OK."
+
+#~ msgid "Failed to load an e-mail client."
+#~ msgstr "Не удалось загрузить почтовый клиент."
+
+#~ msgid "This operation cannot be executed on your operating system."
+#~ msgstr "Эта операция не может быть выполнена на вашей операционной системе."
+
+#~ msgid "Analyze the text"
+#~ msgstr "Анализ текста"
+
+#~ msgid "Failed to find words of paragraph #{}!"
+#~ msgstr "Не удалось найти слова абзаца №{}!"
+
+#~ msgid "Logic error!"
+#~ msgstr "Логическая ошибка!"
+
+#~ msgid "The pool is empty!"
+#~ msgstr "Пул пуст!"
+
+#~ msgid "The operation has taken {} s."
+#~ msgstr "Операция завершена за {} с."
+
+#~ msgid "Unable to use unverified certificates!"
+#~ msgstr "Не удается использовать неподтвержденные сертификаты!"
+
+#~ msgid "[OK]: \"{}\""
+#~ msgstr "[Успешно]: \"{}\""
+
+#~ msgid "[FAILED]: \"{}\". Details: {}"
+#~ msgstr "[ОШИБКА]: \"{}\". Подробности: {}"
+
+#~ msgid "Unable to decode \"{}\"!"
+#~ msgstr "Не удается изменить кодировку \"{}\"!"
+
+#~ msgid "Wrong input data: {}!"
+#~ msgstr "Недопустимые входные данные: \"{}\"!"
+
+#~ msgid "No references have been found!"
+#~ msgstr "Ориентиры не найдены!"
+
+#~ msgid "No references to the right!"
+#~ msgstr "Справа ориентиров нет!"
+
+#~ msgid "No references to the left!"
+#~ msgstr "Слева ориентиров нет!"
+
+#~ msgid "Unexpected end of text!"
+#~ msgstr "Неожиданный конец текста!"
+
+#~ msgid ","
+#~ msgstr "."
+
+#~ msgid ""
+#~ "Operation has failed!\n"
+#~ "\n"
+#~ "Details: {}"
+#~ msgstr ""
+#~ "Операция завершилась неудачно!\n"
+#~ "\n"
+#~ "Подробности: {}"
+
+#~ msgid "Plain text (UTF-8)"
+#~ msgstr "Обычный текст (UTF-8)"
+
+#~ msgid "Web-page"
+#~ msgstr "Веб-страница"
+
+#~ msgid "All files"
+#~ msgstr "Все файлы"
+
+#~ msgid "Save As:"
+#~ msgstr "Сохранить как:"
+
+#~ msgid "Nothing to do!"
+#~ msgstr "Действие не требуется."
+
+#~ msgid "B"
+#~ msgstr "Б"
+
+#~ msgid "TiB"
+#~ msgstr "ТиБ"
+
+#~ msgid "GiB"
+#~ msgstr "ГиБ"
+
+#~ msgid "MiB"
+#~ msgstr "МиБ"
+
+#~ msgid "KiB"
+#~ msgstr "КиБ"
+
+#~ msgid "ATTENTION: Do yo really want to rewrite file \"{}\"?"
+#~ msgstr "ВНИМАНИЕ: Перезаписать файл \"{}\"?"
+
+#~ msgid "sec"
+#~ msgstr "сек"
+
+#~ msgid "yrs"
+#~ msgstr "лет"
+
+#~ msgid "mths"
+#~ msgstr "мес"
+
+#~ msgid "wks"
+#~ msgstr "нед"
+
+#~ msgid "days"
+#~ msgstr "дн"
+
+#~ msgid "hrs"
+#~ msgstr "ч"
+
+#~ msgid "min"
+#~ msgstr "мин"
+
+#~ msgid "Operation has been canceled."
+#~ msgstr "Операция отменена."
+
+#~ msgid "Not implemented yet!"
+#~ msgstr "Еще не реализовано!"
+
+#~ msgid "A syntax error in the regular expression (id: {})!"
+#~ msgstr "Синтаксическая ошибка в регулярном выражении (запись: {})!"
+
+#~ msgid ""
+#~ "Regular expression {} has failed: we were expecting\n"
+#~ "\"{}\",\n"
+#~ "but received\n"
+#~ "\"{}\"."
+#~ msgstr ""
+#~ "Неудачное вычисление регулярного выражения {}: ожидалось\n"
+#~ "\"{}\",\n"
+#~ "получили\n"
+#~ "\"{}\"."
+
+#~ msgid "Compare texts:"
+#~ msgstr "Сравните тексты:"
+
+#~ msgid "Find:"
+#~ msgstr "Найти:"
+
+#~ msgid "No matches!"
+#~ msgstr "Совпадений нет!"
+
+#~ msgid "Only one match has been found!"
+#~ msgstr "Найдено 1 совпадение!"
+
+#~ msgid "No more matches, continuing from the top!"
+#~ msgstr "Совпадений больше нет, поиск продолжен с начала!"
+
+#~ msgid "No more matches, continuing from the bottom!"
+#~ msgstr "Совпадений больше нет, поиск продолжен с конца!"
+
+#~ msgid "{} tags to assign"
+#~ msgstr "Создание {} тэгов"
+
+#~ msgid "Spelling seems to be correct."
+#~ msgstr "Ошибок правописания не обнаружено."
+
+#~ msgid "Restore the text"
+#~ msgstr "Восстановить текст"
+
+#~ msgid "Accept and close"
+#~ msgstr "Принять и закрыть"
+
+#~ msgid "Clear the field"
+#~ msgstr "Очистить поле"
+
+#~ msgid "Clear"
+#~ msgstr "Очистить"
+
+#~ msgid "Toggle all"
+#~ msgstr "Переключить все"
+
+#~ msgid "Mark/unmark all checkboxes"
+#~ msgstr "Переключить все галки"
+
+#~ msgid "Select files:"
+#~ msgstr "Выберите файлы:"
+
+#~ msgid "File: \"{}\"; {}/{} MB; Rate: {} kbps; ETA: {}s"
+#~ msgstr "Файл: \"{}\"; {}/{} Мб; Скорость: {} Кб/с; Осталось: {}с"
+
+#~ msgid "Paste a special symbol"
+#~ msgstr "Вставить специальный символ"
+
+#~ msgid "Remove item #{}"
+#~ msgstr "Удаление элемента №{}"
+
+#~ msgid "No item #{}!"
+#~ msgstr "Элемент №{} отсутствует!"
+
+#~ msgid "Item \"{}\" is not in list!"
+#~ msgstr "Элемент \"{}\" не в списке!"
+
+#~ msgid "Set the geometry to \"{}x{}+{}+{}\""
+#~ msgstr "Изменение геометрии виджета на \"{}x{}+{}+{}\""
+
+#~ msgid "Please wait..."
+#~ msgstr "Подождите..."
+
+#~ msgid "Widget 1 geometry: {}x{}+{}+{}"
+#~ msgstr "Геометрия виджета 1: {}x{}+{}+{}"
+
+#~ msgid "Widget 2 geometry: {}x{}+{}+{}"
+#~ msgstr "Геометрия виджета 2: {}x{}+{}+{}"
+
+#~ msgid "Wrong font: \"{}\"!"
+#~ msgstr "Неправильный шрифт: \"{}\"!"
+
+#~ msgid "Save geometry: {}"
+#~ msgstr "Сохранение геометрии: {}"
+
+#~ msgid "Restore geometry: {}"
+#~ msgstr "Восстановление геометрии: {}"
+
+#~ msgid "Failed to restore geometry!"
+#~ msgstr "Не удалось восстановить геометрию!"
+
+#~ msgid "Failed to change window properties!"
+#~ msgstr "Не удалось изменить свойства окна!"
+
+#~ msgid "Failed to get the window handle!"
+#~ msgstr "Не удалось получить дескриптор окна!"
+
+#~ msgid "Test:"
+#~ msgstr "Тест:"
+
+#~ msgid "Yes"
+#~ msgstr "Да"
+
+#~ msgid "No"
+#~ msgstr "Нет"
+
+#~ msgid "Cancel"
+#~ msgstr "Отмена"
+
+#~ msgid "An unknown color \"{}\"!"
+#~ msgstr "Неизвестный цвет \"{}\"!"
+
+#~ msgid "Failed to select a file!"
+#~ msgstr "Не удалось выбрать файл!"
+
+#~ msgid "Failed to enable key combination \"{}\"!"
+#~ msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
+
+#~ msgid "Variant #{}"
+#~ msgstr "Вариант №{}"
+
+#~ msgid "Description: no settings"
+#~ msgstr "Описание: нет настроек"
+
+#~ msgid "Description: headers"
+#~ msgstr "Описание: заголовки"
+
+#~ msgid "Description: transposition"
+#~ msgstr "Описание: транспозиция"
+
+#~ msgid "Description: transposition and headers"
+#~ msgstr "Описание: транспозиция и заголовки"
+
+#~ msgid "Copy something to clipboard"
+#~ msgstr "Скопируйте что-нибудь в буфер обмена"
+
+#~ msgid "Clipboard contents: \"{}\""
+#~ msgstr "Содержание буфера обмена: \"{}\""
+
+#~ msgid "The following will be copied: \"{}\""
+#~ msgstr "Будет скопировано следующее: \"{}\""
+
+#~ msgid "New settings"
+#~ msgstr "Новые настройки"
+
+#~ msgid "The event has been triggered!"
+#~ msgstr "Событие вызвано!"
+
+#~ msgid "Button"
+#~ msgstr "Кнопка"
+
+#~ msgid "Trigger an event"
+#~ msgstr "Вызвать событие"
+
+#~ msgid "Screen resolution: {}x{}"
+#~ msgstr "Разрешение экрана: {}x{}"
+
+#~ msgid "Random coordinates: x: {}; y: {}"
+#~ msgstr "Случайные координаты: x: {}; y: {}"
+
+#~ msgid "Press Return to place widgets randomly"
+#~ msgstr "Нажмите Ввод, чтобы расположить виджеты случайным образом"
+
+#~ msgid ""
+#~ "Anchor: {}\n"
+#~ "Press Return to adjust Widget 2"
+#~ msgstr ""
+#~ "Привязка: {}\n"
+#~ "Нажмите Ввод для подгонки Виджета 2"
+
+#~ msgid "Anchor: {}"
+#~ msgstr "Привязка: {}"
 
 #~ msgid "Best"
 #~ msgstr "Лучшее"
@@ -1886,12 +1687,10 @@ msgstr "До свидания!"
 #~ msgid "Failed to add tag \"%s\" for positions %s-%s!"
 #~ msgstr "Не удалось добавить тэг \"%s\" для позиций %s-%s!"
 
-#~ msgid ""
-#~ "Failed to configure tag \"%s\" to have the background of color \"%s\"!"
+#~ msgid "Failed to configure tag \"%s\" to have the background of color \"%s\"!"
 #~ msgstr "Не удалось назначить тэгу \"%s\" фон \"%s\"!"
 
-#~ msgid ""
-#~ "Failed to configure tag \"%s\" to have the foreground of color \"%s\"!"
+#~ msgid "Failed to configure tag \"%s\" to have the foreground of color \"%s\"!"
 #~ msgstr "Не удалось назначить тэгу \"%s\" цвет \"%s\"!"
 
 #~ msgid "Failed to configure tag \"%s\" to have the font \"%s\"!"
@@ -2093,8 +1892,7 @@ msgstr "До свидания!"
 #~ msgstr "Текст с инструкциями:"
 
 #~ msgid "Parent is not supported, using the default one."
-#~ msgstr ""
-#~ "Родительский виджет не поддерживается, используется виджет по умолчанию."
+#~ msgstr "Родительский виджет не поддерживается, используется виджет по умолчанию."
 
 #~ msgid "Delete all text"
 #~ msgstr "Удалить весь текст"
@@ -2120,12 +1918,8 @@ msgstr "До свидания!"
 #~ msgid "Download updated subscriptions"
 #~ msgstr "Загрузить обновленные подписки"
 
-#~ msgid ""
-#~ "Filter by date. For example, \"-n 3\" means \"select videos no older than "
-#~ "3 days\""
-#~ msgstr ""
-#~ "Фильтровать по дате. Например, \"-n 3\" означает \"выбрать видео не "
-#~ "старше 3 дней\""
+#~ msgid "Filter by date. For example, \"-n 3\" means \"select videos no older than 3 days\""
+#~ msgstr "Фильтровать по дате. Например, \"-n 3\" означает \"выбрать видео не старше 3 дней\""
 
 #~ msgid "Update subscriptions in database"
 #~ msgstr "Обновить подписки в базе данных"
