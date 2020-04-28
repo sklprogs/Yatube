@@ -753,7 +753,7 @@ class AddId:
                 self.gui.lst_id3.reset(id3)
                 self.gui.ent_ath.clear_text()
                 self.gui.ent_pid.clear_text()
-                self.gui.ent_ath.set_focus()
+                self.gui.ent_ath.focus()
             else:
                 sh.com.cancel(f)
     
@@ -1594,7 +1594,7 @@ class Commands:
         self.menu.clear_search(Force=True)
         self.menu.clear_url()
         self.menu.clear_filter(Force=True)
-        gi.objs.get_parent().set_focus()
+        gi.objs.get_parent().focus()
         self.menu.opt_chl.set(_('Channels'))
         self.menu.opt_trd.set(_('Trending'))
         gi.objs.get_channel().cvs_prm.move_top()
@@ -2656,7 +2656,7 @@ class Commands:
         gi.objs.channel.cvs_prm.move_top()
         gi.objs.channel.cvs_prm.widget.xview_moveto(0)
         # Move focus away from 'ttk.Combobox' (OptionMenu)
-        gi.objs.channel.cvs_prm.set_focus()
+        gi.objs.channel.cvs_prm.focus()
         self.set_tooltips()
     
     def manage_sub(self):

@@ -336,7 +336,7 @@ class AddId:
         self.set_frames()
         self.set_widgets()
         self.set_bindings()
-        self.ent_ath.set_focus()
+        self.ent_ath.focus()
     
     def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent
@@ -521,7 +521,7 @@ class Comments:
         sh.Geometry(self.parent).set('1024x768')
         self.set_frames()
         self.set_widgets()
-        self.txt_com.set_focus()
+        self.txt_com.focus()
 
 
 
@@ -557,14 +557,14 @@ class Menu:
         if Force or self.ent_flt.get() == _('Filter this view'):
             self.ent_flt.clear_text()
         self.ent_flt.widget.config(fg='black',font='Serif 10')
-        self.ent_flt.set_focus()
+        self.ent_flt.focus()
         #TODO: Restore filtered videos here
                    
     def clear_search(self,event=None,Force=False):
         if Force or self.ent_src.get() == _('Search Youtube'):
             self.ent_src.clear_text()
         self.ent_src.widget.config(fg='black',font='Serif 10')
-        self.ent_src.set_focus()
+        self.ent_src.focus()
     
     def set_tooltips(self):
         sh.ToolTip (obj  = self.opt_max
@@ -807,7 +807,7 @@ class Menu:
         self.ent_url.widget.config (fg   = 'black'
                                    ,font = 'Serif 10'
                                    )
-        self.ent_url.set_focus()
+        self.ent_url.focus()
         
     def paste_url(self,event=None):
         self.clear_url()
@@ -1031,7 +1031,7 @@ class Channel:
         self.set_frames()
         self.set_canvases()
         self.set_scroll()
-        self.cvs_prm.set_focus()
+        self.cvs_prm.focus()
         self.cvs_prm.set_top_bindings (top  = objs.get_parent()
                                       ,Ctrl = False
                                       )
