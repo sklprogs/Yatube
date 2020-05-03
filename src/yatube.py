@@ -5,10 +5,10 @@ import re
 import os
 import subprocess
 import skl_shared.shared as sh
-import logic             as lg
-import gui               as gi
-import meta              as mt
 from skl_shared.localize import _
+import logic as lg
+import gui   as gi
+import meta  as mt
 
 
 class Config:
@@ -355,12 +355,12 @@ class Trending:
     
     def fetch_prev(self):
         mt.objs.get_trending().fetch_prev()
-        mt.objs.trending.get_videos()
+        mt.objs.trending.set_videos()
         objs.commands.set_channel_gui()
     
     def fetch_next(self):
         mt.objs.get_trending().fetch_next()
-        mt.objs.trending.get_videos()
+        mt.objs.trending.set_videos()
         objs.commands.set_channel_gui()
     
     def reset(self,country):

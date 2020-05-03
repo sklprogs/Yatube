@@ -80,7 +80,7 @@ class Trending:
     
     def run(self):
         self.fetch()
-        self.get_videos()
+        self.set_videos()
     
     def set_videos(self):
         f = '[Yatube] meta.Trending.set_videos'
@@ -527,7 +527,7 @@ class Playlist:
                             video        = Video()
                             video.id_    = item['snippet']['resourceId']['videoId']
                             video.author = item['snippet']['channelTitle']
-                            video.chid  = item['snippet']['channelId']
+                            video.chid   = item['snippet']['channelId']
                             video.playid = item['snippet']['playlistId']
                             video.ptime  = sh.com.get_yt_date(item['snippet']['publishedAt'])
                             video.title  = item['snippet']['title']
