@@ -678,6 +678,7 @@ class Lists:
         self.blwords = []
         self.subauth = []
         self.subids  = []
+        self.freq    = []
     
     def match_blocked_word(self,word):
         f = '[Yatube] logic.Lists.match_blocked_word'
@@ -724,7 +725,10 @@ class Lists:
                                 ,key = lambda x:x[0].lower()
                                 )
                        )
-                                                     )
+                                            )
+            text = sh.ReadTextFile(file=self.idefault.ffreq).get()
+            text = sh.Text(text=text).delete_comments()
+            self.freq = text.splitlines()
         else:
             sh.com.cancel(f)
 
@@ -1397,6 +1401,26 @@ class DefaultConfig:
         self.fdconf  = ''
         self.fconf   = ''
         self.api_key = ''
+        self.ffreq   = ''
+    
+    def set_frequent(self):
+        f = '[Yatube] logic.DefaultConfig.set_frequent'
+        if self.Success:
+            self.ffreq = self.ihome.add_config('frequent channels.txt')
+            if self.ffreq:
+                if os.path.exists(self.ffreq):
+                    self.Success = sh.File(file=self.ffreq).Success
+                else:
+                    iwrite = sh.WriteTextFile (file    = self.ffreq
+                                              ,Rewrite = True
+                                              )
+                    iwrite.write('# ' + _('Put here titles of frequent channels'))
+                    self.Success = iwrite.Success
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
     
     def get_api_key(self):
         f = '[MClient] logic.DefaultConfig.get_api_key'
@@ -1518,6 +1542,7 @@ class DefaultConfig:
             self.subscribe()
             self.set_block_channels()
             self.set_block_words()
+            self.set_frequent()
             self.set_db()
         else:
             sh.com.cancel(f)

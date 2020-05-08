@@ -8,7 +8,7 @@ import PIL
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-VERSION = '2.2.1'
+VERSION = '2.3'
 
 context_items = (_('Show the full summary')
                 ,_('Stream')
@@ -33,6 +33,8 @@ context_items = (_('Show the full summary')
                 ,_('Unblock')
                 ,_('Subscribe to this channel')
                 ,_('Unsubscribe')
+                ,_('Add to frequent channels')
+                ,_('Remove from frequent channels')
                 )
 
 url_items = (_('Show summary')
@@ -46,6 +48,7 @@ url_items = (_('Show summary')
 
 update_items = (_('Update')
                ,_('Channel')
+               ,_('Frequent channels')
                ,_('Subscriptions')
                )
 
@@ -70,6 +73,7 @@ selection_items = (_('Selection')
 
 edit_items = (_('Edit')
              ,_('Subscriptions')
+             ,_('Frequent channels')
              ,_('Blocked authors')
              ,_('Blocked words')
              )
@@ -1048,7 +1052,15 @@ class Objects:
         self.def_image = self.channel = self.menu = self.parent \
                        = self.context = self.summary \
                        = self.progress = self.blacklist \
-                       = self.subscribe = self.comments = None
+                       = self.subscribe = self.comments = self.frequent\
+                       = None
+    
+    def get_frequent(self):
+        if self.frequent is None:
+            self.frequent = sh.TextBoxRW (icon  = ICON
+                                         ,title = _('Edit frequent channels:')
+                                         )
+        return self.frequent
     
     def get_comments(self):
         if self.comments is None:
@@ -1086,16 +1098,13 @@ class Objects:
     
     def get_context(self):
         if self.context is None:
-            ''' #FIX: Modifying 'SingleClick' and 'SelectionCloses' is
-                needed here only not to toggle the checkbox of
-                the parent (this is a bug and should be fixed).
-            '''
             self.context = sh.ListBoxC (lst     = context_items
                                        ,title   = _('Select an action:')
                                        ,icon    = ICON
                                        ,ScrollY = False
                                        ,ScrollX = False
                                        ,width   = 250
+                                       ,height  = 365
                                        )
         return self.context
     

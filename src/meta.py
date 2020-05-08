@@ -732,7 +732,7 @@ class Video:
         self.com_num  = 0
         self.dislikes = 0
         self.len_     = 0
-        self.likes   = 0
+        self.likes    = 0
         self.pause    = 0
         self.views    = 0
         self.dtime    = 0.0
@@ -741,11 +741,11 @@ class Video:
         self.ltime    = 0.0
         self.ptime    = 0.0
         self.author   = ''
-        self.chid    = ''
+        self.chid     = ''
         self.desc     = ''
-        self.dir_      = ''
-        self.id_       = ''
-        self.playid  = ''
+        self.dir_     = ''
+        self.id_      = ''
+        self.playid   = ''
         self.page     = ''
         self.path     = ''
         self.pathsh   = ''

@@ -1006,6 +1006,101 @@ class Commands:
         lg.objs.get_lists().reset()
         self.reset_channels()
     
+    def update_frequent(self,event=None):
+        f = '[Yatube] yatube.Commands.update_frequent'
+        frequent = lg.objs.get_lists().freq
+        playids = []
+        for author in frequent:
+            try:
+                index_ = lg.objs.lists.subauth.index(author)
+                playids.append(lg.objs.lists.subids[index_])
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(author)
+                sh.objs/get_mes(f,mes).show_warning()
+                return
+        for i in range(len(playids)):
+            self.menu.opt_chl.set(frequent[i])
+            objs.get_channels().add('playlist',playids[i])
+            objs.channels.fetch()
+        self.show_feed()
+    
+    def add2frequent(self,event=None):
+        f = '[Yatube] yatube.Commands.add2frequent'
+        video = mt.objs.get_videos().get_current()
+        if video.author:
+            if video.author in lg.objs.get_lists().freq:
+                sh.com.rep_lazy(f)
+            else:
+                mes = _('Add "{}" to frequent channels')
+                mes = mes.format(video.author)
+                sh.objs.get_mes(f,mes,True).show_info()
+                lg.objs.lists.freq.append(video.author)
+                frequent = lg.objs.lists.freq
+                frequent = sorted (frequent
+                                  ,key=lambda x:x[0].lower()
+                                  )
+                frequent = '\n'.join(frequent)
+                if frequent:
+                    sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                                     ,Rewrite = True
+                                     ).write(text=frequent)
+                    lg.objs.lists.reset()
+                else:
+                    sh.com.rep_empty(f)
+        else:
+            sh.com.rep_empty(f)
+    
+    def remove_from_frequent(self,event=None):
+        f = '[Yatube] yatube.Commands.remove_from_frequent'
+        video = mt.objs.get_videos().get_current()
+        if video.author:
+            if video.author in lg.objs.get_lists().freq:
+                mes = _('Remove "{}" from frequent channels')
+                mes = mes.format(video.author)
+                sh.objs.get_mes(f,mes,True).show_info()
+                lg.objs.lists.freq.remove(video.author)
+                frequent = lg.objs.lists.freq
+                frequent = '\n'.join(frequent)
+                if not frequent:
+                    frequent = '# ' + _('Put here titles of frequent channels')
+                sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                                 ,Rewrite = True
+                                 ).write(text=frequent)
+                lg.objs.lists.reset()
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            sh.com.rep_empty(f)
+    
+    def manage_frequent(self,event=None):
+        f = '[Yatube] yatube.Commands.manage_frequent'
+        text = '\n'.join(lg.objs.get_lists().freq)
+        frequent = sh.Words(text=text)
+        gi.objs.get_frequent().reset(words=frequent)
+        gi.objs.frequent.insert(text=text)
+        gi.objs.frequent.show()
+        text = gi.objs.frequent.get()
+        # We should allow an empty input
+        if gi.objs.frequent.Save:    
+            if text:
+                text = text.splitlines()
+                text = sorted (text
+                              ,key = lambda x:x[0].lower()
+                              )
+                text = '\n'.join(text)
+                sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                                 ,Rewrite = True
+                                 ).write(text=text)
+            else:
+                text = '# ' + _('Put here words to block in titles (case is ignored)')
+                sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                                 ,Rewrite = True
+                                 ).write(text=text)
+            lg.objs.lists.reset()
+        else:
+            mes = _('Operation has been canceled by the user.')
+            sh.objs.get_mes(f,mes,True).show_info()
+    
     def get_quality(self,event=None):
         ''' Generate a quality argument for youtube_dl.
             Youtube's recommended resolution ratios:
@@ -1209,7 +1304,7 @@ class Commands:
             items = list(gi.context_items)
             data = lg.objs.get_db().get_video(video.id_)
             if data:
-                ''' #note: do not forget to update indices in case of
+                ''' #NOTE: do not forget to update indices in case of
                     changing the DB structure.
                 '''
                 dtime = data[11]
@@ -1246,6 +1341,10 @@ class Commands:
                     items.remove(_('Subscribe to this channel'))
                 else:
                     items.remove(_('Unsubscribe'))
+                if video.author in lg.objs.lists.freq:
+                    items.remove(_('Add to frequent channels'))
+                else:
+                    items.remove(_('Remove from frequent channels'))
             else:
                 sh.com.rep_empty(f)
             return items
@@ -1291,7 +1390,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.add2watchlist'
         lg.objs.get_db().mark_later (videoid = mt.objs.get_videos().get_current().id_
                                     ,ltime   = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
-                                )
+                                    )
         if Unselect:
             self.unselect()
     
@@ -1478,6 +1577,9 @@ class Commands:
         elif choice == _('Subscriptions'):
             self.menu.opt_upd.set(default)
             self.update_channels()
+        elif choice == _('Frequent channels'):
+            self.menu.opt_upd.set(default)
+            self.update_frequent()
         elif choice == _('Channel'):
             self.menu.opt_upd.set(default)
             self.reload_channel()
@@ -1521,6 +1623,9 @@ class Commands:
         elif choice == _('Subscriptions'):
             self.menu.opt_edt.set(default)
             self.manage_sub()
+        elif choice == _('Frequent channels'):
+            self.menu.opt_edt.set(default)
+            self.manage_frequent()
         elif choice == _('Blocked authors'):
             self.menu.opt_edt.set(default)
             self.manage_blocked_authors()
@@ -1580,6 +1685,10 @@ class Commands:
             '''
             if objs.get_channels().get_current().type_ == 'watchlist':
                 self.reload_channel()
+        elif choice == _('Add to frequent channels'):
+            self.add2frequent()
+        elif choice == _('Remove from frequent channels'):
+            self.remove_from_frequent()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
             mes = mes.format(choice,';'.join(gi.selection_items))
@@ -2064,6 +2173,10 @@ class Commands:
                 self.open_channel_url()
             elif choice == _('Copy channel URL'):
                 self.copy_channel_url()
+            elif choice == _('Add to frequent channels'):
+                self.add2frequent()
+            elif choice == _('Remove from frequent channels'):
+                self.remove_from_frequent()
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(choice,';'.join(gi.context_items))
@@ -2091,6 +2204,8 @@ class Commands:
             self._color_context(_('Unblock'),'red')
             self._color_context(_('Subscribe to this channel'),'green')
             self._color_context(_('Unsubscribe'),'red')
+            self._color_context(_('Add to frequent channels'),'green')
+            self._color_context(_('Remove from frequent channels'),'red')
         else:
             sh.com.rep_empty(f)
     
@@ -2122,7 +2237,7 @@ class Commands:
     def set_channel(self,event=None):
         f = '[Yatube] yatube.Commands.set_channel'
         if self.menu.opt_chl.choice == _('Channels'):
-            self.feed()
+            self.show_feed()
         else:
             mes = _('Switch to channel "{}"')
             mes = mes.format(self.menu.opt_chl.choice)
@@ -2474,13 +2589,13 @@ class Commands:
         
     def update_channels(self,event=None):
         f = '[Yatube] yatube.Commands.update_channels'
-        authors  = lg.objs.get_lists().subauth
+        authors = lg.objs.get_lists().subauth
         playids = lg.objs.lists.subids
         for i in range(len(playids)):
             self.menu.opt_chl.set(authors[i])
             objs.get_channels().add('playlist',playids[i])
             objs.channels.fetch()
-        self.feed()
+        self.show_feed()
         
     def update_trending(self,event=None,country='RU'):
         f = '[Yatube] yatube.Commands.update_trending'
@@ -2571,11 +2686,10 @@ class Commands:
         author = video.author
         title  = video.title
         if author in lg.objs.get_lists().blauth \
-        or author in lg.objs.lists.blauth \
         or lg.objs.lists.match_blocked_word(title+video.title):
             author = title = _('BLOCKED')
             video.image = None
-            video.Block  = True
+            video.Block = True
         return(author,title)
     
     def update_video(self,i=0):
