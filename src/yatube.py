@@ -1015,8 +1015,9 @@ class Commands:
                 index_ = lg.objs.lists.subauth.index(author)
                 playids.append(lg.objs.lists.subids[index_])
             except ValueError:
-                mes = _('Wrong input data: "{}"!').format(author)
-                sh.objs/get_mes(f,mes).show_warning()
+                mes = _('You need to subscribe to "{}" first!')
+                mes = mes.format(author)
+                sh.objs.get_mes(f,mes).show_warning()
                 return
         for i in range(len(playids)):
             self.menu.opt_chl.set(frequent[i])
