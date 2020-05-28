@@ -7,9 +7,9 @@ import io
 import html
 import youtube_dl
 import skl_shared.shared as sh
-import meta              as mt
-import db
 from skl_shared.localize import _
+import meta as mt
+import db
 
 pattern1 = 'https://www.youtube.com/watch?v='
 pattern2 = 'https://www.youtube.com/channel/'
