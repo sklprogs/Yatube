@@ -410,12 +410,12 @@ class Search:
     
     def fetch_prev(self):
         mt.objs.get_search().fetch_prev()
-        mt.objs.search.get_videos()
+        mt.objs.search.set_videos()
         objs.commands.set_channel_gui()
     
     def fetch_next(self):
         mt.objs.get_search().fetch_next()
-        mt.objs.search.get_videos()
+        mt.objs.search.set_videos()
         objs.commands.set_channel_gui()
     
     def reset(self,query):
