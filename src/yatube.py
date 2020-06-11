@@ -1973,6 +1973,7 @@ class Commands:
         if 'mpv' in app:
             return ['-fs','-framedrop=vo','-cache','8192'
                    ,'--cache-initial','1024','--no-correct-pts'
+                   ,'--opengl-es=yes'
                    ]
         elif 'mplayer' in app:
             return ['-fs','-framedrop','-cache','8192','-cache-min','50'
@@ -2478,7 +2479,9 @@ class Commands:
     
     def _play_slow(self,app='/usr/bin/mpv'):
         if 'mpv' in app:
-            custom_args = ['-fs','-framedrop=vo','--no-correct-pts']
+            custom_args = ['-fs','-framedrop=vo','--no-correct-pts'
+                          ,'--opengl-es=yes'
+                          ]
         elif 'mplayer' in app:
             custom_args = ['-fs','-framedrop','-nocorrect-pts']
         else:

@@ -1280,7 +1280,7 @@ class Video:
         '''
         f = '[Yatube] logic.Video.stream'
         if self.Success:
-            video   = mt.objs.get_videos().get_current()
+            video = mt.objs.get_videos().get_current()
             gen_url = self.generate_url(video.id_,quality)
             if gen_url:
                 return gen_url
