@@ -1085,8 +1085,12 @@ class Objects:
     
     def get_progress(self):
         if self.progress is None:
-            self.progress = sh.ProgressBar(icon=ICON)
-            # Widget is not created yet, do not 'center' it here!
+            self.progress = sh.ProgressBar (icon    = ICON
+                                           ,width   = 750
+                                           ,height  = 200
+                                           ,YScroll = True
+                                           )
+            #NOTE: Widget was not created yet, do not 'center' it here!
         return self.progress
     
     def get_summary(self):

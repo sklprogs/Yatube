@@ -1240,7 +1240,7 @@ class Commands:
     def show_stat(self,event=None,Silent=False):
         mt.objs.get_stat().report(Silent=Silent)
     
-    def show_progress(self,data):
+    def update_progress(self,data):
         ''' Depending on situation, youtube_dl may not provide some keys,
             so be aware of KeyError.
         '''
@@ -1269,14 +1269,8 @@ class Commands:
             eta = 0
         if rate is None:
             rate = 0
-        total   = total    / 1000000
+        total   = total   / 1000000
         cursize = cursize / 1000000
-        # Prevent ZeroDivisionError
-        if total:
-            percent = round((100*cursize)/total)
-        else:
-            percent = 0
-        gi.objs.get_progress().item.widget['value'] = percent
         rate = int(rate) // 1000
         # Prevent from irritating message length changes
         rate = sh.Text(text=str(rate)).grow (max_len = 4
@@ -1285,14 +1279,11 @@ class Commands:
         eta = sh.Text(text=str(eta)).grow (max_len = 3
                                           ,FromEnd = False
                                           )
-        gi.objs.progress.item.set_text (file    = mt.objs.get_videos().get_current().pathsh
-                                       ,cursize = cursize
-                                       ,total   = total
-                                       ,rate    = rate
-                                       ,eta     = eta
-                                       )
-        # This is required to fill the progress bar on-the-fly
-        sh.objs.get_root().update_idle()
+        file = mt.objs.get_videos().get_current().pathsh
+        mes = _('File: "{}"; {}/{} MB; Rate: {} kbps; ETA: {}s')
+        mes = mes.format(file,int(cursize),int(total),rate,eta)
+        gi.objs.get_progress().set_text(mes)
+        gi.objs.progress.update(cursize,total)
     
     def show_history(self,event=None):
         objs.get_channels().add('history')
@@ -2275,9 +2266,11 @@ class Commands:
                         if self.menu.opt_url.choice == _('Show summary'):
                             self.show_summary()
                         elif self.menu.opt_url.choice == _('Download'):
+                            gi.objs.get_progress().show()
                             self.download_video()
                             gi.objs.progress.close()
                         elif self.menu.opt_url.choice == _('Play'):
+                            gi.objs.get_progress().show()
                             self.download_video()
                             gi.objs.progress.close()
                             self.play_video()
@@ -2514,12 +2507,13 @@ class Commands:
         f = '[Yatube] yatube.Commands.play'
         selection = self.get_sel()
         if selection:
+            gi.objs.get_progress().show()
             # Download all videos, play the first one only
             for i in range(len(selection)):
                 mt.objs.get_videos().set_gui(selection[i])
                 sub = ' ({}/{})'.format(i+1,len(selection))
                 mes = _('Download progress') + sub
-                gi.objs.get_progress().set_title(mes)
+                gi.objs.progress.set_title(mes)
                 self.download_video()
                 if i == 0:
                     self.play_video()
@@ -2571,7 +2565,7 @@ class Commands:
                     sh.Geometry(gi.objs.progress.obj).activate()
                     gi.objs.progress.obj.center()
                     self.FirstVid = False
-                if logic.download(self.show_progress):
+                if logic.download(self.update_progress):
                     self.mark_downloaded()
         else:
             sh.com.rep_empty(f)
