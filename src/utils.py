@@ -10,9 +10,9 @@ from skl_shared.localize import _
 class DB:
     
     def __init__(self,path,clone):
-        self.data    = ()
-        self.path    = path
-        self.clone   = clone
+        self.data = ()
+        self.path = path
+        self.clone = clone
         self.Success = self.clone and sh.File(file=self.path).Success
     
     def update_unescape(self,id_,author,title,desc,search):

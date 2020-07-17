@@ -10,8 +10,8 @@ class DB:
     
     def __init__(self,path):
         self.Success = True
-        self.user    = ''
-        self.path    = path
+        self.user = ''
+        self.path = path
         self.connect()
         self.create_videos()
     

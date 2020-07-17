@@ -27,66 +27,26 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
-class Config(sh.Config):
+class DefaultKeys(sh.DefaultKeys):
 
     def __init__(self):
         super().__init__()
-        self.Success = objs.get_default().Success
-        
-    def run(self):
-        f = '[Yatube] logic.Config.run'
-        if self.Success:
-            self.sections = [sh.lg.SectionIntegers
-                            ,sh.lg.SectionVariables
-                            ]
-            self.sections_abbr = [sh.lg.SectionIntegers_abbr
-                                 ,sh.lg.SectionVariables_abbr
-                                 ]
-            self.sections_func = [sh.lg.config_parser.getint
-                                 ,sh.lg.config_parser.get
-                                 ]
-            self.message = _('The following sections and/or keys are missing:') + '\n'
-            self.total_keys = 0
-            self.changed_keys = 0
-            self.missing_keys = 0
-            self.missing_sections = 0
-            # Create these keys before reading the config
-            self.path = objs.get_default().ihome.add_config('yatube.cfg')
-            self.reset()
-            iread = sh.ReadTextFile(self.path)
-            self.text = iread.get()
-            self.Success = iread.Success
-            self.load_default()
-            if os.path.exists(self.path):
-                self.open()
-            else:
-                self.Success = False
-            self.check()
-            self.load()
-        else:
-            sh.com.cancel(f)
-
-    # Do not rename, this procedure is called by 'shared'
-    def load_default(self):
-        self._load_default_int()
-        self._load_default_var()
+        self.load()
     
-    def _load_default_int(self):
+    def load(self):
+        self._load_int()
+        self._load_str()
+    
+    def _load_int(self):
         sh.lg.globs['int'].update ({
             'max_videos' :50
                                   })
     
-    def _load_default_var(self):
-        sh.lg.globs['var'].update ({
-            'resolution' :'auto'
-           ,'quality'    :'best'
+    def _load_str(self):
+        sh.lg.globs['str'].update ({
+            'resolution' :_('Auto')
+           ,'quality'    :_('Best qual.')
                                   })
-
-    def reset(self):
-        sh.lg.globs['bool']  = {}
-        sh.lg.globs['float'] = {}
-        sh.lg.globs['int']   = {}
-        sh.lg.globs['var']   = {}
 
 
 
@@ -749,7 +709,7 @@ class Objects:
     
     def get_config(self):
         if self.config is None:
-            self.config = Config()
+            self.config = sh.Config(self.get_default().get_config())
             self.config.run()
         return self.config
     
@@ -1625,8 +1585,9 @@ class ChannelHistory:
 
 
 objs = Objects()
-com  = Commands()
-Config()
+com = Commands()
+DefaultKeys()
+objs.get_config()
 mt.API_KEY = objs.get_default().get_api_key()
 mt.objs.get_stat()
 

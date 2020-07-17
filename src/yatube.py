@@ -18,38 +18,29 @@ class Config:
             'lg.DefaultConfig' are widely used in 'logic'.
         '''
         self.Success = lg.objs.get_config().Success
+        self.get_save()
     
+    def get_save(self):
+        f = '[Yatube] yatube.Config.set'
+        if self.Success:
+            self.isave = sh.SaveConfig(lg.objs.get_default().get_config())
+            self.Success = self.isave.Success
+        else:
+            sh.com.cancel(f)
+        
     def set(self):
         f = '[Yatube] yatube.Config.set'
         if self.Success:
             mes = _('Update config options')
             sh.objs.get_mes(f,mes,True).show_info()
-            try:
-                sh.lg.config_parser.set (sh.lg.SectionIntegers
-                                        ,'max_videos'
-                                        ,gi.objs.get_menu().opt_max.choice
-                                        )
-                choice = gi.objs.menu.opt_res.choice
-                if choice == _('Auto'):
-                    choice = 'auto'
-                sh.lg.config_parser.set (sh.lg.SectionVariables
-                                        ,'resolution'
-                                        ,choice
-                                        )
-                choice = gi.objs.menu.opt_qal.choice
-                if choice == _('Best qual.'):
-                    choice = 'best'
-                elif choice == _('Worst qual.'):
-                    choice = 'worst'
-                sh.lg.config_parser.set (sh.lg.SectionVariables
-                                        ,'quality'
-                                        ,choice
-                                        )
-            except Exception as e:
-                self.Success = False
-                mes = _('Third-party module has failed!\n\nDetails: {}')
-                mes = mes.format(e)
-                sh.objs.get_mes(f,mes).show_error()
+            self.isave.set_key (_('Integers'),'max_videos'
+                               ,gi.objs.get_menu().opt_max.choice
+                               )
+            choice = gi.objs.menu.opt_res.choice
+            self.isave.set_key(_('Strings'),'resolution',choice)
+            choice = gi.objs.menu.opt_qal.choice
+            self.isave.set_key(_('Strings'),'quality',choice)
+            self.Success = self.isave.Success
         else:
             sh.com.cancel(f)
     
@@ -58,14 +49,7 @@ class Config:
         if self.Success:
             mes = _('Save config options')
             sh.objs.get_mes(f,mes,True).show_info()
-            try:
-                with open(lg.objs.get_config().path,'w') as cf:
-                    sh.lg.config_parser.write(cf)
-            except Exception as e:
-                self.Success = False
-                mes = _('Third-party module has failed!\n\nDetails: {}')
-                mes = mes.format(e)
-                sh.objs.get_mes(f,mes).show_error()
+            sh.SaveConfig(lg.objs.get_config().path).run()
         else:
             sh.com.cancel(f)
     
@@ -74,15 +58,8 @@ class Config:
         if self.Success:
             mt.MAX_VIDEOS = sh.lg.globs['int']['max_videos']
             gi.objs.get_menu().opt_max.set(mt.MAX_VIDEOS)
-            if sh.lg.globs['var']['quality'] == 'worst':
-                gi.objs.menu.opt_qal.set(_('Worst qual.'))
-            else:
-                gi.objs.menu.opt_qal.set(_('Best qual.'))
-            if sh.lg.globs['var']['resolution'] == 'auto':
-                choice = _('Auto')
-            else:
-                choice = sh.lg.globs['var']['resolution']
-            gi.objs.menu.opt_res.set(choice)
+            gi.objs.menu.opt_qal.set(sh.lg.globs['str']['quality'])
+            gi.objs.menu.opt_res.set(sh.lg.globs['str']['resolution'])
         else:
             sh.com.cancel(f)
 
