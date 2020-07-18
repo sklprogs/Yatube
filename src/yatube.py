@@ -49,7 +49,7 @@ class Config:
         if self.Success:
             mes = _('Save config options')
             sh.objs.get_mes(f,mes,True).show_info()
-            sh.SaveConfig(lg.objs.get_config().path).run()
+            sh.SaveConfig(lg.objs.get_default().get_config()).save()
         else:
             sh.com.cancel(f)
     
