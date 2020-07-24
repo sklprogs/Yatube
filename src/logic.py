@@ -27,6 +27,35 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class CreateConfig(sh.CreateConfig):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def fill_int(self):
+        section = _('Integers')
+        self.add_section(section)
+        section_abbr = self.sections[-1].abbr
+        
+        key = 'max_videos'
+        comment = _('[Autosave] Number of videos per screen (5, 10, 15, 30, 50)')
+        self.add_key(section,section_abbr,key,comment)
+    
+    def fill_str(self):
+        section = _('Strings')
+        self.add_section(section)
+        section_abbr = self.sections[-1].abbr
+        
+        key = 'resolution'
+        comment = _('[Autosave] Default video resolution')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'quality'
+        comment = _('[Autosave] Default video quality')
+        self.add_key(section,section_abbr,key,comment)
+
+
+
 class DefaultKeys(sh.DefaultKeys):
 
     def __init__(self):
@@ -1350,7 +1379,7 @@ class DefaultConfig:
     
     def __init__(self,product='yatube'):
         self.set_values()
-        self.ihome   = sh.Home(app_name=product)
+        self.ihome = sh.Home(app_name=product)
         self.Success = self.ihome.create_conf()
     
     def set_values(self):
@@ -1358,7 +1387,6 @@ class DefaultConfig:
         self.fblock  = ''
         self.fblockw = ''
         self.fdb     = ''
-        self.fdconf  = ''
         self.fconf   = ''
         self.api_key = ''
         self.ffreq   = ''
@@ -1398,31 +1426,9 @@ class DefaultConfig:
         if self.Success:
             if not self.fconf:
                 self.fconf = self.ihome.add_config('yatube.cfg')
-                if os.path.exists(self.fconf):
-                    self.Success = sh.File(file=self.fconf).Success
-                else:
-                    self.get_default_config()
-                    if self.Success:
-                        self.Success = sh.File (file = self.fdconf
-                                               ,dest = self.fconf
-                                               ).copy()
-                    else:
-                        sh.com.cancel(f)
-            return self.fconf
         else:
             sh.com.cancel(f)
-    
-    def get_default_config(self):
-        f = '[Yatube] logic.DefaultConfig.get_default_config'
-        if self.Success:
-            if not self.fdconf:
-                self.fdconf = sh.objs.get_pdir().add ('..','resources'
-                                                  ,'default.cfg'
-                                                  )
-                self.Success = sh.File(file=self.fdconf).Success
-            return self.fdconf
-        else:
-            sh.com.cancel(f)
+        return self.fconf
     
     def set_db(self):
         f = '[Yatube] logic.DefaultConfig.set_db'
@@ -1497,7 +1503,6 @@ class DefaultConfig:
     def run(self):
         f = '[Yatube] logic.DefaultConfig.run'
         if self.Success:
-            self.get_default_config()
             self.get_config()
             self.subscribe()
             self.set_block_channels()

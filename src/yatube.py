@@ -11,6 +11,19 @@ import gui   as gi
 import meta  as mt
 
 
+class ExportKeys:
+    
+    def run(self):
+        f = '[Yatube] yatube.ExportKeys.run'
+        sh.lg.globs['int']['max_videos'] = sh.Input (title = f
+                                                    ,value = gi.objs.get_menu().opt_max.choice
+                                                    ).get_integer()
+        
+        sh.lg.globs['str']['quality'] = gi.objs.menu.opt_qal.choice
+        sh.lg.globs['str']['resolution'] = gi.objs.menu.opt_res.choice
+
+
+
 class Config:
     
     def __init__(self):
@@ -18,40 +31,6 @@ class Config:
             'lg.DefaultConfig' are widely used in 'logic'.
         '''
         self.Success = lg.objs.get_config().Success
-        self.get_save()
-    
-    def get_save(self):
-        f = '[Yatube] yatube.Config.set'
-        if self.Success:
-            self.isave = sh.SaveConfig(lg.objs.get_default().get_config())
-            self.Success = self.isave.Success
-        else:
-            sh.com.cancel(f)
-        
-    def set(self):
-        f = '[Yatube] yatube.Config.set'
-        if self.Success:
-            mes = _('Update config options')
-            sh.objs.get_mes(f,mes,True).show_info()
-            self.isave.set_key (_('Integers'),'max_videos'
-                               ,gi.objs.get_menu().opt_max.choice
-                               )
-            choice = gi.objs.menu.opt_res.choice
-            self.isave.set_key(_('Strings'),'resolution',choice)
-            choice = gi.objs.menu.opt_qal.choice
-            self.isave.set_key(_('Strings'),'quality',choice)
-            self.Success = self.isave.Success
-        else:
-            sh.com.cancel(f)
-    
-    def save(self):
-        f = '[Yatube] yatube.Config.save'
-        if self.Success:
-            mes = _('Save config options')
-            sh.objs.get_mes(f,mes,True).show_info()
-            sh.SaveConfig(lg.objs.get_default().get_config()).save()
-        else:
-            sh.com.cancel(f)
     
     def restore_keys(self):
         f = '[Yatube] yatube.Config.restore_keys'
@@ -2855,17 +2834,13 @@ if __name__ == '__main__':
     f = '[Yatube] yatube.__main__'
     sh.com.start()
     sh.Geometry(gi.objs.get_parent()).set('1024x600')
-    if objs.get_config().Success:
-        objs.get_commands().set_bindings()
-        objs.config.restore_keys()
-        gi.objs.menu.show()
-        objs.config.set()
-        objs.config.save()
-        lg.objs.get_db().save()
-        lg.objs.db.close()
-    else:
-        mes = _('Unable to continue due to an invalid configuration.')
-        sh.objs.get_mes(f,mes).show_warning()
+    objs.get_commands().set_bindings()
+    objs.get_config().restore_keys()
+    gi.objs.menu.show()
+    ExportKeys().run()
+    lg.CreateConfig(lg.objs.get_default().get_config()).run()
+    lg.objs.get_db().save()
+    lg.objs.db.close()
     objs.get_commands().show_stat(Silent=True)
     mes = _('Goodbye!')
     sh.objs.get_mes(f,mes,True).show_debug()
