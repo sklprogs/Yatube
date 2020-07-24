@@ -21,6 +21,7 @@ class ExportKeys:
         
         sh.lg.globs['str']['quality'] = gi.objs.menu.opt_qal.choice
         sh.lg.globs['str']['resolution'] = gi.objs.menu.opt_res.choice
+        sh.lg.globs['bool']['SlowPC'] = gi.objs.menu.chb_slw.get()
 
 
 
@@ -39,6 +40,7 @@ class Config:
             gi.objs.get_menu().opt_max.set(mt.MAX_VIDEOS)
             gi.objs.menu.opt_qal.set(sh.lg.globs['str']['quality'])
             gi.objs.menu.opt_res.set(sh.lg.globs['str']['resolution'])
+            gi.objs.menu.chb_slw.set(sh.lg.globs['bool']['SlowPC'])
         else:
             sh.com.cancel(f)
 

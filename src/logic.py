@@ -32,6 +32,15 @@ class CreateConfig(sh.CreateConfig):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
+    def fill_bool(self):
+        section = _('Booleans')
+        self.add_section(section)
+        section_abbr = self.sections[-1].abbr
+        
+        key = 'SlowPC'
+        comment = _('[Autosave] Use special mpv options for slow PCs')
+        self.add_key(section,section_abbr,key,comment)
+    
     def fill_int(self):
         section = _('Integers')
         self.add_section(section)
@@ -63,8 +72,14 @@ class DefaultKeys(sh.DefaultKeys):
         self.load()
     
     def load(self):
+        self._load_bool()
         self._load_int()
         self._load_str()
+    
+    def _load_bool(self):
+        sh.lg.globs['bool'].update ({
+            'SlowPC':True
+                                  })
     
     def _load_int(self):
         sh.lg.globs['int'].update ({
