@@ -22,6 +22,8 @@ class ExportKeys:
         sh.lg.globs['str']['quality'] = gi.objs.menu.opt_qal.choice
         sh.lg.globs['str']['resolution'] = gi.objs.menu.opt_res.choice
         sh.lg.globs['bool']['SlowPC'] = gi.objs.menu.chb_slw.get()
+        sh.lg.globs['bool']['DateActive'] = gi.objs.menu.chb_dat.get()
+        sh.lg.globs['str']['DateChoice'] = gi.objs.menu.opt_dat.choice
 
 
 
@@ -41,6 +43,8 @@ class Config:
             gi.objs.menu.opt_qal.set(sh.lg.globs['str']['quality'])
             gi.objs.menu.opt_res.set(sh.lg.globs['str']['resolution'])
             gi.objs.menu.chb_slw.set(sh.lg.globs['bool']['SlowPC'])
+            gi.objs.menu.chb_dat.set(sh.lg.globs['bool']['DateActive'])
+            gi.objs.menu.opt_dat.set(sh.lg.globs['str']['DateChoice'])
         else:
             sh.com.cancel(f)
 

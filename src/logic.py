@@ -40,6 +40,10 @@ class CreateConfig(sh.CreateConfig):
         key = 'SlowPC'
         comment = _('[Autosave] Use special mpv options for slow PCs')
         self.add_key(section,section_abbr,key,comment)
+        
+        key = 'DateActive'
+        comment = _('[Autosave] Activate filtering by date')
+        self.add_key(section,section_abbr,key,comment)
     
     def fill_int(self):
         section = _('Integers')
@@ -62,6 +66,10 @@ class CreateConfig(sh.CreateConfig):
         key = 'quality'
         comment = _('[Autosave] Default video quality')
         self.add_key(section,section_abbr,key,comment)
+        
+        key = 'DateChoice'
+        comment = _('[Autosave] Date filtering option')
+        self.add_key(section,section_abbr,key,comment)
 
 
 
@@ -78,7 +86,8 @@ class DefaultKeys(sh.DefaultKeys):
     
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
-            'SlowPC':True
+            'DateActive' :False
+           ,'SlowPC'     :True
                                   })
     
     def _load_int(self):
@@ -88,8 +97,9 @@ class DefaultKeys(sh.DefaultKeys):
     
     def _load_str(self):
         sh.lg.globs['str'].update ({
-            'resolution' :_('Auto')
+            'DateChoice' :_('Newer than')
            ,'quality'    :_('Best qual.')
+           ,'resolution' :_('Auto')
                                   })
 
 
