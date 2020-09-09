@@ -630,7 +630,7 @@ class Extractor:
                                     if link.startswith('/watch?v=')
                                    ]
                 else:
-                    ilinks.redirec()
+                    ilinks.redirect()
                     ''' We should do our best here to ensure that
                         the URL will refer to a Youtube video. There
                         could be links to 'youtube.com', e.g., from
