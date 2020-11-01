@@ -5,8 +5,7 @@ productlow='yatube'
 arch="i686"
 os="Linux" # Linux or Wine
 oslow="linux"
-# oldstable debian has glibc 2.19, whereas current stable debian has glibc 2.24
-glibc="2.19"
+glibc="2.28"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"

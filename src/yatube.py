@@ -7,8 +7,8 @@ import subprocess
 import skl_shared.shared as sh
 from skl_shared.localize import _
 import logic as lg
-import gui   as gi
-import meta  as mt
+import gui as gi
+import meta as mt
 
 
 class ExportKeys:
@@ -1038,9 +1038,7 @@ class Commands:
     def manage_frequent(self,event=None):
         f = '[Yatube] yatube.Commands.manage_frequent'
         text = '\n'.join(lg.objs.get_lists().freq)
-        frequent = sh.Words(text=text)
-        gi.objs.get_frequent().reset(words=frequent)
-        gi.objs.frequent.insert(text=text)
+        gi.objs.get_frequent().reset(text)
         gi.objs.frequent.show()
         text = gi.objs.frequent.get()
         # We should allow an empty input
@@ -2740,9 +2738,7 @@ class Commands:
                              
     def manage_blocked_authors(self,event=None):
         f = '[Yatube] yatube.Commands.manage_blocked_authors'
-        words = sh.Words(text=lg.objs.get_lists().block)
-        gi.objs.get_blacklist().reset(words=words)
-        gi.objs.blacklist.insert(text=lg.objs.lists.block)
+        gi.objs.get_blacklist().reset(lg.objs.get_lists().block)
         gi.objs.blacklist.show()
         text = gi.objs.blacklist.get()
         # We should allow an empty input
@@ -2753,7 +2749,7 @@ class Commands:
                               ,key = lambda x:x[0].lower()
                               )
                 text = '\n'.join(text)
-                sh.WriteTextFile (file    = lg.objs.get_default().fblock
+                sh.WriteTextFile (file = lg.objs.get_default().fblock
                                  ,Rewrite = True
                                  ).write(text=text)
             else:
@@ -2768,9 +2764,7 @@ class Commands:
     
     def manage_blocked_words(self,event=None):
         f = '[Yatube] yatube.Commands.manage_blocked_words'
-        words = sh.Words(text=lg.objs.get_lists().blockw)
-        gi.objs.get_blacklist().reset(words=words)
-        gi.objs.blacklist.insert(text=lg.objs.lists.blockw)
+        gi.objs.get_blacklist().reset(lg.objs.get_lists().blockw)
         gi.objs.blacklist.show()
         text = gi.objs.blacklist.get()
         # We should allow an empty input
@@ -2781,12 +2775,12 @@ class Commands:
                               ,key = lambda x:x[0].lower()
                               )
                 text = '\n'.join(text)
-                sh.WriteTextFile (file    = lg.objs.get_default().fblockw
+                sh.WriteTextFile (file = lg.objs.get_default().fblockw
                                  ,Rewrite = True
                                  ).write(text=text)
             else:
                 text = '# ' + _('Put here words to block in titles (case is ignored)')
-                sh.WriteTextFile (file    = lg.objs.get_default().fblockw
+                sh.WriteTextFile (file = lg.objs.get_default().fblockw
                                  ,Rewrite = True
                                  ).write(text=text)
             lg.objs.lists.reset()
