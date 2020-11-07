@@ -861,9 +861,9 @@ class Video:
     
     def set_objects(self):
         # Do not include 'self.cbx_vno'. Children must come first.
-        self.labels  = [self.lbl_vno,self.lbl_img,self.lbl_aut
-                       ,self.lbl_tit,self.lbl_dat
-                       ]
+        self.labels = [self.lbl_vno,self.lbl_img,self.lbl_aut
+                      ,self.lbl_tit,self.lbl_dat
+                      ]
         self.objects = self.labels + [self.frm_prm,self.frm_vno
                                      ,self.frm_img,self.frm_inf
                                      ]
@@ -1043,7 +1043,7 @@ class Channel:
         self.set_canvases()
         self.set_scroll()
         self.cvs_prm.focus()
-        self.cvs_prm.set_top_bindings (top  = objs.get_parent()
+        self.cvs_prm.set_top_bindings (top = objs.get_parent()
                                       ,Ctrl = False
                                       )
         # This shows the 1st video
@@ -1057,10 +1057,9 @@ class Objects:
     
     def __init__(self):
         self.def_image = self.channel = self.menu = self.parent \
-                       = self.context = self.summary \
-                       = self.progress = self.blacklist \
-                       = self.subscribe = self.comments = self.frequent\
-                       = None
+                       = self.context = self.summary = self.progress \
+                       = self.blacklist = self.subscribe \
+                       = self.comments = self.frequent = None
     
     def get_frequent(self):
         if self.frequent is None:

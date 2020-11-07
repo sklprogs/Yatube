@@ -58,7 +58,7 @@ class Pause:
         self.set_bindings()
     
     def set_values(self):
-        self.id_   = ''
+        self.id_ = ''
         self.pause = 0
     
     def delete(self,event=None):
@@ -73,7 +73,7 @@ class Pause:
             objs.commands.update_video()
     
     def reset(self,videoid,pause):
-        self.id_   = videoid
+        self.id_ = videoid
         self.pause = pause
         self.fill()
     
@@ -88,13 +88,13 @@ class Pause:
         self.update()
     
     def save(self,event=None):
-        hours   = self.get_hrs()
+        hours = self.get_hrs()
         minutes = self.get_min()
         seconds = self.get_sec()
         all_sec = hours * 3600 + minutes * 60 + seconds
         mt.objs.get_videos().get_current().pause = all_sec
         lg.objs.get_db().update_pause (videoid = self.id_
-                                      ,pause   = all_sec
+                                      ,pause = all_sec
                                       )
         self.close()
         objs.get_commands().mark_not_watched(Unselect=False)
@@ -114,25 +114,25 @@ class Pause:
         self.gui.btn_sav.action = self.save
         self.gui.btn_scd.action = self.dec_sec
         self.gui.btn_scu.action = self.inc_sec
-        sh.com.bind (obj      = self.gui.ent_hrs
+        sh.com.bind (obj = self.gui.ent_hrs
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.upd_hrs
+                    ,action = self.upd_hrs
                     )
-        sh.com.bind (obj      = self.gui.ent_min
+        sh.com.bind (obj = self.gui.ent_min
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.upd_min
+                    ,action = self.upd_min
                     )
-        sh.com.bind (obj      = self.gui.ent_sec
+        sh.com.bind (obj = self.gui.ent_sec
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.upd_sec
+                    ,action = self.upd_sec
                     )
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj = self.gui.parent
                     ,bindings = ('<F2>','<Control-s>')
-                    ,action   = self.save
+                    ,action = self.save
                     )
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj = self.gui.parent
                     ,bindings = ('<Escape>','<Control-w>','<Control-q>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
         self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
     
@@ -262,7 +262,7 @@ class Extractor:
     
     def __init__(self,url=''):
         self.type_ = 'extractor'
-        self.url   = ''
+        self.url = ''
         if url:
             self.reset(url)
     
@@ -308,7 +308,7 @@ class Trending:
             self.reset(country)
     
     def set_values(self):
-        self.type_   = 'trending'
+        self.type_ = 'trending'
         self.country = ''
     
     def fetch(self):
@@ -400,18 +400,18 @@ class Videos:
         for gui in guis:
             gui.cbx_vno.action = objs.get_commands().report_selection
             for obj in gui.objects:
-                sh.com.bind (obj      = obj
+                sh.com.bind (obj = obj
                             ,bindings = '<ButtonRelease-1>'
-                            ,action   = objs.commands.toggle_cbox
+                            ,action = objs.commands.toggle_cbox
                             )
-                sh.com.bind (obj      = obj
+                sh.com.bind (obj = obj
                             ,bindings = '<ButtonRelease-3>'
-                            ,action   = objs.commands.get_context
+                            ,action = objs.commands.get_context
                             )
     
     def add(self,no=1):
         return gi.Video (parent = gi.objs.get_channel().frm_emb
-                        ,no     = no
+                        ,no = no
                         )
 
 
@@ -467,7 +467,7 @@ class Watchlist:
 class Playlist:
     
     def __init__(self,playid=''):
-        self.type_  = 'playlist'
+        self.type_ = 'playlist'
         self.playid = ''
         if playid:
             self.reset(playid)
@@ -496,12 +496,12 @@ class Channels:
     
     def __init__(self):
         self.channels = []
-        self.modes    = ('favorites','feed','history','playlist'
+        self.modes = ('favorites','feed','history','playlist'
                         ,'search','trending','watchlist','extractor'
                         )
-        self.unique   = ('favorites','feed','history','watchlist')
-        self.types    = []
-        self.i        = 0
+        self.unique = ('favorites','feed','history','watchlist')
+        self.types = []
+        self.i = 0
     
     def inc(self):
         if self.i == len(self.channels) - 1:
@@ -671,7 +671,7 @@ class AddId:
     
     def set_values(self):
         self.author = ''
-        self.id_    = ''
+        self.id_ = ''
     
     def add_record(self,mode='user'):
         f = '[Yatube] yatube.AddId.add_record'
@@ -722,9 +722,9 @@ class AddId:
     def add(self,event=None):
         f = '[Yatube] yatube.AddId.add'
         self.author = self.gui.ent_ath.get()
-        self.id_    = self.gui.ent_pid.get()
+        self.id_ = self.gui.ent_pid.get()
         self.author = self.author.strip()
-        self.id_    = self.id_.strip()
+        self.id_ = self.id_.strip()
         if self.author and self.id_:
             if self.id_.startswith('UU') and len(self.id_) == 24:
                 self.add_record('playid')
@@ -738,8 +738,8 @@ class AddId:
     def edit(self,event=None):
         f = '[Yatube] yatube.AddId.edit'
         author = self.gui.lst_id1.get()
-        ind    = self.gui.lst_id1.lst.index(author)
-        pid    = self.gui.lst_id3.lst[ind]
+        ind = self.gui.lst_id1.lst.index(author)
+        pid = self.gui.lst_id3.lst[ind]
         self.gui.ent_ath.clear()
         self.gui.ent_ath.insert(author)
         self.gui.ent_pid.clear()
@@ -754,25 +754,25 @@ class AddId:
         self.gui.btn_opn.action = self.open
         self.gui.btn_rst.action = self.reset
         self.gui.btn_sav.action = self.save_close
-        sh.com.bind (obj      = self.gui
+        sh.com.bind (obj = self.gui
                     ,bindings = ('<F5>','<Control-r>')
-                    ,action   = self.reset
+                    ,action = self.reset
                     )
-        sh.com.bind (obj      = self.gui
+        sh.com.bind (obj = self.gui
                     ,bindings = ('<F2>','<Control-s>')
-                    ,action   = self.save_close
+                    ,action = self.save_close
                     )
-        sh.com.bind (obj      = self.gui
+        sh.com.bind (obj = self.gui
                     ,bindings = ('<Escape>','<Control-w>','<Control-q>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
-        sh.com.bind (obj      = self.gui.ent_ath
+        sh.com.bind (obj = self.gui.ent_ath
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.add
+                    ,action = self.add
                     )
-        sh.com.bind (obj      = self.gui.ent_pid
+        sh.com.bind (obj = self.gui.ent_pid
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.add
+                    ,action = self.add
                     )
     
     def reset(self,event=None):
@@ -789,7 +789,7 @@ class AddId:
             text = '\n'.join(tmp)
         else:
             text = '# ' + _('Put here authors to subscribe to')
-        sh.WriteTextFile (file    = lg.objs.get_default().fsubsc
+        sh.WriteTextFile (file = lg.objs.get_default().fsubsc
                          ,Rewrite = True
                          ).write(text)
         lg.objs.lists.reset()
@@ -833,7 +833,7 @@ class Comments:
             should not show the number of comments in GUI at all.
         '''
         self.set_values()
-        self.gui   = gi.Comments()
+        self.gui = gi.Comments()
         self.logic = mt.Comments()
         self.set_bindings()
         self.reset()
@@ -842,21 +842,21 @@ class Comments:
         self.Success = True
     
     def set_bindings(self):
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj = self.gui.parent
                     ,bindings = '<Alt-Left>'
-                    ,action   = self.get_prev
+                    ,action = self.get_prev
                     )
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj = self.gui.parent
                     ,bindings = '<Alt-Right>'
-                    ,action   = self.get_next
+                    ,action = self.get_next
                     )
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj = self.gui.parent
                     ,bindings = ('<Escape>','<Control-w>','<Control-q>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
-        sh.com.bind (obj      = self.gui.txt_com
+        sh.com.bind (obj = self.gui.txt_com
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.get_next
+                    ,action = self.get_next
                     )
         self.gui.btn_prv.action = self.get_prev
         self.gui.btn_nxt.action = self.get_next
@@ -923,8 +923,8 @@ class Comments:
                     sh.objs.get_mes(f,mes).show_warning()
                 text = sh.Text(text).delete_unsupported()
                 # A new line is inserted when read from the widget
-                text     = text.strip()
-                text     = sh.Text(text).convert_line_breaks()
+                text = text.strip()
+                text = sh.Text(text).convert_line_breaks()
                 old_text = self.gui.txt_com.get()
                 old_text.strip()
                 # Keep a scrollbar position if there are no pages left
@@ -949,22 +949,22 @@ class Comments:
 class Commands:
     
     def __init__(self):
-        self.mode     = None
-        self.tstamp   = None
-        self.tip_tim  = None
+        self.mode = None
+        self.tstamp = None
+        self.tip_tim = None
         self.FirstVid = True
-        self.menu     = gi.objs.get_menu()
-        itime         = lg.Time()
+        self.menu = gi.objs.get_menu()
+        itime = lg.Time()
         itime.set_date(DaysDelta=7)
         itime.get_years()
         itime.get_months()
         itime.get_days()
-        self.years  = itime.years
-        self.year   = itime.year
+        self.years = itime.years
+        self.year = itime.year
         self.months = itime.months
-        self.month  = itime.month
-        self.days   = itime.days
-        self.day    = itime.day
+        self.month = itime.month
+        self.days = itime.days
+        self.day = itime.day
         lg.objs.get_lists().reset()
         self.reset_channels()
     
@@ -1004,7 +1004,7 @@ class Commands:
                                   )
                 frequent = '\n'.join(frequent)
                 if frequent:
-                    sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                    sh.WriteTextFile (file = lg.objs.get_default().ffreq
                                      ,Rewrite = True
                                      ).write(text=frequent)
                     lg.objs.lists.reset()
@@ -1026,7 +1026,7 @@ class Commands:
                 frequent = '\n'.join(frequent)
                 if not frequent:
                     frequent = '# ' + _('Put here titles of frequent channels')
-                sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                sh.WriteTextFile (file = lg.objs.get_default().ffreq
                                  ,Rewrite = True
                                  ).write(text=frequent)
                 lg.objs.lists.reset()
@@ -1049,12 +1049,12 @@ class Commands:
                               ,key = lambda x:x[0].lower()
                               )
                 text = '\n'.join(text)
-                sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                sh.WriteTextFile (file = lg.objs.get_default().ffreq
                                  ,Rewrite = True
                                  ).write(text=text)
             else:
                 text = '# ' + _('Put here words to block in titles (case is ignored)')
-                sh.WriteTextFile (file    = lg.objs.get_default().ffreq
+                sh.WriteTextFile (file = lg.objs.get_default().ffreq
                                  ,Rewrite = True
                                  ).write(text=text)
             lg.objs.lists.reset()
@@ -1075,7 +1075,7 @@ class Commands:
         '''
         f = '[Yatube] yatube.Commands.get_quality'
         qual = gi.objs.get_menu().opt_qal.choice
-        res  = gi.objs.menu.opt_res.choice
+        res = gi.objs.menu.opt_res.choice
         if qual == _('Best qual.'):
             qual = 'best'
         else:
@@ -1090,7 +1090,7 @@ class Commands:
     
     def set_pause(self,event=None):
         objs.get_pause().reset (videoid = mt.objs.get_videos().get_current().id_
-                               ,pause   = mt.objs.videos.get_current().pause
+                               ,pause = mt.objs.videos.get_current().pause
                                )
         objs.pause.show()
     
@@ -1102,17 +1102,17 @@ class Commands:
                 mt.objs.get_videos().set_gui(gui)
                 length = lg.Video().get_length()
                 length = sh.com.get_easy_time(length)
-                pause  = mt.objs.videos.get_current().pause
+                pause = mt.objs.videos.get_current().pause
                 if pause:
-                    text  = length + ', ' + _('pause:') + ' ' \
+                    text = length + ', ' + _('pause:') + ' ' \
                             + sh.com.get_easy_time(pause)
                     width = 210
                 else:
-                    text  = length
+                    text = length
                     width = 90
-                self.tip_tim = sh.ToolTip (obj   = gui.lbl_img
-                                          ,text  = text
-                                          ,hdir  = 'bottom'
+                self.tip_tim = sh.ToolTip (obj = gui.lbl_img
+                                          ,text = text
+                                          ,hdir = 'bottom'
                                           ,delay = 400
                                           )
                 self.tip_tim.showtip()
@@ -1162,7 +1162,7 @@ class Commands:
             items = (_('Selection')
                     ,_('Select all new videos')
                     )
-        self.menu.opt_sel.reset (items   = list(items)
+        self.menu.opt_sel.reset (items = list(items)
                                 ,default = _('Selection')
                                 )
     
@@ -1194,7 +1194,7 @@ class Commands:
         else:
             count = 0
         self.menu.set_title (selected = count
-                            ,total    = len(mt.objs.get_videos().videos)
+                            ,total = len(mt.objs.get_videos().videos)
                             )
     
     def show_stat(self,event=None,Silent=False):
@@ -1229,7 +1229,7 @@ class Commands:
             eta = 0
         if rate is None:
             rate = 0
-        total   = total   / 1000000
+        total = total   / 1000000
         cursize = cursize / 1000000
         rate = int(rate) // 1000
         # Prevent from irritating message length changes
@@ -1328,12 +1328,12 @@ class Commands:
         f = '[Yatube] yatube.Commands.remove_from_watchlist'
         ivideo = mt.objs.get_videos().get_current()
         lg.objs.get_db().mark_later (videoid = ivideo.id_
-                                    ,ltime   = 0.0
+                                    ,ltime = 0.0
                                     )
         ivideo.ltime = 0.0
         ivideo.pause = 0
         lg.objs.get_db().update_pause (videoid = ivideo.id_
-                                      ,pause   = ivideo.pause
+                                      ,pause = ivideo.pause
                                       )
         if Unselect:
             self.unselect()
@@ -1341,7 +1341,7 @@ class Commands:
     def add2watchlist(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.add2watchlist'
         lg.objs.get_db().mark_later (videoid = mt.objs.get_videos().get_current().id_
-                                    ,ltime   = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
+                                    ,ltime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
                                     )
         if Unselect:
             self.unselect()
@@ -1394,7 +1394,7 @@ class Commands:
     def unstar(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.unstar'
         lg.objs.get_db().mark_starred (videoid = mt.objs.get_videos().get_current().id_
-                                      ,ftime    = 0
+                                      ,ftime = 0
                                       )
         if Unselect:
             self.unselect()
@@ -1402,7 +1402,7 @@ class Commands:
     def star(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.star'
         lg.objs.get_db().mark_starred (videoid = mt.objs.get_videos().get_current().id_
-                                      ,ftime   = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
+                                      ,ftime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
                                       )
         if Unselect:
             self.unselect()
@@ -1449,11 +1449,11 @@ class Commands:
     def mark_not_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_not_watched'
         video = mt.objs.get_videos().get_current()
-        gui   = video.gui
+        gui = video.gui
         if gui:
             video.dtime = 0
             lg.objs.get_db().mark_downloaded (videoid = video.id_
-                                             ,dtime   = video.dtime
+                                             ,dtime = video.dtime
                                              )
             gui.black_out()
             if Unselect:
@@ -1464,11 +1464,11 @@ class Commands:
     def mark_watched(self,event=None,Unselect=True):
         f = '[Yatube] yatube.Commands.mark_watched'
         video = mt.objs.get_videos().get_current()
-        gui   = video.gui
+        gui = video.gui
         if gui:
             video.dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
             lg.objs.get_db().mark_downloaded (videoid = video.id_
-                                             ,dtime    = video.dtime
+                                             ,dtime = video.dtime
                                              )
             gui.gray_out()
             self.remove_from_watchlist(Unselect=False)
@@ -1503,9 +1503,9 @@ class Commands:
                 if video.gui
                ]
         for gui in guis:
-            sh.com.bind (obj      = gui.lbl_img
+            sh.com.bind (obj = gui.lbl_img
                         ,bindings = '<Enter>'
-                        ,action   = self.set_hint
+                        ,action = self.set_hint
                         )
     
     def show_prev_channel(self,event=None):
@@ -1523,7 +1523,7 @@ class Commands:
     def run_menu_update(self,event=None):
         f = '[Yatube] yatube.Commands.run_menu_update'
         default = _('Update')
-        choice  = self.menu.opt_upd.choice
+        choice = self.menu.opt_upd.choice
         if choice == default:
             sh.com.rep_lazy(f)
         elif choice == _('Subscriptions'):
@@ -1543,7 +1543,7 @@ class Commands:
     def run_menu_view(self,event=None):
         f = '[Yatube] yatube.Commands.run_menu_view'
         default = _('View')
-        choice  = self.menu.opt_viw.choice
+        choice = self.menu.opt_viw.choice
         if choice == default:
             pass
         elif choice == _('History'):
@@ -1569,7 +1569,7 @@ class Commands:
     def run_menu_edit(self,event=None):
         f = '[Yatube] yatube.Commands.run_menu_edit'
         default = _('Edit')
-        choice  = self.menu.opt_edt.choice
+        choice = self.menu.opt_edt.choice
         if choice == default:
             sh.com.rep_lazy(f)
         elif choice == _('Subscriptions'):
@@ -1592,7 +1592,7 @@ class Commands:
     def run_menu_selection(self,event=None):
         f = '[Yatube] yatube.Commands.run_menu_selection'
         default = _('Selection')
-        choice  = self.menu.opt_sel.choice
+        choice = self.menu.opt_sel.choice
         if choice == default:
             pass
         elif choice == _('Select all new videos'):
@@ -1681,7 +1681,7 @@ class Commands:
                     subscriptions = '\n'.join(subscriptions)
                     if not subscriptions:
                         subscriptions = '# ' + _('Put here authors to subscribe to')
-                    sh.WriteTextFile (file    = lg.objs.get_default().fsubsc
+                    sh.WriteTextFile (file = lg.objs.get_default().fsubsc
                                      ,Rewrite = True
                                      ).write(text=subscriptions)
                     lg.objs.lists.reset()
@@ -1708,7 +1708,7 @@ class Commands:
                 blocked = '\n'.join(blocked)
                 if not blocked:
                     blocked = '# ' + _('Put here authors to be blocked')
-                sh.WriteTextFile (file    = lg.objs.get_default().fblock
+                sh.WriteTextFile (file = lg.objs.get_default().fblock
                                  ,Rewrite = True
                                  ).write(text=blocked)
                 lg.objs.lists.reset()
@@ -1750,9 +1750,9 @@ class Commands:
             self.channels = default_channels + lg.objs.lists.subauth
         else:
             self.channels = default_channels
-        self.menu.opt_chl.reset (items   = self.channels
+        self.menu.opt_chl.reset (items = self.channels
                                 ,default = _('Channels')
-                                ,action  = self.set_channel
+                                ,action = self.set_channel
                                 )
     
     def open_video_url(self,event=None):
@@ -1795,7 +1795,7 @@ class Commands:
                                        )
                 subscriptions = '\n'.join(subscriptions)
                 if subscriptions:
-                    sh.WriteTextFile (file    = lg.objs.get_default().fsubsc
+                    sh.WriteTextFile (file = lg.objs.get_default().fsubsc
                                      ,Rewrite = True
                                      ).write(text=subscriptions)
                     lg.objs.lists.reset()
@@ -1826,7 +1826,7 @@ class Commands:
                                  )
                 blocked = '\n'.join(blocked)
                 if blocked:
-                    sh.WriteTextFile (file    = lg.objs.get_default().fblock
+                    sh.WriteTextFile (file = lg.objs.get_default().fblock
                                      ,Rewrite = True
                                      ).write(text=blocked)
                     lg.objs.lists.reset()
@@ -1943,9 +1943,9 @@ class Commands:
     
     def get_timestamp(self,event=None):
         if not self.tstamp:
-            day   = self.menu.opt_day.choice
+            day = self.menu.opt_day.choice
             month = self.menu.opt_mth.choice
-            year  = self.menu.opt_yrs.choice
+            year = self.menu.opt_yrs.choice
             if month == _('Jan'):
                 month = '01'
             elif month == _('Feb'):
@@ -2197,7 +2197,7 @@ class Commands:
             sh.objs.get_mes(f,mes,True).show_info()
             if self.menu.opt_chl.choice in lg.objs.get_lists().subauth:
                 author = self.menu.opt_chl.choice
-                no     = lg.objs.lists.subauth.index(author)
+                no = lg.objs.lists.subauth.index(author)
                 playid = lg.objs.lists.subids[no]
                 objs.get_channels().add('playlist',playid)
                 objs.channels.fetch()
@@ -2286,57 +2286,57 @@ class Commands:
     
     def set_bindings(self):
         # Menu: main window
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<F1>'
-                    ,action   = self.show_stat
+                    ,action = self.show_stat
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-Left>'
-                    ,action   = self.show_prev_page
+                    ,action = self.show_prev_page
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-Right>'
-                    ,action   = self.show_next_page
+                    ,action = self.show_next_page
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Control-p>'
-                    ,action   = self.play
+                    ,action = self.play
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Control-d>'
-                    ,action   = self.download
+                    ,action = self.download
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Control-s>'
-                    ,action   = self.stream
+                    ,action = self.stream
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = ('<Control-h>','<Alt-h>')
-                    ,action   = self.show_history
+                    ,action = self.show_history
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-w>'
-                    ,action   = self.show_watchlist
+                    ,action = self.show_watchlist
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-f>'
-                    ,action   = self.show_favorites
+                    ,action = self.show_favorites
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Shift-Delete>'
-                    ,action   = self.delete_selected
+                    ,action = self.delete_selected
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-c>'
-                    ,action   = self.show_feed
+                    ,action = self.show_feed
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-t>'
-                    ,action   = self.update_trending
+                    ,action = self.update_trending
                     )
-        sh.com.bind (obj      = self.menu.parent
+        sh.com.bind (obj = self.menu.parent
                     ,bindings = '<Alt-b>'
-                    ,action   = self.blank
+                    ,action = self.blank
                     )
         # Menu: buttons
         self.menu.btn_dld.action = self.download
@@ -2350,17 +2350,17 @@ class Commands:
         self.menu.btn_ytb.action = self.search_youtube
         self.menu.chb_sel.reset(action=self.toggle_select)
         # Menu: labels
-        sh.com.bind (obj      = self.menu.ent_flt
+        sh.com.bind (obj = self.menu.ent_flt
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.filter_view
+                    ,action = self.filter_view
                     )
-        sh.com.bind (obj      = self.menu.ent_src
+        sh.com.bind (obj = self.menu.ent_src
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.search_youtube
+                    ,action = self.search_youtube
                     )
-        sh.com.bind (obj      = self.menu.ent_url
+        sh.com.bind (obj = self.menu.ent_url
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action   = self.get_url
+                    ,action = self.get_url
                     )
         # Menu: checkboxes
         self.menu.chb_dat.widget.config(command=self.filter_by_date)
@@ -2371,36 +2371,36 @@ class Commands:
             This is a binding to the entire OptionMenu and will not
             interfere with bindings to OptionMenu items.
         '''
-        sh.com.bind (obj      = self.menu.opt_sel
+        sh.com.bind (obj = self.menu.opt_sel
                     ,bindings = '<Button-1>'
-                    ,action   = self.update_sel_menu
+                    ,action = self.update_sel_menu
                     )
         self.menu.opt_upd.action = self.run_menu_update
         self.menu.opt_viw.action = self.run_menu_view
         self.menu.opt_sel.action = self.run_menu_selection
         self.menu.opt_edt.action = self.run_menu_edit
-        self.menu.opt_chl.reset (items   = self.channels
+        self.menu.opt_chl.reset (items = self.channels
                                 ,default = _('Channels')
-                                ,action  = self.set_channel
+                                ,action = self.set_channel
                                 )
         self.menu.opt_dat.action = self.filter_by_date
-        self.menu.opt_day.reset (items   = self.days
+        self.menu.opt_day.reset (items = self.days
                                 ,default = self.day
-                                ,action  = self.reset_filter_date
+                                ,action = self.reset_filter_date
                                 )
         self.menu.opt_max.action = self.set_max_videos
-        self.menu.opt_mth.reset (items   = self.months
+        self.menu.opt_mth.reset (items = self.months
                                 ,default = self.month
-                                ,action  = self.reset_filter_date
+                                ,action = self.reset_filter_date
                                 )
-        self.menu.opt_trd.reset (items   = lg.objs.get_const().trending
+        self.menu.opt_trd.reset (items = lg.objs.get_const().trending
                                 ,default = _('Trending')
-                                ,action  = self.set_trending
+                                ,action = self.set_trending
                                 )
         self.menu.opt_url.action = self.get_url
-        self.menu.opt_yrs.reset (items   = self.years
+        self.menu.opt_yrs.reset (items = self.years
                                 ,default = self.year
-                                ,action  = self.reset_filter_date
+                                ,action = self.reset_filter_date
                                 )
         
     def select_new(self,event=None):
@@ -2441,7 +2441,7 @@ class Commands:
             custom_args = []
         command = self.start_mpv(app,custom_args)
         sh.Launch (target = lg.Video().get_path()
-                  ).launch_app (custom_app  = app
+                  ).launch_app (custom_app = app
                                ,custom_args = command
                                )
                         
@@ -2489,7 +2489,7 @@ class Commands:
         video = mt.objs.get_videos().get_current()
         video.dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
         lg.objs.get_db().mark_downloaded (videoid = video.id_
-                                         ,dtime   = video.dtime
+                                         ,dtime = video.dtime
                                          )
         self.remove_from_watchlist(Unselect=False)
         if video.gui:
@@ -2614,8 +2614,8 @@ class Commands:
         mes = _('Widget must be at least {} pixels in height')
         mes = mes.format(height)
         sh.objs.get_mes(f,mes,True).show_debug()
-        gi.objs.channel.cvs_prm.set_region (x       = 1024
-                                           ,y       = height
+        gi.objs.channel.cvs_prm.set_region (x = 1024
+                                           ,y = height
                                            ,xborder = 20
                                            ,yborder = 20
                                            )
@@ -2640,9 +2640,9 @@ class Commands:
         #timer.end()
     
     def set_block(self):
-        video  = mt.objs.get_videos().get_current()
+        video = mt.objs.get_videos().get_current()
         author = video.author
-        title  = video.title
+        title = video.title
         if author in lg.objs.get_lists().blauth \
         or lg.objs.lists.match_blocked_word(title+video.title):
             author = title = _('BLOCKED')
@@ -2654,13 +2654,13 @@ class Commands:
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.get_videos().get_current()
         if video.gui:
-            date = sh.Time (tstamp  = video.ptime
+            date = sh.Time (tstamp = video.ptime
                            ,pattern = '%Y-%m-%d %H:%M'
                            ).get_date()
             author, title = self.set_block()
             video.gui.reset (author = author
                             ,title = title
-                            ,date  = date
+                            ,date = date
                             ,image = video.image
                             )
             if video.dtime:
@@ -2754,7 +2754,7 @@ class Commands:
                                  ).write(text=text)
             else:
                 text = '# ' + _('Put here authors to be blocked')
-                sh.WriteTextFile (file    = lg.objs.get_default().fblock
+                sh.WriteTextFile (file = lg.objs.get_default().fblock
                                  ,Rewrite = True
                                  ).write(text=text)
             lg.objs.lists.reset()

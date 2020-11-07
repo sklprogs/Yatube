@@ -20,7 +20,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   PAUSE = ? \
-                                                 where ID    = ?'
+                                                 where ID = ?'
                                  ,(pause,videoid,)
                                  )
             except Exception as e:
@@ -33,7 +33,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   CHANID = ? \
-                                                 where ID     = ?'
+                                                 where ID = ?'
                                  ,(channel_id,videoid,)
                                  )
             except Exception as e:
@@ -175,7 +175,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   LENGTH = ? \
-                                                 where ID     = ?'
+                                                 where ID = ?'
                                  ,(length,videoid,)
                                  )
             except Exception as e:
@@ -188,7 +188,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   PLAYID = ? \
-                                                 where ID     = ?'
+                                                 where ID = ?'
                                  ,(playid,videoid,)
                                  )
             except Exception as e:
@@ -201,7 +201,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   LTIME = ? \
-                                                 where ID    = ?'
+                                                 where ID = ?'
                                  ,(ltime,videoid,)
                                  )
             except Exception as e:
@@ -230,7 +230,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   FTIME = ? \
-                                                 where ID    = ?'
+                                                 where ID = ?'
                                  ,(ftime,videoid,)
                                  )
             except Exception as e:
@@ -349,7 +349,7 @@ class DB:
         f = '[Yatube] db.DB.connect'
         if self.Success:
             try:
-                self.db  = sqlite3.connect(self.path)
+                self.db = sqlite3.connect(self.path)
                 self.dbc = self.db.cursor()
             except Exception as e:
                 self.fail(f,e)
@@ -374,7 +374,7 @@ class DB:
         if self.Success:
             try:
                 self.dbc.execute ('update VIDEOS set   DTIME = ? \
-                                                 where ID    = ?'
+                                                 where ID = ?'
                                  ,(dtime,videoid,)
                                  )
             except Exception as e:
@@ -515,11 +515,11 @@ class DB:
             if not Selected:
                 self.dbc.execute('select * from VIDEOS limit ?',(5,))
             headers = [cn[0] for cn in self.dbc.description]
-            rows    = self.dbc.fetchall()
+            rows = self.dbc.fetchall()
             sh.Table (headers = headers
-                     ,rows    = rows
+                     ,rows = rows
                      ,Shorten = Shorten
-                     ,MaxRow  = MaxRow
+                     ,MaxRow = MaxRow
                      ,MaxRows = MaxRows
                      ).print()
         else:

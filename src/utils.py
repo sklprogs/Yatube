@@ -148,7 +148,7 @@ class DB:
         f = '[Yatube] utils.DB.connect'
         if self.Success:
             try:
-                self.db  = sqlite3.connect(self.path)
+                self.db = sqlite3.connect(self.path)
                 self.dbc = self.db.cursor()
             except Exception as e:
                 self.fail(f,e)
@@ -159,7 +159,7 @@ class DB:
         f = '[Yatube] utils.DB.connectw'
         if self.Success:
             try:
-                self.dbw  = sqlite3.connect(self.clone)
+                self.dbw = sqlite3.connect(self.clone)
                 self.dbcw = self.dbw.cursor()
             except Exception as e:
                 self.fail_clone(f,e)
@@ -222,20 +222,20 @@ class DB:
                 sh.objs.get_mes(f,mes,True).show_info()
                 for row in self.data:
                     try:
-                        id_    = row[0]
+                        id_ = row[0]
                         playid = row[1]
                         chanid = row[2]
                         author = row[3]
-                        title  = row[4]
-                        desc   = row[5]
+                        title = row[4]
+                        desc = row[5]
                         search = row[6]
                         length = row[7]
-                        pause  = 0
-                        image  = row[8]
-                        ptime  = row[9]
-                        dtime  = row[10]
-                        ftime  = row[11]
-                        ltime  = row[12]
+                        pause = 0
+                        image = row[8]
+                        ptime = row[9]
+                        dtime = row[10]
+                        ftime = row[11]
+                        ltime = row[12]
                         fdtime = row[13]
                         row = (id_,playid,chanid,author,title,desc
                               ,search,length,pause,image,ptime,dtime
@@ -308,24 +308,24 @@ class DB:
 class Commands:
     
     def __init__(self):
-        self.path  = '/home/pete/.config/yatube/yatube.db'
+        self.path = '/home/pete/.config/yatube/yatube.db'
         self.clone = '/tmp/yatube.db'
         
     def unescape(self):
         f = '[Yatube] utils.Commands.unescape'
         sh.File(self.path,self.clone).copy()
-        idb = DB (path  = self.path
+        idb = DB (path = self.path
                  ,clone = self.clone
                  )
         idb.connectw()
         data = idb.get_unescape()
         if data:
-            ids     = []
+            ids = []
             authors = []
-            titles  = []
-            desc    = []
-            search  = []
-            mes     = _('Get data')
+            titles = []
+            desc = []
+            search = []
+            mes = _('Get data')
             sh.objs.get_mes(f,mes,True).show_info()
             for item in data:
                 ids.append(item[0])
@@ -343,8 +343,8 @@ class Commands:
                     mes = _('Update {}').format(ids[i])
                     sh.objs.get_mes(f,mes,True).show_info()
                     tauthor = html.unescape(authors[i])
-                    ttitle  = html.unescape(titles[i])
-                    tdesc   = html.unescape(desc[i])
+                    ttitle = html.unescape(titles[i])
+                    tdesc = html.unescape(desc[i])
                     tsearch = html.unescape(search[i])
                     idb.update_unescape (ids[i],tauthor,ttitle,tdesc
                                         ,tsearch
@@ -356,7 +356,7 @@ class Commands:
     
     def del_author(self,author):
         sh.File(self.path,self.clone).copy()
-        idb = DB (path  = self.path
+        idb = DB (path = self.path
                  ,clone = self.clone
                  )
         idb.connectw()
@@ -366,12 +366,12 @@ class Commands:
     
     def change_ftime(self):
         f = '[Yatube] utils.Commands.change_ftime'
-        Success = sh.File (file    = self.path
-                          ,dest    = self.clone
+        Success = sh.File (file = self.path
+                          ,dest = self.clone
                           ,Rewrite = True
                           ).copy()
         if Success:
-            idb = DB (path  = self.path
+            idb = DB (path = self.path
                      ,clone = self.clone
                      )
             idb.connectw()
@@ -390,7 +390,7 @@ class Commands:
                 '''
                 for i in range(len(ftm)):
                     ltm[i] = sh.Time (tstamp = ftm[i]
-                                     ,pattern    = '%y-%m-%d %H:%M:%S'
+                                     ,pattern = '%y-%m-%d %H:%M:%S'
                                      ).get_date()
                 for i in range(len(ids)):
                     print('ID: {}, FTIME: {}'.format(ids[i],ftm[i]))
@@ -407,12 +407,12 @@ class Commands:
     
     def change_ltime(self):
         f = '[Yatube] utils.Commands.change_ltime'
-        Success = sh.File (file    = self.path
-                          ,dest    = self.clone
+        Success = sh.File (file = self.path
+                          ,dest = self.clone
                           ,Rewrite = True
                           ).copy()
         if Success:
-            idb = DB (path  = self.path
+            idb = DB (path = self.path
                      ,clone = self.clone
                      )
             idb.connectw()
@@ -430,7 +430,7 @@ class Commands:
                         ind = ltm.index(ltm[i])
                 '''
                 for i in range(len(ltm)):
-                    ltm[i] = sh.Time (tstamp  = ltm[i]
+                    ltm[i] = sh.Time (tstamp = ltm[i]
                                      ,pattern = '%y-%m-%d %H:%M:%S'
                                      ).get_date()
                 for i in range(len(ids)):
@@ -448,12 +448,12 @@ class Commands:
     
     def repair_urls(self):
         f = '[Yatube] utils.Commands.repair_urls'
-        Success = sh.File (file    = self.path
-                          ,dest    = self.clone
+        Success = sh.File (file = self.path
+                          ,dest = self.clone
                           ,Rewrite = True
                           ).copy()
         if Success:
-            idb = DB (path  = self.path
+            idb = DB (path = self.path
                      ,clone = self.clone
                      )
             idb.connectw()
@@ -465,12 +465,12 @@ class Commands:
     
     def down_markw(self):
         f = '[Yatube] utils.Commands.down_markw'
-        Success = sh.File (file    = self.path
-                          ,dest    = self.clone
+        Success = sh.File (file = self.path
+                          ,dest = self.clone
                           ,Rewrite = True
                           ).copy()
         if Success:
-            idb = DB (path  = self.path
+            idb = DB (path = self.path
                      ,clone = self.clone
                      )
             idb.connectw()
@@ -483,7 +483,7 @@ class Commands:
     def alter(self):
         sh.File(file=self.clone).delete()
         # Alter DB and add/remove some columns
-        idb = DB (path  = self.path
+        idb = DB (path = self.path
                  ,clone = self.clone
                  )
         idb.connect()
@@ -497,7 +497,7 @@ class Commands:
         
     def read_random(self):
         f = '[Yatube] utils.Commands.read_random'
-        idb = DB (path  = self.path
+        idb = DB (path = self.path
                  ,clone = self.clone
                  )
         idb.connect()
@@ -521,12 +521,12 @@ class Commands:
                            where  AUTHOR = ? or TITLE = ?',('','',)
                          )
         data = idb.dbcw.fetchall()
-        mes  = _('{} records have been found.').format(len(data))
+        mes = _('{} records have been found.').format(len(data))
         sh.objs.get_mes(f,mes,True).show_info()
     
     def get_empty(self):
         f = '[Yatube] utils.Commands.get_empty'
-        idb = DB (path  = self.path
+        idb = DB (path = self.path
                  ,clone = self.clone
                  )
         idb.connect()
@@ -534,18 +534,18 @@ class Commands:
                           where  AUTHOR = ? or TITLE = ?',('','',)
                          )
         data = idb.dbc.fetchall()
-        mes  = _('{} records have been found.').format(len(data))
+        mes = _('{} records have been found.').format(len(data))
         sh.objs.get_mes(f,mes,True).show_info()
         idb.close()
     
     def empty_author(self):
         f = '[Yatube] utils.Commands.empty_author'
-        Success = sh.File (file    = self.path
-                          ,dest    = self.clone
+        Success = sh.File (file = self.path
+                          ,dest = self.clone
                           ,Rewrite = True
                           ).copy()
         if Success:
-            idb = DB (path  = self.path
+            idb = DB (path = self.path
                      ,clone = self.clone
                      )
             idb.connectw()

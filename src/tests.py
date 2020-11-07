@@ -4,7 +4,7 @@
 import skl_shared.shared as sh
 from skl_shared.localize import _
 import logic as lg
-import gui   as gi
+import gui as gi
 import db
 
 
@@ -20,11 +20,11 @@ class ImageViewer:
         self.parent.close()
     
     def set_bindings(self):
-        sh.com.bind (obj      = self.parent
+        sh.com.bind (obj = self.parent
                     ,bindings = ('<Escape>','<Control-w>','<Control-q>'
                                 ,'<ButtonRelease-1>'
                                 )
-                    ,action   = self.close
+                    ,action = self.close
                     )
     
     def set_title(self,arg=None):
@@ -44,9 +44,9 @@ class ImageViewer:
     def set_gui(self):
         self.parent = sh.Top()
         self.lbl = sh.Label (parent = self.parent
-                            ,text   = _('Image:')
+                            ,text = _('Image:')
                             ,expand = True
-                            ,fill   = 'both'
+                            ,fill = 'both'
                             )
         self.set_title()
         self.set_icon()
@@ -112,11 +112,11 @@ class Tests:
         result = itime.get_timestamp()
         idb = db.DB()
         result = idb.date_filter (timestamp = result
-                                 ,Newer     = False
+                                 ,Newer = False
                                  )
         if result:
             sh.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
-                     ,rows    = result
+                     ,rows = result
                      ).print()
         idb.close()
         
@@ -126,7 +126,7 @@ class Tests:
         result = idb.dbc.fetchall()
         if result:
             sh.Table (headers = ['TITLE','DTIME','PTIME']
-                     ,rows    = result
+                     ,rows = result
                      ).print()
         idb.close()
         

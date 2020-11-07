@@ -14,7 +14,7 @@ import db
 pattern1 = 'https://www.youtube.com/watch?v='
 pattern2 = 'https://www.youtube.com/channel/'
 pattern3 = 'https://www.youtube.com/'
-AllOS    = False
+AllOS = False
 
 
 sample_subscribe = '''BostonDynamics	UU7vVhkEfw4nOGp8TyDk7RcQ
@@ -128,10 +128,10 @@ class Feed:
             self.token_next = mt.objs.videos.videos[-1].fdtime
             self.token_prev = mt.objs.videos.videos[0].fdtime
             date_next = sh.Time (tstamp = self.token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             date_prev = sh.Time (tstamp = self.token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             mes = _('Previous page token: {}').format(date_prev)
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -152,7 +152,7 @@ class Feed:
     def fetch_prev(self):
         f = '[Yatube] logic.Feed.fetch_prev'
         ids = objs.get_db().get_feed_prev (fdtime = self.token_prev
-                                          ,limit  = mt.MAX_VIDEOS
+                                          ,limit = mt.MAX_VIDEOS
                                           )
         if ids:
             for id_ in ids:
@@ -165,7 +165,7 @@ class Feed:
     def fetch_next(self):
         f = '[Yatube] logic.Feed.fetch_next'
         ids = objs.get_db().get_feed_next (fdtime = self.token_next
-                                          ,limit  = mt.MAX_VIDEOS
+                                          ,limit = mt.MAX_VIDEOS
                                           )
         if ids:
             for id_ in ids:
@@ -188,10 +188,10 @@ class Favorites:
         if mt.objs.get_videos().videos:
             self.token_next = mt.objs.videos.videos[-1].ftime
             self.token_prev = mt.objs.videos.videos[0].ftime
-            date_next = sh.Time (tstamp  = self.token_next
+            date_next = sh.Time (tstamp = self.token_next
                                 ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
-            date_prev = sh.Time (tstamp  = self.token_prev
+            date_prev = sh.Time (tstamp = self.token_prev
                                 ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             mes = _('Previous page token: {}').format(date_prev)
@@ -250,10 +250,10 @@ class Watchlist:
             self.token_next = mt.objs.videos.videos[-1].ltime
             self.token_prev = mt.objs.videos.videos[0].ltime
             date_next = sh.Time (tstamp = self.token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             date_prev = sh.Time (tstamp = self.token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             mes = _('Previous page token: {}').format(date_prev)
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -311,10 +311,10 @@ class History:
             self.token_next = mt.objs.videos.videos[-1].dtime
             self.token_prev = mt.objs.videos.videos[0].dtime
             date_next = sh.Time (tstamp = self.token_next
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             date_prev = sh.Time (tstamp = self.token_prev
-                                ,pattern    = '%Y-%m-%d %H:%M:%S'
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
                                 ).get_date()
             mes = _('Previous page token: {}').format(date_prev)
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -392,20 +392,20 @@ class Channel:
     
     def set_values(self):
         self.Success = True
-        self.ids     = []
-        self.playid  = ''
+        self.ids = []
+        self.playid = ''
 
 
 
 class Time:
     
     def __init__(self):
-        self.days   = []
+        self.days = []
         self.months = []
-        self.years  = []
-        self.year   = ''
-        self.day    = ''
-        self.month  = ''
+        self.years = []
+        self.year = ''
+        self.day = ''
+        self.month = ''
         self.itime = sh.Time(pattern='%d')
     
     def get_days(self):
@@ -427,8 +427,8 @@ class Time:
         f = '[Yatube] logic.Time.get_years'
         # Year of Youtube birth
         first_year = 2005
-        last_year  = self.itime.get_year()
-        last_year  = sh.Input(f,last_year).get_integer()
+        last_year = self.itime.get_year()
+        last_year = sh.Input(f,last_year).get_integer()
         if not last_year > first_year:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes,True).show_warning()
@@ -451,7 +451,7 @@ class Constants:
     
     def __init__(self):
         self.countries = []
-        self.trending  = []
+        self.trending = []
         
     def get_countries(self):
         self.countries = {_('Algeria')                : 'DZ'
@@ -587,8 +587,8 @@ class Extractor:
         
     def set_values(self):
         self.Success = True
-        self.url  = ''
-        self.htm  = ''
+        self.url = ''
+        self.htm = ''
         self.urls = []
     
     def set_page(self):
@@ -681,18 +681,18 @@ class Lists:
     def reset(self):
         self.set_values()
         self.idefault = objs.get_default()
-        self.Success  = self.idefault.Success
+        self.Success = self.idefault.Success
         self.load()
     
     def set_values(self):
-        self.block   = ''
-        self.blockw  = ''
-        self.subsc   = ''
-        self.blauth  = []
+        self.block = ''
+        self.blockw = ''
+        self.subsc = ''
+        self.blauth = []
         self.blwords = []
         self.subauth = []
-        self.subids  = []
-        self.freq    = []
+        self.subids = []
+        self.freq = []
     
     def match_blocked_word(self,word):
         f = '[Yatube] logic.Lists.match_blocked_word'
@@ -714,25 +714,25 @@ class Lists:
             text = sh.ReadTextFile(file=self.idefault.fblock).get()
             text = sh.Text(text=text).delete_comments()
             # We should allow empty files
-            self.block  = text
+            self.block = text
             self.blauth = text.splitlines()
             # Blocked words
             text = sh.ReadTextFile(file=self.idefault.fblockw).get()
             text = sh.Text(text=text).delete_comments()
             # We should allow empty files
-            self.blockw  = text
+            self.blockw = text
             self.blwords = text.splitlines()
             self.blwords = [item.lower() for item in self.blwords]
             # Suppress errors on empty text
             if os.path.exists(self.idefault.fsubsc):
-                dic = sh.Dic (file     = self.idefault.fsubsc
+                dic = sh.Dic (file = self.idefault.fsubsc
                              ,Sortable = False
                              )
                 self.Success = dic.Success
                 if self.Success:
-                    self.subsc   = dic.text
+                    self.subsc = dic.text
                     self.subauth = dic.orig
-                    self.subids  = dic.transl
+                    self.subids = dic.transl
             if self.subauth:
                 self.subauth, self.subids = (list(x) for x \
                 in zip (*sorted (zip (self.subauth, self.subids)
@@ -849,14 +849,14 @@ class Video:
         self.check()
     
     def delete_unsupported(self):
-        video        = mt.objs.get_videos().get_current()
+        video = mt.objs.get_videos().get_current()
         video.author = sh.Text(video.author).delete_unsupported()
-        video.title  = sh.Text(video.title).delete_unsupported()
-        video.desc   = sh.Text(video.desc).delete_unsupported()
+        video.title = sh.Text(video.title).delete_unsupported()
+        video.desc = sh.Text(video.desc).delete_unsupported()
         video.search = sh.Text(video.search).delete_unsupported()
         video.author = html.unescape(video.author)
-        video.title  = html.unescape(video.title)
-        video.desc   = html.unescape(video.desc)
+        video.title = html.unescape(video.title)
+        video.desc = html.unescape(video.desc)
         video.search = html.unescape(video.search)
     
     def get_length(self):
@@ -1007,21 +1007,21 @@ class Video:
             if data:
                 data_len = 15
                 if len(data) == data_len:
-                    video        = mt.objs.get_videos().get_current()
-                    video.id_    = data[0]
+                    video = mt.objs.get_videos().get_current()
+                    video.id_ = data[0]
                     video.playid = data[1]
-                    video.chid   = data[2]
+                    video.chid = data[2]
                     video.author = data[3]
-                    video.title  = data[4]
-                    video.desc   = data[5]
+                    video.title = data[4]
+                    video.desc = data[5]
                     video.search = data[6]
-                    video.len_   = data[7]
-                    video.pause  = data[8]
+                    video.len_ = data[7]
+                    video.pause = data[8]
                     video.bytes_ = data[9]
-                    video.ptime  = data[10]
-                    video.dtime  = data[11]
-                    video.ftime  = data[12]
-                    video.ltime  = data[13]
+                    video.ptime = data[10]
+                    video.dtime = data[11]
+                    video.ftime = data[12]
+                    video.ltime = data[13]
                     video.fdtime = data[14]
                 else:
                     sub = '{} == {}'.format(len(data),data_len)
@@ -1058,8 +1058,8 @@ class Video:
         f = '[Yatube] logic.Video.set_image'
         if self.Success:
             video = mt.objs.get_videos().get_current()
-            image = sh.Get (url     = video.thumb
-                           ,coding  = None
+            image = sh.Get (url = video.thumb
+                           ,coding = None
                            ,Verbose = False
                            ).run()
             if image:
@@ -1172,12 +1172,12 @@ class Video:
             video = mt.objs.get_videos().get_current()
             if not video.path:
                 author = sh.FixBaseName (basename = video.author
-                                        ,AllOS    = AllOS
-                                        ,max_len  = 100
+                                        ,AllOS = AllOS
+                                        ,max_len = 100
                                         ).run()
-                title  = sh.FixBaseName (basename = video.title
-                                        ,AllOS    = AllOS
-                                        ,max_len  = 100
+                title = sh.FixBaseName (basename = video.title
+                                        ,AllOS = AllOS
+                                        ,max_len = 100
                                         ).run()
                 ''' For some reason, 'youtube_dl' does not screen
                     correctly characters such as '%' and throws an error
@@ -1362,7 +1362,7 @@ class URL:
                                     )
         self.url = re.sub('#t=\d+','',self.url)
         if 'watch?v' in self.url:
-            search = sh.Search (text    = self.url
+            search = sh.Search (text = self.url
                                ,pattern = '?'
                                )
             search.get_next()
@@ -1408,13 +1408,13 @@ class DefaultConfig:
         self.Success = self.ihome.create_conf()
     
     def set_values(self):
-        self.fsubsc  = ''
-        self.fblock  = ''
+        self.fsubsc = ''
+        self.fblock = ''
         self.fblockw = ''
-        self.fdb     = ''
-        self.fconf   = ''
+        self.fdb = ''
+        self.fconf = ''
         self.api_key = ''
-        self.ffreq   = ''
+        self.ffreq = ''
     
     def set_frequent(self):
         f = '[Yatube] logic.DefaultConfig.set_frequent'
@@ -1424,7 +1424,7 @@ class DefaultConfig:
                 if os.path.exists(self.ffreq):
                     self.Success = sh.File(file=self.ffreq).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self.ffreq
+                    iwrite = sh.WriteTextFile (file = self.ffreq
                                               ,Rewrite = True
                                               )
                     iwrite.write('# ' + _('Put here titles of frequent channels'))
@@ -1476,7 +1476,7 @@ class DefaultConfig:
                 if os.path.exists(self.fblockw):
                     self.Success = sh.File(file=self.fblockw).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self.fblockw
+                    iwrite = sh.WriteTextFile (file = self.fblockw
                                               ,Rewrite = True
                                               )
                     iwrite.write('# ' + _('Put here words to block in titles (case is ignored)'))
@@ -1495,7 +1495,7 @@ class DefaultConfig:
                 if os.path.exists(self.fblock):
                     self.Success = sh.File(file=self.fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self.fblock
+                    iwrite = sh.WriteTextFile (file = self.fblock
                                               ,Rewrite = True
                                               )
                     iwrite.write(sample_block)
@@ -1514,7 +1514,7 @@ class DefaultConfig:
                 if os.path.exists(self.fsubsc):
                     self.Success = sh.File(file=self.fsubsc).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self.fsubsc
+                    iwrite = sh.WriteTextFile (file = self.fsubsc
                                               ,Rewrite = True
                                               )
                     iwrite.write(sample_subscribe)
@@ -1545,9 +1545,9 @@ class ChannelHistory:
         self.set_values()
     
     def set_values(self):
-        self.no      = 0
+        self.no = 0
         self.authors = []
-        self.urls    = []
+        self.urls = []
     
     def reset(self):
         self.set_values()

@@ -11,7 +11,7 @@ API_KEY = ''
 ''' Default number of videos to be fetched: 5, max: 50.
     Default number of comments to be fetched: 20, max: 100.
 '''
-MAX_VIDEOS   = 50
+MAX_VIDEOS = 50
 MAX_COMMENTS = 100
 
 
@@ -33,11 +33,11 @@ class Trending:
         f = '[Yatube] meta.Trending.fetch'
         if self.Success:
             try:
-                self.resp = com.get_service().videos().list (chart      = 'mostPopular'
+                self.resp = com.get_service().videos().list (chart = 'mostPopular'
                                                             ,regionCode = self.country
-                                                            ,part       = 'id,snippet'
+                                                            ,part = 'id,snippet'
                                                             ,maxResults = MAX_VIDEOS
-                                                            ,pageToken  = token
+                                                            ,pageToken = token
                                                             ).execute()
             except Exception as e:
                 com.show_error(f,e)
@@ -88,14 +88,14 @@ class Trending:
             for item in self.resp['items']:
                 if item['kind'] == "youtube#video":
                     try:
-                        video        = Video()
-                        video.id_    = item['id']
+                        video = Video()
+                        video.id_ = item['id']
                         video.author = item['snippet']['channelTitle']
-                        video.chid  = item['snippet']['channelId']
-                        video.ptime  = sh.com.get_yt_date(item['snippet']['publishedAt'])
-                        video.title  = item['snippet']['title']
-                        video.desc   = item['snippet']['description']
-                        video.thumb  = item['snippet']['thumbnails']['default']['url']
+                        video.chid = item['snippet']['channelId']
+                        video.ptime = sh.com.get_yt_date(item['snippet']['publishedAt'])
+                        video.title = item['snippet']['title']
+                        video.desc = item['snippet']['description']
+                        video.thumb = item['snippet']['thumbnails']['default']['url']
                         objs.get_videos().add(video)
                     except KeyError as e:
                         mes = _('Missing key: "{}"!').format(e)
@@ -105,10 +105,10 @@ class Trending:
     
     def set_values(self):
         self.Success = True
-        self.resp    = {}
+        self.resp = {}
         self.country = ''
-        self.next    = ''
-        self.prev    = ''
+        self.next = ''
+        self.prev = ''
     
     def reset(self,country):
         f = '[Yatube] meta.Trending.reset'
@@ -130,8 +130,8 @@ class PlayId:
         if self.Success:
             try:
                 resp = com.get_service().channels().list (forUsername = self.id_
-                                                         ,part        = 'contentDetails'
-                                                         ,maxResults  = 1
+                                                         ,part = 'contentDetails'
+                                                         ,maxResults = 1
                                                          ).execute()
             except Exception as e:
                 com.show_error(f,e)
@@ -156,8 +156,8 @@ class PlayId:
         f = '[Yatube] meta.PlayId.get_by_channel_id'
         if self.Success:
             try:
-                resp = com.get_service().channels().list (id         = self.id_
-                                                         ,part       = 'contentDetails'
+                resp = com.get_service().channels().list (id = self.id_
+                                                         ,part = 'contentDetails'
                                                          ,maxResults = 1
                                                          ).execute()
             except Exception as e:
@@ -194,7 +194,7 @@ class PlayId:
     
     def set_values(self):
         self.Success = True
-        self.id_     = ''
+        self.id_ = ''
 
 
 
@@ -267,10 +267,10 @@ class Comments:
         
     def set_values(self):
         self.Success = True
-        self.resp    = {}
-        self.texts   = []
-        self.next    = ''
-        self.i       = 0
+        self.resp = {}
+        self.texts = []
+        self.next = ''
+        self.i = 0
         
     def reset(self):
         self.set_values()
@@ -319,11 +319,11 @@ class Comments:
         if self.Success:
             try:
                 self.resp = com.get_service().commentThreads().list(
-                                         part       = 'snippet,replies'
+                                         part = 'snippet,replies'
                                         ,maxResults = MAX_COMMENTS
-                                        ,videoId    = objs.get_videos().get_current().id_
+                                        ,videoId = objs.get_videos().get_current().id_
                                         ,textFormat = 'plainText'
-                                        ,pageToken  = token
+                                        ,pageToken = token
                                         ).execute()
             except Exception as e:
                 self.Success = False
@@ -363,7 +363,7 @@ class VideoInfo:
         if video.id_:
             resp = None
             try:
-                resp = com.get_service().videos().list (id   = video.id_
+                resp = com.get_service().videos().list (id = video.id_
                                                        ,part = 'id,snippet'
                                                        ).execute()
             except Exception as e:
@@ -381,10 +381,10 @@ class VideoInfo:
                             '''
                             if not video.author:
                                 video.author = item['snippet']['channelTitle']
-                                video.ptime  = sh.com.get_yt_date(item['snippet']['publishedAt'])
-                                video.title  = item['snippet']['title']
-                                video.desc   = item['snippet']['description']
-                                video.thumb  = item['snippet']['thumbnails']['default']['url']
+                                video.ptime = sh.com.get_yt_date(item['snippet']['publishedAt'])
+                                video.title = item['snippet']['title']
+                                video.desc = item['snippet']['description']
+                                video.thumb = item['snippet']['thumbnails']['default']['url']
                             # We need only 1 suitable section
                             return video.chid
                 except KeyError as e:
@@ -401,7 +401,7 @@ class VideoInfo:
         if video.id_:
             resp = None
             try:
-                resp = com.get_service().videos().list (id   = video.id_
+                resp = com.get_service().videos().list (id = video.id_
                                                        ,part = 'id,contentDetails'
                                                        ).execute()
             except Exception as e:
@@ -437,7 +437,7 @@ class VideoInfo:
         if video.id_:
             resp = None
             try:
-                resp = com.get_service().videos().list (id   = video.id_
+                resp = com.get_service().videos().list (id = video.id_
                                                        ,part = 'id,statistics'
                                                        ).execute()
             except Exception as e:
@@ -524,15 +524,15 @@ class Playlist:
                 try:
                     for item in self.resp['items']:
                         if item['snippet']['resourceId']['kind'] == "youtube#video":
-                            video        = Video()
-                            video.id_    = item['snippet']['resourceId']['videoId']
+                            video = Video()
+                            video.id_ = item['snippet']['resourceId']['videoId']
                             video.author = item['snippet']['channelTitle']
-                            video.chid   = item['snippet']['channelId']
+                            video.chid = item['snippet']['channelId']
                             video.playid = item['snippet']['playlistId']
-                            video.ptime  = sh.com.get_yt_date(item['snippet']['publishedAt'])
-                            video.title  = item['snippet']['title']
-                            video.desc   = item['snippet']['description']
-                            video.thumb  = item['snippet']['thumbnails']['default']['url']
+                            video.ptime = sh.com.get_yt_date(item['snippet']['publishedAt'])
+                            video.title = item['snippet']['title']
+                            video.desc = item['snippet']['description']
+                            video.thumb = item['snippet']['thumbnails']['default']['url']
                             objs.get_videos().add(video)
                 except KeyError as e:
                     mes = _('Missing key: "{}"!').format(e)
@@ -563,19 +563,19 @@ class Playlist:
         
     def set_values(self):
         self.Success = True
-        self.resp    = {}
-        self.next    = ''
-        self.prev    = ''
-        self.playid  = ''
+        self.resp = {}
+        self.next = ''
+        self.prev = ''
+        self.playid = ''
     
     def fetch(self,token=''):
         f = '[Yatube] meta.Playlist.fetch'
         if self.Success:
             try:
                 self.resp = com.get_service().playlistItems().list (playlistId = self.playid
-                                                                   ,part       = 'id,snippet'
+                                                                   ,part = 'id,snippet'
                                                                    ,maxResults = MAX_VIDEOS
-                                                                   ,pageToken  = token
+                                                                   ,pageToken = token
                                                                    ).execute()
             except Exception as e:
                 com.show_error(f,e)
@@ -636,11 +636,11 @@ class Search:
         f = '[Yatube] meta.Search.fetch'
         if self.Success:
             try:
-                self.resp = com.get_service().search().list (q          = self.query
-                                                            ,part       = 'id,snippet'
+                self.resp = com.get_service().search().list (q = self.query
+                                                            ,part = 'id,snippet'
                                                             ,maxResults = MAX_VIDEOS
                                                             ,safeSearch = 'none'
-                                                            ,pageToken  = token
+                                                            ,pageToken = token
                                                             ).execute()
             except Exception as e:
                 com.show_error(f,e)
@@ -691,14 +691,14 @@ class Search:
             try:
                 for item in self.resp['items']:
                     if item['id']['kind'] == "youtube#video":
-                        video        = Video()
-                        video.id_    = item['id']['videoId']
+                        video = Video()
+                        video.id_ = item['id']['videoId']
                         video.author = item['snippet']['channelTitle']
-                        video.chid   = item['snippet']['channelId']
-                        video.ptime  = sh.com.get_yt_date(item['snippet']['publishedAt'])
-                        video.title  = item['snippet']['title']
-                        video.desc   = item['snippet']['description']
-                        video.thumb  = item['snippet']['thumbnails']['default']['url']
+                        video.chid = item['snippet']['channelId']
+                        video.ptime = sh.com.get_yt_date(item['snippet']['publishedAt'])
+                        video.title = item['snippet']['title']
+                        video.desc = item['snippet']['description']
+                        video.thumb = item['snippet']['thumbnails']['default']['url']
                         objs.get_videos().add(video)
             except KeyError as e:
                 mes = _('Missing key: "{}"!').format(e)
@@ -708,10 +708,10 @@ class Search:
     
     def set_values(self):
         self.Success = True
-        self.resp   = {}
-        self.next   = ''
-        self.prev   = ''
-        self.query  = ''
+        self.resp = {}
+        self.next = ''
+        self.prev = ''
+        self.query = ''
     
     def reset(self,query):
         f = '[Yatube] meta.Search.reset'
@@ -724,35 +724,35 @@ class Search:
 class Video:
     
     def __init__(self):
-        self.Block    = False
-        self.Saved    = None
-        self.bytes_   = None
-        self.gui      = None
-        self.image    = None
-        self.com_num  = 0
+        self.Block = False
+        self.Saved = None
+        self.bytes_ = None
+        self.gui = None
+        self.image = None
+        self.com_num = 0
         self.dislikes = 0
-        self.len_     = 0
-        self.likes    = 0
-        self.pause    = 0
-        self.views    = 0
-        self.dtime    = 0.0
-        self.fdtime   = 0.0
-        self.ftime    = 0.0
-        self.ltime    = 0.0
-        self.ptime    = 0.0
-        self.author   = ''
-        self.chid     = ''
-        self.desc     = ''
-        self.dir_     = ''
-        self.id_      = ''
-        self.playid   = ''
-        self.page     = ''
-        self.path     = ''
-        self.pathsh   = ''
-        self.search   = ''
-        self.thumb    = ''
-        self.title    = ''
-        self.url      = ''
+        self.len_ = 0
+        self.likes = 0
+        self.pause = 0
+        self.views = 0
+        self.dtime = 0.0
+        self.fdtime = 0.0
+        self.ftime = 0.0
+        self.ltime = 0.0
+        self.ptime = 0.0
+        self.author = ''
+        self.chid = ''
+        self.desc = ''
+        self.dir_ = ''
+        self.id_ = ''
+        self.playid = ''
+        self.page = ''
+        self.path = ''
+        self.pathsh = ''
+        self.search = ''
+        self.thumb = ''
+        self.title = ''
+        self.url = ''
 
 
 
@@ -819,7 +819,7 @@ class Videos:
                 istr.write('\n')
                 istr.write(_('Date:'))
                 istr.write(' ')
-                itime = sh.Time (tstamp  = self.videos[i].ptime
+                itime = sh.Time (tstamp = self.videos[i].ptime
                                 ,pattern = '%Y-%m-%d %H:%M'
                                 )
                 istr.write(str(itime.get_date()))
@@ -890,7 +890,7 @@ class Commands:
         try:
             return build ('youtube','v3'
                          ,developerKey = API_KEY
-                         ,cache        = MemoryCache()
+                         ,cache = MemoryCache()
                          )
         except Exception as e:
             self.show_error(f,e)
@@ -914,7 +914,7 @@ class Commands:
 
 
 objs = Objects()
-com  = Commands()
+com = Commands()
 
 
 if __name__ == '__main__':
