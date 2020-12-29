@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import os
 import sqlite3
 import html
 import skl_shared.shared as sh
@@ -14,6 +15,16 @@ class DB:
         self.path = path
         self.clone = clone
         self.Success = self.clone and sh.File(file=self.path).Success
+    
+    def vacuumize(self):
+        f = '[Yatube] utils.DB.vacuumize'
+        if self.Success:
+            try:
+                self.dbcw.execute('vacuum')
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
     
     def update_unescape(self,id_,author,title,desc,search):
         f = '[Yatube] utils.DB.update_unescape'
@@ -169,13 +180,16 @@ class DB:
     def fetch(self):
         f = '[Yatube] utils.DB.fetch'
         if self.Success:
+            mes = _('Fetch data')
+            sh.objs.get_mes(f,mes,True).show_info()
             try:
                 # 14 columns (old table)
+                query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC,SEARCH,LENGTH,PAUSE,PTIME,DTIME,FTIME,LTIME,FDTIME'
                 self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
-                                         ,DESC,SEARCH,LENGTH,IMAGE\
-                                         ,PTIME,DTIME,FTIME,LTIME\
-                                         ,FDTIME\
-                                   from   VIDEOS'
+                                         ,DESC,SEARCH,LENGTH,PAUSE \
+                                         ,PTIME,DTIME,FTIME,LTIME \
+                                         ,FDTIME \
+                                   from VIDEOS'
                                  )
                 self.data = self.dbc.fetchall()
             except Exception as e:
@@ -187,7 +201,7 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # 15 columns by now
+                # Create 14 columns
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      ID     text    \
@@ -199,7 +213,6 @@ class DB:
                     ,SEARCH text    \
                     ,LENGTH integer \
                     ,PAUSE  integer \
-                    ,IMAGE  binary  \
                     ,PTIME  float   \
                     ,DTIME  float   \
                     ,FTIME  float   \
@@ -230,19 +243,18 @@ class DB:
                         desc = row[5]
                         search = row[6]
                         length = row[7]
-                        pause = 0
-                        image = row[8]
+                        pause = row[8]
                         ptime = row[9]
                         dtime = row[10]
                         ftime = row[11]
                         ltime = row[12]
                         fdtime = row[13]
                         row = (id_,playid,chanid,author,title,desc
-                              ,search,length,pause,image,ptime,dtime
-                              ,ftime,ltime,fdtime
+                              ,search,length,pause,ptime,dtime,ftime
+                              ,ltime,fdtime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                          (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                                          (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                                           ,row
                                           )
                     except Exception as e:
@@ -364,88 +376,6 @@ class Commands:
         idb.savew()
         idb.closew()
     
-    def change_ftime(self):
-        f = '[Yatube] utils.Commands.change_ftime'
-        Success = sh.File (file = self.path
-                          ,dest = self.clone
-                          ,Rewrite = True
-                          ).copy()
-        if Success:
-            idb = DB (path = self.path
-                     ,clone = self.clone
-                     )
-            idb.connectw()
-            result = idb.fetch_ftime()
-            if result:
-                ids = []
-                ftm = []
-                for item in result:
-                    ids.append(item[0])
-                    ftm.append(item[1])
-                for i in range(len(ids)):
-                    ind = ftm.index(ftm[i])
-                    while i > ind:
-                        ftm[i] += 1
-                        ind = ftm.index(ftm[i])
-                '''
-                for i in range(len(ftm)):
-                    ltm[i] = sh.Time (tstamp = ftm[i]
-                                     ,pattern = '%y-%m-%d %H:%M:%S'
-                                     ).get_date()
-                for i in range(len(ids)):
-                    print('ID: {}, FTIME: {}'.format(ids[i],ftm[i]))
-                '''
-                for i in range(len(ids)):
-                    if ftm[i] != result[i][1]:
-                        idb.update_ftime(ids[i],ftm[i])
-            else:
-                sh.com.rep_empty(f)
-            idb.savew()
-            idb.closew()
-        else:
-            sh.com.cancel(f)
-    
-    def change_ltime(self):
-        f = '[Yatube] utils.Commands.change_ltime'
-        Success = sh.File (file = self.path
-                          ,dest = self.clone
-                          ,Rewrite = True
-                          ).copy()
-        if Success:
-            idb = DB (path = self.path
-                     ,clone = self.clone
-                     )
-            idb.connectw()
-            result = idb.fetch_ltime()
-            if result:
-                ids = []
-                ltm = []
-                for item in result:
-                    ids.append(item[0])
-                    ltm.append(item[1])
-                for i in range(len(ids)):
-                    ind = ltm.index(ltm[i])
-                    while i > ind:
-                        ltm[i] += 1
-                        ind = ltm.index(ltm[i])
-                '''
-                for i in range(len(ltm)):
-                    ltm[i] = sh.Time (tstamp = ltm[i]
-                                     ,pattern = '%y-%m-%d %H:%M:%S'
-                                     ).get_date()
-                for i in range(len(ids)):
-                    print('ID: %s, LTIME: %s' % (ids[i],ltm[i]))
-                '''
-                for i in range(len(ids)):
-                    if ltm[i] != result[i][1]:
-                        idb.update_ltime(ids[i],ltm[i])
-            else:
-                sh.com.rep_empty(f)
-            idb.savew()
-            idb.closew()
-        else:
-            sh.com.cancel(f)
-    
     def repair_urls(self):
         f = '[Yatube] utils.Commands.repair_urls'
         Success = sh.File (file = self.path
@@ -481,7 +411,8 @@ class Commands:
             sh.com.cancel(f)
     
     def alter(self):
-        sh.File(file=self.clone).delete()
+        if os.path.exists(self.clone):
+            sh.File(self.clone).delete()
         # Alter DB and add/remove some columns
         idb = DB (path = self.path
                  ,clone = self.clone
