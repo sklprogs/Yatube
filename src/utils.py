@@ -183,12 +183,11 @@ class DB:
             mes = _('Fetch data')
             sh.objs.get_mes(f,mes,True).show_info()
             try:
-                # 14 columns (old table)
+                # 12 columns
                 query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC,SEARCH,LENGTH,PAUSE,PTIME,DTIME,FTIME,LTIME,FDTIME'
                 self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
-                                         ,DESC,SEARCH,LENGTH,PAUSE \
-                                         ,PTIME,DTIME,FTIME,LTIME \
-                                         ,FDTIME \
+                                         ,LENGTH,PAUSE,PTIME,DTIME \
+                                         ,FTIME,LTIME,FDTIME \
                                    from VIDEOS'
                                  )
                 self.data = self.dbc.fetchall()
@@ -201,7 +200,7 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # Create 14 columns
+                # Create 12 columns
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      ID     text    \
@@ -209,8 +208,6 @@ class DB:
                     ,CHANID text    \
                     ,AUTHOR text    \
                     ,TITLE  text    \
-                    ,DESC   text    \
-                    ,SEARCH text    \
                     ,LENGTH integer \
                     ,PAUSE  integer \
                     ,PTIME  float   \
@@ -240,22 +237,18 @@ class DB:
                         chanid = row[2]
                         author = row[3]
                         title = row[4]
-                        desc = row[5]
-                        search = row[6]
-                        length = row[7]
-                        pause = row[8]
-                        ptime = row[9]
-                        dtime = row[10]
-                        ftime = row[11]
-                        ltime = row[12]
-                        fdtime = row[13]
-                        row = (id_,playid,chanid,author,title,desc
-                              ,search,length,pause,ptime,dtime,ftime
-                              ,ltime,fdtime
+                        length = row[5]
+                        pause = row[6]
+                        ptime = row[7]
+                        dtime = row[8]
+                        ftime = row[9]
+                        ltime = row[10]
+                        fdtime = row[11]
+                        row = (id_,playid,chanid,author,title,length
+                              ,pause,ptime,dtime,ftime,ltime,fdtime
                               )
                         self.dbcw.execute ('insert into VIDEOS values \
-                                          (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
-                                          ,row
+                                          (?,?,?,?,?,?,?,?,?,?,?,?)',row
                                           )
                     except Exception as e:
                         self.Success = False
