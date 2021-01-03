@@ -990,9 +990,9 @@ class Video:
             '''
             video = mt.objs.get_videos().get_current()
             data = (video.id_,video.playid,video.chid,video.author
-                   ,video.title,video.desc,video.search,video.len_
-                   ,video.pause,video.bytes_,video.ptime,video.dtime
-                   ,video.ftime,video.ltime,video.fdtime
+                   ,video.title,video.search,video.len_,video.pause
+                   ,video.ptime,video.dtime,video.ftime,video.ltime
+                   ,video.fdtime
                    )
             if video.author and video.title:
                 objs.get_db().add_video(data)
@@ -1019,7 +1019,7 @@ class Video:
                     video.len_ = data[6]
                     video.pause = data[7]
                     #TODO: implement
-                    video.bytes_ = None
+                    #video.bytes_ = None
                     video.ptime = data[8]
                     video.dtime = data[9]
                     video.ftime = data[10]
@@ -1038,7 +1038,7 @@ class Video:
     def load_image(self):
         ''' We need this code as a separate function since we should be
             able to assign offline data, and 'self.image' is run only
-            for online data. Indeed, this function uses 'sharedGUI', but
+            for online data. Indeed, this function uses 'shared', but
             it seems easier and more appropriate to use this code in
             the logic, not in the controller. After all, these are
             GUI data that are still data.
