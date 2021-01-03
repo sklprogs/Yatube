@@ -1259,9 +1259,9 @@ class Commands:
                 ''' #NOTE: do not forget to update indices in case of
                     changing the DB structure.
                 '''
-                dtime = data[11]
-                ftime = data[12]
-                ltime = data[13]
+                dtime = data[9]
+                ftime = data[10]
+                ltime = data[11]
                 if dtime:
                     items.remove(_('Mark as watched'))
                 else:
