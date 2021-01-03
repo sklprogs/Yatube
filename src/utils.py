@@ -184,7 +184,7 @@ class DB:
         f = '[Yatube] utils.DB.create_table'
         if self.Success:
             try:
-                # Create 12 columns
+                # Create 13 columns
                 self.dbcw.execute (
                     'create table VIDEOS (\
                      ID     text    \
@@ -192,6 +192,7 @@ class DB:
                     ,CHANID text    \
                     ,AUTHOR text    \
                     ,TITLE  text    \
+                    ,SEARCH text    \
                     ,LENGTH integer \
                     ,PAUSE  integer \
                     ,PTIME  float   \
@@ -214,6 +215,8 @@ class DB:
                                                     ,self.clone
                                                     )
                 sh.objs.get_mes(f,mes,True).show_info()
+                query = 'insert into VIDEOS values \
+                         (?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 for row in self.data:
                     try:
                         id_ = row[0]
@@ -228,12 +231,12 @@ class DB:
                         ftime = row[9]
                         ltime = row[10]
                         fdtime = row[11]
-                        row = (id_,playid,chanid,author,title,length
-                              ,pause,ptime,dtime,ftime,ltime,fdtime
+                        search = author.lower() + ' ' + title.lower()
+                        row = (id_,playid,chanid,author,title,search
+                              ,length,pause,ptime,dtime,ftime,ltime
+                              ,fdtime
                               )
-                        self.dbcw.execute ('insert into VIDEOS values \
-                                          (?,?,?,?,?,?,?,?,?,?,?,?)',row
-                                          )
+                        self.dbcw.execute(query,row)
                     except Exception as e:
                         self.Success = False
                         self.fail(f,e)
