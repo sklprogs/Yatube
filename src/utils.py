@@ -29,14 +29,10 @@ class DB:
     def update_unescape(self,id_,author,title,desc,search):
         f = '[Yatube] utils.DB.update_unescape'
         if self.Success:
+            query = 'update VIDEOS set AUTHOR = ?,TITLE = ?,DESC = ? \
+                    ,SEARCH = ? where ID = ?'
             try:
-                self.dbcw.execute ('update VIDEOS set AUTHOR = ?\
-                                                     ,TITLE = ?\
-                                                     ,DESC = ?\
-                                                     ,SEARCH = ?\
-                                    where  ID = ?'
-                                  ,(author,title,desc,search,id_)
-                                  )
+                self.dbcw.execute(query,(author,title,desc,search,id_))
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -45,10 +41,9 @@ class DB:
     def get_unescape(self):
         f = '[Yatube] utils.DB.get_unescape'
         if self.Success:
+            query = 'select ID,AUTHOR,TITLE,DESC,SEARCH from VIDEOS'
             try:
-                self.dbcw.execute ('select ID,AUTHOR,TITLE,DESC,SEARCH \
-                                    from VIDEOS'
-                                  )
+                self.dbcw.execute(query)
                 return self.dbcw.fetchall()
             except Exception as e:
                 self.fail_clone(f,e)
@@ -58,10 +53,9 @@ class DB:
     def del_author(self,author):
         f = '[Yatube] utils.DB.del_author'
         if self.Success:
+            query = 'delete from VIDEOS where AUTHOR = ?'
             try:
-                self.dbcw.execute ('delete from VIDEOS \
-                                    where AUTHOR = ?',(author,)
-                                  )
+                self.dbcw.execute(query,(author,))
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -70,12 +64,10 @@ class DB:
     def fetch_ftime(self):
         f = '[Yatube] utils.DB.fetch_ftime'
         if self.Success:
+            query = 'select ID,FTIME from VIDEOS where FTIME > ? \
+                     order by FTIME desc,PTIME desc'
             try:
-                self.dbcw.execute ('select  ID,FTIME\
-                                   from     VIDEOS \
-                                   where    FTIME > ?\
-                                   order by FTIME desc,PTIME desc',(0,)
-                                 )
+                self.dbcw.execute(query,(0,))
                 return self.dbcw.fetchall()
             except Exception as e:
                 self.fail_clone(f,e)
@@ -85,10 +77,9 @@ class DB:
     def update_ftime(self,id_,ftime):
         f = '[Yatube] utils.DB.update_ftime'
         if self.Success:
+            query = 'update VIDEOS set FTIME = ? where ID = ?'
             try:
-                self.dbcw.execute ('update VIDEOS set FTIME = ? \
-                                    where  ID = ?',(ftime,id_,)
-                                  )
+                self.dbcw.execute(query,(ftime,id_,))
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -97,10 +88,9 @@ class DB:
     def update_ltime(self,id_,ltime):
         f = '[Yatube] utils.DB.update_ltime'
         if self.Success:
+            query = 'update VIDEOS set LTIME = ? where ID = ?'
             try:
-                self.dbcw.execute ('update VIDEOS set LTIME = ? \
-                                    where  ID = ?',(ltime,id_,)
-                                  )
+                self.dbcw.execute(query,(ltime,id_,))
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -109,12 +99,10 @@ class DB:
     def fetch_ltime(self):
         f = '[Yatube] utils.DB.fetch_ltime'
         if self.Success:
+            query = 'select ID,LTIME from VIDEOS where LTIME > ? \
+                     order by LTIME desc,PTIME desc'
             try:
-                self.dbcw.execute ('select  ID,LTIME\
-                                   from     VIDEOS \
-                                   where    LTIME > ?\
-                                   order by LTIME desc,PTIME desc',(0,)
-                                 )
+                self.dbcw.execute(query,(0,))
                 return self.dbcw.fetchall()
             except Exception as e:
                 self.fail_clone(f,e)
@@ -136,10 +124,9 @@ class DB:
     def down_markw(self):
         f = '[Yatube] utils.DB.down_markw'
         if self.Success:
+            query = 'update VIDEOS set DTIME = ? where DTIME > ?'
             try:
-                self.dbcw.execute ('update VIDEOS set DTIME = ? \
-                                    where  DTIME > ?',(0,0,)
-                                  )
+                self.dbcw.execute(query,(0,0,))
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -182,14 +169,11 @@ class DB:
         if self.Success:
             mes = _('Fetch data')
             sh.objs.get_mes(f,mes,True).show_info()
+            # 12 columns
+            query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,LENGTH,PAUSE \
+                    ,PTIME,DTIME,FTIME,LTIME,FDTIME from VIDEOS'
             try:
-                # 12 columns
-                query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC,SEARCH,LENGTH,PAUSE,PTIME,DTIME,FTIME,LTIME,FDTIME'
-                self.dbc.execute ('select ID,PLAYID,CHANID,AUTHOR,TITLE\
-                                         ,LENGTH,PAUSE,PTIME,DTIME \
-                                         ,FTIME,LTIME,FDTIME \
-                                   from VIDEOS'
-                                 )
+                self.dbc.execute(query)
                 self.data = self.dbc.fetchall()
             except Exception as e:
                 self.fail(f,e)
@@ -282,7 +266,9 @@ class DB:
     def repair_urls(self):
         f = '[Yatube] utils.DB.repair_urls'
         if self.Success:
-            self.dbcw.execute('select URL from VIDEOS where length(URL) > 11')
+            query = 'select URL from VIDEOS where length(URL) > 11'
+            uquery = 'update VIDEOS set URL = ? where URL = ?'
+            self.dbcw.execute(query)
             result = self.dbcw.fetchall()
             if result:
                 result = list(result)
@@ -298,9 +284,7 @@ class DB:
                     mes = '"{}" -> "{}"'.format(old_item,item)
                     sh.objs.get_mes(f,mes,True).show_info()
                     try:
-                        self.dbcw.execute ('update VIDEOS set URL = ? where URL = ?'
-                                          ,(item,old_item,)
-                                          )
+                        self.dbcw.execute(uquery,(item,old_item,))
                     except Exception as e:
                         self.fail_clone(f,e)
             else:
@@ -425,25 +409,25 @@ class Commands:
                  ,clone = self.clone
                  )
         idb.connect()
-        idb.dbc.execute ('select AUTHOR,TITLE,SEARCH,TIMESTAMP \
-                          from VIDEOS where SEARCH like ?\
-                         ',('%стихийный митинг%',)
-                         )
+        query = 'select AUTHOR,TITLE,SEARCH,TIMESTAMP from VIDEOS \
+                 where SEARCH like ?'
+        pattern = '%стихийный митинг%'
+        idb.dbc.execute(query,(pattern,))
         data = idb.dbc.fetchone()
         if data:
-            print('Author: "%s"'    % str(data[0]))
-            print('Title: "%s"'     % str(data[1]))
-            print('Search: "%s"'    % str(data[2]))
-            print('Timestamp: "%s"' % str(data[3]))
+            print('Author: "{}"'.format(data[0]))
+            print('Title: "{}"'.format(data[1]))
+            print('Search: "{}"'.format(data[2]))
+            print('Timestamp: "{}"'.format(data[3]))
         else:
             sh.com.rep_empty(f)
         idb.close()
         
     def _get_empty(self,idb):
         f = '[Yatube] utils.Commands._get_empty'
-        idb.dbcw.execute ('select AUTHOR from VIDEOS \
-                           where  AUTHOR = ? or TITLE = ?',('','',)
-                         )
+        query = 'select AUTHOR from VIDEOS where AUTHOR = ? \
+                 or TITLE = ?'
+        idb.dbcw.execute(query,('','',))
         data = idb.dbcw.fetchall()
         mes = _('{} records have been found.').format(len(data))
         sh.objs.get_mes(f,mes,True).show_info()
@@ -454,9 +438,9 @@ class Commands:
                  ,clone = self.clone
                  )
         idb.connect()
-        idb.dbc.execute ('select AUTHOR from VIDEOS \
-                          where  AUTHOR = ? or TITLE = ?',('','',)
-                         )
+        query = 'select AUTHOR from VIDEOS where AUTHOR = ? \
+                 or TITLE = ?'
+        idb.dbc.execute(query,('','',))
         data = idb.dbc.fetchall()
         mes = _('{} records have been found.').format(len(data))
         sh.objs.get_mes(f,mes,True).show_info()
@@ -474,9 +458,8 @@ class Commands:
                      )
             idb.connectw()
             self._get_empty(idb)
-            idb.dbcw.execute ('delete from VIDEOS \
-                               where AUTHOR = ? or TITLE = ?',('','',)
-                             )
+            query = 'delete from VIDEOS where AUTHOR = ? or TITLE = ?'
+            idb.dbcw.execute(query,('','',))
             self._get_empty(idb)
             idb.savew()
             idb.closew()
