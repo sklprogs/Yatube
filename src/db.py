@@ -348,7 +348,7 @@ class DB:
         f = '[Yatube] db.DB.create_videos'
         if self.Success:
             try:
-                # 15 columns by now
+                # 13 columns by now
                 self.dbc.execute (
                     'create table if not exists VIDEOS (\
                      ID     text    \
@@ -356,11 +356,9 @@ class DB:
                     ,CHANID text    \
                     ,AUTHOR text    \
                     ,TITLE  text    \
-                    ,DESC   text    \
                     ,SEARCH text    \
                     ,LENGTH integer \
                     ,PAUSE  integer \
-                    ,IMAGE  binary  \
                     ,PTIME  float   \
                     ,DTIME  float   \
                     ,FTIME  float   \
@@ -377,7 +375,7 @@ class DB:
         f = '[Yatube] db.DB.add_video'
         if self.Success:
             query = 'insert into VIDEOS values \
-                     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                     (?,?,?,?,?,?,?,?,?,?,?,?,?)'
             try:
                 self.dbc.execute(query,data)
             except Exception as e:
@@ -403,8 +401,8 @@ class DB:
         '''
         f = '[Yatube] db.DB.get_video'
         if self.Success:
-            query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC,SEARCH \
-                    ,LENGTH,PAUSE,IMAGE,PTIME,DTIME,FTIME,LTIME,FDTIME \
+            query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,SEARCH \
+                    ,LENGTH,PAUSE,PTIME,DTIME,FTIME,LTIME,FDTIME \
                      from VIDEOS where ID = ?'
             try:
                 self.dbc.execute(query,(videoid,))
@@ -422,11 +420,10 @@ class DB:
         f = '[Yatube] db.DB.get_videos'
         if self.Success:
             if ids:
+                query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,SEARCH \
+                        ,LENGTH,PAUSE,PTIME,DTIME,FTIME,LTIME,FDTIME \
+                         from VIDEOS where ID in ({})'
                 try:
-                    query = 'select ID,PLAYID,CHANID,AUTHOR,TITLE,DESC \
-                            ,SEARCH,LENGTH,PAUSE,IMAGE,PTIME,DTIME \
-                            ,FTIME,LTIME,FDTIME from VIDEOS \
-                             where ID in ({})'
                     query = query.format(','.join('?'*len(ids)))
                     self.dbc.execute(query,ids)
                     result = self.dbc.fetchall()

@@ -1005,7 +1005,7 @@ class Video:
         f = '[Yatube] logic.Video.assign_offline'
         if self.Success:
             if data:
-                data_len = 15
+                data_len = 13
                 if len(data) == data_len:
                     video = mt.objs.get_videos().get_current()
                     video.id_ = data[0]
@@ -1013,16 +1013,18 @@ class Video:
                     video.chid = data[2]
                     video.author = data[3]
                     video.title = data[4]
-                    video.desc = data[5]
-                    video.search = data[6]
-                    video.len_ = data[7]
-                    video.pause = data[8]
-                    video.bytes_ = data[9]
-                    video.ptime = data[10]
-                    video.dtime = data[11]
-                    video.ftime = data[12]
-                    video.ltime = data[13]
-                    video.fdtime = data[14]
+                    #TODO: implement
+                    video.desc = _('Not implemented!')
+                    video.search = data[5]
+                    video.len_ = data[6]
+                    video.pause = data[7]
+                    #TODO: implement
+                    video.bytes_ = None
+                    video.ptime = data[8]
+                    video.dtime = data[9]
+                    video.ftime = data[10]
+                    video.ltime = data[11]
+                    video.fdtime = data[12]
                 else:
                     sub = '{} == {}'.format(len(data),data_len)
                     mes = _('The condition "{}" is not observed!')

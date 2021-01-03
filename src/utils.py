@@ -26,13 +26,13 @@ class DB:
         else:
             sh.com.cancel(f)
     
-    def update_unescape(self,id_,author,title,desc,search):
+    def update_unescape(self,id_,author,title,search):
         f = '[Yatube] utils.DB.update_unescape'
         if self.Success:
-            query = 'update VIDEOS set AUTHOR = ?,TITLE = ?,DESC = ? \
-                    ,SEARCH = ? where ID = ?'
+            query = 'update VIDEOS set AUTHOR = ?,TITLE = ?,SEARCH = ? \
+                     where ID = ?'
             try:
-                self.dbcw.execute(query,(author,title,desc,search,id_))
+                self.dbcw.execute(query,(author,title,search,id_))
             except Exception as e:
                 self.fail_clone(f,e)
         else:
@@ -41,7 +41,7 @@ class DB:
     def get_unescape(self):
         f = '[Yatube] utils.DB.get_unescape'
         if self.Success:
-            query = 'select ID,AUTHOR,TITLE,DESC,SEARCH from VIDEOS'
+            query = 'select ID,AUTHOR,TITLE,SEARCH from VIDEOS'
             try:
                 self.dbcw.execute(query)
                 return self.dbcw.fetchall()
