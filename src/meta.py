@@ -448,18 +448,18 @@ class VideoInfo:
                     for item in resp['items']:
                         if item['kind'] == "youtube#video":
                             video.views = sh.Input (title = f
-                                                    ,value = item['statistics']['viewCount']
-                                                    ).get_integer()
+                                                   ,value = item['statistics']['viewCount']
+                                                   ).get_integer()
                             if 'likeCount' in item['statistics']:
                                 video.likes = sh.Input (title = f
-                                                        ,value = item['statistics']['likeCount']
-                                                        ).get_integer()
+                                                       ,value = item['statistics']['likeCount']
+                                                       ).get_integer()
                             else:
                                 video.likes = -1
                             if 'dislikeCount' in item['statistics']:
                                 video.dislikes = sh.Input (title = f
-                                                           ,value = item['statistics']['dislikeCount']
-                                                           ).get_integer()
+                                                          ,value = item['statistics']['dislikeCount']
+                                                          ).get_integer()
                             else:
                                 video.dislikes = -1
                             if 'commentCount' in item['statistics']:
