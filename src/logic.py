@@ -30,7 +30,7 @@ sample_block = '''Россия 24'''
 class Image:
     
     def __init__(self):
-        self.dir = sh.Home('yatube').add_share('thumbs')
+        self.dir = sh.Home('yatube').add_share(_('Images'))
         self.Success = sh.Path(self.dir).create()
         self.path = ''
         self.video = None
