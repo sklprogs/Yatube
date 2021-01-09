@@ -1,10 +1,13 @@
 (in development)
 * 
 
+2.4
+* Restructure DB in order to keep it small and fast
+
 2.3
-* Чтение ключа Google API из внешнего файла
-* Частые каналы
-* Сохранение и восстановление настроек
+* Read Google API key from an external file
+* Add frequent channels
+* Save and restore config options
 
 2.2
 * Refactor the code

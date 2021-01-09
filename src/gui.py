@@ -8,7 +8,7 @@ import PIL
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-VERSION = '2.3'
+VERSION = '2.4'
 
 context_items = (_('Show the full summary')
                 ,_('Stream')

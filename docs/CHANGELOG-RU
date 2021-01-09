@@ -1,10 +1,13 @@
 (в разработке)
 * 
 
+2.4
+* Реструктуризация БД для ее ускорения и сокращения занимаемого места
+
 2.3
-* Read Google API key from an external file
-* Add frequent channels
-* Save and restore config options
+* Чтение ключа Google API из внешнего файла
+* Частые каналы
+* Сохранение и восстановление настроек
 
 2.2
 * Рефакторинг кода
