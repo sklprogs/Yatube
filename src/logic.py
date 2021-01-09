@@ -27,6 +27,81 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class Image:
+    
+    def __init__(self):
+        self.dir = sh.Home('yatube').add_share('thumbs')
+        self.Success = sh.Path(self.dir).create()
+        self.path = ''
+        self.video = None
+    
+    def get_online(self):
+        f = '[Yatube] logic.Image.get_online'
+        if self.Success:
+            Video().set_desc_thumb()
+            if self.video.thumb:
+                bytes_ = sh.Get (url = self.video.thumb
+                                ,coding = None
+                                ,Verbose = False
+                                ).run()
+                iimage = sh.Image()
+                iimage.bytes_ = bytes_
+                iimage.get_loader()
+                self.video.image = iimage.get_image()
+                #NOTE: comply with a default Youtube thumb format
+                iimage.save(self.path,'JPEG')
+                return self.video.image
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_offline(self):
+        f = '[Yatube] logic.Image.get_offline'
+        if self.Success:
+            if self.path:
+                if os.path.exists(self.path):
+                    self.video.image = sh.Image().open(self.path)
+                    return self.video.image
+                else:
+                    sh.com.rep_lazy(f)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[Yatube] logic.Image.load'
+        if self.Success:
+            if not self.get_offline():
+                self.get_online()
+        else:
+            sh.com.cancel(f)
+    
+    def set_path(self):
+        f = '[Yatube] logic.Image.set_path'
+        if self.Success:
+            name = sh.FixBaseName(self.video.id_,True).run()
+            if name:
+                name += '.jpg'
+                self.path = os.path.join(self.dir,name)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def set_cur(self):
+        self.path = ''
+        # This function always returns a non-empty value
+        self.video = mt.objs.get_videos().get_current()
+    
+    def run(self):
+        self.set_cur()
+        self.set_path()
+        self.load()
+
+
+
 class CreateConfig(sh.CreateConfig):
     
     def __init__(self,*args,**kwargs):
@@ -751,15 +826,20 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        ''' Do not put here instances that do not require input because
-            of using meta objects and need to be constantly reset owing
-            to possible 'Success' fails (e.g., 'logic.Video').
+        ''' Do not put here instances that depend on meta objects and
+            that need to be constantly reset owing to possible 'Success'
+            fails (e.g., 'logic.Video').
         '''
         self.online = self.lists = self.const = self.default \
                     = self.db = self.channels = self.channel \
                     = self.extractor = self.history \
                     = self.watchlist = self.favorites = self.feed \
-                    = self.config = None
+                    = self.config = self.image = None
+    
+    def get_image(self):
+        if self.image is None:
+            self.image = Image()
+        return self.image
     
     def get_config(self):
         if self.config is None:
@@ -1050,43 +1130,6 @@ class Video:
         else:
             sh.com.cancel(f)
     
-    def load_image(self):
-        ''' We need this code as a separate function since we should be
-            able to assign offline data, and 'self.image' is run only
-            for online data. Indeed, this function uses 'shared', but
-            it seems easier and more appropriate to use this code in
-            the logic, not in the controller. After all, these are
-            GUI data that are still data.
-        '''
-        f = '[Yatube] logic.Video.load_image'
-        if self.Success:
-            video = mt.objs.get_videos().get_current()
-            if video.bytes_:
-                img = sh.Image()
-                img.bytes_ = video.bytes_
-                img.get_loader()
-                video.image = img.get_image()
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def set_image(self):
-        f = '[Yatube] logic.Video.set_image'
-        if self.Success:
-            video = mt.objs.get_videos().get_current()
-            image = sh.Get (url = video.thumb
-                           ,coding = None
-                           ,Verbose = False
-                           ).run()
-            if image:
-                video.bytes_ = image
-                self.load_image()
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
     def set_new(self):
         ''' Separating this code allows to skip a slow 'get_video'
             procedure when we are processing videos not known by the DB.
@@ -1098,7 +1141,6 @@ class Video:
             sh.objs.get_mes(f,mes,True).show_info()
             self.assign_online()
             self.delete_unsupported()
-            self.set_image()
             self.dump()
         else:
             sh.com.cancel(f)

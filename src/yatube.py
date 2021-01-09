@@ -2599,7 +2599,7 @@ class Commands:
         if mt.objs.get_videos().videos:
             for i in range(len(mt.objs.videos.videos)):
                 mt.objs.videos.i = i
-                mt.objs.videos.videos[i].gui = objs.get_videos().add(no=i+1)
+                mt.objs.videos.videos[i].gui = objs.get_videos().add(i+1)
         else:
             sh.com.rep_empty(f)
         #timer.end()
@@ -2633,7 +2633,8 @@ class Commands:
             for i in range(len(unknown)):
                 mt.objs.videos.i = unknown[i]
                 lg.Video().set_new()
-                self.update_video(i=unknown[i])
+                lg.objs.get_image().run()
+                self.update_video(unknown[i])
             lg.objs.get_db().save()
         else:
             sh.com.rep_lazy(f)
@@ -2693,7 +2694,7 @@ class Commands:
                         logic = lg.Video()
                         logic.assign_offline(result[i])
                         logic.delete_unsupported()
-                        logic.load_image()
+                        lg.objs.get_image().run()
                         self.update_video(i)
             else:
                 sh.com.rep_empty(f)
