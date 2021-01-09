@@ -886,15 +886,15 @@ class Video:
                 sh.com.rep_empty(f)
         return video.len_
     
-    def get_stat(self):
-        f = '[Yatube] logic.Video.get_stat'
+    def set_stat(self):
+        f = '[Yatube] logic.Video.set_stat'
         video = mt.objs.get_videos().get_current()
         ''' Likes/dislikes/number of comments can be 0, so we shoud rely
             on 'video.views' only.
         '''
         if not video.views:
             # Return True if metadata were fetched successfully
-            return mt.VideoInfo().get_stat()
+            return mt.VideoInfo().set_stat()
         return True
     
     def get_playid(self):
@@ -1129,7 +1129,7 @@ class Video:
             video = mt.objs.get_videos().get_current()
             logic = Video()
             logic.get_length()
-            logic.get_stat()
+            logic.set_stat()
             logic.set_desc_thumb()
             tmp = io.StringIO()
             tmp.write(_('Author'))

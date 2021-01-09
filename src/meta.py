@@ -385,6 +385,7 @@ class VideoInfo:
                                 video.title = item['snippet']['title']
                                 video.desc = item['snippet']['description']
                                 video.thumb = item['snippet']['thumbnails']['default']['url']
+                            # There is only 1 suitable section
                             return video
                 except KeyError as e:
                     mes = _('Missing key: "{}"!').format(e)
@@ -430,8 +431,8 @@ class VideoInfo:
         else:
             sh.com.rep_empty(f)
     
-    def get_stat(self):
-        f = '[Yatube] meta.VideoInfo.get_stat'
+    def set_stat(self):
+        f = '[Yatube] meta.VideoInfo.set_stat'
         video = objs.videos.get_current()
         if video.id_:
             resp = None
@@ -467,7 +468,7 @@ class VideoInfo:
                                                          ).get_integer()
                             else:
                                 video.com_num = -1
-                            # We need only 1 suitable section
+                            # There is only 1 suitable section
                             return True
                 except KeyError as e:
                     mes = _('Missing key: "{}"!').format(e)
