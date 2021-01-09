@@ -848,6 +848,23 @@ class Video:
         self.set_values()
         self.check()
     
+    def set_desc_thumb(self):
+        ''' Set fields that are space-consuming and should not be
+            stored in DB.
+        '''
+        f = '[Yatube] logic.Video.set_desc_thumb'
+        video = mt.objs.get_videos().get_current()
+        if not video.desc:
+            data = mt.VideoInfo().get_channel_id()
+            if data:
+                ''' Other fields should already be processed and stored
+                    in DB.
+                '''
+                video.desc = data.desc
+                video.thumb = data.thumb
+            else:
+                sh.com.rep_empty(f)
+    
     def delete_unsupported(self):
         video = mt.objs.get_videos().get_current()
         video.author = sh.Text(video.author).delete_unsupported()
@@ -901,9 +918,9 @@ class Video:
         f = '[Yatube] logic.Video.get_channel_id'
         video = mt.objs.get_videos().get_current()
         if not video.chid:
-            channel_id = mt.VideoInfo().get_channel_id()
-            if channel_id:
-                video.chid = channel_id
+            data = mt.VideoInfo().get_channel_id()
+            if data:
+                video.chid = data.chid
                 objs.get_db().update_ch_id(video.id_,video.chid)
             else:
                 sh.com.rep_empty(f)
@@ -1013,8 +1030,6 @@ class Video:
                     video.chid = data[2]
                     video.author = data[3]
                     video.title = data[4]
-                    #TODO: implement
-                    video.desc = _('Not implemented!')
                     video.search = data[5]
                     video.len_ = data[6]
                     video.pause = data[7]
@@ -1115,6 +1130,7 @@ class Video:
             logic = Video()
             logic.get_length()
             logic.get_stat()
+            logic.set_desc_thumb()
             tmp = io.StringIO()
             tmp.write(_('Author'))
             tmp.write(': ')

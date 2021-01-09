@@ -379,14 +379,13 @@ class VideoInfo:
                                 procedure allows us to get those fields
                                 by the same quota cost.
                             '''
-                            if not video.author:
+                            if not video.desc:
                                 video.author = item['snippet']['channelTitle']
                                 video.ptime = sh.com.get_yt_date(item['snippet']['publishedAt'])
                                 video.title = item['snippet']['title']
                                 video.desc = item['snippet']['description']
                                 video.thumb = item['snippet']['thumbnails']['default']['url']
-                            # We need only 1 suitable section
-                            return video.chid
+                            return video
                 except KeyError as e:
                     mes = _('Missing key: "{}"!').format(e)
                     sh.objs.get_mes(f,mes).show_warning()
