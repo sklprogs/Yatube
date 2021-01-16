@@ -14,7 +14,42 @@ class DB:
         self.data = ()
         self.path = path
         self.clone = clone
-        self.Success = self.clone and sh.File(file=self.path).Success
+        self.Success = self.clone and sh.File(self.path).Success
+    
+    def get_older(self,dtime):
+        f = '[Yatube] utils.DB.get_older'
+        if self.Success:
+            query = 'select ID from VIDEOS where DTIME < ?'
+            try:
+                self.dbc.execute(query,(dtime,))
+                return self.dbc.fetchall()
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def clear_dtime(self,dtime):
+        f = '[Yatube] utils.DB.clear_dtime'
+        if self.Success:
+            query = 'update VIDEOS set DTIME = 0 where DTIME < ?'
+            try:
+                self.dbcw.execute(query,(dtime,))
+            except Exception as e:
+                self.fail_clone(f,e)
+        else:
+            sh.com.cancel(f)
+    
+    def get_watched(self):
+        f = '[Yatube] utils.DB.get_watched'
+        if self.Success:
+            query = 'select LENGTH from VIDEOS where DTIME > 0'
+            try:
+                self.dbc.execute(query)
+                return self.dbc.fetchall()
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
     
     def vacuumize(self):
         f = '[Yatube] utils.DB.vacuumize'
@@ -302,6 +337,80 @@ class Commands:
     def __init__(self):
         self.path = '/home/pete/.config/yatube/yatube.db'
         self.clone = '/tmp/yatube.db'
+    
+    def _count(self,videos):
+        if videos:
+            videos = len(videos)
+            return sh.com.set_figure_commas(videos)
+        else:
+            return 0
+    
+    def get_non_streaming(self):
+        f = '[Yatube] utils.Commands.get_non_streaming'
+        ''' There is no difference between played/downloaded/streamed
+            videos in terms of DB. Here we get a number of videos that
+            are probably downloaded and not streamed.
+        '''
+        dtime = self._get_first_streaming()
+        idb = DB (path = self.path
+                 ,clone = self.clone
+                 )
+        idb.connect()
+        videos = idb.get_older(dtime)
+        idb.close()
+        mes = _('Number of videos: {}').format(self._count(videos))
+        sh.objs.get_mes(f,mes,True).show_info()
+    
+    def _get_first_streaming(self):
+        ''' Get a timestamp of the first commit on streaming
+            (Jan 15 14:59:54 2019).
+        '''
+        import datetime
+        pattern = '%Y-%m-%d %H:%M:%S'
+        date = '2019-01-15 14:59:54'
+        itime = sh.Time(pattern=pattern)
+        itime.inst = datetime.datetime.strptime(date,pattern)
+        return itime.get_timestamp()
+    
+    def clear_dtime(self):
+        f = '[Yatube] utils.Commands.clear_dtime'
+        Success = sh.File (file = self.path
+                          ,dest = self.clone
+                          ,Rewrite = True
+                          ).copy()
+        if Success:
+            idb = DB (path = self.path
+                     ,clone = self.clone
+                     )
+            idb.connectw()
+            dtime = self.get_first_streaming()
+            idb.clear_dtime(dtime)
+            idb.savew()
+            idb.closew()
+        else:
+            sh.com.cancel(f)
+    
+    def show_stat(self):
+        f = '[Yatube] utils.Commands.show_stat'
+        idb = DB (path = self.path
+                 ,clone = self.clone
+                 )
+        idb.connect()
+        watched = idb.get_watched()
+        idb.close()
+        mes = []
+        sub = _('Number of watched videos: {}')
+        sub = sub.format(self._count(watched))
+        mes.append(sub)
+        if watched:
+            length = sum([item[0] for item in watched])
+            length = sh.com.get_human_time(length)
+        else:
+            length = 0
+        sub = _('Total length of watched videos: {}').format(length)
+        mes.append(sub)
+        mes = '\n'.join(mes)
+        sh.objs.get_mes(f,mes).show_info()
         
     def unescape(self):
         f = '[Yatube] utils.Commands.unescape'
@@ -475,4 +584,5 @@ com = Commands()
 
 if __name__ == '__main__':
     sh.objs.get_mes(Silent=1)
-    com.alter()
+    #com.alter()
+    com.show_stat()
