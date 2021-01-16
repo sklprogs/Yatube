@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-16 12:53+0300\n"
+"POT-Creation-Date: 2021-01-16 13:01+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -1096,27 +1096,31 @@ msgstr "Копирование \"{}\" в \"{}\""
 msgid "Number of videos: {}"
 msgstr "Число видеороликов: {}"
 
-#: Yatube/src/utils.py:402
-msgid "Number of watched videos: {}"
-msgstr "Число просмотренных видеороликов: {}"
+#: Yatube/src/utils.py:403
+msgid "Statistics on watched videos:"
+msgstr "Статистика по просмотренным видеороликам:"
 
-#: Yatube/src/utils.py:410
-msgid "Total length of watched videos: {}"
-msgstr "Общая длительность просмотренных видеороликов: {}"
+#: Yatube/src/utils.py:405
+msgid "Number: {}"
+msgstr "Число: {}"
 
-#: Yatube/src/utils.py:429
+#: Yatube/src/utils.py:414
+msgid "Total length: {}"
+msgstr "Общая продолжительность: {}"
+
+#: Yatube/src/utils.py:434
 msgid "Get data"
 msgstr "Получение данных"
 
-#: Yatube/src/utils.py:437
+#: Yatube/src/utils.py:442
 msgid "Process data"
 msgstr "Обработка данных"
 
-#: Yatube/src/utils.py:444
+#: Yatube/src/utils.py:449
 msgid "Update {}"
 msgstr "Обновление {}"
 
-#: Yatube/src/utils.py:544 Yatube/src/utils.py:557
+#: Yatube/src/utils.py:549 Yatube/src/utils.py:562
 msgid "{} records have been found."
 msgstr "Найдено {} записей."
 
@@ -2142,6 +2146,12 @@ msgstr "Привязка: {}"
 #: skl_shared/src/tests.py:1189
 msgid "Text:"
 msgstr "Текст:"
+
+#~ msgid "Number of watched videos: {}"
+#~ msgstr "Число просмотренных видеороликов: {}"
+
+#~ msgid "Total length of watched videos: {}"
+#~ msgstr "Общая длительность просмотренных видеороликов: {}"
 
 #~ msgid "Not implemented!"
 #~ msgstr "Еще не реализовано!"

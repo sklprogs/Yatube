@@ -398,16 +398,21 @@ class Commands:
         idb.connect()
         watched = idb.get_watched()
         idb.close()
+        space = 4 * ' '
         mes = []
-        sub = _('Number of watched videos: {}')
+        sub = _('Statistics on watched videos:')
+        mes.append(sub)
+        sub = _('Number: {}')
         sub = sub.format(self._count(watched))
+        sub = space + sub
         mes.append(sub)
         if watched:
             length = sum([item[0] for item in watched])
             length = sh.com.get_human_time(length)
         else:
             length = 0
-        sub = _('Total length of watched videos: {}').format(length)
+        sub = _('Total length: {}').format(length)
+        sub = space + sub
         mes.append(sub)
         mes = '\n'.join(mes)
         sh.objs.get_mes(f,mes).show_info()
