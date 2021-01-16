@@ -16,6 +16,18 @@ class DB:
         self.clone = clone
         self.Success = self.clone and sh.File(self.path).Success
     
+    def get_videos(self):
+        f = '[Yatube] utils.DB.get_videos'
+        if self.Success:
+            query = 'select ID from VIDEOS'
+            try:
+                self.dbc.execute(query)
+                return self.dbc.fetchall()
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def get_older(self,dtime):
         f = '[Yatube] utils.DB.get_older'
         if self.Success:
@@ -396,23 +408,22 @@ class Commands:
                  ,clone = self.clone
                  )
         idb.connect()
+        videos = idb.get_videos()
         watched = idb.get_watched()
         idb.close()
-        space = 4 * ' '
         mes = []
-        sub = _('Statistics on watched videos:')
+        sub = _('Number of videos: {}')
+        sub = sub.format(self._count(videos))
         mes.append(sub)
-        sub = _('Number: {}')
+        sub = _('Number of watched videos: {}')
         sub = sub.format(self._count(watched))
-        sub = space + sub
         mes.append(sub)
         if watched:
             length = sum([item[0] for item in watched])
             length = sh.com.get_human_time(length)
         else:
             length = 0
-        sub = _('Total length: {}').format(length)
-        sub = space + sub
+        sub = _('Total length of watched videos: {}').format(length)
         mes.append(sub)
         mes = '\n'.join(mes)
         sh.objs.get_mes(f,mes).show_info()

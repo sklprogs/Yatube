@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-16 13:01+0300\n"
+"POT-Creation-Date: 2021-01-16 13:10+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: Yatube/src\n"
 "X-Poedit-SearchPath-1: skl_shared/src\n"
 
-#: Yatube/src/db.py:217 Yatube/src/utils.py:149 Yatube/src/utils.py:155
+#: Yatube/src/db.py:217 Yatube/src/utils.py:161 Yatube/src/utils.py:167
 msgid ""
 "Database \"{}\" has failed!\n"
 "\n"
@@ -1083,44 +1083,40 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: Yatube/src/utils.py:205
+#: Yatube/src/utils.py:217
 msgid "Fetch data"
 msgstr "Получение данных"
 
-#: Yatube/src/utils.py:249 skl_shared/src/logic.py:2165
+#: Yatube/src/utils.py:261 skl_shared/src/logic.py:2165
 #: skl_shared/src/logic.py:3011
 msgid "Copy \"{}\" to \"{}\""
 msgstr "Копирование \"{}\" в \"{}\""
 
-#: Yatube/src/utils.py:361
+#: Yatube/src/utils.py:373 Yatube/src/utils.py:415
 msgid "Number of videos: {}"
-msgstr "Число видеороликов: {}"
+msgstr "Число видео: {}"
 
-#: Yatube/src/utils.py:403
-msgid "Statistics on watched videos:"
-msgstr "Статистика по просмотренным видеороликам:"
+#: Yatube/src/utils.py:418
+msgid "Number of watched videos: {}"
+msgstr "Число просмотренных видео: {}"
 
-#: Yatube/src/utils.py:405
-msgid "Number: {}"
-msgstr "Число: {}"
+#: Yatube/src/utils.py:426
+msgid "Total length of watched videos: {}"
+msgstr "Общая продолжительность просмотренных видео: {}"
 
-#: Yatube/src/utils.py:414
-msgid "Total length: {}"
-msgstr "Общая продолжительность: {}"
-
-#: Yatube/src/utils.py:434
+#: Yatube/src/utils.py:445
 msgid "Get data"
 msgstr "Получение данных"
 
-#: Yatube/src/utils.py:442
+#: Yatube/src/utils.py:453
 msgid "Process data"
 msgstr "Обработка данных"
 
-#: Yatube/src/utils.py:449
+#: Yatube/src/utils.py:460
 msgid "Update {}"
 msgstr "Обновление {}"
 
-#: Yatube/src/utils.py:549 Yatube/src/utils.py:562
+#: Yatube/src/utils.py:560 Yatube/src/utils.py:573
 msgid "{} records have been found."
 msgstr "Найдено {} записей."
 
@@ -2147,11 +2143,14 @@ msgstr "Привязка: {}"
 msgid "Text:"
 msgstr "Текст:"
 
-#~ msgid "Number of watched videos: {}"
-#~ msgstr "Число просмотренных видеороликов: {}"
+#~ msgid "Statistics on watched videos:"
+#~ msgstr "Статистика по просмотренным видеороликам:"
 
-#~ msgid "Total length of watched videos: {}"
-#~ msgstr "Общая длительность просмотренных видеороликов: {}"
+#~ msgid "Number: {}"
+#~ msgstr "Число: {}"
+
+#~ msgid "Total length: {}"
+#~ msgstr "Общая продолжительность: {}"
 
 #~ msgid "Not implemented!"
 #~ msgstr "Еще не реализовано!"
