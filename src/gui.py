@@ -88,6 +88,10 @@ res_items = (_('Auto'),'<=2160p'
             ,'<=360p','<=240p'
             )
 
+search_items = (_('Search online')
+               ,_('Search database')
+               )
+
 default_entry_width = 19
 ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_yatube.gif')
 
@@ -570,7 +574,7 @@ class Menu:
         #TODO: Restore filtered videos here
                    
     def clear_search(self,event=None,Force=False):
-        if Force or self.ent_src.get() == _('Search Youtube'):
+        if Force or self.ent_src.get() == _('Search keywords'):
             self.ent_src.clear_text()
         self.ent_src.widget.config (fg = 'black'
                                    ,font = 'Serif 10'
@@ -644,10 +648,10 @@ class Menu:
                                 ,side = 'left'
                                 ,width = default_entry_width
                                 )
-        self.ent_src.insert(_('Search Youtube'))
-        self.btn_ytb = sh.Button (parent = self.frame2
-                                 ,text = _('Search')
-                                 )
+        self.ent_src.insert(_('Search keywords'))
+        self.opt_ytb = sh.OptionMenu (parent = self.frame2
+                                     ,items = search_items
+                                     )
         # Paste URL here
         self.ent_url = sh.Entry (parent = self.frame2
                                 ,font = 'Serif 10 italic'

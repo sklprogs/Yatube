@@ -2255,14 +2255,31 @@ class Commands:
         else:
             sh.com.rep_empty(f)
         
-    def search_youtube(self,event=None):
-        f = '[Yatube] yatube.Commands.search_youtube'
-        query = self.menu.ent_src.get()
-        if query and query != _('Search Youtube'):
-            objs.get_channels().add('search',query)
-            objs.channels.fetch()
+    def search(self,event=None):
+        f = '[Yatube] yatube.Commands.search'
+        keywords = self.menu.ent_src.get()
+        if keywords and keywords != _('Search keywords'):
+            mode = self.menu.opt_ytb.choice
+            if mode == _('Search online'):
+                self.search_youtube(keywords)
+            elif mode == _('Search database'):
+                self.search_db(keywords)
+            else:
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(mode,'; '.join(gi.search_items))
+                sh.objs.get_mes(f,mes).show_error()
         else:
             sh.com.rep_empty(f)
+    
+    def search_db(self,keywords):
+        f = '[Yatube] yatube.Commands.search_db'
+        mes = _('Not implemented yet!')
+        sh.objs.get_mes(f,mes).show_info()
+    
+    def search_youtube(self,keywords):
+        f = '[Yatube] yatube.Commands.search_youtube'
+        objs.get_channels().add('search',keywords)
+        objs.channels.fetch()
                           
     def filter_view(self,event=None):
         f = '[Yatube] yatube.Commands.filter_view'
@@ -2347,7 +2364,7 @@ class Commands:
         self.menu.btn_ppg.action = self.show_prev_page
         self.menu.btn_prv.action = self.show_prev_channel
         self.menu.btn_stm.action = self.stream
-        self.menu.btn_ytb.action = self.search_youtube
+        self.menu.opt_ytb.action = self.search
         self.menu.chb_sel.reset(action=self.toggle_select)
         # Menu: labels
         sh.com.bind (obj = self.menu.ent_flt
@@ -2356,7 +2373,7 @@ class Commands:
                     )
         sh.com.bind (obj = self.menu.ent_src
                     ,bindings = ('<Return>','<KP_Enter>')
-                    ,action = self.search_youtube
+                    ,action = self.search
                     )
         sh.com.bind (obj = self.menu.ent_url
                     ,bindings = ('<Return>','<KP_Enter>')
