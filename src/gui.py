@@ -574,7 +574,7 @@ class Menu:
         #TODO: Restore filtered videos here
                    
     def clear_search(self,event=None,Force=False):
-        if Force or self.ent_src.get() == _('Search keywords'):
+        if Force or self.ent_src.get() == _('Keywords'):
             self.ent_src.clear_text()
         self.ent_src.widget.config (fg = 'black'
                                    ,font = 'Serif 10'
@@ -648,7 +648,7 @@ class Menu:
                                 ,side = 'left'
                                 ,width = default_entry_width
                                 )
-        self.ent_src.insert(_('Search keywords'))
+        self.ent_src.insert(_('Keywords'))
         self.opt_ytb = sh.OptionMenu (parent = self.frame2
                                      ,items = search_items
                                      )

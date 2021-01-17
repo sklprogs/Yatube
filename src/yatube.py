@@ -11,6 +11,32 @@ import gui as gi
 import meta as mt
 
 
+class SearchDB:
+    
+    def __init__(self,pattern):
+        self.type_ = 'search_db'
+        self.pattern = pattern
+        lg.objs.get_search_db().reset(self.pattern)
+    
+    def fetch(self):
+        lg.objs.get_search_db().fetch()
+        objs.commands.set_channel_gui(Unknown=False)
+        lg.objs.search_db.get_token()
+    
+    def fetch_prev(self):
+        f = '[Yatube] yatube.SearchDB.fetch_prev'
+        lg.objs.get_search_db().fetch_prev()
+        objs.commands.set_channel_gui(Unknown=False)
+        lg.objs.search_db.get_token()
+    
+    def fetch_next(self):
+        f = '[Yatube] yatube.SearchDB.fetch_next'
+        lg.objs.get_search_db().fetch_next()
+        objs.commands.set_channel_gui(Unknown=False)
+        lg.objs.search_db.get_token()
+
+
+
 class ExportKeys:
     
     def run(self):
@@ -496,10 +522,13 @@ class Channels:
     
     def __init__(self):
         self.channels = []
-        self.modes = ('favorites','feed','history','playlist'
-                        ,'search','trending','watchlist','extractor'
-                        )
-        self.unique = ('favorites','feed','history','watchlist')
+        self.modes = ('extractor','favorites','feed','history'
+                     ,'playlist','search','search_db','trending'
+                     ,'watchlist'
+                     )
+        self.unique = ('favorites','feed','history','search_db'
+                      ,'watchlist'
+                      )
         self.types = []
         self.i = 0
     
@@ -553,6 +582,8 @@ class Channels:
                 self.channels.append(Feed())
             elif mode == 'search':
                 self.channels.append(Search(arg))
+            elif mode == 'search_db':
+                self.channels.append(SearchDB(arg))
             elif mode == 'favorites':
                 self.channels.append(Favorites())
             elif mode == 'watchlist':
@@ -2258,7 +2289,7 @@ class Commands:
     def search(self,event=None):
         f = '[Yatube] yatube.Commands.search'
         keywords = self.menu.ent_src.get()
-        if keywords and keywords != _('Search keywords'):
+        if keywords and keywords != _('Keywords'):
             mode = self.menu.opt_ytb.choice
             if mode == _('Search online'):
                 self.search_youtube(keywords)
@@ -2272,12 +2303,10 @@ class Commands:
             sh.com.rep_empty(f)
     
     def search_db(self,keywords):
-        f = '[Yatube] yatube.Commands.search_db'
-        mes = _('Not implemented yet!')
-        sh.objs.get_mes(f,mes).show_info()
+        objs.get_channels().add('search_db',keywords)
+        objs.channels.fetch()
     
     def search_youtube(self,keywords):
-        f = '[Yatube] yatube.Commands.search_youtube'
         objs.get_channels().add('search',keywords)
         objs.channels.fetch()
                           
@@ -2364,7 +2393,6 @@ class Commands:
         self.menu.btn_ppg.action = self.show_prev_page
         self.menu.btn_prv.action = self.show_prev_channel
         self.menu.btn_stm.action = self.stream
-        self.menu.opt_ytb.action = self.search
         self.menu.chb_sel.reset(action=self.toggle_select)
         # Menu: labels
         sh.com.bind (obj = self.menu.ent_flt
@@ -2419,6 +2447,7 @@ class Commands:
                                 ,default = self.year
                                 ,action = self.reset_filter_date
                                 )
+        self.menu.opt_ytb.action = self.search
         
     def select_new(self,event=None):
         f = '[Yatube] yatube.Commands.select_new'
@@ -2672,6 +2701,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.get_videos().get_current()
         if video.gui:
+            lg.Video().delete_unsupported()
             date = sh.Time (tstamp = video.ptime
                            ,pattern = '%Y-%m-%d %H:%M'
                            ).get_date()

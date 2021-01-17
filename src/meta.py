@@ -840,7 +840,7 @@ class Objects:
     
     def __init__(self):
         self.playlist = self.videos = self.search = self.stat \
-                      = self.comments = self.playid = self.trending\
+                      = self.comments = self.playid = self.trending \
                       = None
     
     def get_trending(self):

@@ -27,6 +27,77 @@ Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
 sample_block = '''Россия 24'''
 
 
+class SearchDB:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        self.token_prev = 0
+        self.token_next = 0
+        self.pattern = ''
+    
+    def reset(self,pattern):
+        self.set_values()
+        self.pattern = pattern
+    
+    def get_token(self):
+        f = '[Yatube] logic.SearchDB.get_token'
+        if mt.objs.get_videos().videos:
+            self.token_next = mt.objs.videos.videos[-1].ptime
+            self.token_prev = mt.objs.videos.videos[0].ptime
+            date_next = sh.Time (tstamp = self.token_next
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
+                                ).get_date()
+            date_prev = sh.Time (tstamp = self.token_prev
+                                ,pattern = '%Y-%m-%d %H:%M:%S'
+                                ).get_date()
+            mes = _('Previous page token: {}').format(date_prev)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            mes = _('Next page token: {}').format(date_next)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            sh.com.rep_empty(f)
+            ''' This returns correct tokens for the 1st page if we are
+                out of bounds.
+            '''
+            self.token_prev = 0
+            self.token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
+    
+    def fetch(self):
+        self.token_next = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
+        self.fetch_next()
+    
+    def fetch_prev(self):
+        f = '[Yatube] logic.SearchDB.fetch_prev'
+        ids = objs.get_db().get_search_prev (pattern = self.pattern
+                                            ,ptime = self.token_prev
+                                            ,limit = mt.MAX_VIDEOS
+                                            )
+        if ids:
+            for id_ in ids:
+                video = mt.Video()
+                video.id_ = id_
+                mt.objs.videos.add(video)
+        else:
+            sh.com.rep_empty(f)
+    
+    def fetch_next(self):
+        f = '[Yatube] logic.SearchDB.fetch_next'
+        ids = objs.get_db().get_search_next (pattern = self.pattern
+                                            ,ptime = self.token_next
+                                            ,limit = mt.MAX_VIDEOS
+                                            )
+        if ids:
+            for id_ in ids:
+                video = mt.Video()
+                video.id_ = id_
+                mt.objs.videos.add(video)
+        else:
+            sh.com.rep_empty(f)
+
+
+
 class Image:
     
     def __init__(self):
@@ -834,7 +905,12 @@ class Objects:
                     = self.db = self.channels = self.channel \
                     = self.extractor = self.history \
                     = self.watchlist = self.favorites = self.feed \
-                    = self.config = self.image = None
+                    = self.config = self.image = self.search_db = None
+    
+    def get_search_db(self):
+        if self.search_db is None:
+            self.search_db = SearchDB()
+        return self.search_db
     
     def get_image(self):
         if self.image is None:

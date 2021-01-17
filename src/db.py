@@ -15,6 +15,50 @@ class DB:
         self.connect()
         self.create_videos()
     
+    def get_search_next(self,pattern,ptime=0,limit=50):
+        f = '[Yatube] db.DB.get_search_next'
+        if self.Success:
+            if pattern:
+                pattern = '%' + pattern.lower() + '%'
+                query = 'select ID from VIDEOS where SEARCH like ? \
+                         and PTIME < ? order by PTIME desc limit ?'
+                try:
+                    self.dbc.execute(query,(pattern,ptime,limit,))
+                    result = self.dbc.fetchall()
+                    if result:
+                        return [item[0] for item in result]
+                except Exception as e:
+                    self.fail(f,e)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_search_prev(self,pattern,ptime=0,limit=50):
+        f = '[Yatube] db.DB.get_search_prev'
+        if self.Success:
+            if pattern:
+                pattern = '%' + pattern.lower() + '%'
+                query = 'select ID from VIDEOS where SEARCH like ? \
+                         and PTIME > ? order by PTIME limit ?'
+                try:
+                    ''' #NOTE: videos are sorted from newest to oldest
+                        (new ptime > old ptime), therefore, we cannot
+                        use 'desc' because otherwise the first page
+                        will be returned each time we use 'search_prev'.
+                        Thus, we manually sort the return output.
+                    '''
+                    self.dbc.execute(query,(pattern,ptime,limit,))
+                    result = self.dbc.fetchall()
+                    if result:
+                        return [item[0] for item in result][::-1]
+                except Exception as e:
+                    self.fail(f,e)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def update_pause(self,videoid,pause=0):
         f = '[Yatube] db.DB.update_pause'
         if self.Success:
