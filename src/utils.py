@@ -16,6 +16,19 @@ class DB:
         self.clone = clone
         self.Success = self.clone and sh.File(self.path).Success
     
+    def get_dtime(self):
+        f = '[Yatube] utils.DB.get_dtime'
+        if self.Success:
+            query = 'select DTIME from VIDEOS where DTIME > 0 \
+                     order by DTIME'
+            try:
+                self.dbc.execute(query)
+                return self.dbc.fetchall()
+            except Exception as e:
+                self.fail(f,e)
+        else:
+            sh.com.cancel(f)
+    
     def get_videos(self):
         f = '[Yatube] utils.DB.get_videos'
         if self.Success:
@@ -31,23 +44,13 @@ class DB:
     def get_older(self,dtime):
         f = '[Yatube] utils.DB.get_older'
         if self.Success:
-            query = 'select ID from VIDEOS where DTIME < ?'
+            query = 'select ID from VIDEOS where DTIME > 0 \
+                     and DTIME < ?'
             try:
                 self.dbc.execute(query,(dtime,))
                 return self.dbc.fetchall()
             except Exception as e:
                 self.fail(f,e)
-        else:
-            sh.com.cancel(f)
-    
-    def clear_dtime(self,dtime):
-        f = '[Yatube] utils.DB.clear_dtime'
-        if self.Success:
-            query = 'update VIDEOS set DTIME = 0 where DTIME < ?'
-            try:
-                self.dbcw.execute(query,(dtime,))
-            except Exception as e:
-                self.fail_clone(f,e)
         else:
             sh.com.cancel(f)
     
@@ -349,58 +352,13 @@ class Commands:
     def __init__(self):
         self.path = '/home/pete/.config/yatube/yatube.db'
         self.clone = '/tmp/yatube.db'
-    
+
     def _count(self,videos):
         if videos:
             videos = len(videos)
             return sh.com.set_figure_commas(videos)
         else:
             return 0
-    
-    def get_non_streaming(self):
-        f = '[Yatube] utils.Commands.get_non_streaming'
-        ''' There is no difference between played/downloaded/streamed
-            videos in terms of DB. Here we get a number of videos that
-            are probably downloaded and not streamed.
-        '''
-        dtime = self._get_first_streaming()
-        idb = DB (path = self.path
-                 ,clone = self.clone
-                 )
-        idb.connect()
-        videos = idb.get_older(dtime)
-        idb.close()
-        mes = _('Number of videos: {}').format(self._count(videos))
-        sh.objs.get_mes(f,mes,True).show_info()
-    
-    def _get_first_streaming(self):
-        ''' Get a timestamp of the first commit on streaming
-            (Jan 15 14:59:54 2019).
-        '''
-        import datetime
-        pattern = '%Y-%m-%d %H:%M:%S'
-        date = '2019-01-15 14:59:54'
-        itime = sh.Time(pattern=pattern)
-        itime.inst = datetime.datetime.strptime(date,pattern)
-        return itime.get_timestamp()
-    
-    def clear_dtime(self):
-        f = '[Yatube] utils.Commands.clear_dtime'
-        Success = sh.File (file = self.path
-                          ,dest = self.clone
-                          ,Rewrite = True
-                          ).copy()
-        if Success:
-            idb = DB (path = self.path
-                     ,clone = self.clone
-                     )
-            idb.connectw()
-            dtime = self.get_first_streaming()
-            idb.clear_dtime(dtime)
-            idb.savew()
-            idb.closew()
-        else:
-            sh.com.cancel(f)
     
     def show_stat(self):
         f = '[Yatube] utils.Commands.show_stat'
