@@ -1021,17 +1021,6 @@ class Video:
             else:
                 sh.com.rep_empty(f)
     
-    def delete_unsupported(self):
-        video = mt.objs.get_videos().get_current()
-        video.author = sh.Text(video.author).delete_unsupported()
-        video.title = sh.Text(video.title).delete_unsupported()
-        video.desc = sh.Text(video.desc).delete_unsupported()
-        video.search = sh.Text(video.search).delete_unsupported()
-        video.author = html.unescape(video.author)
-        video.title = html.unescape(video.title)
-        video.desc = html.unescape(video.desc)
-        video.search = html.unescape(video.search)
-    
     def get_length(self):
         f = '[Yatube] logic.Video.get_length'
         video = mt.objs.get_videos().get_current()
@@ -1196,6 +1185,14 @@ class Video:
                     video.ftime = data[10]
                     video.ltime = data[11]
                     video.fdtime = data[12]
+                    ''' Fields assigned online and stored in DB are
+                        already unescaped, however, DB is older than
+                        the program, so we keep this code to be safe.
+                    '''
+                    video.author = html.unescape(video.author)
+                    video.title = html.unescape(video.title)
+                    video.desc = html.unescape(video.desc)
+                    video.search = html.unescape(video.search)
                 else:
                     sub = '{} == {}'.format(len(data),data_len)
                     mes = _('The condition "{}" is not observed!')
@@ -1216,7 +1213,6 @@ class Video:
             mes = mes.format(mt.objs.get_videos().get_current().id_)
             sh.objs.get_mes(f,mes,True).show_info()
             self.assign_online()
-            self.delete_unsupported()
             self.dump()
         else:
             sh.com.cancel(f)
@@ -1235,7 +1231,6 @@ class Video:
             '''
             if video.Saved:
                 self.assign_offline(video.Saved)
-                self.delete_unsupported()
             else:
                 self.set_new()
         else:

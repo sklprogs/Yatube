@@ -952,7 +952,6 @@ class Comments:
                     text = ''
                     mes = _('Wrong input data!')
                     sh.objs.get_mes(f,mes).show_warning()
-                text = sh.Text(text).delete_unsupported()
                 # A new line is inserted when read from the widget
                 text = text.strip()
                 text = sh.Text(text).convert_line_breaks()
@@ -2701,7 +2700,6 @@ class Commands:
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.get_videos().get_current()
         if video.gui:
-            lg.Video().delete_unsupported()
             date = sh.Time (tstamp = video.ptime
                            ,pattern = '%Y-%m-%d %H:%M'
                            ).get_date()
@@ -2740,7 +2738,6 @@ class Commands:
                         mt.objs.videos.get_current().Saved = result[i]
                         logic = lg.Video()
                         logic.assign_offline(result[i])
-                        logic.delete_unsupported()
                         lg.objs.get_image().run()
                         self.update_video(i)
             else:

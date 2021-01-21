@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import io
+import html
 import json
 from googleapiclient.discovery import build
 import skl_shared.shared as sh
@@ -385,6 +386,9 @@ class VideoInfo:
                                 video.title = item['snippet']['title']
                                 video.desc = item['snippet']['description']
                                 video.thumb = item['snippet']['thumbnails']['default']['url']
+                                video.author = html.unescape(video.author)
+                                video.title = html.unescape(video.title)
+                                video.desc = html.unescape(video.desc)
                             # There is only 1 suitable section
                             return video
                 except KeyError as e:
