@@ -1173,9 +1173,9 @@ class Commands:
             result = lg.objs.get_db().get_videos(ids)
             if result:
                 #NOTE: this depends on the DB fields order
-                dtimes = [item[11] for item in result if item[11]]
-                ftimes = [item[12] for item in result if item[12]]
-                ltimes = [item[13] for item in result if item[13]]
+                dtimes = [item[9] for item in result if item[9]]
+                ftimes = [item[10] for item in result if item[10]]
+                ltimes = [item[11] for item in result if item[11]]
                 if len(dtimes) == len(result):
                     items.remove(_('Mark as watched'))
                 elif not dtimes:
