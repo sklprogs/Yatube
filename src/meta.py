@@ -386,9 +386,6 @@ class VideoInfo:
                                 video.title = item['snippet']['title']
                                 video.desc = item['snippet']['description']
                                 video.thumb = item['snippet']['thumbnails']['default']['url']
-                                video.author = html.unescape(video.author)
-                                video.title = html.unescape(video.title)
-                                video.desc = html.unescape(video.desc)
                             # There is only 1 suitable section
                             return video
                 except KeyError as e:
@@ -790,6 +787,9 @@ class Videos:
     def add(self,video):
         f = '[Yatube] meta.Videos.video'
         if video:
+            video.author = html.unescape(video.author)
+            video.title = html.unescape(video.title)
+            video.desc = html.unescape(video.desc)
             self.videos.append(video)
         else:
             sh.com.rep_empty(f)
