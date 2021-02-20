@@ -398,7 +398,6 @@ class Commands:
             ids = []
             authors = []
             titles = []
-            desc = []
             search = []
             mes = _('Get data')
             sh.objs.get_mes(f,mes,True).show_info()
@@ -406,24 +405,19 @@ class Commands:
                 ids.append(item[0])
                 authors.append(item[1])
                 titles.append(item[2])
-                desc.append(item[3])
-                search.append(item[4])
+                search.append(item[3])
             mes = _('Process data')
             sh.objs.get_mes(f,mes,True).show_info()
             for i in range(len(ids)):
                 if authors[i] != html.unescape(authors[i]) \
                 or titles[i] != html.unescape(titles[i]) \
-                or desc[i] != html.unescape(desc[i]) \
                 or search[i] != html.unescape(search[i]):
                     mes = _('Update {}').format(ids[i])
                     sh.objs.get_mes(f,mes,True).show_info()
                     tauthor = html.unescape(authors[i])
                     ttitle = html.unescape(titles[i])
-                    tdesc = html.unescape(desc[i])
                     tsearch = html.unescape(search[i])
-                    idb.update_unescape (ids[i],tauthor,ttitle,tdesc
-                                        ,tsearch
-                                        )
+                    idb.update_unescape(ids[i],tauthor,ttitle,tsearch)
             idb.savew()
         else:
             sh.com.rep_empty(f)
@@ -559,4 +553,5 @@ com = Commands()
 if __name__ == '__main__':
     sh.objs.get_mes(Silent=1)
     #com.alter()
-    com.show_stat()
+    #com.show_stat()
+    com.unescape()

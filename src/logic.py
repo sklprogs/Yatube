@@ -4,7 +4,6 @@
 import re
 import os
 import io
-import html
 import youtube_dl
 import skl_shared.shared as sh
 from skl_shared.localize import _
@@ -1185,14 +1184,6 @@ class Video:
                     video.ftime = data[10]
                     video.ltime = data[11]
                     video.fdtime = data[12]
-                    ''' Fields assigned online and stored in DB are
-                        already unescaped, however, DB is older than
-                        the program, so we keep this code to be safe.
-                    '''
-                    video.author = html.unescape(video.author)
-                    video.title = html.unescape(video.title)
-                    video.desc = html.unescape(video.desc)
-                    video.search = html.unescape(video.search)
                 else:
                     sub = '{} == {}'.format(len(data),data_len)
                     mes = _('The condition "{}" is not observed!')
