@@ -1,3 +1,4 @@
+- Fix extracting links (especially from Youtube)
 - Do not remove from WatchList upon removing time to watch later
 - Do not shorten description
 - Do not delete commented lines when rewriting subscribe.txt & block.txt
