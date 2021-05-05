@@ -5,8 +5,9 @@ import re
 import os
 import io
 import youtube_dl
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
+import skl_shared.image as im
 import meta as mt
 import db
 
@@ -114,7 +115,7 @@ class Image:
                                 ,coding = None
                                 ,Verbose = False
                                 ).run()
-                iimage = sh.Image()
+                iimage = im.Image()
                 iimage.bytes_ = bytes_
                 iimage.get_loader()
                 self.video.image = iimage.get_image()
@@ -131,7 +132,7 @@ class Image:
         if self.Success:
             if self.path:
                 if os.path.exists(self.path):
-                    self.video.image = sh.Image().open(self.path)
+                    self.video.image = im.Image().open(self.path)
                     return self.video.image
                 else:
                     sh.com.rep_lazy(f)

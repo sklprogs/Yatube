@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' We need to explicitly import PIL, otherwise, cx_freeze will fail
-    to build the program properly
-'''
-import PIL
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
+import skl_shared.image as im
 
 VERSION = '2.4'
 
@@ -1125,7 +1122,7 @@ class Objects:
     def get_def_image(self):
         if self.def_image is None:
             path = sh.objs.get_pdir().add('..','resources','nopic.png')
-            self.def_image = sh.Image().open(path=path)
+            self.def_image = im.Image().open(path)
         return self.def_image
 
     def get_channel(self,parent=None):
