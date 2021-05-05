@@ -10,8 +10,10 @@ binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
-tmpdir="/tmp/$product"   # Will be deleted!
+shareddir="$HOME/bin/skl_shared"
+tmpdir="/tmp/$product" # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
+sharedtmp="$tmpdir/skl_shared" # Will be deleted!
 pildir="/usr/lib/python3/dist-packages/PIL"
 
 export "ARCH=$arch"
@@ -56,9 +58,17 @@ if [ ! -e "$HOME/bin/$product/build/$os/$productlow.png" ]; then
     echo "File $HOME/bin/$product/build/$os/$productlow.png does not exist!"; exit
 fi
 
+if [ ! -d "$shareddir/resources" ]; then
+    echo "Folder $shareddir/resources does not exist!"; exit
+fi
+
 # Build with pyinstaller
 rm -rf "$tmpdir"
+rm -rf "$sharedtmp"/*
+mkdir -p "$sharedtmp"/{src,resources}
 mkdir -p "$builddir" "$tmpdir/app/usr/bin" "$tmpdir/app/resources"
+cp -r "$shareddir"/src/* "$sharedtmp"/src/
+cp -r "$shareddir"/resources/* "$sharedtmp"/resources/
 cp -r "$srcdir"/* "$builddir"
 cp -r "$resdir" "$tmpdir/app/usr"
 cp -r "$resdir/locale" "$tmpdir/app/resources/"
