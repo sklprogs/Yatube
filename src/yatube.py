@@ -889,6 +889,18 @@ class Comments:
                     ,bindings = ('<Return>','<KP_Enter>')
                     ,action = self.get_next
                     )
+        sh.com.bind (obj = self.gui.parent
+                    ,bindings = ('<Control-f>','<Control-F3>')
+                    ,action = self.gui.txt_com.run_new_now
+                    )
+        sh.com.bind (obj = self.gui.parent
+                    ,bindings = '<F3>'
+                    ,action = self.gui.txt_com.run_search_next
+                    )
+        sh.com.bind (obj = self.gui.parent
+                    ,bindings = '<Shift-F3>'
+                    ,action = self.gui.txt_com.run_search_prev
+                    )
         self.gui.btn_prv.action = self.get_prev
         self.gui.btn_nxt.action = self.get_next
         self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)

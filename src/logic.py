@@ -1545,7 +1545,7 @@ class DefaultConfig:
             self.ffreq = self.ihome.add_config('frequent channels.txt')
             if self.ffreq:
                 if os.path.exists(self.ffreq):
-                    self.Success = sh.File(file=self.ffreq).Success
+                    self.Success = sh.File(self.ffreq).Success
                 else:
                     iwrite = sh.WriteTextFile (file = self.ffreq
                                               ,Rewrite = True
@@ -1584,7 +1584,7 @@ class DefaultConfig:
             self.fdb = self.ihome.add_config('yatube.db')
             if self.fdb:
                 if os.path.exists(self.fdb):
-                    self.Success = sh.File(file=self.fdb).Success
+                    self.Success = sh.File(self.fdb).Success
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
@@ -1597,7 +1597,7 @@ class DefaultConfig:
             self.fblockw = self.ihome.add_config('block words.txt')
             if self.fblockw:
                 if os.path.exists(self.fblockw):
-                    self.Success = sh.File(file=self.fblockw).Success
+                    self.Success = sh.File(self.fblockw).Success
                 else:
                     iwrite = sh.WriteTextFile (file = self.fblockw
                                               ,Rewrite = True
@@ -1616,7 +1616,7 @@ class DefaultConfig:
             self.fblock = self.ihome.add_config('block channels.txt')
             if self.fblock:
                 if os.path.exists(self.fblock):
-                    self.Success = sh.File(file=self.fblock).Success
+                    self.Success = sh.File(self.fblock).Success
                 else:
                     iwrite = sh.WriteTextFile (file = self.fblock
                                               ,Rewrite = True
@@ -1635,7 +1635,7 @@ class DefaultConfig:
             self.fsubsc = self.ihome.add_config('subscribe.txt')
             if self.fsubsc:
                 if os.path.exists(self.fsubsc):
-                    self.Success = sh.File(file=self.fsubsc).Success
+                    self.Success = sh.File(self.fsubsc).Success
                 else:
                     iwrite = sh.WriteTextFile (file = self.fsubsc
                                               ,Rewrite = True

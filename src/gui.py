@@ -510,7 +510,7 @@ class Comments:
                                  ,bindings = '<Alt-Right>'
                                  ,hdir = 'bottom'
                                  )
-        self.txt_com = sh.TextBox(self.frm_txt)
+        self.txt_com = sh.SearchBox(self.frm_txt)
         self.btn_cls = sh.Button (parent = self.frm_btm
                                  ,action = self.close
                                  ,text = _('Close')
