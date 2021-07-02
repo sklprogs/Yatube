@@ -3,7 +3,6 @@
 
 import io
 import html
-import json
 from googleapiclient.discovery import build
 import skl_shared.shared as sh
 from skl_shared.localize import _
