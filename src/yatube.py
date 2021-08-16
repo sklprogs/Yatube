@@ -1965,8 +1965,7 @@ class Commands:
         #'-ao','sdl',
         if 'mpv' in app:
             return ['-fs','-framedrop=vo','-cache','8192'
-                   ,'--cache-initial','1024','--no-correct-pts'
-                   ,'--opengl-es=yes'
+                   ,'--no-correct-pts','--opengl-es=yes'
                    ]
         elif 'mplayer' in app:
             return ['-fs','-framedrop','-cache','8192','-cache-min','50'
@@ -1975,7 +1974,7 @@ class Commands:
     
     def _stream(self,app):
         if 'mpv' in app:
-            return ['-cache','8192','--cache-initial','1024']
+            return ['-cache','8192']
         elif 'mplayer' in app:
             return ['-cache','8192','-cache-min','50']
                    
