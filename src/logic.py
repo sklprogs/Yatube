@@ -7,7 +7,7 @@ import io
 import youtube_dl
 from skl_shared.localize import _
 import skl_shared.shared as sh
-import skl_shared.image as im
+import skl_shared.image.controller as im
 import meta as mt
 import db
 
@@ -17,11 +17,11 @@ pattern3 = 'https://www.youtube.com/'
 AllOS = False
 
 
-sample_subscribe = '''BostonDynamics	UU7vVhkEfw4nOGp8TyDk7RcQ
-Brave Wilderness	UU6E2mP01ZLH_kbAyeazCNdg
-Pravda GlazaRezhet	UUgCqhDRyMH1wZBI4OOKLQ8g
-Дмитрий ПОТАПЕНКО	UU54SBo5_usXGEoybX1ZVETQ
-Мохнатые Друзья	UUqKbBJRz6SGrvUHNoZkpF2w
+sample_subscribe = '''BostonDynamics    UU7vVhkEfw4nOGp8TyDk7RcQ
+Brave Wilderness    UU6E2mP01ZLH_kbAyeazCNdg
+Pravda GlazaRezhet  UUgCqhDRyMH1wZBI4OOKLQ8g
+Дмитрий ПОТАПЕНКО   UU54SBo5_usXGEoybX1ZVETQ
+Мохнатые Друзья UUqKbBJRz6SGrvUHNoZkpF2w
 '''
 
 sample_block = '''Россия 24'''
