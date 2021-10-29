@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Yatube\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-17 23:07+0300\n"
+"POT-Creation-Date: 2021-10-30 01:24+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: Peter Sklyar <skl.progs@gmail.com>\n"
@@ -12,11 +12,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../..\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Poedit-SearchPath-0: Yatube/src\n"
 "X-Poedit-SearchPath-1: skl_shared/src\n"
 
-#: Yatube/src/db.py:217 Yatube/src/utils.py:164 Yatube/src/utils.py:170
+#: Yatube/src/db.py:261 Yatube/src/utils.py:164 Yatube/src/utils.py:170
 msgid ""
 "Database \"{}\" has failed!\n"
 "\n"
@@ -26,1001 +26,1022 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: Yatube/src/db.py:389
+#: Yatube/src/db.py:433
 msgid "Save \"{}\""
 msgstr "Сохранение \"{}\""
 
-#: Yatube/src/gui.py:13 Yatube/src/yatube.py:2055
+#: Yatube/src/gui.py:10 Yatube/src/yatube.py:2096
 msgid "Show the full summary"
 msgstr "Показать полную сводку"
 
-#: Yatube/src/gui.py:14 Yatube/src/gui.py:41 Yatube/src/gui.py:688
-#: Yatube/src/yatube.py:2066 Yatube/src/yatube.py:2237
+#: Yatube/src/gui.py:11 Yatube/src/gui.py:38 Yatube/src/gui.py:694
+#: Yatube/src/yatube.py:2107 Yatube/src/yatube.py:2278
 msgid "Stream"
 msgstr "Смотреть в потоке"
 
-#: Yatube/src/gui.py:15 Yatube/src/gui.py:42 Yatube/src/gui.py:682
-#: Yatube/src/yatube.py:2061 Yatube/src/yatube.py:2232
+#: Yatube/src/gui.py:12 Yatube/src/gui.py:39 Yatube/src/gui.py:688
+#: Yatube/src/yatube.py:2102 Yatube/src/yatube.py:2273
 msgid "Play"
 msgstr "Воспроизвести"
 
-#: Yatube/src/gui.py:16 Yatube/src/gui.py:273 Yatube/src/gui.py:287
-#: Yatube/src/yatube.py:2057
+#: Yatube/src/gui.py:13 Yatube/src/gui.py:270 Yatube/src/gui.py:284
+#: Yatube/src/yatube.py:2098
 msgid "Set pause time"
 msgstr "Задать время паузы"
 
-#: Yatube/src/gui.py:17 Yatube/src/gui.py:45 Yatube/src/yatube.py:2107
-#: Yatube/src/yatube.py:2216
+#: Yatube/src/gui.py:14 Yatube/src/gui.py:42 Yatube/src/yatube.py:2148
+#: Yatube/src/yatube.py:2257
 msgid "Extract links"
 msgstr "Извлечь ссылки"
 
-#: Yatube/src/gui.py:18 Yatube/src/yatube.py:2109
+#: Yatube/src/gui.py:15 Yatube/src/yatube.py:2150
 msgid "Load this channel"
 msgstr "Загрузить этот канал"
 
-#: Yatube/src/gui.py:19 Yatube/src/yatube.py:2119
+#: Yatube/src/gui.py:16 Yatube/src/yatube.py:2160
 msgid "Open video URL"
 msgstr "Открыть URL видео"
 
-#: Yatube/src/gui.py:20 Yatube/src/yatube.py:2121
+#: Yatube/src/gui.py:17 Yatube/src/yatube.py:2162
 msgid "Copy video URL"
 msgstr "Копировать URL видео"
 
-#: Yatube/src/gui.py:21 Yatube/src/yatube.py:2125
+#: Yatube/src/gui.py:18 Yatube/src/yatube.py:2166
 msgid "Open channel URL"
 msgstr "Открыть URL канала"
 
-#: Yatube/src/gui.py:22 Yatube/src/yatube.py:2127
+#: Yatube/src/gui.py:19 Yatube/src/yatube.py:2168
 msgid "Copy channel URL"
 msgstr "Копировать URL канала"
 
-#: Yatube/src/gui.py:23 Yatube/src/yatube.py:2123
+#: Yatube/src/gui.py:20 Yatube/src/yatube.py:2164
 msgid "Show comments"
 msgstr "Показать комментарии"
 
-#: Yatube/src/gui.py:24 Yatube/src/gui.py:43 Yatube/src/gui.py:685
-#: Yatube/src/yatube.py:1286 Yatube/src/yatube.py:2059
-#: Yatube/src/yatube.py:2148 Yatube/src/yatube.py:2228
+#: Yatube/src/gui.py:21 Yatube/src/gui.py:40 Yatube/src/gui.py:691
+#: Yatube/src/yatube.py:1328 Yatube/src/yatube.py:2100
+#: Yatube/src/yatube.py:2189 Yatube/src/yatube.py:2269
 msgid "Download"
 msgstr "Загрузить"
 
-#: Yatube/src/gui.py:25 Yatube/src/yatube.py:1288 Yatube/src/yatube.py:2105
-#: Yatube/src/yatube.py:2149
+#: Yatube/src/gui.py:22 Yatube/src/yatube.py:1330 Yatube/src/yatube.py:2146
+#: Yatube/src/yatube.py:2190
 msgid "Delete the downloaded file"
 msgstr "Удалить загруженный файл"
 
-#: Yatube/src/gui.py:26 Yatube/src/gui.py:66 Yatube/src/yatube.py:1150
-#: Yatube/src/yatube.py:1266 Yatube/src/yatube.py:1601
-#: Yatube/src/yatube.py:2068 Yatube/src/yatube.py:2150
+#: Yatube/src/gui.py:23 Yatube/src/gui.py:63 Yatube/src/yatube.py:1192
+#: Yatube/src/yatube.py:1308 Yatube/src/yatube.py:1643
+#: Yatube/src/yatube.py:2109 Yatube/src/yatube.py:2191
 msgid "Mark as watched"
 msgstr "Пометить как просмотренное"
 
-#: Yatube/src/gui.py:27 Yatube/src/gui.py:67 Yatube/src/yatube.py:1152
-#: Yatube/src/yatube.py:1268 Yatube/src/yatube.py:1606
-#: Yatube/src/yatube.py:2072 Yatube/src/yatube.py:2151
+#: Yatube/src/gui.py:24 Yatube/src/gui.py:64 Yatube/src/yatube.py:1194
+#: Yatube/src/yatube.py:1310 Yatube/src/yatube.py:1648
+#: Yatube/src/yatube.py:2113 Yatube/src/yatube.py:2192
 msgid "Mark as not watched"
 msgstr "Пометить как непросмотренное"
 
-#: Yatube/src/gui.py:28 Yatube/src/gui.py:68 Yatube/src/yatube.py:1158
-#: Yatube/src/yatube.py:1274 Yatube/src/yatube.py:1628
-#: Yatube/src/yatube.py:2089 Yatube/src/yatube.py:2154
+#: Yatube/src/gui.py:25 Yatube/src/gui.py:65 Yatube/src/yatube.py:1200
+#: Yatube/src/yatube.py:1316 Yatube/src/yatube.py:1670
+#: Yatube/src/yatube.py:2130 Yatube/src/yatube.py:2195
 msgid "Add to watchlist"
 msgstr "Отложить"
 
-#: Yatube/src/gui.py:29 Yatube/src/gui.py:69 Yatube/src/yatube.py:1160
-#: Yatube/src/yatube.py:1276 Yatube/src/yatube.py:1631
-#: Yatube/src/yatube.py:2097 Yatube/src/yatube.py:2155
+#: Yatube/src/gui.py:26 Yatube/src/gui.py:66 Yatube/src/yatube.py:1202
+#: Yatube/src/yatube.py:1318 Yatube/src/yatube.py:1673
+#: Yatube/src/yatube.py:2138 Yatube/src/yatube.py:2196
 msgid "Remove from watchlist"
 msgstr "Убрать из отложенного"
 
-#: Yatube/src/gui.py:30 Yatube/src/gui.py:70 Yatube/src/yatube.py:1154
-#: Yatube/src/yatube.py:1270 Yatube/src/yatube.py:1614
-#: Yatube/src/yatube.py:2080 Yatube/src/yatube.py:2152
+#: Yatube/src/gui.py:27 Yatube/src/gui.py:67 Yatube/src/yatube.py:1196
+#: Yatube/src/yatube.py:1312 Yatube/src/yatube.py:1656
+#: Yatube/src/yatube.py:2121 Yatube/src/yatube.py:2193
 msgid "Add to favorites"
 msgstr "Добавить в избранное"
 
-#: Yatube/src/gui.py:31 Yatube/src/gui.py:71 Yatube/src/yatube.py:1156
-#: Yatube/src/yatube.py:1272 Yatube/src/yatube.py:1617
-#: Yatube/src/yatube.py:2082 Yatube/src/yatube.py:2153
+#: Yatube/src/gui.py:28 Yatube/src/gui.py:68 Yatube/src/yatube.py:1198
+#: Yatube/src/yatube.py:1314 Yatube/src/yatube.py:1659
+#: Yatube/src/yatube.py:2123 Yatube/src/yatube.py:2194
 msgid "Remove from favorites"
 msgstr "Убрать из избранного"
 
-#: Yatube/src/gui.py:32 Yatube/src/yatube.py:1280 Yatube/src/yatube.py:2111
-#: Yatube/src/yatube.py:2156
+#: Yatube/src/gui.py:29 Yatube/src/yatube.py:1322 Yatube/src/yatube.py:2152
+#: Yatube/src/yatube.py:2197
 msgid "Block this channel"
 msgstr "Блокировать этот канал"
 
-#: Yatube/src/gui.py:33 Yatube/src/yatube.py:1282 Yatube/src/yatube.py:2113
-#: Yatube/src/yatube.py:2157
+#: Yatube/src/gui.py:30 Yatube/src/yatube.py:1324 Yatube/src/yatube.py:2154
+#: Yatube/src/yatube.py:2198
 msgid "Unblock"
 msgstr "Разблокировать"
 
-#: Yatube/src/gui.py:34 Yatube/src/yatube.py:1293 Yatube/src/yatube.py:2115
-#: Yatube/src/yatube.py:2158
+#: Yatube/src/gui.py:31 Yatube/src/yatube.py:1335 Yatube/src/yatube.py:2156
+#: Yatube/src/yatube.py:2199
 msgid "Subscribe to this channel"
 msgstr "Подписаться на этот канал"
 
-#: Yatube/src/gui.py:35 Yatube/src/yatube.py:1295 Yatube/src/yatube.py:2117
-#: Yatube/src/yatube.py:2159
+#: Yatube/src/gui.py:32 Yatube/src/yatube.py:1337 Yatube/src/yatube.py:2158
+#: Yatube/src/yatube.py:2200
 msgid "Unsubscribe"
 msgstr "Отписаться"
 
-#: Yatube/src/gui.py:36 Yatube/src/yatube.py:1297 Yatube/src/yatube.py:1640
-#: Yatube/src/yatube.py:2129 Yatube/src/yatube.py:2160
+#: Yatube/src/gui.py:33 Yatube/src/yatube.py:1339 Yatube/src/yatube.py:1682
+#: Yatube/src/yatube.py:2170 Yatube/src/yatube.py:2201
 msgid "Add to frequent channels"
 msgstr "Добавить в частые каналы"
 
-#: Yatube/src/gui.py:37 Yatube/src/yatube.py:1299 Yatube/src/yatube.py:1642
-#: Yatube/src/yatube.py:2131 Yatube/src/yatube.py:2161
+#: Yatube/src/gui.py:34 Yatube/src/yatube.py:1341 Yatube/src/yatube.py:1684
+#: Yatube/src/yatube.py:2172 Yatube/src/yatube.py:2202
 msgid "Remove from frequent channels"
 msgstr "Удалить из частых каналов"
 
-#: Yatube/src/gui.py:40 Yatube/src/yatube.py:2226
+#: Yatube/src/gui.py:37 Yatube/src/yatube.py:2267
 msgid "Show summary"
 msgstr "Показать сводку"
 
-#: Yatube/src/gui.py:44 Yatube/src/gui.py:243 Yatube/src/gui.py:416
-#: Yatube/src/yatube.py:2239
+#: Yatube/src/gui.py:41 Yatube/src/gui.py:240 Yatube/src/gui.py:413
+#: Yatube/src/yatube.py:2280
 msgid "Delete"
 msgstr "Удалить"
 
-#: Yatube/src/gui.py:46 Yatube/src/yatube.py:2242
+#: Yatube/src/gui.py:43 Yatube/src/yatube.py:2283
 msgid "Full menu"
 msgstr "Полное меню"
 
-#: Yatube/src/gui.py:49 Yatube/src/gui.py:593 Yatube/src/yatube.py:1525
+#: Yatube/src/gui.py:46 Yatube/src/gui.py:590 Yatube/src/yatube.py:1567
 msgid "Update"
 msgstr "Обновить"
 
-#: Yatube/src/gui.py:50 Yatube/src/yatube.py:1535
+#: Yatube/src/gui.py:47 Yatube/src/yatube.py:1577
 msgid "Channel"
 msgstr "Канал"
 
-#: Yatube/src/gui.py:51 Yatube/src/gui.py:76 Yatube/src/yatube.py:1532
-#: Yatube/src/yatube.py:1578
+#: Yatube/src/gui.py:48 Yatube/src/gui.py:73 Yatube/src/yatube.py:1574
+#: Yatube/src/yatube.py:1620
 msgid "Frequent channels"
 msgstr "Частые каналы"
 
-#: Yatube/src/gui.py:52 Yatube/src/gui.py:75 Yatube/src/yatube.py:1529
-#: Yatube/src/yatube.py:1575
+#: Yatube/src/gui.py:49 Yatube/src/gui.py:72 Yatube/src/yatube.py:1571
+#: Yatube/src/yatube.py:1617
 msgid "Subscriptions"
 msgstr "Подписки"
 
-#: Yatube/src/gui.py:55 Yatube/src/gui.py:597 Yatube/src/yatube.py:1545
+#: Yatube/src/gui.py:52 Yatube/src/gui.py:594 Yatube/src/yatube.py:1587
 msgid "View"
 msgstr "Вид"
 
-#: Yatube/src/gui.py:56 Yatube/src/yatube.py:1552
+#: Yatube/src/gui.py:53 Yatube/src/yatube.py:1594
 msgid "All feed"
 msgstr "Вся лента"
 
-#: Yatube/src/gui.py:57 Yatube/src/yatube.py:1549
+#: Yatube/src/gui.py:54 Yatube/src/yatube.py:1591
 msgid "History"
 msgstr "История"
 
-#: Yatube/src/gui.py:58 Yatube/src/yatube.py:1558
+#: Yatube/src/gui.py:55 Yatube/src/yatube.py:1600
 msgid "Watchlist"
 msgstr "Отложенное"
 
-#: Yatube/src/gui.py:59 Yatube/src/yatube.py:1555
+#: Yatube/src/gui.py:56 Yatube/src/yatube.py:1597
 msgid "Favorites"
 msgstr "Избранное"
 
-#: Yatube/src/gui.py:60 Yatube/src/yatube.py:1561
+#: Yatube/src/gui.py:57 Yatube/src/yatube.py:1603
 msgid "Welcome screen"
 msgstr "Начальный экран"
 
-#: Yatube/src/gui.py:63 Yatube/src/gui.py:601 Yatube/src/yatube.py:1162
-#: Yatube/src/yatube.py:1166 Yatube/src/yatube.py:1594
+#: Yatube/src/gui.py:60 Yatube/src/gui.py:598 Yatube/src/yatube.py:1204
+#: Yatube/src/yatube.py:1208 Yatube/src/yatube.py:1636
 msgid "Selection"
 msgstr "Выбранное"
 
-#: Yatube/src/gui.py:64 Yatube/src/yatube.py:1163 Yatube/src/yatube.py:1598
+#: Yatube/src/gui.py:61 Yatube/src/yatube.py:1205 Yatube/src/yatube.py:1640
 msgid "Select all new videos"
 msgstr "Выбрать все новые видео"
 
-#: Yatube/src/gui.py:65 Yatube/src/yatube.py:1138 Yatube/src/yatube.py:1625
+#: Yatube/src/gui.py:62 Yatube/src/yatube.py:1180 Yatube/src/yatube.py:1667
 msgid "Delete selected"
 msgstr "Удалить выбранное"
 
-#: Yatube/src/gui.py:74 Yatube/src/gui.py:412 Yatube/src/gui.py:605
-#: Yatube/src/yatube.py:1571
+#: Yatube/src/gui.py:71 Yatube/src/gui.py:409 Yatube/src/gui.py:602
+#: Yatube/src/yatube.py:1613
 msgid "Edit"
 msgstr "Править"
 
-#: Yatube/src/gui.py:77 Yatube/src/yatube.py:1581
+#: Yatube/src/gui.py:74 Yatube/src/yatube.py:1623
 msgid "Blocked authors"
 msgstr "Заблокированные авторы"
 
-#: Yatube/src/gui.py:78 Yatube/src/yatube.py:1584
+#: Yatube/src/gui.py:75 Yatube/src/yatube.py:1626
 msgid "Blocked words"
 msgstr "Заблокированные слова"
 
-#: Yatube/src/gui.py:81 Yatube/src/gui.py:694 Yatube/src/logic.py:176
-#: Yatube/src/yatube.py:1079
+#: Yatube/src/gui.py:78 Yatube/src/gui.py:700 Yatube/src/logic.py:247
+#: Yatube/src/yatube.py:1121
 msgid "Best qual."
 msgstr "Лучшее кач."
 
-#: Yatube/src/gui.py:82
+#: Yatube/src/gui.py:79
 msgid "Worst qual."
 msgstr "Худшее кач."
 
-#: Yatube/src/gui.py:85 Yatube/src/gui.py:701 Yatube/src/logic.py:177
+#: Yatube/src/gui.py:82 Yatube/src/gui.py:707 Yatube/src/logic.py:248
 msgid "Auto"
 msgstr "Авто"
 
-#: Yatube/src/gui.py:91 Yatube/src/yatube.py:2263
+#: Yatube/src/gui.py:88 Yatube/src/yatube.py:2304
 msgid "Search online"
 msgstr "Найти онлайн"
 
-#: Yatube/src/gui.py:92 Yatube/src/yatube.py:2265
+#: Yatube/src/gui.py:89 Yatube/src/yatube.py:2306
 msgid "Search database"
 msgstr "Найти в базе данных"
 
-#: Yatube/src/gui.py:244
+#: Yatube/src/gui.py:241
 msgid "Delete & Close"
 msgstr "Удалить и закрыть"
 
-#: Yatube/src/gui.py:250 Yatube/src/gui.py:434 skl_shared/src/shared.py:722
+#: Yatube/src/gui.py:247 Yatube/src/gui.py:431 skl_shared/src/shared.py:718
 msgid "Reset"
 msgstr "Сброс"
 
-#: Yatube/src/gui.py:251
+#: Yatube/src/gui.py:248
 msgid "Set the original time"
 msgstr "Установить первоначальное время"
 
-#: Yatube/src/gui.py:257 Yatube/src/gui.py:428 skl_shared/src/shared.py:729
+#: Yatube/src/gui.py:254 Yatube/src/gui.py:425 skl_shared/src/shared.py:725
 msgid "Save"
 msgstr "Сохранить"
 
-#: Yatube/src/gui.py:258
+#: Yatube/src/gui.py:255
 msgid "Save & Close"
 msgstr "Сохранить и закрыть"
 
-#: Yatube/src/gui.py:323 Yatube/src/gui.py:340
+#: Yatube/src/gui.py:320 Yatube/src/gui.py:337
 msgid "Add or remove IDs"
 msgstr "Добавить или удалить ИД"
 
-#: Yatube/src/gui.py:380 Yatube/src/gui.py:392
+#: Yatube/src/gui.py:377 Yatube/src/gui.py:389
 msgid "Channel title:"
 msgstr "Название канала:"
 
-#: Yatube/src/gui.py:386
+#: Yatube/src/gui.py:383
 msgid "Playlist ID, channel ID or Youtube user name:"
 msgstr "ИД плейлиста, ИД канала или имя пользователя Youtube:"
 
-#: Yatube/src/gui.py:396
+#: Yatube/src/gui.py:393
 msgid "Your ID:"
 msgstr "Ваш ИД:"
 
-#: Yatube/src/gui.py:400
+#: Yatube/src/gui.py:397
 msgid "Playlist ID:"
 msgstr "ИД плейлиста:"
 
-#: Yatube/src/gui.py:404
+#: Yatube/src/gui.py:401
 msgid "Open URL"
 msgstr "Открыть URL"
 
-#: Yatube/src/gui.py:408
+#: Yatube/src/gui.py:405
 msgid "Add"
 msgstr "Добавить"
 
-#: Yatube/src/gui.py:420 Yatube/src/gui.py:519 skl_shared/src/shared.py:639
-#: skl_shared/src/shared.py:713 skl_shared/src/shared.py:1305
-#: skl_shared/src/shared.py:1586 skl_shared/src/shared.py:2771
+#: Yatube/src/gui.py:417 Yatube/src/gui.py:516 skl_shared/src/shared.py:635
+#: skl_shared/src/shared.py:709 skl_shared/src/shared.py:1302
+#: skl_shared/src/shared.py:1591 skl_shared/src/shared.py:2664
 msgid "Close"
 msgstr "Закрыть"
 
-#: Yatube/src/gui.py:421 skl_shared/src/shared.py:714
-#: skl_shared/src/shared.py:1304 skl_shared/src/shared.py:2770
-#: skl_shared/src/shared.py:3999
+#: Yatube/src/gui.py:418 skl_shared/src/shared.py:710
+#: skl_shared/src/shared.py:1301 skl_shared/src/shared.py:2663
+#: skl_shared/src/shared.py:3940
 msgid "Reject and close"
 msgstr "Отказаться и закрыть"
 
-#: Yatube/src/gui.py:429 skl_shared/src/shared.py:1319
-#: skl_shared/src/shared.py:2779
+#: Yatube/src/gui.py:426 skl_shared/src/shared.py:1316
+#: skl_shared/src/shared.py:2672
 msgid "Save and close"
 msgstr "Запомнить и выйти"
 
-#: Yatube/src/gui.py:435
+#: Yatube/src/gui.py:432
 msgid "Reset all fields"
 msgstr "Восстановить все поля"
 
-#: Yatube/src/gui.py:456 Yatube/src/gui.py:529 Yatube/src/gui.py:1077
+#: Yatube/src/gui.py:453 Yatube/src/gui.py:526 Yatube/src/gui.py:1083
 msgid "Comments"
 msgstr "Комментарии"
 
-#: Yatube/src/gui.py:501 Yatube/src/gui.py:619
+#: Yatube/src/gui.py:498 Yatube/src/gui.py:616
 msgid "Go to the previous page"
 msgstr "Перейти на предыдущую страницу"
 
-#: Yatube/src/gui.py:509 Yatube/src/gui.py:624
+#: Yatube/src/gui.py:506 Yatube/src/gui.py:621
 msgid "Go to the next page"
 msgstr "Перейти на следующую страницу"
 
-#: Yatube/src/gui.py:520 skl_shared/src/shared.py:640
-#: skl_shared/src/shared.py:1587
+#: Yatube/src/gui.py:517 skl_shared/src/shared.py:636
+#: skl_shared/src/shared.py:1592
 msgid "Close this window"
 msgstr "Закрыть это окно"
 
-#: Yatube/src/gui.py:568 Yatube/src/gui.py:673 Yatube/src/yatube.py:2293
+#: Yatube/src/gui.py:565 Yatube/src/gui.py:679 Yatube/src/yatube.py:2332
 msgid "Filter this view"
 msgstr "Фильтр по данному виду"
 
-#: Yatube/src/gui.py:577 Yatube/src/gui.py:651
-msgid "Search keywords"
-msgstr "Поиск по ключевым словам"
+#: Yatube/src/gui.py:574 Yatube/src/gui.py:657 Yatube/src/yatube.py:2302
+msgid "Keywords"
+msgstr "Ключевые слова"
 
-#: Yatube/src/gui.py:586
+#: Yatube/src/gui.py:583
 msgid "Videos per page"
 msgstr "Число видео на страницу"
 
-#: Yatube/src/gui.py:608
+#: Yatube/src/gui.py:605
 msgid "←"
 msgstr "←"
 
-#: Yatube/src/gui.py:609
+#: Yatube/src/gui.py:606
 msgid "Go to the previous channel"
 msgstr "Перейти на предыдущий канал"
 
-#: Yatube/src/gui.py:613
+#: Yatube/src/gui.py:610
 msgid "→"
 msgstr "→"
 
-#: Yatube/src/gui.py:614
+#: Yatube/src/gui.py:611
 msgid "Go to the next channel"
 msgstr "Перейти на следующий канал"
 
-#: Yatube/src/gui.py:618
+#: Yatube/src/gui.py:615
 msgid "‹"
 msgstr "‹"
 
-#: Yatube/src/gui.py:623
+#: Yatube/src/gui.py:620
 msgid "›"
 msgstr "›"
 
-#: Yatube/src/gui.py:636 Yatube/src/gui.py:639 Yatube/src/logic.py:175
-#: Yatube/src/yatube.py:1980
+#: Yatube/src/gui.py:633 Yatube/src/gui.py:636 Yatube/src/logic.py:246
+#: Yatube/src/yatube.py:2021
 msgid "Newer than"
 msgstr "Новее"
 
-#: Yatube/src/gui.py:637
+#: Yatube/src/gui.py:634
 msgid "Older than"
 msgstr "Старше"
 
-#: Yatube/src/gui.py:662 Yatube/src/yatube.py:2213
+#: Yatube/src/gui.py:642 Yatube/src/gui.py:648
+msgid "Login"
+msgstr "Учетная запись"
+
+#: Yatube/src/gui.py:643
+msgid "Use"
+msgstr "Использовать"
+
+#: Yatube/src/gui.py:644
+msgid "Set up"
+msgstr "Настроить"
+
+#: Yatube/src/gui.py:645
+msgid "Forget"
+msgstr "Забыть"
+
+#: Yatube/src/gui.py:646
+msgid "Forget & Delete"
+msgstr "Забыть и удалить"
+
+#: Yatube/src/gui.py:668 Yatube/src/yatube.py:2254
 msgid "Paste URL here"
 msgstr "Вставьте URL сюда"
 
-#: Yatube/src/gui.py:675
+#: Yatube/src/gui.py:681
 msgid "Filter"
 msgstr "Применить"
 
-#: Yatube/src/gui.py:709
+#: Yatube/src/gui.py:715
 msgid "Slow PC"
 msgstr "Медл. ПК"
 
-#: Yatube/src/gui.py:724 Yatube/src/gui.py:728
+#: Yatube/src/gui.py:730 Yatube/src/gui.py:734
 msgid "Streaming quality"
 msgstr "Качество потокового видео"
 
-#: Yatube/src/gui.py:801
+#: Yatube/src/gui.py:807
 msgid " (selected: {}/{})"
 msgstr " (выбрано: {}/{})"
 
-#: Yatube/src/gui.py:878 Yatube/src/logic.py:1177
+#: Yatube/src/gui.py:884 Yatube/src/logic.py:1240
 msgid "Author"
 msgstr "Автор"
 
-#: Yatube/src/gui.py:879 Yatube/src/logic.py:1181
+#: Yatube/src/gui.py:885 Yatube/src/logic.py:1244
 msgid "Title"
 msgstr "Заголовок"
 
-#: Yatube/src/gui.py:880 Yatube/src/logic.py:1185
+#: Yatube/src/gui.py:886 Yatube/src/logic.py:1248
 msgid "Date"
 msgstr "Дата"
 
-#: Yatube/src/gui.py:919
+#: Yatube/src/gui.py:925 skl_shared/src/tests.py:95
 msgid "Image"
 msgstr "Изображение"
 
-#: Yatube/src/gui.py:923 Yatube/src/gui.py:929 Yatube/src/gui.py:935
+#: Yatube/src/gui.py:929 Yatube/src/gui.py:935 Yatube/src/gui.py:941
 msgid "Not Available"
 msgstr "Недоступно"
 
-#: Yatube/src/gui.py:993
+#: Yatube/src/gui.py:999
 msgid "Scroll to {}"
 msgstr "Прокрутка до {}"
 
-#: Yatube/src/gui.py:1071
+#: Yatube/src/gui.py:1077
 msgid "Edit frequent channels:"
 msgstr "Правка частых каналов:"
 
-#: Yatube/src/gui.py:1084
+#: Yatube/src/gui.py:1090
 msgid "Edit subscriptions:"
 msgstr "Отредактируйте подписки:"
 
-#: Yatube/src/gui.py:1092
+#: Yatube/src/gui.py:1098
 msgid "Edit the blacklist:"
 msgstr "Отредактируйте черный список"
 
-#: Yatube/src/gui.py:1108
+#: Yatube/src/gui.py:1114
 msgid "Full summary:"
 msgstr "Полная сводка:"
 
-#: Yatube/src/gui.py:1116
+#: Yatube/src/gui.py:1122
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: Yatube/src/gui.py:1135
+#: Yatube/src/gui.py:1141
 msgid "Set the default parent."
 msgstr "Используется родительский виджет по умолчанию."
 
-#: Yatube/src/logic.py:33
-msgid "Images"
-msgstr "Изображения"
-
-#: Yatube/src/logic.py:111 skl_shared/src/logic.py:96
-#: skl_shared/src/logic.py:177
-msgid "Booleans"
-msgstr "Булевы переменные"
-
-#: Yatube/src/logic.py:116
-msgid "[Autosave] Use special mpv options for slow PCs"
-msgstr "[Автосохранение] Использовать особые настройки mpv для медленных ПК"
-
-#: Yatube/src/logic.py:120
-msgid "[Autosave] Activate filtering by date"
-msgstr "[Автосохранение] Активировать фильтрацию по дате"
-
-#: Yatube/src/logic.py:124 skl_shared/src/logic.py:96
-#: skl_shared/src/logic.py:180
-msgid "Integers"
-msgstr "Целые числа"
-
-#: Yatube/src/logic.py:129
-msgid "[Autosave] Number of videos per screen (5, 10, 15, 30, 50)"
-msgstr "[Автосохранение] Число видео на экран (5, 10, 15, 30, 50)"
-
-#: Yatube/src/logic.py:133 skl_shared/src/logic.py:97
-#: skl_shared/src/logic.py:161 skl_shared/src/logic.py:186
-msgid "Strings"
-msgstr "Строки"
-
-#: Yatube/src/logic.py:138
-msgid "[Autosave] Default video resolution"
-msgstr "[Автосохранение] Разрешение видео по умолчанию"
-
-#: Yatube/src/logic.py:142
-msgid "[Autosave] Default video quality"
-msgstr "[Автосохранение] Качество видео по умолчанию"
-
-#: Yatube/src/logic.py:146
-msgid "[Autosave] Date filtering option"
-msgstr "[Автосохранение] Настройка фильтрации по дате"
-
-#: Yatube/src/logic.py:211 Yatube/src/logic.py:272 Yatube/src/logic.py:333
-#: Yatube/src/logic.py:394
+#: Yatube/src/logic.py:55 Yatube/src/logic.py:282 Yatube/src/logic.py:343
+#: Yatube/src/logic.py:404 Yatube/src/logic.py:465
 msgid "Previous page token: {}"
 msgstr "Метка предыдущей страницы: {}"
 
-#: Yatube/src/logic.py:213 Yatube/src/logic.py:274 Yatube/src/logic.py:335
-#: Yatube/src/logic.py:396
+#: Yatube/src/logic.py:57 Yatube/src/logic.py:284 Yatube/src/logic.py:345
+#: Yatube/src/logic.py:406 Yatube/src/logic.py:467
 msgid "Next page token: {}"
 msgstr "Метка следующей страницы: {}"
 
-#: Yatube/src/logic.py:495 Yatube/src/yatube.py:1949
-#: skl_shared/src/logic.py:2040
+#: Yatube/src/logic.py:104
+msgid "Images"
+msgstr "Изображения"
+
+#: Yatube/src/logic.py:182 skl_shared/src/logic.py:122
+#: skl_shared/src/logic.py:203
+msgid "Booleans"
+msgstr "Булевы переменные"
+
+#: Yatube/src/logic.py:187
+msgid "[Autosave] Use special mpv options for slow PCs"
+msgstr "[Автосохранение] Использовать особые настройки mpv для медленных ПК"
+
+#: Yatube/src/logic.py:191
+msgid "[Autosave] Activate filtering by date"
+msgstr "[Автосохранение] Активировать фильтрацию по дате"
+
+#: Yatube/src/logic.py:195 skl_shared/src/logic.py:122
+#: skl_shared/src/logic.py:206
+msgid "Integers"
+msgstr "Целые числа"
+
+#: Yatube/src/logic.py:200
+msgid "[Autosave] Number of videos per screen (5, 10, 15, 30, 50)"
+msgstr "[Автосохранение] Число видео на экран (5, 10, 15, 30, 50)"
+
+#: Yatube/src/logic.py:204 skl_shared/src/logic.py:123
+#: skl_shared/src/logic.py:187 skl_shared/src/logic.py:212
+msgid "Strings"
+msgstr "Строки"
+
+#: Yatube/src/logic.py:209
+msgid "[Autosave] Default video resolution"
+msgstr "[Автосохранение] Разрешение видео по умолчанию"
+
+#: Yatube/src/logic.py:213
+msgid "[Autosave] Default video quality"
+msgstr "[Автосохранение] Качество видео по умолчанию"
+
+#: Yatube/src/logic.py:217
+msgid "[Autosave] Date filtering option"
+msgstr "[Автосохранение] Настройка фильтрации по дате"
+
+#: Yatube/src/logic.py:566 Yatube/src/yatube.py:1990
+#: skl_shared/src/logic.py:2107
 msgid "Jan"
 msgstr "янв"
 
-#: Yatube/src/logic.py:495 Yatube/src/yatube.py:1951
-#: skl_shared/src/logic.py:2042
+#: Yatube/src/logic.py:566 Yatube/src/yatube.py:1992
+#: skl_shared/src/logic.py:2109
 msgid "Feb"
 msgstr "фев"
 
-#: Yatube/src/logic.py:495 Yatube/src/yatube.py:1953
-#: skl_shared/src/logic.py:2044
+#: Yatube/src/logic.py:566 Yatube/src/yatube.py:1994
+#: skl_shared/src/logic.py:2111
 msgid "Mar"
 msgstr "мар"
 
-#: Yatube/src/logic.py:495 Yatube/src/yatube.py:1955
-#: skl_shared/src/logic.py:2046
+#: Yatube/src/logic.py:566 Yatube/src/yatube.py:1996
+#: skl_shared/src/logic.py:2113
 msgid "Apr"
 msgstr "апр"
 
-#: Yatube/src/logic.py:495 Yatube/src/yatube.py:1957
-#: skl_shared/src/logic.py:2048
+#: Yatube/src/logic.py:566 Yatube/src/yatube.py:1998
+#: skl_shared/src/logic.py:2115
 msgid "May"
 msgstr "май"
 
-#: Yatube/src/logic.py:496 Yatube/src/yatube.py:1959
-#: skl_shared/src/logic.py:2050
+#: Yatube/src/logic.py:567 Yatube/src/yatube.py:2000
+#: skl_shared/src/logic.py:2117
 msgid "Jun"
 msgstr "июн"
 
-#: Yatube/src/logic.py:496 Yatube/src/yatube.py:1961
-#: skl_shared/src/logic.py:2052
+#: Yatube/src/logic.py:567 Yatube/src/yatube.py:2002
+#: skl_shared/src/logic.py:2119
 msgid "Jul"
 msgstr "июл"
 
-#: Yatube/src/logic.py:496 Yatube/src/yatube.py:1963
-#: skl_shared/src/logic.py:2054
+#: Yatube/src/logic.py:567 Yatube/src/yatube.py:2004
+#: skl_shared/src/logic.py:2121
 msgid "Aug"
 msgstr "авг"
 
-#: Yatube/src/logic.py:496 Yatube/src/yatube.py:1965
-#: skl_shared/src/logic.py:2056
+#: Yatube/src/logic.py:567 Yatube/src/yatube.py:2006
+#: skl_shared/src/logic.py:2123
 msgid "Sep"
 msgstr "сен"
 
-#: Yatube/src/logic.py:496 Yatube/src/yatube.py:1967
-#: skl_shared/src/logic.py:2058
+#: Yatube/src/logic.py:567 Yatube/src/yatube.py:2008
+#: skl_shared/src/logic.py:2125
 msgid "Oct"
 msgstr "окт"
 
-#: Yatube/src/logic.py:497 Yatube/src/yatube.py:1969
-#: skl_shared/src/logic.py:2060
+#: Yatube/src/logic.py:568 Yatube/src/yatube.py:2010
+#: skl_shared/src/logic.py:2127
 msgid "Nov"
 msgstr "ноя"
 
-#: Yatube/src/logic.py:497 Yatube/src/yatube.py:1971
-#: skl_shared/src/logic.py:2062
+#: Yatube/src/logic.py:568 Yatube/src/yatube.py:2012
+#: skl_shared/src/logic.py:2129
 msgid "Dec"
 msgstr "дек"
 
-#: Yatube/src/logic.py:508 Yatube/src/logic.py:887 Yatube/src/logic.py:1341
-#: Yatube/src/meta.py:148 Yatube/src/meta.py:175 Yatube/src/yatube.py:922
-#: Yatube/src/yatube.py:1120 Yatube/src/yatube.py:1367
-#: Yatube/src/yatube.py:1389 Yatube/src/yatube.py:1418
-#: Yatube/src/yatube.py:1431 Yatube/src/yatube.py:1444
-#: skl_shared/src/logic.py:1073 skl_shared/src/logic.py:1252
-#: skl_shared/src/logic.py:1347 skl_shared/src/logic.py:2064
-#: skl_shared/src/logic.py:2530 skl_shared/src/logic.py:3370
-#: skl_shared/src/logic.py:3702 skl_shared/src/logic.py:4358
-#: skl_shared/src/shared.py:2220 skl_shared/src/shared.py:2905
-#: skl_shared/src/shared.py:3335 skl_shared/src/shared.py:4239
+#: Yatube/src/logic.py:579 Yatube/src/logic.py:963 Yatube/src/logic.py:1404
+#: Yatube/src/meta.py:148 Yatube/src/meta.py:175 Yatube/src/yatube.py:965
+#: Yatube/src/yatube.py:1162 Yatube/src/yatube.py:1409
+#: Yatube/src/yatube.py:1431 Yatube/src/yatube.py:1460
+#: Yatube/src/yatube.py:1473 Yatube/src/yatube.py:1486
+#: skl_shared/src/logic.py:1103 skl_shared/src/logic.py:1291
+#: skl_shared/src/logic.py:1388 skl_shared/src/logic.py:2131
+#: skl_shared/src/logic.py:2597 skl_shared/src/logic.py:3449
+#: skl_shared/src/logic.py:3781 skl_shared/src/logic.py:4426
+#: skl_shared/src/shared.py:2103 skl_shared/src/shared.py:2798
+#: skl_shared/src/shared.py:3244 skl_shared/src/shared.py:4193
+#: skl_shared/src/tests.py:84
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
-#: Yatube/src/logic.py:532
+#: Yatube/src/logic.py:603
 msgid "Algeria"
 msgstr "Алжир"
 
-#: Yatube/src/logic.py:533
+#: Yatube/src/logic.py:604
 msgid "Argentina"
 msgstr "Аргентина"
 
-#: Yatube/src/logic.py:534
+#: Yatube/src/logic.py:605
 msgid "Australia"
 msgstr "Австралия"
 
-#: Yatube/src/logic.py:535
+#: Yatube/src/logic.py:606
 msgid "Austria"
 msgstr "Австрия"
 
-#: Yatube/src/logic.py:536
+#: Yatube/src/logic.py:607
 msgid "Azerbaijan"
 msgstr "Азербайджан"
 
-#: Yatube/src/logic.py:537
+#: Yatube/src/logic.py:608
 msgid "Bahrain"
 msgstr "Бахрейн"
 
-#: Yatube/src/logic.py:538
+#: Yatube/src/logic.py:609
 msgid "Belarus"
 msgstr "Беларусь"
 
-#: Yatube/src/logic.py:539
+#: Yatube/src/logic.py:610
 msgid "Belgium"
 msgstr "Бельгия"
 
-#: Yatube/src/logic.py:540
+#: Yatube/src/logic.py:611
 msgid "Bosnia and Herzegovina"
 msgstr "Босния и Герцеговина"
 
-#: Yatube/src/logic.py:541
+#: Yatube/src/logic.py:612
 msgid "Brazil"
 msgstr "Бразилия"
 
-#: Yatube/src/logic.py:542
+#: Yatube/src/logic.py:613
 msgid "Bulgaria"
 msgstr "Болгария"
 
-#: Yatube/src/logic.py:543
+#: Yatube/src/logic.py:614
 msgid "Canada"
 msgstr "Канада"
 
-#: Yatube/src/logic.py:544
+#: Yatube/src/logic.py:615
 msgid "Chile"
 msgstr "Чили"
 
-#: Yatube/src/logic.py:545
+#: Yatube/src/logic.py:616
 msgid "Colombia"
 msgstr "Колумбия"
 
-#: Yatube/src/logic.py:546
+#: Yatube/src/logic.py:617
 msgid "Croatia"
 msgstr "Хорватия"
 
-#: Yatube/src/logic.py:547
+#: Yatube/src/logic.py:618
 msgid "Czechia"
 msgstr "Чехия"
 
-#: Yatube/src/logic.py:548
+#: Yatube/src/logic.py:619
 msgid "Denmark"
 msgstr "Дания"
 
-#: Yatube/src/logic.py:549
+#: Yatube/src/logic.py:620
 msgid "Egypt"
 msgstr "Египет"
 
-#: Yatube/src/logic.py:550
+#: Yatube/src/logic.py:621
 msgid "Estonia"
 msgstr "Эстония"
 
-#: Yatube/src/logic.py:551
+#: Yatube/src/logic.py:622
 msgid "Finland"
 msgstr "Финляндия"
 
-#: Yatube/src/logic.py:552
+#: Yatube/src/logic.py:623
 msgid "France"
 msgstr "Франция"
 
-#: Yatube/src/logic.py:553
+#: Yatube/src/logic.py:624
 msgid "Georgia"
 msgstr "Грузия"
 
-#: Yatube/src/logic.py:554
+#: Yatube/src/logic.py:625
 msgid "Germany"
 msgstr "Германия"
 
-#: Yatube/src/logic.py:555
+#: Yatube/src/logic.py:626
 msgid "Ghana"
 msgstr "Гана"
 
-#: Yatube/src/logic.py:556
+#: Yatube/src/logic.py:627
 msgid "Greece"
 msgstr "Греция"
 
-#: Yatube/src/logic.py:557
+#: Yatube/src/logic.py:628
 msgid "Hong Kong"
 msgstr "Гонконг"
 
-#: Yatube/src/logic.py:558
+#: Yatube/src/logic.py:629
 msgid "Hungary"
 msgstr "Венгрия"
 
-#: Yatube/src/logic.py:559
+#: Yatube/src/logic.py:630
 msgid "Iceland"
 msgstr "Исландия"
 
-#: Yatube/src/logic.py:560
+#: Yatube/src/logic.py:631
 msgid "India"
 msgstr "Индия"
 
-#: Yatube/src/logic.py:561
+#: Yatube/src/logic.py:632
 msgid "Indonesia"
 msgstr "Индонезия"
 
-#: Yatube/src/logic.py:562
+#: Yatube/src/logic.py:633
 msgid "Iraq"
 msgstr "Ирак"
 
-#: Yatube/src/logic.py:563
+#: Yatube/src/logic.py:634
 msgid "Ireland"
 msgstr "Ирландия"
 
-#: Yatube/src/logic.py:564
+#: Yatube/src/logic.py:635
 msgid "Israel"
 msgstr "Израиль"
 
-#: Yatube/src/logic.py:565
+#: Yatube/src/logic.py:636
 msgid "Itality"
 msgstr "Италия"
 
-#: Yatube/src/logic.py:566
+#: Yatube/src/logic.py:637
 msgid "Jamaica"
 msgstr "Ямайка"
 
-#: Yatube/src/logic.py:567
+#: Yatube/src/logic.py:638
 msgid "Japan"
 msgstr "Япония"
 
-#: Yatube/src/logic.py:568
+#: Yatube/src/logic.py:639
 msgid "Jordan"
 msgstr "Иордан"
 
-#: Yatube/src/logic.py:569
+#: Yatube/src/logic.py:640
 msgid "Kazakhstan"
 msgstr "Казахстан"
 
-#: Yatube/src/logic.py:570
+#: Yatube/src/logic.py:641
 msgid "Kenya"
 msgstr "Кения"
 
-#: Yatube/src/logic.py:571
+#: Yatube/src/logic.py:642
 msgid "Kuwait"
 msgstr "Кувейт"
 
-#: Yatube/src/logic.py:572
+#: Yatube/src/logic.py:643
 msgid "Latvia"
 msgstr "Латвия"
 
-#: Yatube/src/logic.py:573
+#: Yatube/src/logic.py:644
 msgid "Lebanon"
 msgstr "Лебанон"
 
-#: Yatube/src/logic.py:574
+#: Yatube/src/logic.py:645
 msgid "Libya"
 msgstr "Ливия"
 
-#: Yatube/src/logic.py:575
+#: Yatube/src/logic.py:646
 msgid "Lithuania"
 msgstr "Литва"
 
-#: Yatube/src/logic.py:576
+#: Yatube/src/logic.py:647
 msgid "Luxembourg"
 msgstr "Люксембург"
 
-#: Yatube/src/logic.py:577
+#: Yatube/src/logic.py:648
 msgid "Macedonia"
 msgstr "Македония"
 
-#: Yatube/src/logic.py:578
+#: Yatube/src/logic.py:649
 msgid "Malaysia"
 msgstr "Малайзия"
 
-#: Yatube/src/logic.py:579
+#: Yatube/src/logic.py:650
 msgid "Mexico"
 msgstr "Мексика"
 
-#: Yatube/src/logic.py:580
+#: Yatube/src/logic.py:651
 msgid "Montenegro"
 msgstr "Монтенегро"
 
-#: Yatube/src/logic.py:581
+#: Yatube/src/logic.py:652
 msgid "Morocco"
 msgstr "Марокко"
 
-#: Yatube/src/logic.py:582
+#: Yatube/src/logic.py:653
 msgid "Nepal"
 msgstr "Непал"
 
-#: Yatube/src/logic.py:583
+#: Yatube/src/logic.py:654
 msgid "Netherlands"
 msgstr "Нидерланды"
 
-#: Yatube/src/logic.py:584
+#: Yatube/src/logic.py:655
 msgid "New Zealand"
 msgstr "Новая Зеландия"
 
-#: Yatube/src/logic.py:585
+#: Yatube/src/logic.py:656
 msgid "Nigeria"
 msgstr "Нигерия"
 
-#: Yatube/src/logic.py:586
+#: Yatube/src/logic.py:657
 msgid "Norway"
 msgstr "Норвегия"
 
-#: Yatube/src/logic.py:587
+#: Yatube/src/logic.py:658
 msgid "Oman"
 msgstr "Оман"
 
-#: Yatube/src/logic.py:588
+#: Yatube/src/logic.py:659
 msgid "Pakistan"
 msgstr "Пакистан"
 
-#: Yatube/src/logic.py:589
+#: Yatube/src/logic.py:660
 msgid "Peru"
 msgstr "Перу"
 
-#: Yatube/src/logic.py:590
+#: Yatube/src/logic.py:661
 msgid "Philippines"
 msgstr "Филиппины"
 
-#: Yatube/src/logic.py:591
+#: Yatube/src/logic.py:662
 msgid "Poland"
 msgstr "Польша"
 
-#: Yatube/src/logic.py:592
+#: Yatube/src/logic.py:663
 msgid "Portugal"
 msgstr "Португалия"
 
-#: Yatube/src/logic.py:593
+#: Yatube/src/logic.py:664
 msgid "Puerto Rico"
 msgstr "Пуэрто-Рико"
 
-#: Yatube/src/logic.py:594
+#: Yatube/src/logic.py:665
 msgid "Qatar"
 msgstr "Катар"
 
-#: Yatube/src/logic.py:595
+#: Yatube/src/logic.py:666
 msgid "Romania"
 msgstr "Румыния"
 
-#: Yatube/src/logic.py:596
+#: Yatube/src/logic.py:667
 msgid "Russia"
 msgstr "Россия"
 
-#: Yatube/src/logic.py:597
+#: Yatube/src/logic.py:668
 msgid "Saudi Arabia"
 msgstr "Саудовская Аравия"
 
-#: Yatube/src/logic.py:598
+#: Yatube/src/logic.py:669
 msgid "Senegal"
 msgstr "Сенегал"
 
-#: Yatube/src/logic.py:599
+#: Yatube/src/logic.py:670
 msgid "Serbia"
 msgstr "Сербия"
 
-#: Yatube/src/logic.py:600
+#: Yatube/src/logic.py:671
 msgid "Singapore"
 msgstr "Сингапур"
 
-#: Yatube/src/logic.py:601
+#: Yatube/src/logic.py:672
 msgid "Slovakia"
 msgstr "Словакия"
 
-#: Yatube/src/logic.py:602
+#: Yatube/src/logic.py:673
 msgid "Slovenia"
 msgstr "Словения"
 
-#: Yatube/src/logic.py:603
+#: Yatube/src/logic.py:674
 msgid "South Africa"
 msgstr "Южная Африка"
 
-#: Yatube/src/logic.py:604
+#: Yatube/src/logic.py:675
 msgid "South Korea"
 msgstr "Южная Корея"
 
-#: Yatube/src/logic.py:605
+#: Yatube/src/logic.py:676
 msgid "Spain"
 msgstr "Испания"
 
-#: Yatube/src/logic.py:606
+#: Yatube/src/logic.py:677
 msgid "Sri Lanka"
 msgstr "Шри-Ланка"
 
-#: Yatube/src/logic.py:607
+#: Yatube/src/logic.py:678
 msgid "Sweden"
 msgstr "Швеция"
 
-#: Yatube/src/logic.py:608
+#: Yatube/src/logic.py:679
 msgid "Switzerland"
 msgstr "Швейцария"
 
-#: Yatube/src/logic.py:609
+#: Yatube/src/logic.py:680
 msgid "Taiwan"
 msgstr "Тайвань"
 
-#: Yatube/src/logic.py:610
+#: Yatube/src/logic.py:681
 msgid "Tanzania"
 msgstr "Танзания"
 
-#: Yatube/src/logic.py:611
+#: Yatube/src/logic.py:682
 msgid "Thailand"
 msgstr "Тайланд"
 
-#: Yatube/src/logic.py:612
+#: Yatube/src/logic.py:683
 msgid "Tunisia"
 msgstr "Тунис"
 
-#: Yatube/src/logic.py:613
+#: Yatube/src/logic.py:684
 msgid "Turkey"
 msgstr "Турция"
 
-#: Yatube/src/logic.py:614
+#: Yatube/src/logic.py:685
 msgid "Uganda"
 msgstr "Уганда"
 
-#: Yatube/src/logic.py:615
+#: Yatube/src/logic.py:686
 msgid "Ukraine"
 msgstr "Украина"
 
-#: Yatube/src/logic.py:616
+#: Yatube/src/logic.py:687
 msgid "United Arab Emirates"
 msgstr "Объединённые Арабские Эмираты"
 
-#: Yatube/src/logic.py:617
+#: Yatube/src/logic.py:688
 msgid "United Kingdom"
 msgstr "Соединённое Королевство"
 
-#: Yatube/src/logic.py:618
+#: Yatube/src/logic.py:689
 msgid "United States"
 msgstr "Соединённые Штаты Америки"
 
-#: Yatube/src/logic.py:619
+#: Yatube/src/logic.py:690
 msgid "Vietnam"
 msgstr "Вьетнам"
 
-#: Yatube/src/logic.py:620
+#: Yatube/src/logic.py:691
 msgid "Yemen"
 msgstr "Йемен"
 
-#: Yatube/src/logic.py:621
+#: Yatube/src/logic.py:692
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: Yatube/src/logic.py:626 Yatube/src/yatube.py:1660 Yatube/src/yatube.py:2414
-#: Yatube/src/yatube.py:2586
+#: Yatube/src/logic.py:697 Yatube/src/yatube.py:1702 Yatube/src/yatube.py:2452
+#: Yatube/src/yatube.py:2625
 msgid "Trending"
 msgstr "Популярное"
 
-#: Yatube/src/logic.py:738
+#: Yatube/src/logic.py:809
 msgid "Fetched {} links"
 msgstr "Получено {} ссылок"
 
-#: Yatube/src/logic.py:1018 Yatube/src/meta.py:421 Yatube/src/meta.py:552
-#: Yatube/src/yatube.py:538 Yatube/src/yatube.py:566
-#: skl_shared/src/logic.py:579 skl_shared/src/logic.py:607
-#: skl_shared/src/logic.py:2301 skl_shared/src/logic.py:2774
-#: skl_shared/src/logic.py:4508 skl_shared/src/logic.py:4668
-#: skl_shared/src/logic.py:4702 skl_shared/src/logic.py:4787
-#: skl_shared/src/shared.py:2494 skl_shared/src/shared.py:5158
+#: Yatube/src/logic.py:1083 Yatube/src/meta.py:421 Yatube/src/meta.py:552
+#: Yatube/src/yatube.py:567 Yatube/src/yatube.py:597
+#: skl_shared/src/logic.py:594 skl_shared/src/logic.py:622
+#: skl_shared/src/logic.py:2368 skl_shared/src/logic.py:2840
+#: skl_shared/src/logic.py:4576 skl_shared/src/logic.py:4736
+#: skl_shared/src/logic.py:4770 skl_shared/src/logic.py:4855
+#: skl_shared/src/shared.py:2377 skl_shared/src/shared.py:5091
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: Yatube/src/logic.py:1125 Yatube/src/logic.py:1654 Yatube/src/logic.py:1673
-#: Yatube/src/meta.py:782 Yatube/src/yatube.py:145 Yatube/src/yatube.py:159
-#: Yatube/src/yatube.py:526 Yatube/src/yatube.py:816
-#: skl_shared/src/logic.py:331 skl_shared/src/logic.py:1131
-#: skl_shared/src/logic.py:1150 skl_shared/src/logic.py:2599
-#: skl_shared/src/logic.py:2619 skl_shared/src/shared.py:4191
+#: Yatube/src/logic.py:1190 Yatube/src/logic.py:1717 Yatube/src/logic.py:1736
+#: Yatube/src/meta.py:782 Yatube/src/yatube.py:171 Yatube/src/yatube.py:185
+#: Yatube/src/yatube.py:555 Yatube/src/yatube.py:847
+#: skl_shared/src/logic.py:346 skl_shared/src/logic.py:1161
+#: skl_shared/src/logic.py:1180 skl_shared/src/logic.py:2666
+#: skl_shared/src/logic.py:2686 skl_shared/src/shared.py:4145
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: Yatube/src/logic.py:1139
+#: Yatube/src/logic.py:1204
 msgid "Get new video info: {}"
 msgstr "Загрузка информации о новом видео: {}"
 
-#: Yatube/src/logic.py:1189
+#: Yatube/src/logic.py:1252
 msgid "Length"
 msgstr "Длина"
 
-#: Yatube/src/logic.py:1193
+#: Yatube/src/logic.py:1256
 msgid "Views"
 msgstr "Просмотров"
 
-#: Yatube/src/logic.py:1197
+#: Yatube/src/logic.py:1260
 msgid "Likes"
 msgstr "Нравится"
 
-#: Yatube/src/logic.py:1200 Yatube/src/logic.py:1207 Yatube/src/logic.py:1215
+#: Yatube/src/logic.py:1263 Yatube/src/logic.py:1270 Yatube/src/logic.py:1278
 msgid "Disabled"
 msgstr "Отключено"
 
-#: Yatube/src/logic.py:1204
+#: Yatube/src/logic.py:1267
 msgid "Dislikes"
 msgstr "Не нравится"
 
-#: Yatube/src/logic.py:1212
+#: Yatube/src/logic.py:1275
 msgid "Comments:"
 msgstr "Комментариев:"
 
-#: Yatube/src/logic.py:1219
+#: Yatube/src/logic.py:1282
 msgid "Description"
 msgstr "Описание"
 
-#: Yatube/src/logic.py:1292
+#: Yatube/src/logic.py:1355
 msgid "Download \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: Yatube/src/logic.py:1364
+#: Yatube/src/logic.py:1427
 msgid "Selected quality is not available, using default quality."
 msgstr ""
 "Видео в выбранном качестве недоступно, используются настройки по умолчанию."
 
-#: Yatube/src/logic.py:1368
+#: Yatube/src/logic.py:1431
 msgid "This video is not available."
 msgstr "Это видео недоступно."
 
-#: Yatube/src/logic.py:1490 Yatube/src/yatube.py:1028
+#: Yatube/src/logic.py:1553 Yatube/src/yatube.py:1070
 msgid "Put here titles of frequent channels"
 msgstr "Вставьте сюда названия частых каналов"
 
-#: Yatube/src/logic.py:1542 Yatube/src/yatube.py:1056 Yatube/src/yatube.py:2800
+#: Yatube/src/logic.py:1605 Yatube/src/yatube.py:1098 Yatube/src/yatube.py:2838
 msgid "Put here words to block in titles (case is ignored)"
 msgstr ""
 "Вставьте сюда слова из заголовков для блокировки (регистр игнорируется)"
@@ -1044,40 +1065,42 @@ msgstr "Время работы: {}"
 msgid "Used quota: {}"
 msgstr "Использовано квоты: {}"
 
-#: Yatube/src/meta.py:808
+#: Yatube/src/meta.py:811
 msgid "ID:"
 msgstr "ИД:"
 
-#: Yatube/src/meta.py:812
+#: Yatube/src/meta.py:815
 msgid "Author:"
 msgstr "Автор:"
 
-#: Yatube/src/meta.py:816
+#: Yatube/src/meta.py:819
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: Yatube/src/meta.py:820
+#: Yatube/src/meta.py:823
 msgid "Date:"
 msgstr "Дата:"
 
-#: Yatube/src/meta.py:827 Yatube/src/tests.py:32 Yatube/src/tests.py:47
+#: Yatube/src/meta.py:830 Yatube/src/tests.py:32 Yatube/src/tests.py:47
 msgid "Image:"
 msgstr "Изображение:"
 
-#: Yatube/src/meta.py:902
+#: Yatube/src/meta.py:905
 msgid "Quota has been exceeded!"
 msgstr "Превышена квота!"
 
-#: Yatube/src/meta.py:905
+#: Yatube/src/meta.py:908
 msgid "Comments are disabled for this video."
 msgstr "Комментарии под этим видео отключены."
 
-#: Yatube/src/meta.py:908
+#: Yatube/src/meta.py:911
 msgid "This channel is not available!"
 msgstr "Этот канал недоступен!"
 
-#: Yatube/src/meta.py:911 skl_shared/src/logic.py:3053
-#: skl_shared/src/logic.py:3157 skl_shared/src/shared.py:1989
+#: Yatube/src/meta.py:914 skl_shared/src/image/controller.py:35
+#: skl_shared/src/logic.py:3119 skl_shared/src/logic.py:3223
+#: skl_shared/src/logic.py:3391 skl_shared/src/shared.py:4090
+#: skl_shared/src/web.py:26
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -1091,8 +1114,8 @@ msgstr ""
 msgid "Fetch data"
 msgstr "Получение данных"
 
-#: Yatube/src/utils.py:264 skl_shared/src/logic.py:2160
-#: skl_shared/src/logic.py:3006
+#: Yatube/src/utils.py:264 skl_shared/src/logic.py:2227
+#: skl_shared/src/logic.py:3072
 msgid "Copy \"{}\" to \"{}\""
 msgstr "Копирование \"{}\" в \"{}\""
 
@@ -1108,35 +1131,35 @@ msgstr "Число просмотренных видео: {}"
 msgid "Total length of watched videos: {}"
 msgstr "Общая продолжительность просмотренных видео: {}"
 
-#: Yatube/src/utils.py:403
+#: Yatube/src/utils.py:402
 msgid "Get data"
 msgstr "Получение данных"
 
-#: Yatube/src/utils.py:411
+#: Yatube/src/utils.py:409
 msgid "Process data"
 msgstr "Обработка данных"
 
-#: Yatube/src/utils.py:418
+#: Yatube/src/utils.py:415
 msgid "Update {}"
 msgstr "Обновление {}"
 
-#: Yatube/src/utils.py:518 Yatube/src/utils.py:531
+#: Yatube/src/utils.py:512 Yatube/src/utils.py:525
 msgid "{} records have been found."
 msgstr "Найдено {} записей."
 
-#: Yatube/src/yatube.py:682
+#: Yatube/src/yatube.py:713
 msgid "\"{}\" is already in the list!"
 msgstr "\"{}\" уже в списке!"
 
-#: Yatube/src/yatube.py:707 Yatube/src/yatube.py:1539 Yatube/src/yatube.py:1565
-#: Yatube/src/yatube.py:1588 Yatube/src/yatube.py:1645
-#: Yatube/src/yatube.py:2134 Yatube/src/yatube.py:2250
-#: Yatube/src/yatube.py:2268 skl_shared/src/logic.py:108
-#: skl_shared/src/logic.py:122 skl_shared/src/logic.py:934
-#: skl_shared/src/logic.py:2456 skl_shared/src/shared.py:1023
-#: skl_shared/src/shared.py:2444 skl_shared/src/shared.py:2457
-#: skl_shared/src/shared.py:2973 skl_shared/src/shared.py:3342
-#: skl_shared/src/shared.py:3422
+#: Yatube/src/yatube.py:738 Yatube/src/yatube.py:1581 Yatube/src/yatube.py:1607
+#: Yatube/src/yatube.py:1630 Yatube/src/yatube.py:1687
+#: Yatube/src/yatube.py:2175 Yatube/src/yatube.py:2291
+#: Yatube/src/yatube.py:2309 skl_shared/src/logic.py:134
+#: skl_shared/src/logic.py:148 skl_shared/src/logic.py:964
+#: skl_shared/src/logic.py:2523 skl_shared/src/shared.py:1020
+#: skl_shared/src/shared.py:2327 skl_shared/src/shared.py:2340
+#: skl_shared/src/shared.py:2870 skl_shared/src/shared.py:3251
+#: skl_shared/src/shared.py:3331 skl_shared/src/tests.py:106
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -1146,73 +1169,73 @@ msgstr ""
 "\n"
 "Поддерживаются следующие режимы: \"{}\"."
 
-#: Yatube/src/yatube.py:791 Yatube/src/yatube.py:1683
+#: Yatube/src/yatube.py:822 Yatube/src/yatube.py:1725
 msgid "Put here authors to subscribe to"
 msgstr "Вставьте сюда авторов, на которых нужно подписаться"
 
-#: Yatube/src/yatube.py:980
+#: Yatube/src/yatube.py:1022
 msgid "You need to subscribe to \"{}\" first!"
 msgstr "Сперва необходимо подписаться на \"{}\"!"
 
-#: Yatube/src/yatube.py:997
+#: Yatube/src/yatube.py:1039
 msgid "Add \"{}\" to frequent channels"
 msgstr "Добавление \"{}\" в частые каналы"
 
-#: Yatube/src/yatube.py:1021
+#: Yatube/src/yatube.py:1063
 msgid "Remove \"{}\" from frequent channels"
 msgstr "Удаление \"{}\" из частых каналов"
 
-#: Yatube/src/yatube.py:1062 Yatube/src/yatube.py:2780
-#: Yatube/src/yatube.py:2806 skl_shared/src/logic.py:2212
-#: skl_shared/src/logic.py:2259 skl_shared/src/logic.py:2479
-#: skl_shared/src/shared.py:2003
+#: Yatube/src/yatube.py:1104 Yatube/src/yatube.py:2818
+#: Yatube/src/yatube.py:2844 skl_shared/src/image/controller.py:49
+#: skl_shared/src/logic.py:2279 skl_shared/src/logic.py:2326
+#: skl_shared/src/logic.py:2546
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: Yatube/src/yatube.py:1107
+#: Yatube/src/yatube.py:1149
 msgid "pause:"
 msgstr "пауза:"
 
-#: Yatube/src/yatube.py:1243
+#: Yatube/src/yatube.py:1285
 msgid "File: \"{}\"; {}/{} MB; Rate: {} kbps; ETA: {}s"
 msgstr "Файл: \"{}\"; {}/{} Мб; Скорость: {} Кб/с; Осталось: {}с"
 
-#: Yatube/src/yatube.py:1497 Yatube/src/yatube.py:2205
-#: skl_shared/src/shared.py:4236
+#: Yatube/src/yatube.py:1539 Yatube/src/yatube.py:2246
+#: skl_shared/src/shared.py:4190
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: Yatube/src/yatube.py:1659 Yatube/src/yatube.py:1748
-#: Yatube/src/yatube.py:1754 Yatube/src/yatube.py:2192
-#: Yatube/src/yatube.py:2400
+#: Yatube/src/yatube.py:1701 Yatube/src/yatube.py:1790
+#: Yatube/src/yatube.py:1796 Yatube/src/yatube.py:2233
+#: Yatube/src/yatube.py:2438
 msgid "Channels"
 msgstr "Каналы"
 
-#: Yatube/src/yatube.py:1668
+#: Yatube/src/yatube.py:1710
 msgid "Unsubscribe from channel \"{}\""
 msgstr "Отписка от канала \"{}\""
 
-#: Yatube/src/yatube.py:1699
+#: Yatube/src/yatube.py:1741
 msgid "Unblock channel \"{}\""
 msgstr "Разблокировка канала \"{}\""
 
-#: Yatube/src/yatube.py:1710 Yatube/src/yatube.py:2774
+#: Yatube/src/yatube.py:1752 Yatube/src/yatube.py:2812
 msgid "Put here authors to be blocked"
 msgstr "Вставьте сюда авторов, которых нужно заблокировать"
 
-#: Yatube/src/yatube.py:1783
+#: Yatube/src/yatube.py:1825
 msgid "Subscribe to channel \"{}\""
 msgstr "Подписка на канал \"{}\""
 
-#: Yatube/src/yatube.py:1815
+#: Yatube/src/yatube.py:1857
 msgid "Block channel \"{}\""
 msgstr "Блокировка канала \"{}\""
 
-#: Yatube/src/yatube.py:1892
+#: Yatube/src/yatube.py:1934
 msgid "Unable to find a suitable application!"
 msgstr "Не удалось найти подходящее приложение!"
 
-#: Yatube/src/yatube.py:1909
+#: Yatube/src/yatube.py:1951
 msgid ""
 "Failed to run \"{}\"!\n"
 "\n"
@@ -1222,84 +1245,76 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: Yatube/src/yatube.py:2170
+#: Yatube/src/yatube.py:2211
 msgid "Video #{}:"
 msgstr "Видео №{}:"
 
-#: Yatube/src/yatube.py:2195 Yatube/src/yatube.py:2589
+#: Yatube/src/yatube.py:2236 Yatube/src/yatube.py:2628
 msgid "Switch to channel \"{}\""
 msgstr "Переключение на канал \"{}\""
 
-#: Yatube/src/yatube.py:2243
+#: Yatube/src/yatube.py:2284
 msgid "Selected video"
 msgstr "Выбранное видео"
 
-#: Yatube/src/yatube.py:2261
-msgid "Keywords"
-msgstr "Ключевые слова"
-
-#: Yatube/src/yatube.py:2276 skl_shared/src/logic.py:4807
-msgid "Not implemented yet!"
-msgstr "Еще не реализовано!"
-
-#: Yatube/src/yatube.py:2294
+#: Yatube/src/yatube.py:2333
 msgid "Filter by \"{}\""
 msgstr "Применение фильтра \"{}\""
 
-#: Yatube/src/yatube.py:2492 Yatube/src/yatube.py:2557
+#: Yatube/src/yatube.py:2531 Yatube/src/yatube.py:2596
 msgid "Download progress"
 msgstr "Ход загрузок"
 
-#: Yatube/src/yatube.py:2595
+#: Yatube/src/yatube.py:2634
 msgid "Country: {}"
 msgstr "Страна: {}"
 
-#: Yatube/src/yatube.py:2631
+#: Yatube/src/yatube.py:2670
 msgid "Widget must be at least {} pixels in height"
 msgstr "Виджет должен быть минимум {} пикселей в высоту"
 
-#: Yatube/src/yatube.py:2666
+#: Yatube/src/yatube.py:2705
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
-#: Yatube/src/yatube.py:2704
+#: Yatube/src/yatube.py:2743
 msgid "{}/{} links are already stored in DB."
 msgstr "{}/{} ссылок уже хранятся в БД."
 
-#: Yatube/src/yatube.py:2863
+#: Yatube/src/yatube.py:2901
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: skl_shared/src/gui.py:1252 skl_shared/src/logic.py:428
-#: skl_shared/src/logic.py:475 skl_shared/src/logic.py:998
-#: skl_shared/src/logic.py:4576 skl_shared/src/shared.py:3892
+#: skl_shared/src/gui.py:1265 skl_shared/src/logic.py:443
+#: skl_shared/src/logic.py:490 skl_shared/src/logic.py:1028
+#: skl_shared/src/logic.py:4644 skl_shared/src/shared.py:3832
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
-#: skl_shared/src/gui.py:1259 skl_shared/src/logic.py:469
-#: skl_shared/src/logic.py:998 skl_shared/src/shared.py:3884
+#: skl_shared/src/gui.py:1272 skl_shared/src/logic.py:484
+#: skl_shared/src/logic.py:1028 skl_shared/src/shared.py:3824
 msgid "ERROR"
 msgstr "ОШИБКА"
 
-#: skl_shared/src/gui.py:1266 skl_shared/src/logic.py:430
-#: skl_shared/src/logic.py:493 skl_shared/src/shared.py:3917
-#: skl_shared/src/shared.py:4121
+#: skl_shared/src/gui.py:1279 skl_shared/src/logic.py:445
+#: skl_shared/src/logic.py:508 skl_shared/src/shared.py:3857
+#: skl_shared/src/shared.py:4062
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
-#: skl_shared/src/gui.py:1273 skl_shared/src/logic.py:426
-#: skl_shared/src/logic.py:453 skl_shared/src/logic.py:481
-#: skl_shared/src/logic.py:976 skl_shared/src/logic.py:1018
-#: skl_shared/src/logic.py:4584 skl_shared/src/shared.py:3901
-#: skl_shared/src/shared.py:3909
+#: skl_shared/src/gui.py:1286 skl_shared/src/logic.py:441
+#: skl_shared/src/logic.py:468 skl_shared/src/logic.py:496
+#: skl_shared/src/logic.py:1006 skl_shared/src/logic.py:1048
+#: skl_shared/src/logic.py:4652 skl_shared/src/shared.py:3841
+#: skl_shared/src/shared.py:3849
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
-#: skl_shared/src/logic.py:96 skl_shared/src/logic.py:183
+#: skl_shared/src/logic.py:122 skl_shared/src/logic.py:209
 msgid "Floatings"
 msgstr "Числа с учетом порядков"
 
-#: skl_shared/src/logic.py:189
+#: skl_shared/src/logic.py:215
 msgid ""
 "# ATTENTION: This file is automatically generated. You can modify key values "
 "manually, but anything else will be overwritten."
@@ -1307,58 +1322,58 @@ msgstr ""
 "# ВНИМАНИЕ: Данный файл был создан автоматически. Можно вручную менять "
 "значения ключей, однако, все остальное будет перезаписано."
 
-#: skl_shared/src/logic.py:247 skl_shared/src/logic.py:4122
+#: skl_shared/src/logic.py:275 skl_shared/src/logic.py:4190
 msgid "Set the max number of rows to {}"
 msgstr "Задать максимальное число столбцов: {}"
 
-#: skl_shared/src/logic.py:260
+#: skl_shared/src/logic.py:288
 msgid "Set the max column width to {} symbols"
 msgstr "Ограничить максимальную ширину столбца {} символами"
 
-#: skl_shared/src/logic.py:308
-msgid "You need to install \"{}\"!"
-msgstr "Необходимо установить \"{}\"!"
-
-#: skl_shared/src/logic.py:395
+#: skl_shared/src/logic.py:410
 msgid "Only iterable objects are supported!"
 msgstr "Поддерживаются только итерируемые объекты!"
 
-#: skl_shared/src/logic.py:426 skl_shared/src/logic.py:487
-#: skl_shared/src/logic.py:1002
+#: skl_shared/src/logic.py:441 skl_shared/src/logic.py:502
+#: skl_shared/src/logic.py:1032
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
-#: skl_shared/src/logic.py:439
+#: skl_shared/src/logic.py:454
 msgid "File \"{}\" was not found!"
 msgstr "Файл \"{}\" не найден!"
 
-#: skl_shared/src/logic.py:677 skl_shared/src/logic.py:680
+#: skl_shared/src/logic.py:692 skl_shared/src/logic.py:695
 msgid "Left mouse button"
 msgstr "Левая кнопка мыши"
 
-#: skl_shared/src/logic.py:683 skl_shared/src/logic.py:686
+#: skl_shared/src/logic.py:698 skl_shared/src/logic.py:701
 msgid "Middle mouse button"
 msgstr "Средняя кнопка мыши"
 
-#: skl_shared/src/logic.py:689 skl_shared/src/logic.py:692
+#: skl_shared/src/logic.py:704 skl_shared/src/logic.py:707
 msgid "Right mouse button"
 msgstr "Правая кнопка мыши"
 
-#: skl_shared/src/logic.py:695
+#: skl_shared/src/logic.py:710
 msgid "Space"
 msgstr "Пробел"
 
-#: skl_shared/src/logic.py:834
+#: skl_shared/src/logic.py:819
+msgid "Reading standard output is not supported in a blocking mode!"
+msgstr "Чтение стандартного вывода не поддерживается в блокирующем режиме!"
+
+#: skl_shared/src/logic.py:848
 msgid "Custom arguments: \"{}\""
 msgstr "Дополнительные параметры: \"{}\""
 
-#: skl_shared/src/logic.py:843 skl_shared/src/logic.py:3568
-#: skl_shared/src/logic.py:3596
+#: skl_shared/src/logic.py:860 skl_shared/src/logic.py:3647
+#: skl_shared/src/logic.py:3675
 msgid "Failed to run \"{}\"!"
 msgstr "Не удалось запустить \"{}\"!"
 
-#: skl_shared/src/logic.py:853 skl_shared/src/logic.py:861
-#: skl_shared/src/logic.py:869
+#: skl_shared/src/logic.py:871 skl_shared/src/logic.py:880
+#: skl_shared/src/logic.py:889
 msgid ""
 "Unable to open the file in an external program. You should probably check "
 "the file associations."
@@ -1366,86 +1381,97 @@ msgstr ""
 "Не удается открыть файл во внешней программе. Возможно, Вам стоит проверить "
 "ассоциации файлов."
 
-#: skl_shared/src/logic.py:917 skl_shared/src/logic.py:949
-#: skl_shared/src/logic.py:964 skl_shared/src/regexp.py:45
+#: skl_shared/src/logic.py:947 skl_shared/src/logic.py:979
+#: skl_shared/src/logic.py:994 skl_shared/src/regexp.py:45
 #: skl_shared/src/regexp.py:107
 msgid "Not enough input data!"
 msgstr "Недостаточно входных данных!"
 
-#: skl_shared/src/logic.py:923 skl_shared/src/logic.py:2441
+#: skl_shared/src/logic.py:953 skl_shared/src/logic.py:2508
 msgid "Write file \"{}\""
 msgstr "Запись файла \"{}\""
 
-#: skl_shared/src/logic.py:930
+#: skl_shared/src/logic.py:960
 msgid "Unable to write file \"{}\"!"
 msgstr "Не удается записать файл \"{}\"!"
 
-#: skl_shared/src/logic.py:1049 skl_shared/src/logic.py:2506
+#: skl_shared/src/logic.py:1079 skl_shared/src/logic.py:2573
 msgid "Entries deleted: {} ({}-{})"
 msgstr "Удалено вхождений: {} ({}-{})"
 
-#: skl_shared/src/logic.py:1058 skl_shared/src/logic.py:1198
-#: skl_shared/src/logic.py:2515 skl_shared/src/logic.py:2672
+#: skl_shared/src/logic.py:1088 skl_shared/src/logic.py:1228
+#: skl_shared/src/logic.py:2582 skl_shared/src/logic.py:2739
 msgid "File \"{}\" is not sortable!"
 msgstr "Файл \"{}\" не подлежит сортировке!"
 
-#: skl_shared/src/logic.py:1096
+#: skl_shared/src/logic.py:1126
 msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
 msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
 
-#: skl_shared/src/logic.py:1244 skl_shared/src/logic.py:2124
-#: skl_shared/src/logic.py:4802
+#: skl_shared/src/logic.py:1283 skl_shared/src/logic.py:2191
+#: skl_shared/src/logic.py:4870
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
-#: skl_shared/src/logic.py:1248 skl_shared/src/logic.py:2128
-#: skl_shared/src/shared.py:3071 skl_shared/src/shared.py:3797
+#: skl_shared/src/logic.py:1287 skl_shared/src/logic.py:2195
+#: skl_shared/src/shared.py:2981 skl_shared/src/shared.py:3737
 msgid "File \"{}\" has not been found!"
 msgstr "Файл \"{}\" не найден!"
 
-#: skl_shared/src/logic.py:1301 skl_shared/src/logic.py:2716
+#: skl_shared/src/logic.py:1301 skl_shared/src/logic.py:2218
+#: skl_shared/src/logic.py:2364 skl_shared/src/logic.py:2889
+#: skl_shared/src/logic.py:2915 skl_shared/src/logic.py:2999
+#: skl_shared/src/logic.py:3618
+msgid ""
+"Operation has failed!\n"
+"Details: {}"
+msgstr ""
+"Операция завершилась с ошибкой!\n"
+"Подробности: {}"
+
+#: skl_shared/src/logic.py:1342 skl_shared/src/logic.py:2782
 msgid "Load file \"{}\""
 msgstr "Загрузка файла \"{}\""
 
-#: skl_shared/src/logic.py:1318
+#: skl_shared/src/logic.py:1359
 msgid "Unable to read file \"{}\"!"
 msgstr "Не удается прочитать файл \"{}\"!"
 
-#: skl_shared/src/logic.py:1337
+#: skl_shared/src/logic.py:1378
 msgid "Float is required at input, but found \"{}\"! Return 0.0"
 msgstr ""
 "На входе должно быть число с плавающей запятой, но получено \"{}\"! "
 "Возвращаю 0.0"
 
-#: skl_shared/src/logic.py:1369
+#: skl_shared/src/logic.py:1410
 msgid "Convert \"{}\" to an integer"
 msgstr "Конвертация \"{}\" в целое число"
 
-#: skl_shared/src/logic.py:1372
+#: skl_shared/src/logic.py:1413
 msgid "Integer is required at input, but found \"{}\"! Return 0"
 msgstr "На входе должно быть целое число, но получено \"{}\"! Возвращаю 0"
 
-#: skl_shared/src/logic.py:1542
+#: skl_shared/src/logic.py:1584
 msgid ""
 "Different number of opening and closing brackets: \"{}\": {}; \"{}\": {}!"
 msgstr "Разное число открывающих и закрывающих скобок: \"{}\": {}; \"{}\": {}!"
 
-#: skl_shared/src/logic.py:1692
+#: skl_shared/src/logic.py:1734
 msgid ""
 "Commas and/or semicolons or line breaks can be used, but not altogether!"
 msgstr ""
 "Можно использовать запятые и/или точки с запятой или переносы строк, но не "
 "все сразу!"
 
-#: skl_shared/src/logic.py:1716
+#: skl_shared/src/logic.py:1758
 msgid "Failed to convert \"{}\" to an integer!"
 msgstr "Не удалось конвертировать \"{}\" в целое число!"
 
-#: skl_shared/src/logic.py:1727
+#: skl_shared/src/logic.py:1769
 msgid "Failed to convert \"{}\" to a floating-point number!"
 msgstr "Не удалось конвертировать \"{}\" в число с плавающей точкой!"
 
-#: skl_shared/src/logic.py:1945
+#: skl_shared/src/logic.py:2012
 msgid ""
 "Set time parameters are incorrect or not supported.\n"
 "\n"
@@ -1455,29 +1481,19 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2132
+#: skl_shared/src/logic.py:2199
 msgid "The object \"{}\" is not a file!"
 msgstr "Объект \"{}\" не является файлом!"
 
-#: skl_shared/src/logic.py:2151 skl_shared/src/logic.py:2297
-#: skl_shared/src/logic.py:2823 skl_shared/src/logic.py:2849
-#: skl_shared/src/logic.py:2933 skl_shared/src/logic.py:3539
-msgid ""
-"Operation has failed!\n"
-"Details: {}"
-msgstr ""
-"Операция завершилась с ошибкой!\n"
-"Подробности: {}"
-
-#: skl_shared/src/logic.py:2166
+#: skl_shared/src/logic.py:2233
 msgid "Failed to copy file \"{}\" to \"{}\"!"
 msgstr "Не удалось скопировать файл \"{}\" в \"{}\"!"
 
-#: skl_shared/src/logic.py:2174 skl_shared/src/logic.py:2780
+#: skl_shared/src/logic.py:2241 skl_shared/src/logic.py:2846
 msgid "Move \"{}\" to \"{}\""
 msgstr "Перемещение \"{}\" в \"{}\""
 
-#: skl_shared/src/logic.py:2180 skl_shared/src/logic.py:2786
+#: skl_shared/src/logic.py:2247 skl_shared/src/logic.py:2852
 msgid ""
 "Failed to move \"{}\" to \"{}\"!\n"
 "\n"
@@ -1487,23 +1503,23 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2193 skl_shared/src/logic.py:2240
+#: skl_shared/src/logic.py:2260 skl_shared/src/logic.py:2307
 msgid "Failed to get the date of the file \"{}\"!"
 msgstr "Не удалось определить дату файла \"{}\"!"
 
-#: skl_shared/src/logic.py:2204
+#: skl_shared/src/logic.py:2271
 msgid "Unable to copy the file \"{}\" to iself!"
 msgstr "Нельзя скопировать файл \"{}\" сам в себя!"
 
-#: skl_shared/src/logic.py:2221 skl_shared/src/logic.py:2901
+#: skl_shared/src/logic.py:2288 skl_shared/src/logic.py:2967
 msgid "Delete \"{}\""
 msgstr "Удаление \"{}\""
 
-#: skl_shared/src/logic.py:2227
+#: skl_shared/src/logic.py:2294
 msgid "Failed to delete file \"{}\"!"
 msgstr "Не удается удалить файл \"{}\"!"
 
-#: skl_shared/src/logic.py:2251 skl_shared/src/logic.py:2800
+#: skl_shared/src/logic.py:2318 skl_shared/src/logic.py:2866
 msgid ""
 "Moving is not necessary, because the source and destination are identical "
 "({})."
@@ -1511,31 +1527,31 @@ msgstr ""
 "Перемещение не требуется, поскольку на входе и выходе указан один и тот же "
 "объект ({})."
 
-#: skl_shared/src/logic.py:2269
+#: skl_shared/src/logic.py:2336
 msgid "Change the time of the file \"{}\" to {}"
 msgstr "Изменение времени файла \"{}\" на {}"
 
-#: skl_shared/src/logic.py:2275
+#: skl_shared/src/logic.py:2342
 msgid "Failed to change the time of the file \"{}\" to \"{}\"!"
 msgstr "Не удалось изменить время файла \"{}\" на \"{}\"!"
 
-#: skl_shared/src/logic.py:2328 skl_shared/src/logic.py:2996
+#: skl_shared/src/logic.py:2395 skl_shared/src/logic.py:3062
 msgid "Directory \"{}\" already exists."
 msgstr "Каталог \"{}\" уже существует."
 
-#: skl_shared/src/logic.py:2333
+#: skl_shared/src/logic.py:2400
 msgid "The path \"{}\" is invalid!"
 msgstr "Путь \"{}\" неверен!"
 
-#: skl_shared/src/logic.py:2337
+#: skl_shared/src/logic.py:2404
 msgid "Create directory \"{}\""
 msgstr "Создание каталога \"{}\""
 
-#: skl_shared/src/logic.py:2344
+#: skl_shared/src/logic.py:2411
 msgid "Failed to create directory \"{}\"!"
 msgstr "Не удается создать каталог \"{}\"!"
 
-#: skl_shared/src/logic.py:2452
+#: skl_shared/src/logic.py:2519
 msgid ""
 "Unable to write file \"{}\"!\n"
 "\n"
@@ -1545,11 +1561,11 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2565
+#: skl_shared/src/logic.py:2632
 msgid "The following lines cannot be parsed:"
 msgstr "Не удается обработать следующие строки:"
 
-#: skl_shared/src/logic.py:2726
+#: skl_shared/src/logic.py:2792
 msgid ""
 "Unable to read file \"{}\"!\n"
 "\n"
@@ -1559,39 +1575,39 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:2796
+#: skl_shared/src/logic.py:2862
 msgid "Path \"{}\" already exists!"
 msgstr "Путь \"{}\" уже существует!"
 
-#: skl_shared/src/logic.py:2907
+#: skl_shared/src/logic.py:2973
 msgid "Failed to delete directory \"{}\"! Delete it manually."
 msgstr "Не удается удалить каталог \"{}\"! Удалите его вручную."
 
-#: skl_shared/src/logic.py:2992
+#: skl_shared/src/logic.py:3058
 msgid "Unable to copy \"{}\" to iself!"
 msgstr "Нельзя скопировать \"{}\" сам в себя!"
 
-#: skl_shared/src/logic.py:3012
+#: skl_shared/src/logic.py:3078
 msgid "Failed to copy \"{}\" to \"{}\"!"
 msgstr "Не удалось скопировать \"{}\" в \"{}\"!"
 
-#: skl_shared/src/logic.py:3122
+#: skl_shared/src/logic.py:3188
 msgid "Keys loaded in total: {}"
 msgstr "Всего загружено ключей: {}"
 
-#: skl_shared/src/logic.py:3125
+#: skl_shared/src/logic.py:3191
 msgid "Missing sections: {}"
 msgstr "Отсутствующие разделы: {}"
 
-#: skl_shared/src/logic.py:3129
+#: skl_shared/src/logic.py:3195
 msgid "Missing keys: {}"
 msgstr "Отсутствующие ключи: {}"
 
-#: skl_shared/src/logic.py:3133
+#: skl_shared/src/logic.py:3199
 msgid "Modified keys: {}"
 msgstr "Измененные ключи: {}"
 
-#: skl_shared/src/logic.py:3194
+#: skl_shared/src/logic.py:3260
 msgid ""
 "Failed to open URL \"{}\" in a default browser!\n"
 "\n"
@@ -1601,82 +1617,89 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:3251
+#: skl_shared/src/logic.py:3317
 msgid "Differences:"
 msgstr "Различия:"
 
-#: skl_shared/src/logic.py:3276
+#: skl_shared/src/logic.py:3342
 msgid "Texts are identical!"
 msgstr "Различий нет!"
 
-#: skl_shared/src/logic.py:3334
+#: skl_shared/src/logic.py:3405
+msgid "Shortcut \"{}\" refers to \"{}\""
+msgstr "Ссылка \"{}\" указывает на \"{}\""
+
+#: skl_shared/src/logic.py:3413
 msgid "Delete the symbolic link \"{}\""
 msgstr "Удаление ярлыка \"{}\""
 
-#: skl_shared/src/logic.py:3339
+#: skl_shared/src/logic.py:3418
 msgid "Failed to remove shortcut \"{}\". Remove it manually and press OK."
 msgstr "Не удается удалить ярлык \"{}\". Удалите его вручную и нажмите OK."
 
-#: skl_shared/src/logic.py:3353 skl_shared/src/logic.py:3377
+#: skl_shared/src/logic.py:3432 skl_shared/src/logic.py:3456
 msgid "Create a symbolic link \"{}\""
 msgstr "Создание ярлыка \"{}\""
 
-#: skl_shared/src/logic.py:3358 skl_shared/src/logic.py:3386
+#: skl_shared/src/logic.py:3437 skl_shared/src/logic.py:3465
 msgid "Failed to create shortcut \"{}\". Create it manually and press OK."
 msgstr "Не удается создать ярлык \"{}\". Создайте его вручную и нажмите OK."
 
-#: skl_shared/src/logic.py:3504
+#: skl_shared/src/logic.py:3583
 msgid "Failed to load an e-mail client."
 msgstr "Не удалось загрузить почтовый клиент."
 
-#: skl_shared/src/logic.py:3542
+#: skl_shared/src/logic.py:3621
 msgid "This operation cannot be executed on your operating system."
 msgstr "Эта операция не может быть выполнена на вашей операционной системе."
 
-#: skl_shared/src/logic.py:3968 skl_shared/src/logic.py:3969
-#: skl_shared/src/logic.py:4567 skl_shared/src/logic.py:4572
-#: skl_shared/src/logic.py:4573 skl_shared/src/logic.py:4580
-#: skl_shared/src/logic.py:4581
+#: skl_shared/src/logic.py:4036 skl_shared/src/logic.py:4037
+#: skl_shared/src/logic.py:4635 skl_shared/src/logic.py:4640
+#: skl_shared/src/logic.py:4641 skl_shared/src/logic.py:4648
+#: skl_shared/src/logic.py:4649 skl_shared/src/logic.py:4863
+#: skl_shared/src/logic.py:4868 skl_shared/src/logic.py:4873
+#: skl_shared/src/logic.py:4878 skl_shared/src/logic.py:4883
+#: skl_shared/src/logic.py:4890
 msgid "Logic error!"
 msgstr "Логическая ошибка!"
 
-#: skl_shared/src/logic.py:4035 skl_shared/src/logic.py:4043
+#: skl_shared/src/logic.py:4103 skl_shared/src/logic.py:4111
 msgid "The pool is empty!"
 msgstr "Пул пуст!"
 
-#: skl_shared/src/logic.py:4078
+#: skl_shared/src/logic.py:4146
 msgid "The operation has taken {} s."
 msgstr "Операция завершена за {} с."
 
-#: skl_shared/src/logic.py:4254
+#: skl_shared/src/logic.py:4322
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
-#: skl_shared/src/logic.py:4272
+#: skl_shared/src/logic.py:4340
 msgid "[OK]: \"{}\""
 msgstr "[Успешно]: \"{}\""
 
-#: skl_shared/src/logic.py:4276
+#: skl_shared/src/logic.py:4344
 msgid "[FAILED]: \"{}\". Details: {}"
 msgstr "[ОШИБКА]: \"{}\". Подробности: {}"
 
-#: skl_shared/src/logic.py:4292
+#: skl_shared/src/logic.py:4360
 msgid "Unable to decode \"{}\"!"
 msgstr "Не удается изменить кодировку \"{}\"!"
 
-#: skl_shared/src/logic.py:4311
+#: skl_shared/src/logic.py:4379
 msgid "Wrong input data: {}!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: skl_shared/src/logic.py:4350
+#: skl_shared/src/logic.py:4418
 msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
-#: skl_shared/src/logic.py:4526
+#: skl_shared/src/logic.py:4594
 msgid ","
 msgstr "."
 
-#: skl_shared/src/logic.py:4538 skl_shared/src/shared.py:839
+#: skl_shared/src/logic.py:4606 skl_shared/src/shared.py:835
 msgid ""
 "Operation has failed!\n"
 "\n"
@@ -1686,85 +1709,125 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/logic.py:4556
+#: skl_shared/src/logic.py:4624
 msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
-#: skl_shared/src/logic.py:4557 skl_shared/src/logic.py:4558
+#: skl_shared/src/logic.py:4625 skl_shared/src/logic.py:4626
 msgid "Web-page"
 msgstr "Веб-страница"
 
-#: skl_shared/src/logic.py:4559
+#: skl_shared/src/logic.py:4627
 msgid "All files"
 msgstr "Все файлы"
 
-#: skl_shared/src/logic.py:4564
+#: skl_shared/src/logic.py:4632
 msgid "Save As:"
 msgstr "Сохранить как:"
 
-#: skl_shared/src/logic.py:4569
+#: skl_shared/src/logic.py:4637
 msgid "Nothing to do!"
 msgstr "Действие не требуется."
 
-#: skl_shared/src/logic.py:4590 skl_shared/src/logic.py:4612
+#: skl_shared/src/logic.py:4658 skl_shared/src/logic.py:4680
 msgid "B"
 msgstr "Б"
 
-#: skl_shared/src/logic.py:4603
+#: skl_shared/src/logic.py:4671
 msgid "TiB"
 msgstr "ТиБ"
 
-#: skl_shared/src/logic.py:4605
+#: skl_shared/src/logic.py:4673
 msgid "GiB"
 msgstr "ГиБ"
 
-#: skl_shared/src/logic.py:4607
+#: skl_shared/src/logic.py:4675
 msgid "MiB"
 msgstr "МиБ"
 
-#: skl_shared/src/logic.py:4610
+#: skl_shared/src/logic.py:4678
 msgid "KiB"
 msgstr "КиБ"
 
-#: skl_shared/src/logic.py:4720
+#: skl_shared/src/logic.py:4788
 msgid "ATTENTION: Do yo really want to rewrite file \"{}\"?"
 msgstr "ВНИМАНИЕ: Перезаписать файл \"{}\"?"
 
-#: skl_shared/src/logic.py:4750 skl_shared/src/logic.py:4783
+#: skl_shared/src/logic.py:4818 skl_shared/src/logic.py:4851
 msgid "sec"
 msgstr "сек"
 
-#: skl_shared/src/logic.py:4771
+#: skl_shared/src/logic.py:4839
 msgid "yrs"
 msgstr "лет"
 
-#: skl_shared/src/logic.py:4773
+#: skl_shared/src/logic.py:4841
 msgid "mths"
 msgstr "мес"
 
-#: skl_shared/src/logic.py:4775
+#: skl_shared/src/logic.py:4843
 msgid "wks"
 msgstr "нед"
 
-#: skl_shared/src/logic.py:4777
+#: skl_shared/src/logic.py:4845
 msgid "days"
 msgstr "дн"
 
-#: skl_shared/src/logic.py:4779
+#: skl_shared/src/logic.py:4847
 msgid "hrs"
 msgstr "ч"
 
-#: skl_shared/src/logic.py:4781
+#: skl_shared/src/logic.py:4849
 msgid "min"
 msgstr "мин"
 
-#: skl_shared/src/logic.py:4797
+#: skl_shared/src/logic.py:4865
 msgid "Operation has been canceled."
 msgstr "Операция отменена."
 
-#: skl_shared/src/logic.py:4812
+#: skl_shared/src/logic.py:4875
+msgid "Not implemented yet!"
+msgstr "Еще не реализовано!"
+
+#: skl_shared/src/logic.py:4880
 msgid "Empty output is not allowed!"
 msgstr "Пустые выходные данные не допускаются!"
+
+#: skl_shared/src/logic.py:4885
+msgid "{} blocks have been deleted"
+msgstr "{} блоков удалено"
+
+#: skl_shared/src/logic.py:4892
+msgid "{} matches"
+msgstr "{} совпадений"
+
+#: skl_shared/src/password/controller.py:12 skl_shared/src/password/gui.py:10
+msgid "Set your credentials:"
+msgstr "Укажите данные для входа:"
+
+#: skl_shared/src/password/controller.py:78 skl_shared/src/tests.py:122
+msgid "Login: \"{}\""
+msgstr "Учетная запись: \"{}\""
+
+#: skl_shared/src/password/controller.py:80 skl_shared/src/tests.py:124
+msgid "Password: \"{}\""
+msgstr "Пароль: \"{}\""
+
+#: skl_shared/src/password/gui.py:34 skl_shared/src/shared.py:3928
+msgid "Cancel"
+msgstr "Отмена"
+
+#: skl_shared/src/password/gui.py:38
+msgid "OK"
+msgstr "OK"
+
+#: skl_shared/src/password/gui.py:55
+msgid "Login:"
+msgstr "Учетная запись:"
+
+#: skl_shared/src/password/gui.py:61
+msgid "Password:"
+msgstr "Пароль:"
 
 #: skl_shared/src/regexp.py:56
 msgid "A syntax error in the regular expression (id: {})!"
@@ -1783,153 +1846,118 @@ msgstr ""
 "\"{}\"."
 
 #: skl_shared/src/shared.py:68 skl_shared/src/shared.py:83
-#: skl_shared/src/shared.py:4391 skl_shared/src/shared.py:4409
+#: skl_shared/src/shared.py:4346 skl_shared/src/shared.py:4364
 msgid "Compare texts:"
 msgstr "Сравните тексты:"
 
-#: skl_shared/src/shared.py:723
+#: skl_shared/src/shared.py:719
 msgid "Restore the text"
 msgstr "Восстановить текст"
 
-#: skl_shared/src/shared.py:730 skl_shared/src/shared.py:1318
-#: skl_shared/src/shared.py:2778 skl_shared/src/shared.py:3991
-#: skl_shared/src/shared.py:4005
+#: skl_shared/src/shared.py:726 skl_shared/src/shared.py:1315
+#: skl_shared/src/shared.py:2671 skl_shared/src/shared.py:3932
+#: skl_shared/src/shared.py:3946
 msgid "Accept and close"
 msgstr "Принять и закрыть"
 
-#: skl_shared/src/shared.py:789 skl_shared/src/shared.py:800
-#: skl_shared/src/shared.py:968
+#: skl_shared/src/shared.py:785 skl_shared/src/shared.py:796
+#: skl_shared/src/shared.py:964
 msgid "No selection!"
 msgstr "Выделение отсутствует!"
 
-#: skl_shared/src/shared.py:1311
+#: skl_shared/src/shared.py:1308
 msgid "Clear the field"
 msgstr "Очистить поле"
 
-#: skl_shared/src/shared.py:1312
+#: skl_shared/src/shared.py:1309
 msgid "Clear"
 msgstr "Очистить"
 
-#: skl_shared/src/shared.py:1580
+#: skl_shared/src/shared.py:1585
 msgid "Toggle all"
 msgstr "Переключить все"
 
-#: skl_shared/src/shared.py:1581
+#: skl_shared/src/shared.py:1586
 msgid "Mark/unmark all checkboxes"
 msgstr "Переключить все галки"
 
-#: skl_shared/src/shared.py:1613
+#: skl_shared/src/shared.py:1618
 msgid "Select files:"
 msgstr "Выберите файлы:"
 
-#: skl_shared/src/shared.py:1781 skl_shared/src/shared.py:1796
-#: skl_shared/src/shared.py:1956 skl_shared/src/shared.py:3061
-#: skl_shared/src/shared.py:3104 skl_shared/src/shared.py:3106
+#: skl_shared/src/shared.py:1793 skl_shared/src/shared.py:1808
+#: skl_shared/src/shared.py:1968 skl_shared/src/shared.py:2971
+#: skl_shared/src/shared.py:3012 skl_shared/src/shared.py:3014
 msgid "Please wait..."
 msgstr "Подождите..."
 
-#: skl_shared/src/shared.py:1799 skl_shared/src/shared.py:1814
-#: skl_shared/src/shared.py:1959
+#: skl_shared/src/shared.py:1811 skl_shared/src/shared.py:1826
+#: skl_shared/src/shared.py:1971
 msgid "The required widget has not been created yet!"
 msgstr "Требуемый виджет еще не был создан!"
 
-#: skl_shared/src/shared.py:2268
+#: skl_shared/src/shared.py:2151
 msgid "Clipboard is empty!"
 msgstr "Буфер обмена пуст!"
 
-#: skl_shared/src/shared.py:2298
+#: skl_shared/src/shared.py:2181
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
-#: skl_shared/src/shared.py:2570
+#: skl_shared/src/shared.py:2453
 msgid "Remove item #{}"
 msgstr "Удаление элемента №{}"
 
-#: skl_shared/src/shared.py:2573
+#: skl_shared/src/shared.py:2456
 msgid "No item #{}!"
 msgstr "Элемент №{} отсутствует!"
 
-#: skl_shared/src/shared.py:2641
+#: skl_shared/src/shared.py:2530
 msgid "Item \"{}\" is not in list!"
 msgstr "Элемент \"{}\" не в списке!"
 
-#: skl_shared/src/shared.py:2979
+#: skl_shared/src/shared.py:2889
 msgid "Set the geometry to \"{}x{}+{}+{}\""
 msgstr "Изменение геометрии виджета на \"{}x{}+{}+{}\""
 
-#: skl_shared/src/shared.py:3439
+#: skl_shared/src/shared.py:3348
 msgid "Widget width ({}) should not exceed screen width ({})!"
 msgstr "Ширина виджета ({}) не должна превышать ширины экрана ({})!"
 
-#: skl_shared/src/shared.py:3450
+#: skl_shared/src/shared.py:3359
 msgid "Widget height ({}) should not exceed screen height ({})!"
 msgstr "Высота виджета ({}) не должна превышать высоту экрана ({})!"
 
-#: skl_shared/src/shared.py:3479
+#: skl_shared/src/shared.py:3388
 msgid "Widget 1 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 1: {}x{}+{}+{}"
 
-#: skl_shared/src/shared.py:3485
+#: skl_shared/src/shared.py:3394
 msgid "Widget 2 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 2: {}x{}+{}+{}"
 
-#: skl_shared/src/shared.py:3582
+#: skl_shared/src/shared.py:3491
 msgid "Wrong font: \"{}\"!"
 msgstr "Неправильный шрифт: \"{}\"!"
 
-#: skl_shared/src/shared.py:3632
+#: skl_shared/src/shared.py:3542
 msgid "Save geometry: {}"
 msgstr "Сохранение геометрии: {}"
 
-#: skl_shared/src/shared.py:3641
+#: skl_shared/src/shared.py:3551
 msgid "Restore geometry: {}"
 msgstr "Восстановление геометрии: {}"
 
-#: skl_shared/src/shared.py:3660
+#: skl_shared/src/shared.py:3570
 msgid "Failed to change window properties!"
 msgstr "Не удалось изменить свойства окна!"
 
-#: skl_shared/src/shared.py:3745
+#: skl_shared/src/shared.py:3655
 msgid "Failed to get the window handle!"
 msgstr "Не удалось получить дескриптор окна!"
 
-#: skl_shared/src/shared.py:3856 skl_shared/src/shared.py:4200
-msgid "Test:"
-msgstr "Тест:"
-
-#: skl_shared/src/shared.py:3983
-msgid "Yes"
-msgstr "Да"
-
-#: skl_shared/src/shared.py:3984
-msgid "No"
-msgstr "Нет"
-
-#: skl_shared/src/shared.py:3987
-msgid "Cancel"
-msgstr "Отмена"
-
-#: skl_shared/src/shared.py:4155
-msgid "N/A"
-msgstr "Н/Д"
-
-#: skl_shared/src/shared.py:4167
-msgid "SECTION"
-msgstr "СЕКЦИЯ"
-
-#: skl_shared/src/shared.py:4167
-msgid "KEY"
-msgstr "КЛЮЧ"
-
-#: skl_shared/src/shared.py:4167
-msgid "VALUE"
-msgstr "ЗНАЧЕНИЕ"
-
-#: skl_shared/src/shared.py:4187
-msgid "An unknown color \"{}\"!"
-msgstr "Неизвестный цвет \"{}\"!"
-
-#: skl_shared/src/shared.py:4215
+#: skl_shared/src/shared.py:3700 skl_shared/src/shared.py:3710
+#: skl_shared/src/shared.py:3720 skl_shared/src/shared.py:4169
 msgid ""
 "The operation has failed!\n"
 "\n"
@@ -1939,199 +1967,247 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/shared.py:4232
+#: skl_shared/src/shared.py:3796 skl_shared/src/shared.py:4154
+msgid "Test:"
+msgstr "Тест:"
+
+#: skl_shared/src/shared.py:3924
+msgid "Yes"
+msgstr "Да"
+
+#: skl_shared/src/shared.py:3925
+msgid "No"
+msgstr "Нет"
+
+#: skl_shared/src/shared.py:4109
+msgid "N/A"
+msgstr "Н/Д"
+
+#: skl_shared/src/shared.py:4121
+msgid "SECTION"
+msgstr "СЕКЦИЯ"
+
+#: skl_shared/src/shared.py:4121
+msgid "KEY"
+msgstr "КЛЮЧ"
+
+#: skl_shared/src/shared.py:4121
+msgid "VALUE"
+msgstr "ЗНАЧЕНИЕ"
+
+#: skl_shared/src/shared.py:4141
+msgid "An unknown color \"{}\"!"
+msgstr "Неизвестный цвет \"{}\"!"
+
+#: skl_shared/src/shared.py:4186
 msgid "Failed to enable key combination \"{}\"!"
 msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
 
-#: skl_shared/src/shared.py:4597
+#: skl_shared/src/shared.py:4552
 msgid "Search:"
 msgstr "Поиск:"
 
-#: skl_shared/src/shared.py:4600
+#: skl_shared/src/shared.py:4555
 msgid "Enter a string to search:"
 msgstr "Строка для поиска:"
 
-#: skl_shared/src/shared.py:4619
+#: skl_shared/src/shared.py:4574
 msgid "Case-sensitive search"
 msgstr "Поиск с учетом регистра"
 
-#: skl_shared/src/shared.py:4630
+#: skl_shared/src/shared.py:4585
 msgid "Loop"
 msgstr "Зациклить"
 
-#: skl_shared/src/shared.py:5075
+#: skl_shared/src/shared.py:5008
 msgid "No more matches, continuing from the bottom!"
 msgstr "Совпадений больше нет, поиск продолжен с конца!"
 
-#: skl_shared/src/shared.py:5081 skl_shared/src/shared.py:5108
+#: skl_shared/src/shared.py:5014 skl_shared/src/shared.py:5041
 msgid "No more matches!"
 msgstr "Совпадений больше нет!"
 
-#: skl_shared/src/shared.py:5084 skl_shared/src/shared.py:5111
+#: skl_shared/src/shared.py:5017 skl_shared/src/shared.py:5044
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: skl_shared/src/shared.py:5103
+#: skl_shared/src/shared.py:5036
 msgid "No more matches, continuing from the top!"
 msgstr "Совпадений больше нет, поиск продолжен с начала!"
 
-#: skl_shared/src/shared.py:5137
+#: skl_shared/src/shared.py:5070
 msgid "Failed to find reference \"{}\" with index {}!"
 msgstr "Не удалось найти ссылку \"{}\" с индексом {}!"
 
-#: skl_shared/src/shared.py:5153
+#: skl_shared/src/shared.py:5086
 msgid "Pattern: \"{}\"; index: {}"
 msgstr "Образец: \"{}\"; индекс: {}"
 
-#: skl_shared/src/shared.py:5178
+#: skl_shared/src/shared.py:5111
 msgid "No reference has been found!"
 msgstr "Ссылка не найдена!"
 
-#: skl_shared/src/shared.py:5206
+#: skl_shared/src/shared.py:5139
 msgid "The start of the text has been reached!"
 msgstr "Достигнуто начало текста!"
 
-#: skl_shared/src/shared.py:5221 skl_shared/src/shared.py:5253
+#: skl_shared/src/shared.py:5154 skl_shared/src/shared.py:5186
 msgid "Distance: {} symbols"
 msgstr "Расстояние: {} символов"
 
-#: skl_shared/src/shared.py:5238
+#: skl_shared/src/shared.py:5171
 msgid "The end of the text has been reached!"
 msgstr "Достигнут конец текста!"
 
-#: skl_shared/src/tests.py:106 skl_shared/src/tests.py:123
-#: skl_shared/src/tests.py:143 skl_shared/src/tests.py:162
+#: skl_shared/src/shared.py:5265 skl_shared/src/tests.py:21
+msgid "Scrollable widget"
+msgstr "Прокручиваемый виджет"
+
+#: skl_shared/src/tests.py:57
+msgid "Label {}"
+msgstr "Надпись {}"
+
+#: skl_shared/src/tests.py:131
+msgid "Hello!"
+msgstr "Здравствуйте!"
+
+#: skl_shared/src/tests.py:147
+msgid "Spellchecker"
+msgstr "Проверка правописания"
+
+#: skl_shared/src/tests.py:231 skl_shared/src/tests.py:248
+#: skl_shared/src/tests.py:268 skl_shared/src/tests.py:287
 msgid "Variant #{}"
 msgstr "Вариант №{}"
 
-#: skl_shared/src/tests.py:109
+#: skl_shared/src/tests.py:234
 msgid "Description: no settings"
 msgstr "Описание: нет настроек"
 
-#: skl_shared/src/tests.py:126
+#: skl_shared/src/tests.py:251
 msgid "Description: headers"
 msgstr "Описание: заголовки"
 
-#: skl_shared/src/tests.py:146
+#: skl_shared/src/tests.py:271
 msgid "Description: transposition"
 msgstr "Описание: транспозиция"
 
-#: skl_shared/src/tests.py:165
+#: skl_shared/src/tests.py:290
 msgid "Description: transposition and headers"
 msgstr "Описание: транспозиция и заголовки"
 
-#: skl_shared/src/tests.py:184 skl_shared/src/tests.py:199
-#: skl_shared/src/tests.py:211 skl_shared/src/tests.py:227
-#: skl_shared/src/tests.py:247 skl_shared/src/tests.py:267
-#: skl_shared/src/tests.py:281 skl_shared/src/tests.py:310
-#: skl_shared/src/tests.py:321 skl_shared/src/tests.py:343
-#: skl_shared/src/tests.py:359 skl_shared/src/tests.py:376
-#: skl_shared/src/tests.py:398 skl_shared/src/tests.py:414
-#: skl_shared/src/tests.py:426 skl_shared/src/tests.py:462
-#: skl_shared/src/tests.py:479 skl_shared/src/tests.py:491
-#: skl_shared/src/tests.py:498 skl_shared/src/tests.py:525
-#: skl_shared/src/tests.py:560 skl_shared/src/tests.py:578
-#: skl_shared/src/tests.py:625 skl_shared/src/tests.py:674
-#: skl_shared/src/tests.py:714 skl_shared/src/tests.py:770
-#: skl_shared/src/tests.py:830 skl_shared/src/tests.py:853
-#: skl_shared/src/tests.py:866 skl_shared/src/tests.py:893
-#: skl_shared/src/tests.py:906 skl_shared/src/tests.py:941
-#: skl_shared/src/tests.py:953 skl_shared/src/tests.py:997
-#: skl_shared/src/tests.py:1049
+#: skl_shared/src/tests.py:309 skl_shared/src/tests.py:324
+#: skl_shared/src/tests.py:336 skl_shared/src/tests.py:352
+#: skl_shared/src/tests.py:372 skl_shared/src/tests.py:392
+#: skl_shared/src/tests.py:406 skl_shared/src/tests.py:435
+#: skl_shared/src/tests.py:446 skl_shared/src/tests.py:468
+#: skl_shared/src/tests.py:484 skl_shared/src/tests.py:501
+#: skl_shared/src/tests.py:523 skl_shared/src/tests.py:539
+#: skl_shared/src/tests.py:551 skl_shared/src/tests.py:587
+#: skl_shared/src/tests.py:604 skl_shared/src/tests.py:616
+#: skl_shared/src/tests.py:623 skl_shared/src/tests.py:650
+#: skl_shared/src/tests.py:685 skl_shared/src/tests.py:703
+#: skl_shared/src/tests.py:750 skl_shared/src/tests.py:799
+#: skl_shared/src/tests.py:839 skl_shared/src/tests.py:895
+#: skl_shared/src/tests.py:955 skl_shared/src/tests.py:978
+#: skl_shared/src/tests.py:991 skl_shared/src/tests.py:1018
+#: skl_shared/src/tests.py:1031 skl_shared/src/tests.py:1066
+#: skl_shared/src/tests.py:1078 skl_shared/src/tests.py:1122
+#: skl_shared/src/tests.py:1174
 msgid "Run \"{}\". Press any key to continue"
 msgstr "Запуск \"{}\". Нажмите любую клавишу для продолжения."
 
-#: skl_shared/src/tests.py:222 skl_shared/src/tests.py:242
-#: skl_shared/src/tests.py:262 skl_shared/src/tests.py:305
-#: skl_shared/src/tests.py:316 skl_shared/src/tests.py:371
+#: skl_shared/src/tests.py:347 skl_shared/src/tests.py:367
+#: skl_shared/src/tests.py:387 skl_shared/src/tests.py:430
+#: skl_shared/src/tests.py:441 skl_shared/src/tests.py:496
 msgid "Output: \"{}\""
 msgstr "Вывод: \"{}\""
 
-#: skl_shared/src/tests.py:464
+#: skl_shared/src/tests.py:589
 msgid "Copy something to clipboard"
 msgstr "Скопируйте что-нибудь в буфер обмена"
 
-#: skl_shared/src/tests.py:467 skl_shared/src/tests.py:474
+#: skl_shared/src/tests.py:592 skl_shared/src/tests.py:599
 msgid "Clipboard contents: \"{}\""
 msgstr "Содержание буфера обмена: \"{}\""
 
-#: skl_shared/src/tests.py:470
+#: skl_shared/src/tests.py:595
 msgid "The following will be copied: \"{}\""
 msgstr "Будет скопировано следующее: \"{}\""
 
-#: skl_shared/src/tests.py:486 skl_shared/src/tests.py:493
-#: skl_shared/src/tests.py:555
+#: skl_shared/src/tests.py:611 skl_shared/src/tests.py:618
+#: skl_shared/src/tests.py:680
 msgid "Your input: \"{}\""
 msgstr "Вы ввели: \"{}\""
 
-#: skl_shared/src/tests.py:516
+#: skl_shared/src/tests.py:641
 msgid "New settings"
 msgstr "Новые настройки"
 
-#: skl_shared/src/tests.py:541
+#: skl_shared/src/tests.py:666
 msgid "Your final selection: \"{}\""
 msgstr "Ваш конечный выбор: \"{}\""
 
-#: skl_shared/src/tests.py:659
+#: skl_shared/src/tests.py:784
 msgid "The event has been triggered!"
 msgstr "Событие вызвано!"
 
-#: skl_shared/src/tests.py:677
+#: skl_shared/src/tests.py:802
 msgid "Button"
 msgstr "Кнопка"
 
-#: skl_shared/src/tests.py:681
+#: skl_shared/src/tests.py:806
 msgid "Trigger an event"
 msgstr "Вызвать событие"
 
-#: skl_shared/src/tests.py:750
+#: skl_shared/src/tests.py:875
 msgid "Screen resolution: {}x{}"
 msgstr "Разрешение экрана: {}x{}"
 
-#: skl_shared/src/tests.py:752
+#: skl_shared/src/tests.py:877
 msgid "Random coordinates: x: {}; y: {}"
 msgstr "Случайные координаты: x: {}; y: {}"
 
-#: skl_shared/src/tests.py:885
+#: skl_shared/src/tests.py:1010
 msgid "Window handle (Windows-only): {}"
 msgstr "Дескриптор окна (только Windows): {}"
 
-#: skl_shared/src/tests.py:915 skl_shared/src/tests.py:930
+#: skl_shared/src/tests.py:1040 skl_shared/src/tests.py:1055
 msgid "You answered Yes"
 msgstr "Вы ответили Да"
 
-#: skl_shared/src/tests.py:917 skl_shared/src/tests.py:932
+#: skl_shared/src/tests.py:1042 skl_shared/src/tests.py:1057
 msgid "You answered No"
 msgstr "Вы ответили Нет"
 
-#: skl_shared/src/tests.py:948
+#: skl_shared/src/tests.py:1073
 msgid "Font size: {}x{}"
 msgstr "Размер шрифта: {}x{}"
 
-#: skl_shared/src/tests.py:957 skl_shared/src/tests.py:966
-#: skl_shared/src/tests.py:975 skl_shared/src/tests.py:984
-#: skl_shared/src/tests.py:1001 skl_shared/src/tests.py:1010
-#: skl_shared/src/tests.py:1019 skl_shared/src/tests.py:1028
-#: skl_shared/src/tests.py:1037
+#: skl_shared/src/tests.py:1082 skl_shared/src/tests.py:1091
+#: skl_shared/src/tests.py:1100 skl_shared/src/tests.py:1109
+#: skl_shared/src/tests.py:1126 skl_shared/src/tests.py:1135
+#: skl_shared/src/tests.py:1144 skl_shared/src/tests.py:1153
+#: skl_shared/src/tests.py:1162
 msgid "Test #{}"
 msgstr "Тест №{}"
 
-#: skl_shared/src/tests.py:962 skl_shared/src/tests.py:971
-#: skl_shared/src/tests.py:980 skl_shared/src/tests.py:989
+#: skl_shared/src/tests.py:1087 skl_shared/src/tests.py:1096
+#: skl_shared/src/tests.py:1105 skl_shared/src/tests.py:1114
 msgid "Path: \"{}\"; free space: {}"
 msgstr "Путь: \"{}\"; свободное место: {}"
 
-#: skl_shared/src/tests.py:1006 skl_shared/src/tests.py:1015
-#: skl_shared/src/tests.py:1024 skl_shared/src/tests.py:1033
-#: skl_shared/src/tests.py:1042
+#: skl_shared/src/tests.py:1131 skl_shared/src/tests.py:1140
+#: skl_shared/src/tests.py:1149 skl_shared/src/tests.py:1158
+#: skl_shared/src/tests.py:1167
 msgid "Object: \"{}\"; size: {}"
 msgstr "Объект: \"{}\"; размер: {}"
 
-#: skl_shared/src/tests.py:1083 skl_shared/src/tests.py:1116
+#: skl_shared/src/tests.py:1208 skl_shared/src/tests.py:1241
 msgid "Press Return to place widgets randomly"
 msgstr "Нажмите Ввод, чтобы расположить виджеты случайным образом"
 
-#: skl_shared/src/tests.py:1087
+#: skl_shared/src/tests.py:1212
 msgid ""
 "Anchor: {}\n"
 "Press Return to adjust Widget 2"
@@ -2139,13 +2215,19 @@ msgstr ""
 "Привязка: {}\n"
 "Нажмите Ввод для подгонки Виджета 2"
 
-#: skl_shared/src/tests.py:1139
+#: skl_shared/src/tests.py:1264
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
 
-#: skl_shared/src/tests.py:1189
+#: skl_shared/src/tests.py:1314
 msgid "Text:"
 msgstr "Текст:"
+
+#~ msgid "Search keywords"
+#~ msgstr "Поиск по ключевым словам"
+
+#~ msgid "You need to install \"{}\"!"
+#~ msgstr "Необходимо установить \"{}\"!"
 
 #~ msgid "Search Youtube"
 #~ msgstr "Поиск в Youtube"
@@ -2395,9 +2477,6 @@ msgstr "Текст:"
 #~ msgid "No comments yet!"
 #~ msgstr "Комментариев пока нет!"
 
-#~ msgid "%d files have been deleted:"
-#~ msgstr "Удалено %d файлов:"
-
 #~ msgid "Update channels (%d/%d)"
 #~ msgstr "Обновление каналов (%d/%d)"
 
@@ -2534,9 +2613,6 @@ msgstr "Текст:"
 
 #~ msgid "Update subscriptions in database"
 #~ msgstr "Обновить подписки в базе данных"
-
-#~ msgid "User:"
-#~ msgstr "Пользователь:"
 
 #~ msgid "URL:"
 #~ msgstr "URL:"
