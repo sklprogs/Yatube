@@ -638,6 +638,15 @@ class Menu:
         self.opt_day = sh.OptionMenu (parent = self.frame1)
         self.opt_mth = sh.OptionMenu (parent = self.frame1)
         self.opt_yrs = sh.OptionMenu (parent = self.frame1)
+        self.opt_lgn = sh.OptionMenu (parent = self.frame1
+                                     ,items = (_('Login')
+                                              ,_('Use')
+                                              ,_('Set up')
+                                              ,_('Forget')
+                                              ,_('Forget & Delete')
+                                              )
+                                     ,default = _('Login')
+                                     )
         # Search Youtube
         self.ent_src = sh.Entry (parent = self.frame2
                                 ,font = 'Serif 10 italic'
