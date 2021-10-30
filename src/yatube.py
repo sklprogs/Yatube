@@ -1013,22 +1013,30 @@ class Commands:
     def delete_login(self):
         mes = _('Not implemented yet!')
         sh.objs.get_mes(f,mes).show_info()
+        self.disable_login()
     
     def forget_login(self):
         objs.get_credentials().forget()
+        self.disable_login()
     
     def set_login(self):
-        objs.get_credentials().set()
+        objs.get_credentials().input_credentials()
         objs.credentials.install()
     
     def enable_login(self):
-        items = list(gi.objs.get_menu().opt_lgn.items)
-        if len(items) > 0:
-            del items[1]
-            items.insert(1,_('Do not use'))
-            gi.objs.menu.opt_lgn.reset(items)
+        f = '[Yatube] yatube.Commands.enable_login'
+        if objs.get_credentials().login and objs.credentials.password:
+            objs.credentials.read_password()
+            items = list(gi.objs.get_menu().opt_lgn.items)
+            if len(items) > 0:
+                del items[1]
+                items.insert(1,_('Do not use'))
+                gi.objs.menu.opt_lgn.reset(items)
+            else:
+                mes = _('Wrong input data: "{}"!').format(items)
+                sh.objs.get_mes(f,mes).show_warning()
         else:
-            mes = _('Wrong input data: "{}"!').format(items)
+            mes = _('You need to set up credentials first!')
             sh.objs.get_mes(f,mes).show_warning()
     
     def disable_login(self):
@@ -2912,7 +2920,7 @@ class Objects:
     
     def get_credentials(self):
         if self.credentials is None:
-            self.credentials = Credentials()
+            self.credentials = mt.Credentials()
             self.credentials.icon = gi.ICON
         return self.credentials
     

@@ -23,6 +23,7 @@ class Credentials:
         self.set_values()
     
     def set_values(self):
+        self.ipass = None
         self.icon = ''
         self.login = ''
         self.password = ''
@@ -34,13 +35,15 @@ class Credentials:
     def forget(self):
         self.reset()
     
-    def get_password(self):
-        f = '[Yatube] meta.Credentials.get_password'
+    def read_password(self):
+        f = '[Yatube] meta.Credentials.read_password'
         if not self.login:
             sh.com.rep_empty(f)
             return
         try:
-            return keyring.get_password('system',self.login)
+            password = keyring.get_password('system',self.login)
+            if password:
+                self.password = password
         except keyring.errors.KeyringLocked:
             mes = _('Failed to get the password!')
             sh.objs.get_mes(f,mes).show_error()
@@ -49,11 +52,15 @@ class Credentials:
             mes = mes.format(e)
             sh.objs.get_mes(f,mes).show_error()
     
-    def set(self):
-        ipass = pw.Password(self.icon)
-        ipass.show()
-        self.login = ipass.get_login()
-        self.password = ipass.get_password()
+    def get_ipass(self):
+        if self.ipass is None:
+            self.ipass = pw.Password(self.icon)
+        return self.ipass
+    
+    def input_credentials(self):
+        self.get_ipass().show()
+        self.login = self.ipass.get_login()
+        self.password = self.ipass.get_password()
     
     def install(self):
         f = '[Yatube] meta.Credentials.install'
