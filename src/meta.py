@@ -3,9 +3,11 @@
 
 import io
 import html
+import keyring
 from googleapiclient.discovery import build
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
+import skl_shared.password.controller as pw
 
 API_KEY = ''
 ''' Default number of videos to be fetched: 5, max: 50.
@@ -13,6 +15,61 @@ API_KEY = ''
 '''
 MAX_VIDEOS = 50
 MAX_COMMENTS = 100
+
+
+class Credentials:
+    
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        self.icon = ''
+        self.login = ''
+        self.password = ''
+    
+    def reset(self):
+        self.login = ''
+        self.password = ''
+    
+    def forget(self):
+        self.reset()
+    
+    def get_password(self):
+        f = '[Yatube] meta.Credentials.get_password'
+        if not self.login:
+            sh.com.rep_empty(f)
+            return
+        try:
+            return keyring.get_password('system',self.login)
+        except keyring.errors.KeyringLocked:
+            mes = _('Failed to get the password!')
+            sh.objs.get_mes(f,mes).show_error()
+        except Exception as e:
+            mes = _('Third-party module has failed!\n\nDetails: {}')
+            mes = mes.format(e)
+            sh.objs.get_mes(f,mes).show_error()
+    
+    def set(self):
+        ipass = pw.Password(self.icon)
+        ipass.show()
+        self.login = ipass.get_login()
+        self.password = ipass.get_password()
+    
+    def install(self):
+        f = '[Yatube] meta.Credentials.install'
+        if not self.login or not self.password:
+            sh.com.rep_empty(f)
+            return
+        try:
+            keyring.set_password('system',self.login,self.password)
+        except keyring.errors.KeyringLocked:
+            mes = _('Failed to install credentials!')
+            sh.objs.get_mes(f,mes).show_error()
+        except Exception as e:
+            mes = _('Third-party module has failed!\n\nDetails: {}')
+            mes = mes.format(e)
+            sh.objs.get_mes(f,mes).show_error()
+
 
 
 class Trending:

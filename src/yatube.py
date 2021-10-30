@@ -1010,6 +1010,63 @@ class Commands:
         lg.objs.get_lists().reset()
         self.reset_channels()
     
+    def delete_login(self):
+        mes = _('Not implemented yet!')
+        sh.objs.get_mes(f,mes).show_info()
+    
+    def forget_login(self):
+        objs.get_credentials().forget()
+    
+    def set_login(self):
+        objs.get_credentials().set()
+        objs.credentials.install()
+    
+    def enable_login(self):
+        items = list(gi.objs.get_menu().opt_lgn.items)
+        if len(items) > 0:
+            del items[1]
+            items.insert(1,_('Do not use'))
+            gi.objs.menu.opt_lgn.reset(items)
+        else:
+            mes = _('Wrong input data: "{}"!').format(items)
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def disable_login(self):
+        items = list(gi.objs.get_menu().opt_lgn.items)
+        if len(items) > 0:
+            del items[1]
+            items.insert(1,_('Use'))
+            gi.objs.menu.opt_lgn.reset(items)
+        else:
+            mes = _('Wrong input data: "{}"!').format(items)
+            sh.objs.get_mes(f,mes).show_warning()
+    
+    def manage_login(self,event=None):
+        f = '[Yatube] yatube.Commands.manage_login'
+        choice = gi.objs.get_menu().opt_lgn.choice
+        if choice == _('Use'):
+            self.enable_login()
+        elif choice == _('Do not use'):
+            self.disable_login()
+        elif choice == _('Set up'):
+            self.set_login()
+        elif choice == _('Forget'):
+            self.forget_login()
+        elif choice == _('Forget & Delete'):
+            self.delete_login()
+        else:
+            items = list(self.opt_lgn.items)
+            if _('Use') in items:
+                items.remove(_('Use'))
+            if _('Do not use') in items:
+                items.remove(_('Do not use'))
+            items.append(_('Use'))
+            items.append(_('Do not use'))
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(self.opt_lgn.choice,'; '.join(items))
+            sh.objs.get_mes(f,mes,True).show_error()
+        gi.objs.menu.opt_lgn.set(gi.objs.menu.opt_lgn.default)
+    
     def update_frequent(self,event=None):
         f = '[Yatube] yatube.Commands.update_frequent'
         frequent = lg.objs.get_lists().freq
@@ -2430,10 +2487,6 @@ class Commands:
                     ,bindings = '<Button-1>'
                     ,action = self.update_sel_menu
                     )
-        self.menu.opt_upd.action = self.run_menu_update
-        self.menu.opt_viw.action = self.run_menu_view
-        self.menu.opt_sel.action = self.run_menu_selection
-        self.menu.opt_edt.action = self.run_menu_edit
         self.menu.opt_chl.reset (items = self.channels
                                 ,default = _('Channels')
                                 ,action = self.set_channel
@@ -2443,16 +2496,21 @@ class Commands:
                                 ,default = self.day
                                 ,action = self.reset_filter_date
                                 )
+        self.menu.opt_edt.action = self.run_menu_edit
+        self.menu.opt_lgn.action = self.manage_login
         self.menu.opt_max.action = self.set_max_videos
         self.menu.opt_mth.reset (items = self.months
                                 ,default = self.month
                                 ,action = self.reset_filter_date
                                 )
+        self.menu.opt_sel.action = self.run_menu_selection
         self.menu.opt_trd.reset (items = lg.objs.get_const().trending
                                 ,default = _('Trending')
                                 ,action = self.set_trending
                                 )
+        self.menu.opt_upd.action = self.run_menu_update
         self.menu.opt_url.action = self.get_url
+        self.menu.opt_viw.action = self.run_menu_view
         self.menu.opt_yrs.reset (items = self.years
                                 ,default = self.year
                                 ,action = self.reset_filter_date
@@ -2850,7 +2908,13 @@ class Objects:
     
     def __init__(self):
         self.videos = self.add_id = self.commands = self.channels \
-                    = self.pause = self.config = None
+                    = self.pause = self.config = self.credentials = None
+    
+    def get_credentials(self):
+        if self.credentials is None:
+            self.credentials = Credentials()
+            self.credentials.icon = gi.ICON
+        return self.credentials
     
     def get_config(self):
         if self.config is None:
