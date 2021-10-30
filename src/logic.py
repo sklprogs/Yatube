@@ -4,7 +4,8 @@
 import re
 import os
 import io
-import youtube_dl
+#import youtube_dl
+import yt_dlp as youtube_dl
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import skl_shared.image.controller as im
@@ -1390,6 +1391,8 @@ class Video:
                           ,'ignoreerrors'      :True
                           ,'nocheckcertificate':True
                           ,'socket_timeout'    :7
+                          ,'username'          :mt.objs.get_credentials().login
+                          ,'password'          :mt.objs.credentials.password
                           }
                 try:
                     ydl = youtube_dl.YoutubeDL(options)

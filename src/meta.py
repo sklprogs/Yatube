@@ -908,7 +908,12 @@ class Objects:
     def __init__(self):
         self.playlist = self.videos = self.search = self.stat \
                       = self.comments = self.playid = self.trending \
-                      = None
+                      = self.credentials = None
+    
+    def get_credentials(self):
+        if self.credentials is None:
+            self.credentials = Credentials()
+        return self.credentials
     
     def get_trending(self):
         if self.trending is None:

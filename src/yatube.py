@@ -2916,12 +2916,11 @@ class Objects:
     
     def __init__(self):
         self.videos = self.add_id = self.commands = self.channels \
-                    = self.pause = self.config = self.credentials = None
+                    = self.pause = self.config = None
     
     def get_credentials(self):
-        if self.credentials is None:
-            self.credentials = mt.Credentials()
-            self.credentials.icon = gi.ICON
+        self.credentials = mt.objs.get_credentials()
+        self.credentials.icon = gi.ICON
         return self.credentials
     
     def get_config(self):
