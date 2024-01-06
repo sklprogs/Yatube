@@ -63,16 +63,16 @@ class Config:
     
     def restore_keys(self):
         f = '[Yatube] yatube.Config.restore_keys'
-        if self.Success:
-            mt.MAX_VIDEOS = sh.lg.globs['int']['max_videos']
-            gi.objs.get_menu().opt_max.set(mt.MAX_VIDEOS)
-            gi.objs.menu.opt_qal.set(sh.lg.globs['str']['quality'])
-            gi.objs.menu.opt_res.set(sh.lg.globs['str']['resolution'])
-            gi.objs.menu.chb_slw.set(sh.lg.globs['bool']['SlowPC'])
-            gi.objs.menu.chb_dat.set(sh.lg.globs['bool']['DateActive'])
-            gi.objs.menu.opt_dat.set(sh.lg.globs['str']['DateChoice'])
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        mt.MAX_VIDEOS = sh.lg.globs['int']['max_videos']
+        gi.objs.get_menu().opt_max.set(mt.MAX_VIDEOS)
+        gi.objs.menu.opt_qal.set(sh.lg.globs['str']['quality'])
+        gi.objs.menu.opt_res.set(sh.lg.globs['str']['resolution'])
+        gi.objs.menu.chb_slw.set(sh.lg.globs['bool']['SlowPC'])
+        gi.objs.menu.chb_dat.set(sh.lg.globs['bool']['DateActive'])
+        gi.objs.menu.opt_dat.set(sh.lg.globs['str']['DateChoice'])
 
 
 
@@ -179,29 +179,28 @@ class Pause:
         f = '[Yatube] yatube.Pause.get_min'
         minutes = sh.Input(f,self.gui.ent_min.get()).get_integer()
         if 0 <= minutes <= 59:
-            pass
+            return minutes
+        sub = f'0 <= {minutes} <= 59'
+        mes = _('The condition "{}" is not observed!').format(sub)
+        sh.objs.get_mes(f, mes).show_warning()
+        if minutes > 59:
+            minutes = 59
         else:
-            sub = '0 <= {} <= 59'.format(minutes)
-            mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.get_mes(f,mes).show_warning()
-            if minutes > 59:
-                minutes = 59
-            else:
-                minutes = 0
-            self.gui.ent_min.reset()
-            self.gui.ent_min.insert(minutes)
+            minutes = 0
+        self.gui.ent_min.reset()
+        self.gui.ent_min.insert(minutes)
         return minutes
     
-    def get_hrs(self,event=None):
+    def get_hrs(self, event=None):
         f = '[Yatube] yatube.Pause.get_hrs'
-        return sh.Input(f,self.gui.ent_hrs.get()).get_integer()
+        return sh.Input(f, self.gui.ent_hrs.get()).get_integer()
     
-    def update(self,event=None):
+    def update(self, event=None):
         self.upd_hrs()
         self.upd_min()
         self.upd_sec()
     
-    def upd_sec(self,event=None):
+    def upd_sec(self, event=None):
         seconds = self.get_sec()
         if seconds < 59:
             self.gui.btn_scu.activate()
@@ -212,7 +211,7 @@ class Pause:
         else:
             self.gui.btn_scd.inactivate()
     
-    def upd_min(self,event=None):
+    def upd_min(self, event=None):
         minutes = self.get_min()
         if minutes < 59:
             self.gui.btn_mnu.activate()
@@ -223,14 +222,14 @@ class Pause:
         else:
             self.gui.btn_mnd.inactivate()
     
-    def upd_hrs(self,event=None):
+    def upd_hrs(self, event=None):
         self.gui.btn_hru.activate()
         if self.get_hrs() > 0:
             self.gui.btn_hrd.activate()
         else:
             self.gui.btn_hrd.inactivate()
     
-    def inc_sec(self,event=None):
+    def inc_sec(self, event=None):
         seconds = self.get_sec()
         if seconds < 59:
             seconds += 1
@@ -238,7 +237,7 @@ class Pause:
         self.gui.ent_sec.insert(seconds)
         self.upd_sec()
     
-    def inc_min(self,event=None):
+    def inc_min(self, event=None):
         minutes = self.get_min()
         if minutes < 59:
             minutes += 1
@@ -246,13 +245,13 @@ class Pause:
         self.gui.ent_min.insert(minutes)
         self.upd_min()
     
-    def inc_hrs(self,event=None):
+    def inc_hrs(self, event=None):
         hours = self.get_hrs() + 1
         self.gui.ent_hrs.reset()
         self.gui.ent_hrs.insert(hours)
         self.upd_hrs()
     
-    def dec_sec(self,event=None):
+    def dec_sec(self, event=None):
         seconds = self.get_sec()
         if seconds > 0:
             seconds -= 1
@@ -260,7 +259,7 @@ class Pause:
         self.gui.ent_sec.insert(seconds)
         self.upd_sec()
     
-    def dec_min(self,event=None):
+    def dec_min(self, event=None):
         minutes = self.get_min()
         if minutes > 0:
             minutes -= 1
@@ -268,7 +267,7 @@ class Pause:
         self.gui.ent_min.insert(minutes)
         self.upd_min()
     
-    def dec_hrs(self,event=None):
+    def dec_hrs(self, event=None):
         hours = self.get_hrs()
         if hours > 0:
             hours -= 1
@@ -276,17 +275,17 @@ class Pause:
         self.gui.ent_hrs.insert(hours)
         self.upd_hrs()
     
-    def show(self,event=None):
+    def show(self, event=None):
         self.gui.show()
     
-    def close(self,event=None):
+    def close(self, event=None):
         self.gui.close()
 
 
 
 class Extractor:
     
-    def __init__(self,url=''):
+    def __init__(self, url=''):
         self.type_ = 'extractor'
         self.url = ''
         if url:
@@ -296,21 +295,20 @@ class Extractor:
         f = '[Yatube] yatube.Extractor.fetch'
         objs.get_commands().reset_channel_gui()
         lg.objs.get_extractor().run()
-        if lg.objs.extractor.urls:
-            mt.objs.get_videos().reset()
-            ''' We put a limit here just not to hang the program.
-                Potential limit (after which GUI may freeze) may be
-                around 500 videos. Moreover, each extracted video ID
-                adds up quota.
-            '''
-            ids = list(lg.objs.extractor.urls)[:200]
-            for vid in lg.objs.extractor.urls:
-                video = mt.Video()
-                video.id_ = vid
-                mt.objs.get_videos().add(video)
-            objs.commands.set_channel_gui()
-        else:
+        if not lg.objs.extractor.urls:
             sh.com.rep_lazy(f)
+            return
+        mt.objs.get_videos().reset()
+        ''' We put a limit here just not to hang the program. Potential
+            limit (after which GUI may freeze) may be around 500 videos.
+            Moreover, each extracted video ID adds up quota.
+        '''
+        ids = list(lg.objs.extractor.urls)[:200]
+        for vid in lg.objs.extractor.urls:
+            video = mt.Video()
+            video.id_ = vid
+            mt.objs.get_videos().add(video)
+        objs.commands.set_channel_gui()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.Extractor.fetch_prev'
@@ -320,7 +318,7 @@ class Extractor:
         f = '[Yatube] yatube.Extractor.fetch_next'
         sh.com.rep_lazy(f)
     
-    def reset(self,url):
+    def reset(self, url):
         self.url = url
         lg.objs.get_extractor().reset(url=self.url)
 
@@ -328,7 +326,7 @@ class Extractor:
 
 class Trending:
     
-    def __init__(self,country=''):
+    def __init__(self, country=''):
         self.set_values()
         if country:
             self.reset(country)
@@ -351,7 +349,7 @@ class Trending:
         mt.objs.trending.set_videos()
         objs.commands.set_channel_gui()
     
-    def reset(self,country):
+    def reset(self, country):
         self.country = country
         mt.objs.get_trending().reset(self.country)
 
@@ -383,7 +381,7 @@ class Feed:
 
 class Search:
     
-    def __init__(self,query=''):
+    def __init__(self, query=''):
         self.set_values()
         if query:
             self.reset(query)
@@ -413,12 +411,9 @@ class Search:
 
 
 class Videos:
-    ''' Currently this class comprises some controller-specific
-        functionality of 'gi.Video'.
+    ''' Currently this class has some controller-specific functionality
+        of 'gi.Video'.
     '''
-    def __init__(self):
-        pass
-    
     def set_bindings(self):
         guis = [video.gui for video in mt.objs.get_videos().videos \
                 if video.gui
@@ -435,7 +430,7 @@ class Videos:
                             ,action = objs.commands.get_context
                             )
     
-    def add(self,no=1):
+    def add(self, no=1):
         return gi.Video (parent = gi.objs.get_channel().frm_emb
                         ,no = no
                         )
@@ -492,7 +487,7 @@ class Watchlist:
 
 class Playlist:
     
-    def __init__(self,playid=''):
+    def __init__(self, playid=''):
         self.type_ = 'playlist'
         self.playid = ''
         if playid:
@@ -522,13 +517,10 @@ class Channels:
     
     def __init__(self):
         self.channels = []
-        self.modes = ('extractor','favorites','feed','history'
-                     ,'playlist','search','search_db','trending'
-                     ,'watchlist'
+        self.modes = ('extractor', 'favorites', 'feed', 'history', 'playlist'
+                     ,'search', 'search_db', 'trending', 'watchlist'
                      )
-        self.unique = ('favorites','feed','history','search_db'
-                      ,'watchlist'
-                      )
+        self.unique = ('favorites', 'feed', 'history', 'search_db', 'watchlist')
         self.types = []
         self.i = 0
     
@@ -551,25 +543,25 @@ class Channels:
             sh.com.rep_empty(f)
             self.add('history')
         if self.i < 0 or self.i >= len(self.channels):
-            sub = '0 <= {} < {}'.format(self.i,len(self.channels))
+            sub = f'0 <= {self.i} < {len(self.channels}'
             mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
             self.i = 0
         return self.channels[self.i]
     
     def go_mode(self,mode):
         f = '[Yatube] yatube.Channels.go_mode'
         types = [channel.type_ for channel in self.channels]
-        if types:
-            if mode in types:
-                self.i = types.index(mode)
-            else:
-                mes = _('Wrong input data: "{}"!').format(mode)
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not types:
             sh.com.rep_empty(f)
+            return
+        if mode in types:
+            self.i = types.index(mode)
+        else:
+            mes = _('Wrong input data: "{}"!').format(mode)
+            sh.objs.get_mes(f, mes).show_error()
     
-    def add(self,mode='playlist',arg=None):
+    def add(self, mode='playlist', arg=None):
         f = '[Yatube] yatube.Channels.add'
         if mode in self.unique and mode in self.types:
             self.go_mode(mode)
@@ -595,43 +587,43 @@ class Channels:
             self.inc()
         else:
             mes = _('Wrong input data: "{}"!').format(mode)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
     def fetch(self):
         f = '[Yatube] yatube.Channels.fetch'
-        if self.channels:
-            timer = sh.Timer(f)
-            timer.start()
-            objs.get_commands().reset_channel_gui()
-            mt.objs.get_videos().reset()
-            self.get_current().fetch()
-            timer.end()
-        else:
+        if not self.channels:
             sh.com.rep_empty(f)
+            return
+        timer = sh.Timer(f)
+        timer.start()
+        objs.get_commands().reset_channel_gui()
+        mt.objs.get_videos().reset()
+        self.get_current().fetch()
+        timer.end()
     
     def fetch_prev(self):
         f = '[Yatube] yatube.Channels.fetch_prev'
-        if self.channels:
-            timer = sh.Timer(f)
-            timer.start()
-            objs.get_commands().reset_channel_gui()
-            mt.objs.get_videos().reset()
-            self.get_current().fetch_prev()
-            timer.end()
-        else:
+        if not self.channels:
             sh.com.rep_empty(f)
+            return
+        timer = sh.Timer(f)
+        timer.start()
+        objs.get_commands().reset_channel_gui()
+        mt.objs.get_videos().reset()
+        self.get_current().fetch_prev()
+        timer.end()
     
     def fetch_next(self):
         f = '[Yatube] yatube.Channels.fetch_next'
-        if self.channels:
-            timer = sh.Timer(f)
-            timer.start()
-            objs.get_commands().reset_channel_gui()
-            mt.objs.get_videos().reset()
-            self.get_current().fetch_next()
-            timer.end()
-        else:
+        if not self.channels:
             sh.com.rep_empty(f)
+            return
+        timer = sh.Timer(f)
+        timer.start()
+        objs.get_commands().reset_channel_gui()
+        mt.objs.get_videos().reset()
+        self.get_current().fetch_next()
+        timer.end()
 
 
 
@@ -673,100 +665,100 @@ class AddId:
     def open(self,event=None):
         f = '[Yatube] yatube.AddId.open'
         author = self.gui.lst_id1.get()
-        if author:
-            ind = self.gui.lst_id1.lst.index(author)
-            ''' 'myid' will be a valid playlist ID since incorrect
-                values are not added when using 'AddId'.
-            '''
-            myid = self.gui.lst_id3.lst[ind]
-            url = 'https://www.youtube.com/playlist?list={}'.format(myid)
-            ionline = sh.Online()
-            ionline.url = url
-            ionline.browse()
-        else:
+        if not author:
             sh.com.rep_empty(f)
+            return
+        ind = self.gui.lst_id1.lst.index(author)
+        ''' 'myid' will be a valid playlist ID since incorrect values are not
+            added when using 'AddId'.
+        '''
+        myid = self.gui.lst_id3.lst[ind]
+        url = f'https://www.youtube.com/playlist?list={myid}'
+        ionline = sh.Online()
+        ionline.url = url
+        ionline.browse()
     
-    def delete(self,event=None):
+    def delete(self, event=None):
         f = '[Yatube] yatube.AddId.delete'
         author = self.gui.lst_id1.get()
-        if author:
-            ind = self.gui.lst_id1.lst.index(author)
-            del self.gui.lst_id1.lst[ind]
-            del self.gui.lst_id2.lst[ind]
-            del self.gui.lst_id3.lst[ind]
-            self.gui.lst_id1.reset(self.gui.lst_id1.lst)
-            self.gui.lst_id2.reset(self.gui.lst_id2.lst)
-            self.gui.lst_id3.reset(self.gui.lst_id3.lst)
-        else:
+        if not author:
             sh.com.rep_empty(f)
+            return
+        ind = self.gui.lst_id1.lst.index(author)
+        del self.gui.lst_id1.lst[ind]
+        del self.gui.lst_id2.lst[ind]
+        del self.gui.lst_id3.lst[ind]
+        self.gui.lst_id1.reset(self.gui.lst_id1.lst)
+        self.gui.lst_id2.reset(self.gui.lst_id2.lst)
+        self.gui.lst_id3.reset(self.gui.lst_id3.lst)
     
     def set_values(self):
         self.author = ''
         self.id_ = ''
     
-    def add_record(self,mode='user'):
+    def add_record(self, mode='user'):
         f = '[Yatube] yatube.AddId.add_record'
         id1 = self.gui.lst_id1.lst
         id2 = self.gui.lst_id2.lst
         id3 = self.gui.lst_id3.lst
         if self.author in id1:
             mes = _('"{}" is already in the list!').format(self.author)
-            sh.objs.get_mes(f,mes).show_info()
-        else:
-            ind = len(id1)
-            Success = True
-            if mode == 'playid':
-                id3.insert(ind,self.id_)
-            elif mode == 'channel_id':
-                mt.objs.get_playid().reset(self.id_)
-                result = mt.objs.playid.get_by_channel_id()
-                if result:
-                    id3.insert(ind,result)
-                else:
-                    Success = False
-                    sh.com.rep_empty(f)
-            elif mode == 'user':
-                mt.objs.get_playid().reset(self.id_)
-                result = mt.objs.playid.get_by_user()
-                if result:
-                    id3.insert(ind,result)
-                else:
-                    Success = False
-                    sh.com.rep_empty(f)
+            sh.objs.get_mes(f, mes).show_info()
+            return
+        ind = len(id1)
+        Success = True
+        if mode == 'playid':
+            id3.insert(ind,self.id_)
+        elif mode == 'channel_id':
+            mt.objs.get_playid().reset(self.id_)
+            result = mt.objs.playid.get_by_channel_id()
+            if result:
+                id3.insert(ind,result)
             else:
                 Success = False
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(mode,'playid; channel_id; user')
-                sh.objs.get_mes(f,mes).show_error()
-            if Success:
-                id1.insert(ind,self.author)
-                id2.insert(ind,self.id_)
-                self.gui.lst_id1.reset(id1)
-                self.gui.lst_id2.reset(id2)
-                self.gui.lst_id3.reset(id3)
-                self.gui.ent_ath.clear_text()
-                self.gui.ent_pid.clear_text()
-                self.gui.ent_ath.focus()
+                sh.com.rep_empty(f)
+        elif mode == 'user':
+            mt.objs.get_playid().reset(self.id_)
+            result = mt.objs.playid.get_by_user()
+            if result:
+                id3.insert(ind,result)
             else:
-                sh.com.cancel(f)
+                Success = False
+                sh.com.rep_empty(f)
+        else:
+            Success = False
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(mode,'playid; channel_id; user')
+            sh.objs.get_mes(f,mes).show_error()
+        if not Success:
+            sh.com.cancel(f)
+            return
+        id1.insert(ind,self.author)
+        id2.insert(ind,self.id_)
+        self.gui.lst_id1.reset(id1)
+        self.gui.lst_id2.reset(id2)
+        self.gui.lst_id3.reset(id3)
+        self.gui.ent_ath.clear_text()
+        self.gui.ent_pid.clear_text()
+        self.gui.ent_ath.focus()
     
-    def add(self,event=None):
+    def add(self, event=None):
         f = '[Yatube] yatube.AddId.add'
         self.author = self.gui.ent_ath.get()
         self.id_ = self.gui.ent_pid.get()
         self.author = self.author.strip()
         self.id_ = self.id_.strip()
-        if self.author and self.id_:
-            if self.id_.startswith('UU') and len(self.id_) == 24:
-                self.add_record('playid')
-            elif self.id_.startswith('UC') and len(self.id_) == 24:
-                self.add_record('channel_id')
-            else:
-                self.add_record('user')
-        else:
+        if not self.author or not self.id_:
             sh.com.rep_empty(f)
+            return
+        if self.id_.startswith('UU') and len(self.id_) == 24:
+            self.add_record('playid')
+        elif self.id_.startswith('UC') and len(self.id_) == 24:
+            self.add_record('channel_id')
+        else:
+            self.add_record('user')
     
-    def edit(self,event=None):
+    def edit(self, event=None):
         f = '[Yatube] yatube.AddId.edit'
         author = self.gui.lst_id1.get()
         ind = self.gui.lst_id1.lst.index(author)
@@ -786,19 +778,19 @@ class AddId:
         self.gui.btn_rst.action = self.reset
         self.gui.btn_sav.action = self.save_close
         sh.com.bind (obj = self.gui
-                    ,bindings = ('<F5>','<Control-r>')
+                    ,bindings = ('<F5>', '<Control-r>')
                     ,action = self.reset
                     )
         sh.com.bind (obj = self.gui
-                    ,bindings = ('<F2>','<Control-s>')
+                    ,bindings = ('<F2>', '<Control-s>')
                     ,action = self.save_close
                     )
         sh.com.bind (obj = self.gui
-                    ,bindings = ('<Escape>','<Control-w>','<Control-q>')
+                    ,bindings = ('<Escape>', '<Control-w>', '<Control-q>')
                     ,action = self.close
                     )
         sh.com.bind (obj = self.gui.ent_ath
-                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,bindings = ('<Return>', '<KP_Enter>')
                     ,action = self.add
                     )
         sh.com.bind (obj = self.gui.ent_pid
@@ -806,7 +798,7 @@ class AddId:
                     ,action = self.add
                     )
     
-    def reset(self,event=None):
+    def reset(self, event=None):
         lg.objs.get_lists().reset()
         self.fill()
     
@@ -825,17 +817,17 @@ class AddId:
                          ).write(text)
         lg.objs.lists.reset()
     
-    def show(self,event=None):
+    def show(self, event=None):
         self.gui.show()
     
-    def close(self,event=None):
+    def close(self, event=None):
         self.gui.close()
         # Do not forget to run 'Commands.reset_channels' afterwards
 
     def fill(self):
         f = '[Yatube] yatube.AddId.fill'
-        ''' Filling the second (empty) column with non-empty values
-            prevents from inserting a new record at a wrong place.
+        ''' Filling the second (empty) column with non-empty values prevents
+            from inserting a new record at a wrong place.
         '''
         id1 = lg.objs.get_lists().subauth
         id2 = '?' * len(lg.objs.lists.subauth)
@@ -843,9 +835,9 @@ class AddId:
         if len(id1) == len(id2) == len(id3):
             pass
         else:
-            sub = '{} = {} = {}'.format(len(id1),len(id2),len(id3))
+            sub = f'{len(id1)} = {len(id2)} = {len(id3)}'
             mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         self.gui.lst_id1.reset(lst=id1)
         self.gui.lst_id2.reset(lst=id2)
         self.gui.lst_id3.reset(lst=id3)
@@ -882,15 +874,15 @@ class Comments:
                     ,action = self.get_next
                     )
         sh.com.bind (obj = self.gui.parent
-                    ,bindings = ('<Escape>','<Control-w>','<Control-q>')
+                    ,bindings = ('<Escape>', '<Control-w>', '<Control-q>')
                     ,action = self.close
                     )
         sh.com.bind (obj = self.gui.txt_com
-                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,bindings = ('<Return>', '<KP_Enter>')
                     ,action = self.get_next
                     )
         sh.com.bind (obj = self.gui.parent
-                    ,bindings = ('<Control-f>','<Control-F3>')
+                    ,bindings = ('<Control-f>', '<Control-F3>')
                     ,action = self.gui.txt_com.run_new_now
                     )
         sh.com.bind (obj = self.gui.parent
@@ -903,9 +895,9 @@ class Comments:
                     )
         self.gui.btn_prv.action = self.get_prev
         self.gui.btn_nxt.action = self.get_next
-        self.gui.widget.protocol('WM_DELETE_WINDOW',self.close)
+        self.gui.widget.protocol('WM_DELETE_WINDOW', self.close)
     
-    def get_prev(self,event=None):
+    def get_prev(self, event=None):
         f = '[Yatube] yatube.Comments.get_prev'
         if self.Success:
             self.logic.fetch_prev()
@@ -913,18 +905,18 @@ class Comments:
         else:
             sh.com.cancel(f)
     
-    def get_next(self,event=None):
+    def get_next(self, event=None):
         f = '[Yatube] yatube.Comments.get_next'
-        if self.Success:
-            self.logic.fetch_next()
-            self.update()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        self.logic.fetch_next()
+        self.update()
     
     def reset(self):
         f = '[Yatube] yatube.Comments.reset'
-        ''' We believe that the 'videoid' format should be checked
-            earlier, so we don't verify it here.
+        ''' We believe that the 'videoid' format should be checked earlier, so
+            we don't verify it here.
         '''
         self.logic.reset()
         self.logic.fetch()
@@ -937,53 +929,52 @@ class Comments:
     
     def update_buttons(self):
         f = '[Yatube] yatube.Comments.update_buttons'
-        if self.Success:
-            if self.logic.texts:
-                if self.logic.i == 0:
-                    self.gui.btn_prv.inactivate()
-                elif self.logic.i > 0:
-                    self.gui.btn_prv.activate()
-                if self.logic.next \
-                or self.logic.i + 1 < len(self.logic.texts):
-                    self.gui.btn_nxt.activate()
-                else:
-                    self.gui.btn_nxt.inactivate()
-            else:
-                self.gui.btn_prv.inactivate()
-                self.gui.btn_nxt.inactivate()
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.logic.texts:
+            self.gui.btn_prv.inactivate()
+            self.gui.btn_nxt.inactivate()
+            return
+        if self.logic.i == 0:
+            self.gui.btn_prv.inactivate()
+        elif self.logic.i > 0:
+            self.gui.btn_prv.activate()
+        if self.logic.next or self.logic.i + 1 < len(self.logic.texts):
+            self.gui.btn_nxt.activate()
+        else:
+            self.gui.btn_nxt.inactivate()
     
     def update_text(self):
         f = '[Yatube] yatube.Comments.update_text'
-        if self.Success:
-            if self.logic.texts:
-                try:
-                    text = self.logic.texts[self.logic.i]
-                except IndexError:
-                    text = ''
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
-                # A new line is inserted when read from the widget
-                text = text.strip()
-                text = sh.Text(text).convert_line_breaks()
-                old_text = self.gui.txt_com.get()
-                old_text.strip()
-                # Keep a scrollbar position if there are no pages left
-                if old_text != text:
-                    self.gui.txt_com.enable()
-                    self.gui.txt_com.reset()
-                    self.gui.txt_com.insert(text)
-                    self.gui.txt_com.disable()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not self.Success:
             sh.com.cancel(f)
+            return
+        if not self.logic.texts:
+            sh.com.rep_empty(f)
+            return
+        try:
+            text = self.logic.texts[self.logic.i]
+        except IndexError:
+            text = ''
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f, mes).show_warning()
+        # A new line is inserted when read from the widget
+        text = text.strip()
+        text = sh.Text(text).convert_line_breaks()
+        old_text = self.gui.txt_com.get()
+        old_text.strip()
+        # Keep a scrollbar position if there are no pages left
+        if old_text != text:
+            self.gui.txt_com.enable()
+            self.gui.txt_com.reset()
+            self.gui.txt_com.insert(text)
+            self.gui.txt_com.disable()
         
-    def show(self,event=None):
+    def show(self, event=None):
         self.gui.show()
     
-    def close(self,event=None):
+    def close(self, event=None):
         self.gui.close()
 
 
@@ -1012,7 +1003,7 @@ class Commands:
     
     def delete_login(self):
         mes = _('Not implemented yet!')
-        sh.objs.get_mes(f,mes).show_info()
+        sh.objs.get_mes(f, mes).show_info()
         self.disable_login()
     
     def forget_login(self):
@@ -1025,31 +1016,31 @@ class Commands:
     
     def enable_login(self):
         f = '[Yatube] yatube.Commands.enable_login'
-        if objs.get_credentials().login and objs.credentials.password:
-            objs.credentials.read_password()
-            items = list(gi.objs.get_menu().opt_lgn.items)
-            if len(items) > 0:
-                del items[1]
-                items.insert(1,_('Do not use'))
-                gi.objs.menu.opt_lgn.reset(items)
-            else:
-                mes = _('Wrong input data: "{}"!').format(items)
-                sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not objs.get_credentials().login or not objs.credentials.password:
             mes = _('You need to set up credentials first!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
+            return
+        objs.credentials.read_password()
+        items = list(gi.objs.get_menu().opt_lgn.items)
+        if len(items) <= 0:
+            mes = _('Wrong input data: "{}"!').format(items)
+            sh.objs.get_mes(f, mes).show_warning()
+            return
+        del items[1]
+        items.insert(1, _('Do not use'))
+        gi.objs.menu.opt_lgn.reset(items)
     
     def disable_login(self):
         items = list(gi.objs.get_menu().opt_lgn.items)
-        if len(items) > 0:
-            del items[1]
-            items.insert(1,_('Use'))
-            gi.objs.menu.opt_lgn.reset(items)
-        else:
+        if len(items) <= 0:
             mes = _('Wrong input data: "{}"!').format(items)
             sh.objs.get_mes(f,mes).show_warning()
+            return
+        del items[1]
+        items.insert(1, _('Use'))
+        gi.objs.menu.opt_lgn.reset(items)
     
-    def manage_login(self,event=None):
+    def manage_login(self, event=None):
         f = '[Yatube] yatube.Commands.manage_login'
         choice = gi.objs.get_menu().opt_lgn.choice
         if choice == _('Use'):
@@ -1071,11 +1062,11 @@ class Commands:
             items.append(_('Use'))
             items.append(_('Do not use'))
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(self.opt_lgn.choice,'; '.join(items))
-            sh.objs.get_mes(f,mes,True).show_error()
+            mes = mes.format(self.opt_lgn.choice, '; '.join(items))
+            sh.objs.get_mes(f, mes, True).show_error()
         gi.objs.menu.opt_lgn.set(gi.objs.menu.opt_lgn.default)
     
-    def update_frequent(self,event=None):
+    def update_frequent(self, event=None):
         f = '[Yatube] yatube.Commands.update_frequent'
         frequent = lg.objs.get_lists().freq
         playids = []
@@ -1086,90 +1077,90 @@ class Commands:
             except ValueError:
                 mes = _('You need to subscribe to "{}" first!')
                 mes = mes.format(author)
-                sh.objs.get_mes(f,mes).show_warning()
+                sh.objs.get_mes(f, mes).show_warning()
                 return
         for i in range(len(playids)):
             self.menu.opt_chl.set(frequent[i])
-            objs.get_channels().add('playlist',playids[i])
+            objs.get_channels().add('playlist', playids[i])
             objs.channels.fetch()
         self.show_feed()
     
-    def add2frequent(self,event=None):
+    def add2frequent(self, event=None):
         f = '[Yatube] yatube.Commands.add2frequent'
         video = mt.objs.get_videos().get_current()
-        if video.author:
-            if video.author in lg.objs.get_lists().freq:
-                sh.com.rep_lazy(f)
-            else:
-                mes = _('Add "{}" to frequent channels')
-                mes = mes.format(video.author)
-                sh.objs.get_mes(f,mes,True).show_info()
-                lg.objs.lists.freq.append(video.author)
-                frequent = lg.objs.lists.freq
-                frequent = sorted (frequent
-                                  ,key=lambda x:x[0].lower()
-                                  )
-                frequent = '\n'.join(frequent)
-                if frequent:
-                    sh.WriteTextFile (file = lg.objs.get_default().ffreq
-                                     ,Rewrite = True
-                                     ).write(text=frequent)
-                    lg.objs.lists.reset()
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not video.author:
             sh.com.rep_empty(f)
+            return
+        if video.author in lg.objs.get_lists().freq:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Add "{}" to frequent channels')
+        mes = mes.format(video.author)
+        sh.objs.get_mes(f, mes, True).show_info()
+        lg.objs.lists.freq.append(video.author)
+        frequent = lg.objs.lists.freq
+        frequent = sorted (frequent
+                          ,key=lambda x:x[0].lower()
+                          )
+        frequent = '\n'.join(frequent)
+        if not frequent:
+            sh.com.rep_empty(f)
+            return
+        sh.WriteTextFile (file = lg.objs.get_default().ffreq
+                         ,Rewrite = True
+                         ).write(text=frequent)
+        lg.objs.lists.reset()
     
-    def remove_from_frequent(self,event=None):
+    def remove_from_frequent(self, event=None):
         f = '[Yatube] yatube.Commands.remove_from_frequent'
         video = mt.objs.get_videos().get_current()
-        if video.author:
-            if video.author in lg.objs.get_lists().freq:
-                mes = _('Remove "{}" from frequent channels')
-                mes = mes.format(video.author)
-                sh.objs.get_mes(f,mes,True).show_info()
-                lg.objs.lists.freq.remove(video.author)
-                frequent = lg.objs.lists.freq
-                frequent = '\n'.join(frequent)
-                if not frequent:
-                    frequent = '# ' + _('Put here titles of frequent channels')
-                sh.WriteTextFile (file = lg.objs.get_default().ffreq
-                                 ,Rewrite = True
-                                 ).write(text=frequent)
-                lg.objs.lists.reset()
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not video.author:
             sh.com.rep_empty(f)
+            return
+        if not video.author in lg.objs.get_lists().freq:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Remove "{}" from frequent channels')
+        mes = mes.format(video.author)
+        sh.objs.get_mes(f, mes, True).show_info()
+        lg.objs.lists.freq.remove(video.author)
+        frequent = lg.objs.lists.freq
+        frequent = '\n'.join(frequent)
+        if not frequent:
+            frequent = '# ' + _('Put here titles of frequent channels')
+        sh.WriteTextFile (file = lg.objs.get_default().ffreq
+                         ,Rewrite = True
+                         ).write(text=frequent)
+        lg.objs.lists.reset()
     
-    def manage_frequent(self,event=None):
+    def manage_frequent(self, event=None):
         f = '[Yatube] yatube.Commands.manage_frequent'
         text = '\n'.join(lg.objs.get_lists().freq)
         gi.objs.get_frequent().reset(text)
         gi.objs.frequent.show()
         text = gi.objs.frequent.get()
         # We should allow an empty input
-        if gi.objs.frequent.Save:    
-            if text:
-                text = text.splitlines()
-                text = sorted (text
-                              ,key = lambda x:x[0].lower()
-                              )
-                text = '\n'.join(text)
-                sh.WriteTextFile (file = lg.objs.get_default().ffreq
-                                 ,Rewrite = True
-                                 ).write(text=text)
-            else:
-                text = '# ' + _('Put here words to block in titles (case is ignored)')
-                sh.WriteTextFile (file = lg.objs.get_default().ffreq
-                                 ,Rewrite = True
-                                 ).write(text=text)
-            lg.objs.lists.reset()
-        else:
+        if not gi.objs.frequent.Save:
             mes = _('Operation has been canceled by the user.')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
+            return
+        if text:
+            text = text.splitlines()
+            text = sorted (text
+                          ,key = lambda x:x[0].lower()
+                          )
+            text = '\n'.join(text)
+            sh.WriteTextFile (file = lg.objs.get_default().ffreq
+                             ,Rewrite = True
+                             ).write(text=text)
+        else:
+            text = '# ' + _('Put here words to block in titles (case is ignored)')
+            sh.WriteTextFile (file = lg.objs.get_default().ffreq
+                             ,Rewrite = True
+                             ).write(text=text)
+        lg.objs.lists.reset()
     
-    def get_quality(self,event=None):
+    def get_quality(self, event=None):
         ''' Generate a quality argument for youtube_dl.
             Youtube's recommended resolution ratios:
             2160p: 3840x2160
@@ -1189,47 +1180,47 @@ class Commands:
             qual = 'worst'
         res = lg.com.extract_resolution(res)
         if res:
-            res = '[height<={}]'.format(res)
+            res = f'[height<={res}]'
         result = qual + res
-        mes = '"{}"'.format(result)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = f'"{result}"'
+        sh.objs.get_mes(f, mes, True).show_debug()
         return result
     
-    def set_pause(self,event=None):
+    def set_pause(self, event=None):
         objs.get_pause().reset (videoid = mt.objs.get_videos().get_current().id_
                                ,pause = mt.objs.videos.get_current().pause
                                )
         objs.pause.show()
     
-    def set_hint(self,event=None):
+    def set_hint(self, event=None):
         f = '[Yatube] yatube.Commands.set_hint'
         gui = self.get_widget(event)
-        if gui:
-            if hasattr(gui,'lbl_img'):
-                mt.objs.get_videos().set_gui(gui)
-                length = lg.Video().get_length()
-                length = sh.com.get_easy_time(length)
-                pause = mt.objs.videos.get_current().pause
-                if pause:
-                    text = length + ', ' + _('pause:') + ' ' \
-                            + sh.com.get_easy_time(pause)
-                    width = 210
-                else:
-                    text = length
-                    width = 90
-                self.tip_tim = sh.ToolTip (obj = gui.lbl_img
-                                          ,text = text
-                                          ,hdir = 'bottom'
-                                          ,delay = 400
-                                          )
-                self.tip_tim.showtip()
-            else:
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not gui:
             sh.com.rep_empty(f)
+            return
+        if not hasattr(gui, 'lbl_img'):
+            mes = _('Wrong input data!')
+            sh.objs.get_mes(f,mes).show_warning()
+            return
+        mt.objs.get_videos().set_gui(gui)
+        length = lg.Video().get_length()
+        length = sh.com.get_easy_time(length)
+        pause = mt.objs.videos.get_current().pause
+        if pause:
+            text = length + ', ' + _('pause:') + ' ' \
+                 + sh.com.get_easy_time(pause)
+            width = 210
+        else:
+            text = length
+            width = 90
+        self.tip_tim = sh.ToolTip (obj = gui.lbl_img
+                                  ,text = text
+                                  ,hdir = 'bottom'
+                                  ,delay = 400
+                                  )
+        self.tip_tim.showtip()
     
-    def update_sel_menu(self,event=None):
+    def update_sel_menu(self, event=None):
         f = '[Yatube] yatube.Commands.update_sel_menu'
         selection = self.get_sel()
         if selection:
@@ -1273,16 +1264,16 @@ class Commands:
                                 ,default = _('Selection')
                                 )
     
-    def toggle_cbox(self,event=None):
+    def toggle_cbox(self, event=None):
         f = '[Yatube] Commands.toggle_cbox'
         gui = self.get_widget(event)
-        if gui:
-            gui.cbx_vno.toggle()
-            objs.get_commands().report_selection()
-        else:
+        if not gui:
             sh.com.rep_empty(f)
+            return
+        gui.cbx_vno.toggle()
+        objs.get_commands().report_selection()
     
-    def toggle_select(self,event=None):
+    def toggle_select(self, event=None):
         guis = [video.gui for video in mt.objs.get_videos().videos \
                 if video.gui
                ]
@@ -1294,7 +1285,7 @@ class Commands:
                 gui.cbx_vno.disable()
         self.report_selection()
     
-    def report_selection(self,event=None):
+    def report_selection(self, event=None):
         selection = self.get_sel()
         if selection:
             count = len(selection)
@@ -1304,7 +1295,7 @@ class Commands:
                             ,total = len(mt.objs.get_videos().videos)
                             )
     
-    def show_stat(self,event=None,Silent=False):
+    def show_stat(self, event=None, Silent=False):
         mt.objs.get_stat().report(Silent=Silent)
     
     def update_progress(self,data):
@@ -1348,90 +1339,90 @@ class Commands:
                                           )
         file = mt.objs.get_videos().get_current().pathsh
         mes = _('File: "{}"; {}/{} MB; Rate: {} kbps; ETA: {}s')
-        mes = mes.format(file,int(cursize),int(total),rate,eta)
+        mes = mes.format(file, int(cursize), int(total), rate, eta)
         gi.objs.get_progress().set_text(mes)
-        gi.objs.progress.update(cursize,total)
+        gi.objs.progress.update(cursize, total)
     
-    def show_history(self,event=None):
+    def show_history(self, event=None):
         objs.get_channels().add('history')
         objs.channels.fetch()
     
     def update_context(self):
         f = '[Yatube] yatube.Commands.update_context'
         video = mt.objs.get_videos().get_current()
-        if video:
-            items = list(gi.context_items)
-            data = lg.objs.get_db().get_video(video.id_)
-            if data:
-                ''' #NOTE: do not forget to update indices in case of
-                    changing the DB structure.
-                '''
-                dtime = data[9]
-                ftime = data[10]
-                ltime = data[11]
-                if dtime:
-                    items.remove(_('Mark as watched'))
-                else:
-                    items.remove(_('Mark as not watched'))
-                if ftime:
-                    items.remove(_('Add to favorites'))
-                else:
-                    items.remove(_('Remove from favorites'))
-                if ltime:
-                    items.remove(_('Add to watchlist'))
-                else:
-                    items.remove(_('Remove from watchlist'))
+        if not video:
+            sh.com.rep_empty(f)
+            return
+        items = list(gi.context_items)
+        data = lg.objs.get_db().get_video(video.id_)
+        if data:
+            ''' #NOTE: do not forget to update indices in case of
+                changing the DB structure.
+            '''
+            dtime = data[9]
+            ftime = data[10]
+            ltime = data[11]
+            if dtime:
+                items.remove(_('Mark as watched'))
             else:
-                sh.com.rep_empty(f)
-            if video.Block:
-                items.remove(_('Block this channel'))
+                items.remove(_('Mark as not watched'))
+            if ftime:
+                items.remove(_('Add to favorites'))
             else:
-                items.remove(_('Unblock'))
-            lg.Video().get_path()
-            if video.path:
-                if os.path.exists(video.path):
-                    items.remove(_('Download'))
-                else:
-                    items.remove(_('Delete the downloaded file'))
+                items.remove(_('Remove from favorites'))
+            if ltime:
+                items.remove(_('Add to watchlist'))
             else:
-                sh.com.rep_empty(f)
-            if video.author:
-                if video.author in lg.objs.get_lists().subauth:
-                    items.remove(_('Subscribe to this channel'))
-                else:
-                    items.remove(_('Unsubscribe'))
-                if video.author in lg.objs.lists.freq:
-                    items.remove(_('Add to frequent channels'))
-                else:
-                    items.remove(_('Remove from frequent channels'))
-            else:
-                sh.com.rep_empty(f)
-            return items
+                items.remove(_('Remove from watchlist'))
         else:
             sh.com.rep_empty(f)
+        if video.Block:
+            items.remove(_('Block this channel'))
+        else:
+            items.remove(_('Unblock'))
+        lg.Video().get_path()
+        if video.path:
+            if os.path.exists(video.path):
+                items.remove(_('Download'))
+            else:
+                items.remove(_('Delete the downloaded file'))
+        else:
+            sh.com.rep_empty(f)
+        if not video.author:
+            sh.com.rep_empty(f)
+            return items
+        if video.author in lg.objs.get_lists().subauth:
+            items.remove(_('Subscribe to this channel'))
+        else:
+            items.remove(_('Unsubscribe'))
+        if video.author in lg.objs.lists.freq:
+            items.remove(_('Add to frequent channels'))
+        else:
+            items.remove(_('Remove from frequent channels'))
+        return items
     
-    def reload_channel(self,event=None):
+    def reload_channel(self, event=None):
         objs.get_channels().fetch()
     
-    def show_feed(self,event=None):
+    def show_feed(self, event=None):
         objs.get_channels().add('feed')
         objs.channels.fetch()
     
-    def show_prev_page(self,event=None):
+    def show_prev_page(self, event=None):
         objs.get_channels().fetch_prev()
     
-    def show_next_page(self,event=None):
+    def show_next_page(self, event=None):
         objs.get_channels().fetch_next()
     
-    def show_watchlist(self,event=None):
+    def show_watchlist(self, event=None):
         objs.get_channels().add('watchlist')
         objs.channels.fetch()
     
-    def show_favorites(self,event=None):
+    def show_favorites(self, event=None):
         objs.get_channels().add('favorites')
         objs.channels.fetch()
     
-    def remove_from_watchlist(self,event=None,Unselect=True):
+    def remove_from_watchlist(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.remove_from_watchlist'
         ivideo = mt.objs.get_videos().get_current()
         lg.objs.get_db().mark_later (videoid = ivideo.id_
@@ -1445,7 +1436,7 @@ class Commands:
         if Unselect:
             self.unselect()
     
-    def add2watchlist(self,event=None,Unselect=True):
+    def add2watchlist(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.add2watchlist'
         lg.objs.get_db().mark_later (videoid = mt.objs.get_videos().get_current().id_
                                     ,ltime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
@@ -1453,52 +1444,52 @@ class Commands:
         if Unselect:
             self.unselect()
     
-    def sel_add2watchlist(self,event=None,Unselect=True):
+    def sel_add2watchlist(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.sel_add2watchlist'
         selection = self.get_sel()
-        if selection:
-            for video_gui in selection:
-                mt.objs.get_videos().set_gui(video_gui)
-                self.add2watchlist(Unselect=Unselect)
-        else:
+        if not selection:
             sh.com.rep_empty(f)
+            return
+        for video_gui in selection:
+            mt.objs.get_videos().set_gui(video_gui)
+            self.add2watchlist(Unselect=Unselect)
     
-    def sel_remove_from_watchlist(self,event=None,Unselect=True):
+    def sel_remove_from_watchlist(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.sel_remove_from_watchlist'
         selection = self.get_sel()
-        if selection:
-            for video_gui in selection:
-                if mt.objs.get_videos().set_gui(video_gui):
-                    self.remove_from_watchlist(Unselect=Unselect)
-                else:
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not selection:
             sh.com.rep_empty(f)
+            return
+        for video_gui in selection:
+            if mt.objs.get_videos().set_gui(video_gui):
+                self.remove_from_watchlist(Unselect=Unselect)
+            else:
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f, mes).show_warning()
     
     def unselect(self,event=None):
         f = '[Yatube] yatube.Commands.unselect'
         gui = mt.objs.get_videos().get_current().gui
-        if gui:
-            gui.cbx_vno.disable()
-            self.report_selection()
-        else:
+        if not gui:
             sh.com.rep_empty(f)
+            return
+        gui.cbx_vno.disable()
+        self.report_selection()
     
     def sel_unstar(self,event=None):
         f = '[Yatube] yatube.Commands.sel_unstar'
         selection = self.get_sel()
-        if selection:
-            for video_gui in selection:
-                if mt.objs.get_videos().set_gui(video_gui):
-                    self.unstar()
-                else:
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not selection:
             sh.com.rep_empty(f)
+            return
+        for video_gui in selection:
+            if mt.objs.get_videos().set_gui(video_gui):
+                self.unstar()
+            else:
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f, mes).show_warning()
     
-    def unstar(self,event=None,Unselect=True):
+    def unstar(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.unstar'
         lg.objs.get_db().mark_starred (videoid = mt.objs.get_videos().get_current().id_
                                       ,ftime = 0
@@ -1506,7 +1497,7 @@ class Commands:
         if Unselect:
             self.unselect()
     
-    def star(self,event=None,Unselect=True):
+    def star(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.star'
         lg.objs.get_db().mark_starred (videoid = mt.objs.get_videos().get_current().id_
                                       ,ftime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
@@ -1514,77 +1505,77 @@ class Commands:
         if Unselect:
             self.unselect()
             
-    def sel_star(self,event=None,Unselect=True):
+    def sel_star(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.sel_star'
         selection = self.get_sel()
-        if selection:
-            for video_gui in selection:
-                if mt.objs.get_videos().set_gui(video_gui):
-                    self.star(Unselect=Unselect)
-                else:
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not selection:
             sh.com.rep_empty(f)
+            return
+        for video_gui in selection:
+            if mt.objs.get_videos().set_gui(video_gui):
+                self.star(Unselect=Unselect)
+            else:
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f, mes).show_warning()
     
-    def sel_mark_not_watched(self,event=None,Unselect=True):
+    def sel_mark_not_watched(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.sel_mark_not_watched'
         selection = self.get_sel()
-        if selection:
-            for video_gui in selection:
-                if mt.objs.get_videos().set_gui(video_gui):
-                    self.mark_not_watched(Unselect=Unselect)
-                else:
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not selection:
             sh.com.rep_lazy(f)
+            return
+        for video_gui in selection:
+            if mt.objs.get_videos().set_gui(video_gui):
+                self.mark_not_watched(Unselect=Unselect)
+            else:
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f, mes).show_warning()
     
-    def sel_mark_watched(self,event=None,Unselect=True):
+    def sel_mark_watched(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.sel_mark_watched'
         selection = self.get_sel()
-        if selection:
-            for video_gui in selection:
-                if mt.objs.get_videos().set_gui(video_gui):
-                    self.mark_watched(Unselect=Unselect)
-                else:
-                    mes = _('Wrong input data!')
-                    sh.objs.get_mes(f,mes).show_warning()
-        else:
+        if not selection:
             sh.com.rep_lazy(f)
+            return
+        for video_gui in selection:
+            if mt.objs.get_videos().set_gui(video_gui):
+                self.mark_watched(Unselect=Unselect)
+            else:
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f, mes).show_warning()
     
-    def mark_not_watched(self,event=None,Unselect=True):
+    def mark_not_watched(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.mark_not_watched'
         video = mt.objs.get_videos().get_current()
         gui = video.gui
-        if gui:
-            video.dtime = 0
-            lg.objs.get_db().mark_downloaded (videoid = video.id_
-                                             ,dtime = video.dtime
-                                             )
-            gui.black_out()
-            if Unselect:
-                self.unselect()
-        else:
+        if not gui:
             sh.com.rep_empty(f)
+            return
+        video.dtime = 0
+        lg.objs.get_db().mark_downloaded (videoid = video.id_
+                                         ,dtime = video.dtime
+                                         )
+        gui.black_out()
+        if Unselect:
+            self.unselect()
     
-    def mark_watched(self,event=None,Unselect=True):
+    def mark_watched(self, event=None, Unselect=True):
         f = '[Yatube] yatube.Commands.mark_watched'
         video = mt.objs.get_videos().get_current()
         gui = video.gui
-        if gui:
-            video.dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
-            lg.objs.get_db().mark_downloaded (videoid = video.id_
-                                             ,dtime = video.dtime
-                                             )
-            gui.gray_out()
-            self.remove_from_watchlist(Unselect=False)
-            if Unselect:
-                self.unselect()
-        else:
+        if not gui:
             sh.com.rep_empty(f)
+            return
+        video.dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
+        lg.objs.get_db().mark_downloaded (videoid = video.id_
+                                         ,dtime = video.dtime
+                                         )
+        gui.gray_out()
+        self.remove_from_watchlist(Unselect=False)
+        if Unselect:
+            self.unselect()
     
-    def get_sel(self,event=None):
+    def get_sel(self, event=None):
         f = '[Yatube] yatube.Commands.get_sel'
         selected = []
         guis = [video.gui for video in mt.objs.get_videos().videos \
@@ -1595,15 +1586,14 @@ class Commands:
                 selected.append(gui)
         return selected
     
-    def set_max_videos(self,event=None):
+    def set_max_videos(self, event=None):
         f = '[Yatube] yatube.Commands.set_max_videos'
-        if str(self.menu.opt_max.choice).isdigit():
-            mt.MAX_VIDEOS = int(self.menu.opt_max.choice)
-            self.reload_channel()
-        else:
-            mes = _('Wrong input data: "{}"')
-            mes = mes.format(self.menu.opt_max.choice)
-            sh.objs.get_mes(f,mes).show_error()
+        if not str(self.menu.opt_max.choice).isdigit():
+            mes = _('Wrong input data: "{}"').format(self.menu.opt_max.choice)
+            sh.objs.get_mes(f, mes).show_error()
+            return
+        mt.MAX_VIDEOS = int(self.menu.opt_max.choice)
+        self.reload_channel()
     
     def set_tooltips(self):
         guis = [video.gui for video in mt.objs.get_videos().videos \
@@ -1615,15 +1605,15 @@ class Commands:
                         ,action = self.set_hint
                         )
     
-    def show_prev_channel(self,event=None):
+    def show_prev_channel(self, event=None):
         objs.get_channels().dec()
         objs.channels.fetch()
     
-    def show_next_channel(self,event=None):
+    def show_next_channel(self, event=None):
         objs.get_channels().inc()
         objs.channels.fetch()
     
-    def show_comments(self,event=None):
+    def show_comments(self, event=None):
         f = '[Yatube] yatube.Commands.show_comments'
         Comments().show()
     
@@ -1644,10 +1634,10 @@ class Commands:
             self.reload_channel()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(choice,';'.join(gi.update_items))
-            sh.objs.get_mes(f,mes).show_error()
+            mes = mes.format(choice, ';'.join(gi.update_items))
+            sh.objs.get_mes(f, mes).show_error()
     
-    def run_menu_view(self,event=None):
+    def run_menu_view(self, event=None):
         f = '[Yatube] yatube.Commands.run_menu_view'
         default = _('View')
         choice = self.menu.opt_viw.choice
@@ -1673,7 +1663,7 @@ class Commands:
             mes = mes.format(choice,';'.join(gi.view_items))
             sh.objs.get_mes(f,mes).show_error()
     
-    def run_menu_edit(self,event=None):
+    def run_menu_edit(self, event=None):
         f = '[Yatube] yatube.Commands.run_menu_edit'
         default = _('Edit')
         choice = self.menu.opt_edt.choice
@@ -1693,10 +1683,10 @@ class Commands:
             self.manage_blocked_words()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(choice,';'.join(gi.edit_items))
-            sh.objs.get_mes(f,mes).show_error()
+            mes = mes.format(choice, ';'.join(gi.edit_items))
+            sh.objs.get_mes(f, mes).show_error()
     
-    def run_menu_selection(self,event=None):
+    def run_menu_selection(self, event=None):
         f = '[Yatube] yatube.Commands.run_menu_selection'
         default = _('Selection')
         choice = self.menu.opt_sel.choice
@@ -1750,10 +1740,10 @@ class Commands:
             self.remove_from_frequent()
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(choice,';'.join(gi.selection_items))
+            mes = mes.format(choice, ';'.join(gi.selection_items))
             sh.objs.get_mes(f,mes).show_error()
     
-    def blank(self,event=None):
+    def blank(self, event=None):
         # 'lg.objs.get_channel().reset' requires non-empty values at input
         self.reset_channel_gui()
         lg.objs.get_channel().set_values()
@@ -1767,91 +1757,90 @@ class Commands:
         self.menu.opt_trd.set(_('Trending'))
         gi.objs.get_channel().cvs_prm.move_top()
     
-    def unsubscribe(self,event=None):
+    def unsubscribe(self, event=None):
         f = '[Yatube] yatube.Commands.unsubscribe'
         video = mt.objs.get_videos().get_current()
-        if video.author:
-            if video.author in lg.objs.get_lists().subauth:
-                mes = _('Unsubscribe from channel "{}"')
-                mes = mes.format(video.author)
-                sh.objs.get_mes(f,mes,True).show_info()
-                if video.author in lg.objs.lists.subauth:
-                    ind = lg.objs.lists.subauth.index(video.author)
-                    del lg.objs.lists.subauth[ind]
-                    del lg.objs.lists.subids[ind]
-                    subscriptions = []
-                    for i in range(len(lg.objs.lists.subauth)):
-                        subscriptions.append (lg.objs.lists.subauth[i]\
-                                             + '\t' \
-                                             + lg.objs.lists.subids[i]
-                                             )
-                    subscriptions = '\n'.join(subscriptions)
-                    if not subscriptions:
-                        subscriptions = '# ' + _('Put here authors to subscribe to')
-                    sh.WriteTextFile (file = lg.objs.get_default().fsubsc
-                                     ,Rewrite = True
-                                     ).write(text=subscriptions)
-                    lg.objs.lists.reset()
-                    self.reset_channels()
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not video.author:
             sh.com.rep_empty(f)
+            return
+        if not video.author in lg.objs.get_lists().subauth:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Unsubscribe from channel "{}"').format(video.author)
+        sh.objs.get_mes(f, mes, True).show_info()
+        if not video.author in lg.objs.lists.subauth:
+            return
+        ind = lg.objs.lists.subauth.index(video.author)
+        del lg.objs.lists.subauth[ind]
+        del lg.objs.lists.subids[ind]
+        subscriptions = []
+        for i in range(len(lg.objs.lists.subauth)):
+            subscriptions.append (lg.objs.lists.subauth[i] + '\t' \
+                                 + lg.objs.lists.subids[i]
+                                 )
+        subscriptions = '\n'.join(subscriptions)
+        if not subscriptions:
+            subscriptions = '# ' + _('Put here authors to subscribe to')
+        sh.WriteTextFile (file = lg.objs.get_default().fsubsc
+                         ,Rewrite = True
+                         ).write(text=subscriptions)
+        lg.objs.lists.reset()
+        self.reset_channels()
     
     def unblock(self,event=None):
         f = '[Yatube] yatube.Commands.unblock'
         video = mt.objs.get_videos().get_current()
-        if video.author:
-            if video.author in lg.objs.get_lists().blauth:
-                mes = _('Unblock channel "{}"').format(video.author)
-                sh.objs.get_mes(f,mes,True).show_info()
-                ''' The 'Block' boolean will actually be set after
-                    reloading the channel, however, we want to inform
-                    the context menu about the changes.
-                '''
-                video.Block = False
-                lg.objs.lists.blauth.remove(video.author)
-                blocked = lg.objs.lists.blauth
-                blocked = '\n'.join(blocked)
-                if not blocked:
-                    blocked = '# ' + _('Put here authors to be blocked')
-                sh.WriteTextFile (file = lg.objs.get_default().fblock
-                                 ,Rewrite = True
-                                 ).write(text=blocked)
-                lg.objs.lists.reset()
-                self.reset_channels()
-                self.reload_channel()
-            else:
-                sh.com.rep_lazy(f)
-        else:
+        if not video.author:
             sh.com.rep_empty(f)
+            return
+        if not video.author in lg.objs.get_lists().blauth:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Unblock channel "{}"').format(video.author)
+        sh.objs.get_mes(f, mes, True).show_info()
+        ''' The 'Block' boolean will actually be set after reloading
+            the channel, however, we want to inform the context menu about
+            the changes.
+        '''
+        video.Block = False
+        lg.objs.lists.blauth.remove(video.author)
+        blocked = lg.objs.lists.blauth
+        blocked = '\n'.join(blocked)
+        if not blocked:
+            blocked = '# ' + _('Put here authors to be blocked')
+        sh.WriteTextFile (file = lg.objs.get_default().fblock
+                         ,Rewrite = True
+                         ).write(text=blocked)
+        lg.objs.lists.reset()
+        self.reset_channels()
+        self.reload_channel()
     
-    # GUI-only
-    def delete_selected(self,event=None):
+    def delete_selected(self, event=None):
+        # GUI-only
         f = '[Yatube] yatube.Commands.delete_selected'
         selection = self.get_sel()
-        if selection:
-            for gui in selection:
-                mt.objs.get_videos().set_gui(gui)
-                self.delete_video()
-        else:
+        if not selection:
             sh.com.rep_lazy(f)
+            return
+        for gui in selection:
+            mt.objs.get_videos().set_gui(gui)
+            self.delete_video()
     
-    def delete_video(self,event=None):
+    def delete_video(self, event=None):
         f = '[Yatube] yatube.Commands.delete_video'
-        ''' Do not warn when the GUI object is not available (e.g.,
-            performing deletion through OptionMenu.
+        ''' Do not warn when the GUI object is not available (e.g., performing
+            deletion through OptionMenu.
         '''
         if mt.objs.get_videos().get_current().gui:
-            ''' We probably want to disable the checkbox even when
-                the file was not removed, e.g., the user selected all
-                videos on the channel and pressed 'Shift-Del'.
+            ''' We probably want to disable the checkbox even when the file was
+                not removed, e.g., the user selected all videos on the channel
+                and pressed 'Shift-Del'.
             '''
             mt.objs.videos.get_current().gui.cbx_vno.disable()
             self.report_selection()
         return lg.Video().delete()
     
-    def reset_channels(self,event=None):
+    def reset_channels(self, event=None):
         default_channels = [_('Channels')]
         if lg.objs.get_lists().subauth:
             self.channels = default_channels + lg.objs.lists.subauth
@@ -1862,223 +1851,224 @@ class Commands:
                                 ,action = self.set_channel
                                 )
     
-    def open_video_url(self,event=None):
+    def open_video_url(self, event=None):
         f = '[Yatube] yatube.Commands.open_video_url'
         url = lg.Video().get_url()
-        if url:
-            lg.objs.get_online().url = url
-            lg.objs.online.browse()
-        else:
+        if not url:
             sh.com.rep_empty(f)
+            return
+        lg.objs.get_online().url = url
+        lg.objs.online.browse()
                    
-    def copy_video_url(self,event=None):
+    def copy_video_url(self, event=None):
         f = '[Yatube] yatube.Commands.copy_video_url'
         url = lg.Video().get_url()
-        if url:
-            sh.Clipboard().copy(text=url)
-        else:
+        if not url:
             sh.com.rep_empty(f)
+            return
+        sh.Clipboard().copy(text=url)
     
-    def subscribe(self,event=None):
+    def subscribe(self, event=None):
         f = '[Yatube] yatube.Commands.subscribe'
         video = mt.objs.get_videos().get_current()
         lg.Video().get_playid()
-        if video.author and video.playid:
-            if video.author in lg.objs.get_lists().subauth:
-                sh.com.rep_lazy(f)
-            else:
-                mes = _('Subscribe to channel "{}"')
-                mes = mes.format(video.author)
-                sh.objs.get_mes(f,mes,True).show_info()
-                subscriptions = []
-                for i in range(len(lg.objs.lists.subauth)):
-                    subscriptions.append (lg.objs.lists.subauth[i]\
-                                         + '\t' \
-                                         + lg.objs.lists.subids[i]
-                                         )
-                subscriptions.append(video.author + '\t' + video.playid)
-                subscriptions = sorted (subscriptions
-                                       ,key=lambda x:x[0].lower()
-                                       )
-                subscriptions = '\n'.join(subscriptions)
-                if subscriptions:
-                    sh.WriteTextFile (file = lg.objs.get_default().fsubsc
-                                     ,Rewrite = True
-                                     ).write(text=subscriptions)
-                    lg.objs.lists.reset()
-                    self.reset_channels()
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not video.author or not video.playid:
             sh.com.rep_empty(f)
+            return
+        if video.author in lg.objs.get_lists().subauth:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Subscribe to channel "{}"')
+        mes = mes.format(video.author)
+        sh.objs.get_mes(f, mes, True).show_info()
+        subscriptions = []
+        for i in range(len(lg.objs.lists.subauth)):
+            subscriptions.append (lg.objs.lists.subauth[i]\
+                                 + '\t' \
+                                 + lg.objs.lists.subids[i]
+                                 )
+        subscriptions.append(video.author + '\t' + video.playid)
+        subscriptions = sorted (subscriptions
+                               ,key=lambda x:x[0].lower()
+                               )
+        subscriptions = '\n'.join(subscriptions)
+        if not subscriptions:
+            sh.com.rep_empty(f)
+            return
+        sh.WriteTextFile (file = lg.objs.get_default().fsubsc
+                         ,Rewrite = True
+                         ).write(text=subscriptions)
+        lg.objs.lists.reset()
+        self.reset_channels()
     
-    def block_channel(self,event=None):
+    def block_channel(self, event=None):
         f = '[Yatube] yatube.Commands.block_channel'
         video = mt.objs.get_videos().get_current()
-        if video.author:
-            if video.author in lg.objs.get_lists().blauth:
-                sh.com.rep_lazy(f)
-            else:
-                mes = _('Block channel "{}"').format(video.author)
-                sh.objs.get_mes(f,mes,True).show_info()
-                ''' The 'Block' boolean will actually be set after
-                    reloading the channel, however, we want to inform
-                    the context menu about the changes.
-                '''
-                video.Block = True
-                lg.objs.lists.blauth.append(video.author)
-                blocked = lg.objs.lists.blauth
-                blocked = sorted (blocked
-                                 ,key=lambda x:x[0].lower()
-                                 )
-                blocked = '\n'.join(blocked)
-                if blocked:
-                    sh.WriteTextFile (file = lg.objs.get_default().fblock
-                                     ,Rewrite = True
-                                     ).write(text=blocked)
-                    lg.objs.lists.reset()
-                    self.reset_channels()
-                    self.reload_channel()
-                else:
-                    sh.com.rep_empty(f)
-        else:
+        if not video.author:
             sh.com.rep_empty(f)
+            return
+        if video.author in lg.objs.get_lists().blauth:
+            sh.com.rep_lazy(f)
+            return
+        mes = _('Block channel "{}"').format(video.author)
+        sh.objs.get_mes(f, mes, True).show_info()
+        ''' The 'Block' boolean will actually be set after
+            reloading the channel, however, we want to inform
+            the context menu about the changes.
+        '''
+        video.Block = True
+        lg.objs.lists.blauth.append(video.author)
+        blocked = lg.objs.lists.blauth
+        blocked = sorted (blocked
+                         ,key=lambda x:x[0].lower()
+                         )
+        blocked = '\n'.join(blocked)
+        if not blocked:
+            sh.com.rep_empty(f)
+            return
+        sh.WriteTextFile (file = lg.objs.get_default().fblock
+                         ,Rewrite = True
+                         ).write(text=blocked)
+        lg.objs.lists.reset()
+        self.reset_channels()
+        self.reload_channel()
                    
-    def load_channel(self,event=None):
+    def load_channel(self, event=None):
         f = '[Yatube] yatube.Commands.load_channel'
         playid = lg.Video().get_playid()
-        if playid:
-            objs.get_channels().add('playlist',playid)
-            objs.channels.fetch()
-        else:
+        if not playid:
             sh.com.rep_empty(f)
+            return
+        objs.get_channels().add('playlist', playid)
+        objs.channels.fetch()
     
-    def open_channel_url(self,event=None):
+    def open_channel_url(self, event=None):
         f = '[Yatube] yatube.Commands.open_channel_url'
         channel_id = lg.Video().get_channel_id()
-        if channel_id:
-            lg.objs.get_online().url = lg.pattern2 + channel_id
-            lg.objs.online.browse()
-        else:
+        if not channel_id:
             sh.com.rep_empty(f)
+            return
+        lg.objs.get_online().url = lg.pattern2 + channel_id
+        lg.objs.online.browse()
 
-    def copy_channel_url(self,event=None):
+    def copy_channel_url(self, event=None):
         f = '[Yatube] yatube.Commands.copy_channel_url'
         channel_id = lg.Video().get_channel_id()
-        if channel_id:
-            sh.Clipboard().copy(lg.pattern2+channel_id)
-        else:
+        if not channel_id:
             sh.com.rep_empty(f)
+            return
+        sh.Clipboard().copy(lg.pattern2 + channel_id)
     
-    def stream(self,event=None):
+    def stream(self, event=None):
         f = '[Yatube] yatube.Commands.stream'
         selection = self.get_sel()
-        if selection:
-            mt.objs.get_videos().set_gui(selection[0])
-            self.stream_video()
-        else:
+        if not selection:
             sh.com.rep_empty(f)
+            return
+        mt.objs.get_videos().set_gui(selection[0])
+        self.stream_video()
     
-    def stream_video(self,event=None):
+    def stream_video(self, event=None):
         f = '[Yatube] yatube.Commands.stream_video'
         url = lg.Video().stream(self.get_quality())
-        if url:
-            ''' - Consider using newer python/OS builds if you have
-                  SSL/TLS problems here.
-                - If streaming fails, try streaming with another quality
-                  or downloading a different format.
-            '''
-            if os.path.exists('/usr/bin/mpv'):
-                app = '/usr/bin/mpv'
-            elif os.path.exists('/usr/bin/vlc'):
-                app = '/usr/bin/vlc'
-            elif os.path.exists('/usr/bin/mplayer'):
-                app = '/usr/bin/mplayer'
-            else:
-                app = ''
-                mes = _('Unable to find a suitable application!')
-                sh.objs.get_mes(f,mes).show_warning()
-            if app:
-                if self.menu.chb_slw.get():
-                    args = self._stream_slow(app)
-                else:
-                    args = self._stream(app)
-                if args:
-                    custom_args = [app] + self.start_mpv(app,args) \
-                                        + [url]
-                else:
-                    custom_args = [app,url]
-                #'sh.Launch' checks the target
-                try:
-                    subprocess.Popen(custom_args)
-                    Success = True
-                except Exception as e:
-                    mes = _('Failed to run "{}"!\n\nDetails: {}')
-                    mes = mes.format(custom_args,e)
-                    sh.objs.get_mes(f,mes).show_error()
-                    Success = False
-                if Success:
-                    self.mark_downloaded()
-                    if objs.get_channels().get_current().type_ == 'watchlist':
-                        self.reload_channel()
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not url:
             sh.com.rep_empty(f)
+            return
+        ''' - Consider using newer python/OS builds if you have
+              SSL/TLS problems here.
+            - If streaming fails, try streaming with another quality
+              or downloading a different format.
+        '''
+        if os.path.exists('/usr/bin/mpv'):
+            app = '/usr/bin/mpv'
+        elif os.path.exists('/usr/bin/vlc'):
+            app = '/usr/bin/vlc'
+        elif os.path.exists('/usr/bin/mplayer'):
+            app = '/usr/bin/mplayer'
+        else:
+            app = ''
+            mes = _('Unable to find a suitable application!')
+            sh.objs.get_mes(f,mes).show_warning()
+        if not app:
+            sh.com.rep_empty(f)
+            return
+        if self.menu.chb_slw.get():
+            args = self._stream_slow(app)
+        else:
+            args = self._stream(app)
+        if args:
+            custom_args = [app] + self.start_mpv(app, args) + [url]
+        else:
+            custom_args = [app, url]
+        #'sh.Launch' checks the target
+        try:
+            subprocess.Popen(custom_args)
+            Success = True
+        except Exception as e:
+            mes = _('Failed to run "{}"!\n\nDetails: {}')
+            mes = mes.format(custom_args, e)
+            sh.objs.get_mes(f, mes).show_error()
+            Success = False
+        if not Success:
+            return
+        self.mark_downloaded()
+        if objs.get_channels().get_current().type_ == 'watchlist':
+            self.reload_channel()
     
-    def _stream_slow(self,app):
+    def _stream_slow(self, app):
         #'-ao','sdl',
         if 'mpv' in app:
-            return ['-fs','-framedrop=vo','-cache','8192'
-                   ,'--no-correct-pts','--opengl-es=yes'
+            return ['-fs', '-framedrop=vo', '-cache', '8192'
+                   ,'--no-correct-pts', '--opengl-es=yes'
                    ]
         elif 'mplayer' in app:
-            return ['-fs','-framedrop','-cache','8192','-cache-min','50'
+            return ['-fs', '-framedrop', '-cache', '8192', '-cache-min', '50'
                    ,'-nocorrect-pts'
                    ]
     
-    def _stream(self,app):
+    def _stream(self, app):
         if 'mpv' in app:
-            return ['-cache','8192']
+            return ['-cache', '8192']
         elif 'mplayer' in app:
-            return ['-cache','8192','-cache-min','50']
+            return ['-cache', '8192', '-cache-min', '50']
                    
-    def reset_filter_date(self,event=None):
+    def reset_filter_date(self, event=None):
         self.tstamp = None
         self.filter_by_date()
     
-    def get_timestamp(self,event=None):
-        if not self.tstamp:
-            day = self.menu.opt_day.choice
-            month = self.menu.opt_mth.choice
-            year = self.menu.opt_yrs.choice
-            if month == _('Jan'):
-                month = '01'
-            elif month == _('Feb'):
-                month = '02'
-            elif month == _('Mar'):
-                month = '03'
-            elif month == _('Apr'):
-                month = '04'
-            elif month == _('May'):
-                month = '05'
-            elif month == _('Jun'):
-                month = '06'
-            elif month == _('Jul'):
-                month = '07'
-            elif month == _('Aug'):
-                month = '08'
-            elif month == _('Sep'):
-                month = '09'
-            elif month == _('Oct'):
-                month = '10'
-            elif month == _('Nov'):
-                month = '11'
-            elif month == _('Dec'):
-                month = '12'
-            itime = sh.Time(pattern='%Y-%m-%d')
-            itime.date = year + '-' + month + '-' + day
-            self.tstamp = itime.get_timestamp()
+    def get_timestamp(self, event=None):
+        if self.tstamp:
+            return self.tstamp
+        day = self.menu.opt_day.choice
+        month = self.menu.opt_mth.choice
+        year = self.menu.opt_yrs.choice
+        if month == _('Jan'):
+            month = '01'
+        elif month == _('Feb'):
+            month = '02'
+        elif month == _('Mar'):
+            month = '03'
+        elif month == _('Apr'):
+            month = '04'
+        elif month == _('May'):
+            month = '05'
+        elif month == _('Jun'):
+            month = '06'
+        elif month == _('Jul'):
+            month = '07'
+        elif month == _('Aug'):
+            month = '08'
+        elif month == _('Sep'):
+            month = '09'
+        elif month == _('Oct'):
+            month = '10'
+        elif month == _('Nov'):
+            month = '11'
+        elif month == _('Dec'):
+            month = '12'
+        itime = sh.Time(pattern='%Y-%m-%d')
+        itime.date = year + '-' + month + '-' + day
+        self.tstamp = itime.get_timestamp()
         return self.tstamp
     
     def _filter_date(self):
@@ -2087,305 +2077,297 @@ class Commands:
         if (cond1 and cond2) or (not cond1 and not cond2):
             return True
     
-    def filter_video_date(self,event=None):
-        ''' 'filter_by_date' uses the loop to filter videos by date upon
-            event (changing filter date or filter settings).
-            'filter_video_date' is used to mark a suitable video
-            immediately when loading a channel.
+    def filter_video_date(self, event=None):
+        ''' 'filter_by_date' uses the loop to filter videos by date upon event
+            (changing filter date or filter settings).
+            'filter_video_date' is used to mark a suitable video immediately
+            when loading a channel.
             '_filter_date' is used by both methods (+'select_new') and
             should not be called externally in other cases.
-            '''
+        '''
         f = '[Yatube] yatube.Commands.filter_video_date'
         video = mt.objs.get_videos().get_current()
-        if video.gui and video.ptime:
-            if self.menu.chb_dat.get():
-                if self._filter_date():
-                    video.gui.red_out()
-        else:
+        if not video.gui or not video.ptime:
             sh.com.rep_empty(f)
+            return
+        if self.menu.chb_dat.get() and self._filter_date():
+            video.gui.red_out()
     
-    def filter_by_date(self,event=None):
+    def filter_by_date(self, event=None):
         f = '[Yatube] yatube.Commands.filter_by_date'
         # Do not allow to update channel GUI when no channels are loaded
-        if gi.objs.channel:
-            guis = [video.gui for video in mt.objs.get_videos().videos \
-                    if video.gui
-                   ]
-            for gui in guis:
-                gui.black_out()
-            if self.menu.chb_dat.get():
-                timestamp = self.get_timestamp()
-                for gui in guis:
-                    mt.objs.get_videos().set_gui(gui)
-                    if self._filter_date():
-                        gui.red_out()
-        else:
+        if not gi.objs.channel:
             sh.com.rep_lazy(f)
-    
-    def get_widget(self,event=None):
-        f = '[Yatube] yatube.Commands.get_widget'
-        if event:
-            ''' 'event' will be 'tuple' if it's a callback from
-                'Button.click'.
-            '''
-            if isinstance(event,tuple):
-                event = event[0]
-            guis = [video.gui for video in mt.objs.get_videos().videos \
-                    if video.gui
-                   ]
+            return
+        guis = [video.gui for video in mt.objs.get_videos().videos \
+                if video.gui
+               ]
+        for gui in guis:
+            gui.black_out()
+        if self.menu.chb_dat.get():
+            timestamp = self.get_timestamp()
             for gui in guis:
-                for obj in gui.objects:
-                    ''' This works for Python 3.7.3 and Tkinter 8.6.
-                        In previous versions I had to use
-                        'if str(obj.widget) in str(event.widget)'.
-                    '''
-                    if obj.widget == event.widget:
-                        return gui
-        else:
-            sh.com.rep_empty(f)
+                mt.objs.get_videos().set_gui(gui)
+                if self._filter_date():
+                    gui.red_out()
     
-    def show_summary(self,event=None):
+    def get_widget(self, event=None):
+        f = '[Yatube] yatube.Commands.get_widget'
+        if not event:
+            sh.com.rep_empty(f)
+            return
+        # 'event' will be 'tuple' if it's a callback from 'Button.click'
+        if isinstance(event, tuple):
+            event = event[0]
+        guis = [video.gui for video in mt.objs.get_videos().videos \
+                if video.gui
+               ]
+        for gui in guis:
+            for obj in gui.objects:
+                ''' This works for Python 3.7.3 and Tkinter 8.6.
+                    In previous versions I had to use
+                    'if str(obj.widget) in str(event.widget)'.
+                '''
+                if obj.widget == event.widget:
+                    return gui
+    
+    def show_summary(self, event=None):
         f = '[Yatube] yatube.Commands.show_summary'
-        if mt.objs.get_videos().get_current().id_:
-            #self.save_extra()
-            gi.objs.get_summary().reset()
-            gi.objs.summary.insert(lg.Video().show_summary())
-            gi.objs.summary.show()
-        else:
+        if not mt.objs.get_videos().get_current().id_:
             sh.com.rep_empty(f)
+            return
+        #self.save_extra()
+        gi.objs.get_summary().reset()
+        gi.objs.summary.insert(lg.Video().show_summary())
+        gi.objs.summary.show()
     
-    def _get_context(self,choice,event=None):
+    def _get_context(self, choice, event=None):
         f = '[Yatube] yatube.Commands._get_context'
-        if choice:
-            url = lg.Video().get_url()
-            if choice == _('Show the full summary'):
-                self.show_summary()
-            elif choice == _('Set pause time'):
-                self.set_pause(self)
-            elif choice == _('Download'):
-                self.download_video()
-            elif choice == _('Play'):
-                self.download_video()
-                self.play_video()
-                if objs.get_channels().get_current().type_ == 'watchlist':
-                    self.reload_channel()
-            elif choice == _('Stream'):
-                self.stream_video()
-            elif choice == _('Mark as watched'):
-                self.mark_watched()
-                if objs.get_channels().get_current().type_ == 'watchlist':
-                    self.reload_channel()
-            elif choice == _('Mark as not watched'):
-                self.mark_not_watched()
-                ''' Do not put this code into 'self.mark_not_watched'
-                    because the latter is used by
-                    'self.sel_mark_not_watched'.
-                '''
-                if objs.get_channels().get_current().type_ == 'history':
-                    self.reload_channel()
-            elif choice == _('Add to favorites'):
-                self.star()
-            elif choice == _('Remove from favorites'):
-                self.unstar()
-                ''' Do not put this code into 'self.unstar' because
-                    the latter is used by 'self.sel_unstar'.
-                '''
-                if objs.get_channels().get_current().type_ == 'favorites':
-                    self.reload_channel()
-            elif choice == _('Add to watchlist'):
-                self.add2watchlist()
-                ''' Do not put this code into 'self.add2watchlist'
-                    because the latter is used by
-                    'self.sel_add2watchlist'.
-                '''
-                if objs.get_channels().get_current().type_ == 'watchlist':
-                    self.reload_channel()
-            elif choice == _('Remove from watchlist'):
-                self.remove_from_watchlist()
-                ''' Do not put this code into
-                    'self.remove_from_watchlist' because the latter is
-                    used by 'self.sel_remove_from_watchlist'.
-                '''
-                if objs.get_channels().get_current().type_ == 'watchlist':
-                    self.reload_channel()
-            elif choice == _('Delete the downloaded file'):
-                self.delete_video()
-            elif choice == _('Extract links'):
-                self.get_links(url)
-            elif choice == _('Load this channel'):
-                self.load_channel()
-            elif choice == _('Block this channel'):
-                self.block_channel()
-            elif choice == _('Unblock'):
-                self.unblock()
-            elif choice == _('Subscribe to this channel'):
-                self.subscribe()
-            elif choice == _('Unsubscribe'):
-                self.unsubscribe()
-            elif choice == _('Open video URL'):
-                self.open_video_url()
-            elif choice == _('Copy video URL'):
-                self.copy_video_url()
-            elif choice == _('Show comments'):
-                self.show_comments()
-            elif choice == _('Open channel URL'):
-                self.open_channel_url()
-            elif choice == _('Copy channel URL'):
-                self.copy_channel_url()
-            elif choice == _('Add to frequent channels'):
-                self.add2frequent()
-            elif choice == _('Remove from frequent channels'):
-                self.remove_from_frequent()
-            else:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(choice,';'.join(gi.context_items))
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not choice:
             sh.com.rep_empty(f)
+            return
+        url = lg.Video().get_url()
+        if choice == _('Show the full summary'):
+            self.show_summary()
+        elif choice == _('Set pause time'):
+            self.set_pause(self)
+        elif choice == _('Download'):
+            self.download_video()
+        elif choice == _('Play'):
+            self.download_video()
+            self.play_video()
+            if objs.get_channels().get_current().type_ == 'watchlist':
+                self.reload_channel()
+        elif choice == _('Stream'):
+            self.stream_video()
+        elif choice == _('Mark as watched'):
+            self.mark_watched()
+            if objs.get_channels().get_current().type_ == 'watchlist':
+                self.reload_channel()
+        elif choice == _('Mark as not watched'):
+            self.mark_not_watched()
+            ''' Do not put this code into 'self.mark_not_watched' because
+                the latter is used by 'self.sel_mark_not_watched'.
+            '''
+            if objs.get_channels().get_current().type_ == 'history':
+                self.reload_channel()
+        elif choice == _('Add to favorites'):
+            self.star()
+        elif choice == _('Remove from favorites'):
+            self.unstar()
+            ''' Do not put this code into 'self.unstar' because the latter
+                is used by 'self.sel_unstar'.
+            '''
+            if objs.get_channels().get_current().type_ == 'favorites':
+                self.reload_channel()
+        elif choice == _('Add to watchlist'):
+            self.add2watchlist()
+            ''' Do not put this code into 'self.add2watchlist' because
+                the latter is used by 'self.sel_add2watchlist'.
+            '''
+            if objs.get_channels().get_current().type_ == 'watchlist':
+                self.reload_channel()
+        elif choice == _('Remove from watchlist'):
+            self.remove_from_watchlist()
+            ''' Do not put this code into
+                'self.remove_from_watchlist' because the latter is
+                used by 'self.sel_remove_from_watchlist'.
+            '''
+            if objs.get_channels().get_current().type_ == 'watchlist':
+                self.reload_channel()
+        elif choice == _('Delete the downloaded file'):
+            self.delete_video()
+        elif choice == _('Extract links'):
+            self.get_links(url)
+        elif choice == _('Load this channel'):
+            self.load_channel()
+        elif choice == _('Block this channel'):
+            self.block_channel()
+        elif choice == _('Unblock'):
+            self.unblock()
+        elif choice == _('Subscribe to this channel'):
+            self.subscribe()
+        elif choice == _('Unsubscribe'):
+            self.unsubscribe()
+        elif choice == _('Open video URL'):
+            self.open_video_url()
+        elif choice == _('Copy video URL'):
+            self.copy_video_url()
+        elif choice == _('Show comments'):
+            self.show_comments()
+        elif choice == _('Open channel URL'):
+            self.open_channel_url()
+        elif choice == _('Copy channel URL'):
+            self.copy_channel_url()
+        elif choice == _('Add to frequent channels'):
+            self.add2frequent()
+        elif choice == _('Remove from frequent channels'):
+            self.remove_from_frequent()
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(choice, ';'.join(gi.context_items))
+            sh.objs.get_mes(f, mes).show_error()
     
-    def _color_context(self,message,color='green'):
+    def _color_context(self, message, color='green'):
         if message in gi.objs.get_context().lbx_prm.lst:
             ind = gi.objs.context.lbx_prm.lst.index(message)
             gi.objs.context.lbx_prm.widget.itemconfig(ind,fg=color)
     
     def color_context(self):
         f = '[Yatube] yatube.Commands.color_context'
-        if gi.objs.get_context().lbx_prm.lst:
-            self._color_context(_('Download'),'green')
-            self._color_context(_('Delete the downloaded file'),'red')
-            self._color_context(_('Mark as watched'),'green')
-            self._color_context(_('Mark as not watched'),'red')
-            self._color_context(_('Add to favorites'),'green')
-            self._color_context(_('Remove from favorites'),'red')
-            self._color_context(_('Add to watchlist'),'green')
-            self._color_context(_('Remove from watchlist'),'red')
-            self._color_context(_('Block this channel'),'green')
-            self._color_context(_('Unblock'),'red')
-            self._color_context(_('Subscribe to this channel'),'green')
-            self._color_context(_('Unsubscribe'),'red')
-            self._color_context(_('Add to frequent channels'),'green')
-            self._color_context(_('Remove from frequent channels'),'red')
-        else:
+        if not gi.objs.get_context().lbx_prm.lst:
             sh.com.rep_empty(f)
+            return
+        self._color_context(_('Download'), 'green')
+        self._color_context(_('Delete the downloaded file'), 'red')
+        self._color_context(_('Mark as watched'), 'green')
+        self._color_context(_('Mark as not watched'), 'red')
+        self._color_context(_('Add to favorites'), 'green')
+        self._color_context(_('Remove from favorites'), 'red')
+        self._color_context(_('Add to watchlist'), 'green')
+        self._color_context(_('Remove from watchlist'), 'red')
+        self._color_context(_('Block this channel'), 'green')
+        self._color_context(_('Unblock'), 'red')
+        self._color_context(_('Subscribe to this channel'), 'green')
+        self._color_context(_('Unsubscribe'), 'red')
+        self._color_context(_('Add to frequent channels'), 'green')
+        self._color_context(_('Remove from frequent channels'), 'red')
     
-    def get_context(self,event=None):
+    def get_context(self, event=None):
         f = '[Yatube] yatube.Commands.get_context'
         gui = self.get_widget(event)
-        if gui:
-            mt.objs.get_videos().set_gui(gui)
-            message = _('Video #{}:').format(gui.no)
-            gi.objs.get_context().set_title(message)
-            items = self.update_context()
-            if not items:
-                items = gi.context_items
-            gi.objs.context.reset(lst=items)
-            self.color_context()
-            gi.objs.context.show()
-            self._get_context(gi.objs.context.get())
-        else:
+        if not gui:
             sh.com.rep_empty(f)
+            return
+        mt.objs.get_videos().set_gui(gui)
+        message = _('Video #{}:').format(gui.no)
+        gi.objs.get_context().set_title(message)
+        items = self.update_context()
+        if not items:
+            items = gi.context_items
+        gi.objs.context.reset(lst=items)
+        self.color_context()
+        gi.objs.context.show()
+        self._get_context(gi.objs.context.get())
         
-    def get_links(self,url):
+    def get_links(self, url):
         f = '[Yatube] yatube.Commands.get_links'
-        if url:
-            objs.get_channels().add('extractor',url)
-            objs.channels.fetch()
-        else:
+        if not url:
             sh.com.rep_empty(f)
+            return
+        objs.get_channels().add('extractor', url)
+        objs.channels.fetch()
                           
-    def set_channel(self,event=None):
+    def set_channel(self, event=None):
         f = '[Yatube] yatube.Commands.set_channel'
         if self.menu.opt_chl.choice == _('Channels'):
             self.show_feed()
-        else:
-            mes = _('Switch to channel "{}"')
+            return
+        mes = _('Switch to channel "{}"').format(self.menu.opt_chl.choice)
+        sh.objs.get_mes(f, mes, True).show_info()
+        if not self.menu.opt_chl.choice in lg.objs.get_lists().subauth:
+            mes = _('Wrong input data: "{}"')
             mes = mes.format(self.menu.opt_chl.choice)
-            sh.objs.get_mes(f,mes,True).show_info()
-            if self.menu.opt_chl.choice in lg.objs.get_lists().subauth:
-                author = self.menu.opt_chl.choice
-                no = lg.objs.lists.subauth.index(author)
-                playid = lg.objs.lists.subids[no]
-                objs.get_channels().add('playlist',playid)
-                objs.channels.fetch()
-            else:
-                mes = _('Wrong input data: "{}"')
-                mes = mes.format(self.menu.opt_chl.choice)
-                sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
+            return
+        author = self.menu.opt_chl.choice
+        no = lg.objs.lists.subauth.index(author)
+        playid = lg.objs.lists.subids[no]
+        objs.get_channels().add('playlist', playid)
+        objs.channels.fetch()
         
-    def get_url(self,event=None):
+    def get_url(self, event=None):
         f = '[Yatube] yatube.Commands.get_url'
         result = self.menu.ent_url.get()
-        if result:
-            if result == _('Paste URL here'):
-                sh.com.rep_lazy(f)
-            elif self.menu.opt_url.choice in gi.url_items:
-                if self.menu.opt_url.choice == _('Extract links'):
-                    self.get_links(url=result)
-                else:
-                    video = mt.Video()
-                    video.id_ = lg.URL(result).get_videoid()
-                    mt.objs.get_videos().add(video)
-                    mt.objs.videos.i = len(mt.objs.videos.videos) - 1
-                    logic = lg.Video()
-                    logic.get()
-                    if logic.Success:
-                        if self.menu.opt_url.choice == _('Show summary'):
-                            self.show_summary()
-                        elif self.menu.opt_url.choice == _('Download'):
-                            gi.objs.get_progress().show()
-                            self.download_video()
-                            gi.objs.progress.close()
-                        elif self.menu.opt_url.choice == _('Play'):
-                            gi.objs.get_progress().show()
-                            self.download_video()
-                            gi.objs.progress.close()
-                            self.play_video()
-                        elif self.menu.opt_url.choice == _('Stream'):
-                            self.stream_video()
-                        elif self.menu.opt_url.choice == _('Delete'):
-                            self.delete_video()
-                            self.menu.clear_url()
-                        elif self.menu.opt_url.choice == _('Full menu'):
-                            gi.objs.get_context().set_title(_('Selected video'))
-                            gi.objs.context.show()
-                            choice = gi.objs.context.get()
-                            self._get_context(choice)
-                    else:
-                        sh.com.cancel(f)
-            else:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format (self.menu.opt_url.choice
-                                 ,';'.join(gi.url_items)
-                                 )
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not result:
             sh.com.rep_empty(f)
+            return
+        if result == _('Paste URL here'):
+            sh.com.rep_lazy(f)
+        elif self.menu.opt_url.choice in gi.url_items:
+            if self.menu.opt_url.choice == _('Extract links'):
+                self.get_links(url=result)
+                return
+            video = mt.Video()
+            video.id_ = lg.URL(result).get_videoid()
+            mt.objs.get_videos().add(video)
+            mt.objs.videos.i = len(mt.objs.videos.videos) - 1
+            logic = lg.Video()
+            logic.get()
+            if not logic.Success:
+                sh.com.cancel(f)
+                return
+            if self.menu.opt_url.choice == _('Show summary'):
+                self.show_summary()
+            elif self.menu.opt_url.choice == _('Download'):
+                gi.objs.get_progress().show()
+                self.download_video()
+                gi.objs.progress.close()
+            elif self.menu.opt_url.choice == _('Play'):
+                gi.objs.get_progress().show()
+                self.download_video()
+                gi.objs.progress.close()
+                self.play_video()
+            elif self.menu.opt_url.choice == _('Stream'):
+                self.stream_video()
+            elif self.menu.opt_url.choice == _('Delete'):
+                self.delete_video()
+                self.menu.clear_url()
+            elif self.menu.opt_url.choice == _('Full menu'):
+                gi.objs.get_context().set_title(_('Selected video'))
+                gi.objs.context.show()
+                choice = gi.objs.context.get()
+                self._get_context(choice)
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(self.menu.opt_url.choice, ';'.join(gi.url_items))
+            sh.objs.get_mes(f, mes).show_error()
         
-    def search(self,event=None):
+    def search(self, event=None):
         f = '[Yatube] yatube.Commands.search'
         keywords = self.menu.ent_src.get()
-        if keywords and keywords != _('Keywords'):
-            mode = self.menu.opt_ytb.choice
-            if mode == _('Search online'):
-                self.search_youtube(keywords)
-            elif mode == _('Search database'):
-                self.search_db(keywords)
-            else:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(mode,'; '.join(gi.search_items))
-                sh.objs.get_mes(f,mes).show_error()
-        else:
+        if not keywords or keywords == _('Keywords'):
             sh.com.rep_empty(f)
+            return
+        mode = self.menu.opt_ytb.choice
+        if mode == _('Search online'):
+            self.search_youtube(keywords)
+        elif mode == _('Search database'):
+            self.search_db(keywords)
+        else:
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(mode, '; '.join(gi.search_items))
+            sh.objs.get_mes(f, mes).show_error()
     
-    def search_db(self,keywords):
-        objs.get_channels().add('search_db',keywords)
+    def search_db(self, keywords):
+        objs.get_channels().add('search_db', keywords)
         objs.channels.fetch()
     
-    def search_youtube(self,keywords):
-        objs.get_channels().add('search',keywords)
+    def search_youtube(self, keywords):
+        objs.get_channels().add('search', keywords)
         objs.channels.fetch()
                           
-    def filter_view(self,event=None):
+    def filter_view(self, event=None):
         f = '[Yatube] yatube.Commands.filter_view'
         # Remove previous filter; drop selection if no filter is given
         guis = [video.gui for video in mt.objs.get_videos().videos \
@@ -2394,16 +2376,16 @@ class Commands:
         for gui in guis:
             gui.black_out()
         result = self.menu.ent_flt.get()
-        if result and result != _('Filter this view'):
-            mes = _('Filter by "{}"').format(result)
-            sh.objs.get_mes(f,mes,True).show_info()
-            result = result.lower()
-            for gui in guis:
-                mt.objs.videos.set_gui(gui)
-                if result in mt.objs.videos.get_current().search:
-                    gui.red_out()
-        else:
+        if not result or result == _('Filter this view'):
             sh.com.rep_lazy(f)
+            return
+        mes = _('Filter by "{}"').format(result)
+        sh.objs.get_mes(f,mes,True).show_info()
+        result = result.lower()
+        for gui in guis:
+            mt.objs.videos.set_gui(gui)
+            if result in mt.objs.videos.get_current().search:
+                gui.red_out()
     
     def set_bindings(self):
         # Menu: main window
@@ -2471,25 +2453,25 @@ class Commands:
         self.menu.chb_sel.reset(action=self.toggle_select)
         # Menu: labels
         sh.com.bind (obj = self.menu.ent_flt
-                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,bindings = ('<Return>', '<KP_Enter>')
                     ,action = self.filter_view
                     )
         sh.com.bind (obj = self.menu.ent_src
-                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,bindings = ('<Return>', '<KP_Enter>')
                     ,action = self.search
                     )
         sh.com.bind (obj = self.menu.ent_url
-                    ,bindings = ('<Return>','<KP_Enter>')
+                    ,bindings = ('<Return>', '<KP_Enter>')
                     ,action = self.get_url
                     )
         # Menu: checkboxes
         self.menu.chb_dat.widget.config(command=self.filter_by_date)
         
         # Menu: OptionMenus
-        ''' Updating selection menu is slow, so we run it only when
-            clicking 'opt_sel' and not in 'self.report_selection'.
-            This is a binding to the entire OptionMenu and will not
-            interfere with bindings to OptionMenu items.
+        ''' Updating selection menu is slow, so we run it only when clicking
+            'opt_sel' and not in 'self.report_selection'. This is a binding to
+            the entire OptionMenu and will not interfere with bindings to
+            OptionMenu items.
         '''
         sh.com.bind (obj = self.menu.opt_sel
                     ,bindings = '<Button-1>'
@@ -2525,7 +2507,7 @@ class Commands:
                                 )
         self.menu.opt_ytb.action = self.search
         
-    def select_new(self,event=None):
+    def select_new(self, event=None):
         f = '[Yatube] yatube.Commands.select_new'
         video = mt.objs.get_videos().get_current()
         guis = [item.gui for item in mt.objs.videos.videos if item.gui]
@@ -2542,26 +2524,26 @@ class Commands:
                 gui.cbx_vno.enable()
         self.report_selection()
         
-    def start_mpv(self,app,lst=[]):
+    def start_mpv(self, app, lst=[]):
         pause = mt.objs.get_videos().get_current().pause
         if 'mpv' in app and pause:
             ''' 'mpv' already resumes about 2s prior to an actual pause,
                 so we don't have to additionaly tune the pause to remind
                 a user what is happening on the screen.
             '''
-            lst += ['--start={}'.format(sh.com.get_easy_time(pause))]
+            lst += [f'--start={sh.com.get_easy_time(pause)}']
         return lst
     
-    def _play_slow(self,app='/usr/bin/mpv'):
+    def _play_slow(self, app='/usr/bin/mpv'):
         if 'mpv' in app:
-            custom_args = ['-fs','-framedrop=vo','--no-correct-pts'
+            custom_args = ['-fs', '-framedrop=vo', '--no-correct-pts'
                           ,'--opengl-es=yes'
                           ]
         elif 'mplayer' in app:
-            custom_args = ['-fs','-framedrop','-nocorrect-pts']
+            custom_args = ['-fs', '-framedrop', '-nocorrect-pts']
         else:
             custom_args = []
-        command = self.start_mpv(app,custom_args)
+        command = self.start_mpv(app, custom_args)
         sh.Launch (target = lg.Video().get_path()
                   ).launch_app (custom_app = app
                                ,custom_args = command
@@ -2570,43 +2552,43 @@ class Commands:
     def _play_default(self):
         sh.Launch(target=lg.Video().get_path()).launch_default()
 
-    def play_video(self,event=None):
+    def play_video(self, event=None):
         f = '[Yatube] yatube.Commands.play_video'
-        if mt.objs.get_videos().get_current().id_:
-            if self.menu.chb_slw.get():
-                if os.path.exists('/usr/bin/mpv'):
-                    self._play_slow()
-                elif os.path.exists('/usr/bin/mplayer'):
-                    self._play_slow(app='/usr/bin/mplayer')
-                else:
-                    self._play_default()
-            else:
-                self._play_default()
-        else:
+        if not mt.objs.get_videos().get_current().id_:
             sh.com.rep_empty(f)
+            return
+        if not self.menu.chb_slw.get():
+            self._play_default()
+            return
+        if os.path.exists('/usr/bin/mpv'):
+            self._play_slow()
+        elif os.path.exists('/usr/bin/mplayer'):
+            self._play_slow(app='/usr/bin/mplayer')
+        else:
+            self._play_default()
     
-    def play(self,event=None):
+    def play(self, event=None):
         f = '[Yatube] yatube.Commands.play'
         selection = self.get_sel()
-        if selection:
-            gi.objs.get_progress().show()
-            # Download all videos, play the first one only
-            for i in range(len(selection)):
-                mt.objs.get_videos().set_gui(selection[i])
-                sub = ' ({}/{})'.format(i+1,len(selection))
-                mes = _('Download progress') + sub
-                gi.objs.progress.set_title(mes)
-                self.download_video()
-                if i == 0:
-                    self.play_video()
-            gi.objs.progress.set_title()
-            gi.objs.progress.close()
-            if objs.get_channels().get_current().type_ == 'watchlist':
-                self.reload_channel()
-        else:
+        if not selection:
             sh.com.rep_lazy(f)
+            return
+        gi.objs.get_progress().show()
+        # Download all videos, play the first one only
+        for i in range(len(selection)):
+            mt.objs.get_videos().set_gui(selection[i])
+            sub = ' ({}/{})'.format(i+1,len(selection))
+            mes = _('Download progress') + sub
+            gi.objs.progress.set_title(mes)
+            self.download_video()
+            if i == 0:
+                self.play_video()
+        gi.objs.progress.set_title()
+        gi.objs.progress.close()
+        if objs.get_channels().get_current().type_ == 'watchlist':
+            self.reload_channel()
         
-    def mark_downloaded(self,Unselect=True):
+    def mark_downloaded(self, Unselect=True):
         f = '[Yatube] yatube.Commands.mark_downloaded'
         video = mt.objs.get_videos().get_current()
         video.dtime = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
@@ -2619,86 +2601,84 @@ class Commands:
             if Unselect:
                 self.unselect()
     
-    def download_video(self,event=None):
+    def download_video(self, event=None):
         f = '[Yatube] yatube.Commands.download_video'
         ''' In case of 'get_url', there is no GUI to be handled
             ('mt.Video.gui' must be set to 'None'), so we do not force
             'mt.Video.gui' check here.
         '''
         logic = lg.Video()
-        if logic.get_path():
-            if os.path.exists(mt.objs.get_videos().get_current().path):
-                ''' Lift videos up in history (update DTIME field)
-                    even if they were already downloaded. However,
-                    do not put this in the end because we do not
-                    want to update failed downloads.
-                '''
-                self.mark_downloaded()
-            else:
-                gi.objs.get_progress().add()
-                gi.objs.progress.show()
-                ''' Do not focus this widget since the user may do
-                    some work in the background, and we do not want
-                    to interrupt it. Just activate the window
-                    without focusing so the user would see that
-                    the program is downloading something.
-                '''
-                if self.FirstVid:
-                    sh.Geometry(gi.objs.progress.obj).activate()
-                    gi.objs.progress.obj.center()
-                    self.FirstVid = False
-                if logic.download(self.update_progress):
-                    self.mark_downloaded()
-        else:
+        if not logic.get_path():
             sh.com.rep_empty(f)
+            return
+        if os.path.exists(mt.objs.get_videos().get_current().path):
+            ''' Lift videos up in history (update DTIME field) even if they
+                were already downloaded. However, do not put this in the end
+                because we do not want to update failed downloads.
+            '''
+            self.mark_downloaded()
+            return
+        gi.objs.get_progress().add()
+        gi.objs.progress.show()
+        ''' Do not focus this widget since the user may do some work in
+            the background, and we do not want to interrupt it. Just activate
+            the window without focusing so the user would see that the program
+            is downloading something.
+        '''
+        if self.FirstVid:
+            sh.Geometry(gi.objs.progress.obj).activate()
+            gi.objs.progress.obj.center()
+            self.FirstVid = False
+        if logic.download(self.update_progress):
+            self.mark_downloaded()
     
-    def download(self,event=None):
+    def download(self, event=None):
         f = '[Yatube] yatube.Commands.download'
         selection = self.get_sel()
-        if selection:
-            for i in range(len(selection)):
-                mt.objs.get_videos().set_gui(selection[i])
-                sub = ' ({}/{})'.format(i+1,len(selection))
-                mes = _('Download progress') + sub
-                gi.objs.get_progress().set_title(mes)
-                self.download_video()
-            gi.objs.progress.set_title()
-            gi.objs.progress.close()
-        else:
+        if not selection:
             sh.com.rep_empty(f)
+            return
+        for i in range(len(selection)):
+            mt.objs.get_videos().set_gui(selection[i])
+            sub = f' ({i+1}/{len(selection)})'
+            mes = _('Download progress') + sub
+            gi.objs.get_progress().set_title(mes)
+            self.download_video()
+        gi.objs.progress.set_title()
+        gi.objs.progress.close()
         
-    def update_channels(self,event=None):
+    def update_channels(self, event=None):
         f = '[Yatube] yatube.Commands.update_channels'
         authors = lg.objs.get_lists().subauth
         playids = lg.objs.lists.subids
         for i in range(len(playids)):
             self.menu.opt_chl.set(authors[i])
-            objs.get_channels().add('playlist',playids[i])
+            objs.get_channels().add('playlist', playids[i])
             objs.channels.fetch()
         self.show_feed()
         
-    def update_trending(self,event=None,country='RU'):
+    def update_trending(self, event=None, country='RU'):
         f = '[Yatube] yatube.Commands.update_trending'
-        ''' We need this procedure to be separate from
-            'self.set_trending' because of hotkeys.
+        ''' We need this procedure to be separate from 'self.set_trending'
+            because of hotkeys.
         '''
-        objs.get_channels().add('trending',country)
+        objs.get_channels().add('trending', country)
         objs.channels.fetch()
     
-    def set_trending(self,event=None):
+    def set_trending(self, event=None):
         f = '[Yatube] yatube.Commands.set_trending'
         choice = self.menu.opt_trd.choice
         if choice == _('Trending'):
             country = 'RU'
         else:
             mes = _('Switch to channel "{}"').format(choice)
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
             if choice in lg.objs.get_const().countries:
                 country = lg.objs.const.countries[choice]
             else:
                 country = 'RU'
             mes = _('Country: {}').format(country)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.objs.get_mes(f, mes, True).show_debug()
         self.update_trending(country=country)
         
     def reset_channel_gui(self):
@@ -2718,24 +2698,23 @@ class Commands:
         #timer = sh.Timer(f)
         #timer.start()
         gi.objs.get_channel(gi.objs.get_menu().framev)
-        if mt.objs.get_videos().videos:
-            for i in range(len(mt.objs.videos.videos)):
-                mt.objs.videos.i = i
-                mt.objs.videos.videos[i].gui = objs.get_videos().add(i+1)
-        else:
+        if not mt.objs.get_videos().videos:
             sh.com.rep_empty(f)
+            return
+        for i in range(len(mt.objs.videos.videos)):
+            mt.objs.videos.i = i
+            mt.objs.videos.videos[i].gui = objs.get_videos().add(i+1)
         #timer.end()
             
     def set_dimensions(self):
         f = '[Yatube] yatube.Commands.set_dimensions'
         sh.objs.get_root().update_idle()
         height = gi.objs.channel.frm_emb.get_reqheight()
-        ''' #NOTE: Extra space can be caused by a difference of
-            the default and loaded pictures.
+        ''' #NOTE: Extra space can be caused by a difference of the default and
+            loaded pictures.
         '''
-        mes = _('Widget must be at least {} pixels in height')
-        mes = mes.format(height)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Widget must be at least {} pixels in height').format(height)
+        sh.objs.get_mes(f, mes, True).show_debug()
         gi.objs.channel.cvs_prm.set_region (x = 1024
                                            ,y = height
                                            ,xborder = 20
@@ -2751,15 +2730,15 @@ class Commands:
             mt.objs.videos.i = i
             if not mt.objs.videos.get_current().Saved:
                 unknown.append(i)
-        if unknown:
-            for i in range(len(unknown)):
-                mt.objs.videos.i = unknown[i]
-                lg.Video().set_new()
-                lg.objs.get_image().run()
-                self.update_video(unknown[i])
-            lg.objs.get_db().save()
-        else:
+        if not unknown:
             sh.com.rep_lazy(f)
+            return
+        for i in range(len(unknown)):
+            mt.objs.videos.i = unknown[i]
+            lg.Video().set_new()
+            lg.objs.get_image().run()
+            self.update_video(unknown[i])
+        lg.objs.get_db().save()
         #timer.end()
     
     def set_block(self):
@@ -2771,75 +2750,73 @@ class Commands:
             author = title = _('BLOCKED')
             video.image = None
             video.Block = True
-        return(author,title)
+        return(author, title)
     
-    def update_video(self,i=0):
+    def update_video(self, i=0):
         f = '[Yatube] yatube.Commands.update_video'
         video = mt.objs.get_videos().get_current()
-        if video.gui:
-            date = sh.Time (tstamp = video.ptime
-                           ,pattern = '%Y-%m-%d %H:%M'
-                           ).get_date()
-            author, title = self.set_block()
-            video.gui.reset (author = author
-                            ,title = title
-                            ,date = date
-                            ,image = video.image
-                            )
-            if video.dtime:
-                video.gui.gray_out()
-                self.filter_video_date()
-            if video.pause:
-                video.gui.green_out()
-            if i > 0:
-                #TODO: renumber
-                pass
-        else:
+        if not video.gui:
             sh.com.rep_empty(f)
+            return
+        date = sh.Time (tstamp = video.ptime
+                       ,pattern = '%Y-%m-%d %H:%M'
+                       ).get_date()
+        author, title = self.set_block()
+        video.gui.reset (author = author
+                        ,title = title
+                        ,date = date
+                        ,image = video.image
+                        )
+        if video.dtime:
+            video.gui.gray_out()
+            self.filter_video_date()
+        if video.pause:
+            video.gui.green_out()
+        if i > 0:
+            #TODO: renumber
+            pass
     
     def fill_known(self):
         f = '[Yatube] yatube.Commands.fill_known'
         #timer = sh.Timer(f)
         #timer.start()
-        if mt.objs.get_videos().videos:
-            ids = [vid.id_ for vid in mt.objs.videos.videos]
-            result = lg.objs.get_db().get_videos(ids)
-            if result:
-                matches = [item[0] for item in result if item]
-                mes = _('{}/{} links are already stored in DB.')
-                mes = mes.format(len(matches),len(ids))
-                sh.objs.get_mes(f,mes,True).show_info()
-                for i in range(len(ids)):
-                    mt.objs.videos.i = i
-                    if result[i]:
-                        mt.objs.videos.get_current().Saved = result[i]
-                        logic = lg.Video()
-                        logic.assign_offline(result[i])
-                        lg.objs.get_image().run()
-                        self.update_video(i)
-            else:
-                sh.com.rep_empty(f)
-        else:
+        if not mt.objs.get_videos().videos:
             sh.com.rep_empty(f)
+            return
+        ids = [vid.id_ for vid in mt.objs.videos.videos]
+        result = lg.objs.get_db().get_videos(ids)
+        if not result:
+            sh.com.rep_empty(f)
+            return
+        matches = [item[0] for item in result if item]
+        mes = _('{}/{} links are already stored in DB.')
+        mes = mes.format(len(matches),len(ids))
+        sh.objs.get_mes(f,mes,True).show_info()
+        for i in range(len(ids)):
+            mt.objs.videos.i = i
+            if result[i]:
+                mt.objs.videos.get_current().Saved = result[i]
+                logic = lg.Video()
+                logic.assign_offline(result[i])
+                lg.objs.get_image().run()
+                self.update_video(i)
         #timer.end()
             
-    def set_channel_gui(self,Unknown=True):
-        ''' Do not forget to run 'reset_channel_gui' BEFORE resetting
-            logic and running this procedure.
+    def set_channel_gui(self, Unknown=True):
+        ''' Do not forget to run 'reset_channel_gui' BEFORE resetting logic and
+            running this procedure.
         '''
         self.fill_default()
-        ''' After setting default images, we should align the left
-            border, otherwise, it looks shabby. However, we cannot
-            control the top border, since we need to recalculate
-            a canvas region first, and this need an extra
-            'root().update_idle()'.
+        ''' After setting default images, we should align the left border,
+            otherwise it looks shabby. However, we cannot control the top
+            border, since we need to recalculate a canvas region first, and
+            this need an extra 'root().update_idle()'.
         '''
         gi.objs.channel.cvs_prm.widget.xview_moveto(0)
         self.fill_known()
         ''' The less we use GUI update, the faster will be the program.
-            Updating tkinter idle tasks may take ~0,4-1,7s, but this
-            must be done after creating all video widgets and
-            reading/updating images.
+            Updating tkinter idle tasks may take ~0,4-1,7s, but this must be
+            done after creating all video widgets and reading/updating images.
         '''
         sh.objs.get_root().update_idle()
         if Unknown:
@@ -2858,57 +2835,57 @@ class Commands:
         objs.add_id.show()
         self.reset_channels()
                              
-    def manage_blocked_authors(self,event=None):
+    def manage_blocked_authors(self, event=None):
         f = '[Yatube] yatube.Commands.manage_blocked_authors'
         gi.objs.get_blacklist().reset(lg.objs.get_lists().block)
         gi.objs.blacklist.show()
         text = gi.objs.blacklist.get()
         # We should allow an empty input
-        if gi.objs.blacklist.Save:
-            if text:
-                text = text.splitlines()
-                text = sorted (text
-                              ,key = lambda x:x[0].lower()
-                              )
-                text = '\n'.join(text)
-                sh.WriteTextFile (file = lg.objs.get_default().fblock
-                                 ,Rewrite = True
-                                 ).write(text=text)
-            else:
-                text = '# ' + _('Put here authors to be blocked')
-                sh.WriteTextFile (file = lg.objs.get_default().fblock
-                                 ,Rewrite = True
-                                 ).write(text=text)
-            lg.objs.lists.reset()
-        else:
+        if not gi.objs.blacklist.Save:
             mes = _('Operation has been canceled by the user.')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
+            return
+        if text:
+            text = text.splitlines()
+            text = sorted (text
+                          ,key = lambda x:x[0].lower()
+                          )
+            text = '\n'.join(text)
+            sh.WriteTextFile (file = lg.objs.get_default().fblock
+                             ,Rewrite = True
+                             ).write(text=text)
+        else:
+            text = '# ' + _('Put here authors to be blocked')
+            sh.WriteTextFile (file = lg.objs.get_default().fblock
+                             ,Rewrite = True
+                             ).write(text=text)
+        lg.objs.lists.reset()
     
-    def manage_blocked_words(self,event=None):
+    def manage_blocked_words(self, event=None):
         f = '[Yatube] yatube.Commands.manage_blocked_words'
         gi.objs.get_blacklist().reset(lg.objs.get_lists().blockw)
         gi.objs.blacklist.show()
         text = gi.objs.blacklist.get()
         # We should allow an empty input
-        if gi.objs.blacklist.Save:    
-            if text:
-                text = text.splitlines()
-                text = sorted (text
-                              ,key = lambda x:x[0].lower()
-                              )
-                text = '\n'.join(text)
-                sh.WriteTextFile (file = lg.objs.get_default().fblockw
-                                 ,Rewrite = True
-                                 ).write(text=text)
-            else:
-                text = '# ' + _('Put here words to block in titles (case is ignored)')
-                sh.WriteTextFile (file = lg.objs.get_default().fblockw
-                                 ,Rewrite = True
-                                 ).write(text=text)
-            lg.objs.lists.reset()
-        else:
+        if not gi.objs.blacklist.Save:
             mes = _('Operation has been canceled by the user.')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes, True).show_info()
+            return
+        if text:
+            text = text.splitlines()
+            text = sorted (text
+                          ,key = lambda x:x[0].lower()
+                          )
+            text = '\n'.join(text)
+            sh.WriteTextFile (file = lg.objs.get_default().fblockw
+                             ,Rewrite = True
+                             ).write(text=text)
+        else:
+            text = '# ' + _('Put here words to block in titles (case is ignored)')
+            sh.WriteTextFile (file = lg.objs.get_default().fblockw
+                             ,Rewrite = True
+                             ).write(text=text)
+        lg.objs.lists.reset()
 
 
 
