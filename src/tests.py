@@ -13,26 +13,26 @@ class ImageViewer:
     def __init__(self):
         self.set_gui()
     
-    def show(self,event=None):
+    def show(self, event=None):
         self.parent.show()
     
-    def close(self,event=None):
+    def close(self, event=None):
         self.parent.close()
     
     def set_bindings(self):
         sh.com.bind (obj = self.parent
-                    ,bindings = ('<Escape>','<Control-w>','<Control-q>'
+                    ,bindings = ('<Escape>', '<Control-w>', '<Control-q>'
                                 ,'<ButtonRelease-1>'
                                 )
                     ,action = self.close
                     )
     
-    def set_title(self,arg=None):
+    def set_title(self, arg=None):
         if not arg:
             arg = _('Image:')
         self.parent.set_title(arg)
     
-    def set_icon(self,path=None):
+    def set_icon(self, path=None):
         if path:
             self.parent.set_icon(path)
         else:
@@ -60,15 +60,15 @@ class Tests:
         itime = lg.Time()
         itime.set_date(DaysDelta=0)
         print('Current time:')
-        print('Year:',itime.year)
-        print('Month:',itime.month)
-        print('Day:',itime.day)
+        print('Year:', itime.year)
+        print('Month:', itime.month)
+        print('Day:', itime.day)
         itime.set_date(DaysDelta=7)
         print()
         print('A week ago:')
-        print('Year:',itime.year)
-        print('Month:',itime.month)
-        print('Day:',itime.day)
+        print('Year:', itime.year)
+        print('Month:', itime.month)
+        print('Day:', itime.day)
     
     def run_constants(self):
         cs = lg.Constants()
@@ -115,17 +115,19 @@ class Tests:
                                  ,Newer = False
                                  )
         if result:
-            sh.Table (headers = ['AUTHOR','TITLE','DATE','TIMESTAMP']
+            sh.Table (headers = ['AUTHOR', 'TITLE', 'DATE', 'TIMESTAMP']
                      ,rows = result
                      ).print()
         idb.close()
         
     def run_dtime(self):
         idb = db.DB()
-        idb.dbc.execute('select TITLE,DTIME,PTIME from VIDEOS where DTIME > ? order by DTIME desc,PTIME desc limit ?',(0,5))
+        script = 'select TITLE,DTIME,PTIME from VIDEOS where DTIME > ? \
+                  order by DTIME desc,PTIME desc limit ?'
+        idb.dbc.execute(script, (0, 5))
         result = idb.dbc.fetchall()
         if result:
-            sh.Table (headers = ['TITLE','DTIME','PTIME']
+            sh.Table (headers = ['TITLE', 'DTIME', 'PTIME']
                      ,rows = result
                      ).print()
         idb.close()
@@ -153,7 +155,7 @@ class Tests:
         itime.add_days(-7)
         idb.dbc.execute ('select ID,AUTHOR,TITLE from VIDEOS \
                           where SEARCH like ? and DTIME > ? and FDTIME < ?'
-                        ,('%дерев%',0,itime.get_timestamp(),)
+                        ,('%дерев%', 0, itime.get_timestamp(),)
                         )
         result = idb.dbc.fetchall()
         if result:
