@@ -5,17 +5,21 @@ productlow='yatube'
 arch="x86_64"
 os="Linux" # Linux or Wine
 oslow="linux"
-# oldstable debian has glibc 2.19, whereas current stable debian has glibc 2.24
-glibc="2.19"
+glibc="2.31"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
-pildir="/usr/local/lib/python3.4/dist-packages/PIL"
+venv="$HOME/software/python/3.9.2_yatube_x64"
+pildir="/usr/lib/python3/dist-packages/PIL"
 
 export "ARCH=$arch"
+
+if [ ! -d "$venv" ]; then
+    echo "Folder $venv does not exist!"; exit
+fi
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit
@@ -57,13 +61,15 @@ if [ ! -e "$HOME/bin/$product/build/$os/$productlow.png" ]; then
     echo "File $HOME/bin/$product/build/$os/$productlow.png does not exist!"; exit
 fi
 
+source "$venv/bin/activate"
+
 # Build with pyinstaller
 rm -rf "$tmpdir"
-mkdir -p "$builddir" "$tmpdir/app/usr/bin" "$tmpdir/app/resources"
+mkdir -p "$builddir" "$tmpdir/app/usr/bin/PIL" "$tmpdir/app/resources"
 cp -r "$srcdir"/* "$builddir"
 cp -r "$resdir" "$tmpdir/app/usr"
 cp -r "$resdir/locale" "$tmpdir/app/resources/"
-cp -r "$pildir" "$tmpdir/app/usr/bin"
+cp -rn "$pildir"/* "$tmpdir/app/usr/bin/PIL/"
 cd "$builddir"
 pyinstaller "$productlow.py"
 # Create AppImage
@@ -81,3 +87,4 @@ if [ "$choice" = "n" ] || [ "$choice" = "N" ]; then
 fi
 mv -fv "$tmpdir/$product-$arch.AppImage" "$HOME/binaries/$product/$productlow-$oslow-$arch-glibc$glibc.AppImage"
 #rm -rf "$tmpdir"
+deactivate
