@@ -831,7 +831,7 @@ class Videos:
             self.add(Video)
         if self.i < len(self.videos):
             return self.videos[self.i]
-        sub = '{} < {}'.format(self.i, len(self.videos))
+        sub = f'{self.i} < {len(self.videos)}'
         mes = _('The condition "{}" is not observed!').format(sub)
         sh.objs.get_mes(f, mes).show_error()
         return Video()
