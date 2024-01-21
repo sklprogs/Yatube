@@ -543,7 +543,7 @@ class Channels:
             sh.com.rep_empty(f)
             self.add('history')
         if self.i < 0 or self.i >= len(self.channels):
-            sub = f'0 <= {self.i} < {len(self.channels}'
+            sub = f'0 <= {self.i} < {len(self.channels)}'
             mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes).show_error()
             self.i = 0
