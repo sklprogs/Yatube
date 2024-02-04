@@ -3,7 +3,7 @@
 
 import io
 import html
-import keyring
+#import keyring
 from googleapiclient.discovery import build
 from skl_shared.localize import _
 import skl_shared.shared as sh

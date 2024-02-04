@@ -3,4 +3,4 @@ yt_dlp
 pyperclip
 termcolor
 pillow
-keyring
+#keyring
