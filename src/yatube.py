@@ -87,7 +87,7 @@ class Pause:
         self.id_ = ''
         self.pause = 0
     
-    def delete(self,event=None):
+    def delete(self, event=None):
         lg.objs.get_db().update_pause(self.id_)
         mt.objs.get_videos().get_current().pause = 0
         self.close()
@@ -103,7 +103,7 @@ class Pause:
         self.pause = pause
         self.fill()
     
-    def fill(self,event=None):
+    def fill(self, event=None):
         hours, minutes, seconds = sh.com.split_time(self.pause)
         self.gui.ent_hrs.reset()
         self.gui.ent_min.reset()
@@ -113,7 +113,7 @@ class Pause:
         self.gui.ent_sec.insert(seconds)
         self.update()
     
-    def save(self,event=None):
+    def save(self, event=None):
         hours = self.get_hrs()
         minutes = self.get_min()
         seconds = self.get_sec()
@@ -658,11 +658,11 @@ class AddId:
         self.gui = gi.AddId()
         self.set_bindings()
     
-    def save_close(self,event=None):
+    def save_close(self, event=None):
         self.save()
         self.close()
     
-    def open(self,event=None):
+    def open(self, event=None):
         f = '[Yatube] yatube.AddId.open'
         author = self.gui.lst_id1.get()
         if not author:
@@ -1034,7 +1034,7 @@ class Commands:
         items = list(gi.objs.get_menu().opt_lgn.items)
         if len(items) <= 0:
             mes = _('Wrong input data: "{}"!').format(items)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         del items[1]
         items.insert(1, _('Use'))
@@ -1200,7 +1200,7 @@ class Commands:
             return
         if not hasattr(gui, 'lbl_img'):
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
             return
         mt.objs.get_videos().set_gui(gui)
         length = lg.Video().get_length()
@@ -1467,7 +1467,7 @@ class Commands:
                 mes = _('Wrong input data!')
                 sh.objs.get_mes(f, mes).show_warning()
     
-    def unselect(self,event=None):
+    def unselect(self, event=None):
         f = '[Yatube] yatube.Commands.unselect'
         gui = mt.objs.get_videos().get_current().gui
         if not gui:
@@ -1476,7 +1476,7 @@ class Commands:
         gui.cbx_vno.disable()
         self.report_selection()
     
-    def sel_unstar(self,event=None):
+    def sel_unstar(self, event=None):
         f = '[Yatube] yatube.Commands.sel_unstar'
         selection = self.get_sel()
         if not selection:
@@ -1617,7 +1617,7 @@ class Commands:
         f = '[Yatube] yatube.Commands.show_comments'
         Comments().show()
     
-    def run_menu_update(self,event=None):
+    def run_menu_update(self, event=None):
         f = '[Yatube] yatube.Commands.run_menu_update'
         default = _('Update')
         choice = self.menu.opt_upd.choice
@@ -2364,9 +2364,7 @@ class Commands:
     def filter_view(self, event=None):
         f = '[Yatube] yatube.Commands.filter_view'
         # Remove previous filter; drop selection if no filter is given
-        guis = [video.gui for video in mt.objs.get_videos().videos \
-                if video.gui
-               ]
+        guis = [video.gui for video in mt.objs.get_videos().videos if video.gui]
         for gui in guis:
             gui.black_out()
         result = self.menu.ent_flt.get()
@@ -2374,7 +2372,7 @@ class Commands:
             sh.com.rep_lazy(f)
             return
         mes = _('Filter by "{}"').format(result)
-        sh.objs.get_mes(f,mes,True).show_info()
+        sh.objs.get_mes(f, mes, True).show_info()
         result = result.lower()
         for gui in guis:
             mt.objs.videos.set_gui(gui)
@@ -2939,5 +2937,5 @@ if __name__ == '__main__':
     lg.objs.db.close()
     objs.get_commands().show_stat(Silent=True)
     mes = _('Goodbye!')
-    sh.objs.get_mes(f,mes,True).show_debug()
+    sh.objs.get_mes(f, mes, True).show_debug()
     sh.com.end()

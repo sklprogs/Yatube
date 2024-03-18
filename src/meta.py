@@ -302,9 +302,7 @@ class Comments:
                 istr.write(item['snippet']['topLevelComment']['snippet']['textDisplay'])
                 istr.write('\n')
                 try:
-                    ''' For some reason, replies are fetched
-                        backwards.
-                    '''
+                    # For some reason, replies are fetched backwards
                     subitems = list(item['replies']['comments'])
                     subitems = subitems[::-1]
                     for subitem in subitems:
@@ -540,8 +538,8 @@ class Stat:
     
     def __init__(self):
         self.quota = 0
-        ''' Timestamp when the program was started. This can be used
-            to get a daily quota cost.
+        ''' Timestamp when the program was started. This can be used to get
+            a daily quota cost.
         '''
         self.started = sh.Time(pattern='%Y-%m-%d %H:%M:%S').get_timestamp()
     
@@ -948,14 +946,14 @@ class Commands:
             we use it.
         '''
         try:
-            return build ('youtube','v3'
+            return build ('youtube', 'v3'
                          ,developerKey = API_KEY
                          ,cache = MemoryCache()
                          )
         except Exception as e:
             self.show_error(f, e)
     
-    def show_error(self,f,e):
+    def show_error(self, f, e):
         e = str(e)
         if 'you have exceeded your' in e and 'quota' in e \
         or 'Daily Limit Exceeded' in e:
@@ -963,10 +961,10 @@ class Commands:
             sh.objs.get_mes(f, mes).show_warning()
         elif 'has disabled comments' in e:
             mes = _('Comments are disabled for this video.')
-            sh.objs.get_mes(f,mes).show_info()
+            sh.objs.get_mes(f, mes).show_info()
         elif 'The playlist identified with the requests <code>playlistId</code> parameter cannot be found.' in e:
             mes = _('This channel is not available!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         else:
             mes = _('Third-party module has failed!\n\nDetails: {}')
             mes = mes.format(e)
