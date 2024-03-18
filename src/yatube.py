@@ -13,7 +13,7 @@ import meta as mt
 
 class SearchDB:
     
-    def __init__(self,pattern):
+    def __init__(self, pattern):
         self.type_ = 'search_db'
         self.pattern = pattern
         lg.objs.get_search_db().reset(self.pattern)
