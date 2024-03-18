@@ -41,16 +41,16 @@ class Credentials:
             sh.com.rep_empty(f)
             return
         try:
-            password = keyring.get_password('system',self.login)
+            password = keyring.get_password('system', self.login)
             if password:
                 self.password = password
         except keyring.errors.KeyringLocked:
             mes = _('Failed to get the password!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
         except Exception as e:
             mes = _('Third-party module has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
     
     def get_ipass(self):
         if self.ipass is None:
@@ -68,20 +68,20 @@ class Credentials:
             sh.com.rep_empty(f)
             return
         try:
-            keyring.set_password('system',self.login,self.password)
+            keyring.set_password('system', self.login, self.password)
         except keyring.errors.KeyringLocked:
             mes = _('Failed to install credentials!')
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
         except Exception as e:
             mes = _('Third-party module has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes).show_error()
+            sh.objs.get_mes(f, mes).show_error()
 
 
 
 class Trending:
     
-    def __init__(self,country=''):
+    def __init__(self, country=''):
         self.set_values()
         if country:
             self.reset(country)
@@ -92,7 +92,7 @@ class Trending:
         self.Success = False
         sh.com.rep_empty(f)
     
-    def fetch(self,token=''):
+    def fetch(self, token=''):
         f = '[Yatube] meta.Trending.fetch'
         if not self.Success:
             sh.com.cancel(f)
@@ -105,7 +105,7 @@ class Trending:
                                                         ,pageToken = token
                                                         ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not self.resp:
             sh.com.rep_empty(f)
@@ -118,7 +118,7 @@ class Trending:
             self.next = self.resp['nextPageToken']
         except KeyError:
             mes = _('The end of the channel has been reached!')
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f, mes,True).show_info()
             self.next = ''
     
     def fetch_next(self):
@@ -165,7 +165,7 @@ class Trending:
                 objs.get_videos().add(video)
             except KeyError as e:
                 mes = _('Missing key: "{}"!').format(e)
-                sh.objs.get_mes(f,mes).show_warning()
+                sh.objs.get_mes(f, mes).show_warning()
     
     def set_values(self):
         self.Success = True
@@ -184,7 +184,7 @@ class Trending:
 
 class PlayId:
     
-    def __init__(self,myid=''):
+    def __init__(self, myid=''):
         self.set_values()
         if myid:
             self.reset(myid)
@@ -200,7 +200,7 @@ class PlayId:
                                                      ,maxResults = 1
                                                      ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not resp:
             sh.com.rep_empty(f)
@@ -213,7 +213,7 @@ class PlayId:
                 (should be the real cause of the error).
             '''
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def get_by_channel_id(self):
         f = '[Yatube] meta.PlayId.get_by_channel_id'
@@ -226,7 +226,7 @@ class PlayId:
                                                      ,maxResults = 1
                                                      ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not resp:
             sh.com.rep_empty(f)
@@ -234,13 +234,12 @@ class PlayId:
         try:
             return resp['items'][0]['contentDetails']['relatedPlaylists']['uploads']
         except Exception:
-            ''' KeyError or IndexError can occur. The output can
-                be too ambiguous, so we just inform the user
-                about the wrong input (should be the real cause
-                of the error).
+            ''' KeyError or IndexError can occur. The output can be too
+                ambiguous, so we just inform the user about the wrong input
+                (should be the real cause of the error).
             '''
             mes = _('Wrong input data!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def check(self):
         f = '[Yatube] meta.PlayId.check'
@@ -249,7 +248,7 @@ class PlayId:
         self.Success = False
         sh.com.rep_empty(f)
     
-    def reset(self,myid):
+    def reset(self, myid):
         self.set_values()
         self.id_ = myid
         self.check()
@@ -325,7 +324,7 @@ class Comments:
                 return message
         except KeyError as e:
             mes = _('Missing key: "{}"!').format(e)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         
     def set_values(self):
         self.Success = True
@@ -336,8 +335,8 @@ class Comments:
         
     def reset(self):
         self.set_values()
-        ''' We do not perform checks here since 'Videos.current'
-            will create empty fields if they are missing.
+        ''' We do not perform checks here since 'Videos.current' will create
+            empty fields if they are missing.
         '''
     
     def fetch_next(self):
@@ -375,7 +374,7 @@ class Comments:
             self.i -= 1
         return self.texts[self.i]
     
-    def fetch(self,token=''):
+    def fetch(self, token=''):
         f = '[Yatube] meta.Comments.fetch'
         if not self.Success:
             sh.com.cancel(f)
@@ -390,7 +389,7 @@ class Comments:
                                     ).execute()
         except Exception as e:
             self.Success = False
-            com.show_error(f,e)
+            com.show_error(f, e)
         ''' The comments quota is not set in the quota calculator.
             According to documentation:
             https://developers.google.com/youtube/v3/docs/commentThreads/list#properties%23properties
@@ -403,7 +402,7 @@ class Comments:
             except KeyError:
                 self.next = ''
                 mes = _('The end of the channel has been reached!')
-                sh.objs.get_mes(f,mes,True).show_info()
+                sh.objs.get_mes(f, mes, True).show_info()
         return self.get_comments()
 
 
@@ -426,7 +425,7 @@ class VideoInfo:
                                                    ,part = 'id,snippet'
                                                    ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not resp:
             sh.com.rep_empty(f)
@@ -449,7 +448,7 @@ class VideoInfo:
                     return video
         except KeyError as e:
             mes = _('Missing key: "{}"!').format(e)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
     
     def get_length(self):
         f = '[Yatube] meta.VideoInfo.get_length'
@@ -463,7 +462,7 @@ class VideoInfo:
                                                    ,part = 'id,contentDetails'
                                                    ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not resp:
             sh.com.rep_empty(f)
@@ -499,7 +498,7 @@ class VideoInfo:
                                                    ,part = 'id,statistics'
                                                    ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not resp:
             sh.com.rep_empty(f)
@@ -533,7 +532,7 @@ class VideoInfo:
                 return True
         except KeyError as e:
             mes = _('Missing key: "{}"!').format(e)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
 
 
 
@@ -564,7 +563,7 @@ class Stat:
 
 class Playlist:
     
-    def __init__(self,playid=None):
+    def __init__(self, playid=None):
         self.set_values()
         if playid:
             self.reset(playid)
@@ -608,9 +607,9 @@ class Playlist:
             return True
         self.Success = False
         mes = _('Wrong input data: "{}"!').format(self.playid)
-        sh.objs.get_mes(f,mes).show_warning()
+        sh.objs.get_mes(f, mes).show_warning()
     
-    def reset(self,playid):
+    def reset(self, playid):
         f = '[Yatube] meta.Playlist.reset'
         self.set_values()
         self.playid = playid
@@ -623,7 +622,7 @@ class Playlist:
         self.prev = ''
         self.playid = ''
     
-    def fetch(self,token=''):
+    def fetch(self, token=''):
         f = '[Yatube] meta.Playlist.fetch'
         if not self.Success:
             sh.com.cancel(f)
@@ -635,7 +634,7 @@ class Playlist:
                                                                ,pageToken = token
                                                                ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(3)
         if not self.resp:
             sh.com.rep_empty(f)
@@ -675,7 +674,7 @@ class Playlist:
 
 class Search:
     
-    def __init__(self,query=''):
+    def __init__(self, query=''):
         self.set_values()
         if query:
             self.reset(query)
@@ -686,7 +685,7 @@ class Search:
         self.Success = False
         sh.com.rep_empty(f)
     
-    def fetch(self,token=''):
+    def fetch(self, token=''):
         f = '[Yatube] meta.Search.fetch'
         if not self.Success:
             sh.com.cancel(f)
@@ -699,7 +698,7 @@ class Search:
                                                         ,pageToken = token
                                                         ).execute()
         except Exception as e:
-            com.show_error(f,e)
+            com.show_error(f, e)
         objs.get_stat().add_quota(100)
         if not self.resp:
             sh.com.rep_empty(f)
@@ -767,7 +766,7 @@ class Search:
         self.prev = ''
         self.query = ''
     
-    def reset(self,query):
+    def reset(self, query):
         f = '[Yatube] meta.Search.reset'
         self.set_values()
         self.query = query
@@ -815,7 +814,7 @@ class Videos:
     def __init__(self):
         self.reset()
     
-    def set_gui(self,gui):
+    def set_gui(self, gui):
         f = '[Yatube] meta.Videos.set_gui'
         if not gui:
             sh.com.rep_empty(f)
@@ -954,14 +953,14 @@ class Commands:
                          ,cache = MemoryCache()
                          )
         except Exception as e:
-            self.show_error(f,e)
+            self.show_error(f, e)
     
     def show_error(self,f,e):
         e = str(e)
         if 'you have exceeded your' in e and 'quota' in e \
         or 'Daily Limit Exceeded' in e:
             mes = _('Quota has been exceeded!')
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
         elif 'has disabled comments' in e:
             mes = _('Comments are disabled for this video.')
             sh.objs.get_mes(f,mes).show_info()
@@ -971,7 +970,7 @@ class Commands:
         else:
             mes = _('Third-party module has failed!\n\nDetails: {}')
             mes = mes.format(e)
-            sh.objs.get_mes(f,mes).show_warning()
+            sh.objs.get_mes(f, mes).show_warning()
 
 
 objs = Objects()
