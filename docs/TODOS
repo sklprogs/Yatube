@@ -1,6 +1,6 @@
 
 - Do not use default.cfg
-- Support playlists like https://www.youtube.com/playlist?list=PLmUwzUIyHXs_D13mhLz57ZVdvRj7mBpXM
+- Support playlists like https://www.youtube.com/playlist?list=PLmUwzUIyHXs_D13mhLz57ZVdvRj7mBpXM, https://www.youtube.com/playlist?list=PLhyM8toCZs_qWKCohlxdcRUo3O9h7g61w
 - Support extracting URLs from fragments like 'source=youtube&amp;vid=XWu1wmTHpVM&amp'
 - Support URLs like:
   https://www.youtube.com/watch?time_continue=4&v=3AbzmEja7N4
