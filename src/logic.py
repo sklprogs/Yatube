@@ -253,7 +253,7 @@ class DefaultKeys(sh.DefaultKeys):
 
 class Commands:
     
-    def extract_resolution(self,text):
+    def extract_resolution(self, text):
         # '<=1080p' -> '1080'
         match = re.match('<=(\d+)p',text)
         if not match:
@@ -563,9 +563,9 @@ class Time:
         return self.days
         
     def get_months(self):
-        self.months = (_('Jan'),_('Feb'),_('Mar'),_('Apr'),_('May')
-                      ,_('Jun'),_('Jul'),_('Aug'),_('Sep'),_('Oct')
-                      ,_('Nov'),_('Dec')
+        self.months = (_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May')
+                      ,_('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct')
+                      ,_('Nov'), _('Dec')
                       )
         return self.months
         
@@ -801,7 +801,7 @@ class Extractor:
                           )
         ilinks.get_poses()
         ilinks.links += old
-        ilinks.links = [URL(url=link).get_videoid() for link in ilinks.links]
+        ilinks.links = [URL(link).get_videoid() for link in ilinks.links]
         ilinks.delete_duplicates()
         self.urls = ilinks.links
         mes = _('Fetched {} links').format(len(self.urls))
@@ -836,7 +836,7 @@ class Lists:
         self.subids = []
         self.freq = []
     
-    def match_blocked_word(self,word):
+    def match_blocked_word(self, word):
         f = '[Yatube] logic.Lists.match_blocked_word'
         if not self.Success:
             sh.com.cancel(f)
@@ -853,14 +853,14 @@ class Lists:
             sh.com.cancel(f)
             return
         # Blocked authors
-        text = sh.ReadTextFile(file=self.idefault.fblock).get()
-        text = sh.Text(text=text).delete_comments()
+        text = sh.ReadTextFile(self.idefault.fblock).get()
+        text = sh.Text(text).delete_comments()
         # We should allow empty files
         self.block = text
         self.blauth = text.splitlines()
         # Blocked words
-        text = sh.ReadTextFile(file=self.idefault.fblockw).get()
-        text = sh.Text(text=text).delete_comments()
+        text = sh.ReadTextFile(self.idefault.fblockw).get()
+        text = sh.Text(text).delete_comments()
         # We should allow empty files
         self.blockw = text
         self.blwords = text.splitlines()
@@ -882,8 +882,8 @@ class Lists:
                             )
                    )
                                         )
-        text = sh.ReadTextFile(file=self.idefault.ffreq).get()
-        text = sh.Text(text=text).delete_comments()
+        text = sh.ReadTextFile(self.idefault.ffreq).get()
+        text = sh.Text(text).delete_comments()
         self.freq = text.splitlines()
 
 
@@ -895,11 +895,11 @@ class Objects:
             that need to be constantly reset owing to possible 'Success'
             fails (e.g., 'logic.Video').
         '''
-        self.online = self.lists = self.const = self.default \
-                    = self.db = self.channels = self.channel \
-                    = self.extractor = self.history \
-                    = self.watchlist = self.favorites = self.feed \
-                    = self.config = self.image = self.search_db = None
+        self.online = self.lists = self.const = self.default = self.db \
+                    = self.channels = self.channel = self.extractor \
+                    = self.history = self.watchlist = self.favorites \
+                    = self.feed = self.config = self.image = self.search_db \
+                    = None
     
     def get_search_db(self):
         if self.search_db is None:
@@ -950,18 +950,18 @@ class Objects:
     def get_db(self):
         f = '[Yatube] logic.Objects.get_db'
         if self.db is None:
-            path = self.get_default(product='yatube').fdb
+            path = self.get_default('yatube').fdb
             if self.default.Success:
-                self.db = db.DB(path=path)
+                self.db = db.DB(path)
             else:
                 mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f, mes, True).show_warning()
                 self.db = db.DB()
         return self.db
     
-    def get_default(self,product='yatube'):
+    def get_default(self, product='yatube'):
         if not self.default:
-            self.default = DefaultConfig(product=product)
+            self.default = DefaultConfig(product)
             self.default.run()
         return self.default
     
@@ -1104,8 +1104,8 @@ class Video:
         # Do not warn about missing files
         if not os.path.exists(video.path):
             return
-        Success = sh.File(file=video.path).delete()
-        idir = sh.Directory(path=video.dir_)
+        Success = sh.File(video.path).delete()
+        idir = sh.Directory(video.dir_)
         if not idir.get_files():
             idir.delete()
         return Success
@@ -1121,7 +1121,7 @@ class Video:
         if not video.url:
             sh.com.rep_empty(f)
             return video.page
-        video.page = sh.Get(url=video.url).run()
+        video.page = sh.Get(video.url).run()
         return video.page
     
     def assign_online(self):
@@ -1166,7 +1166,7 @@ class Video:
             return
         data_len = 13
         if len(data) != data_len:
-            sub = '{} == {}'.format(len(data), data_len)
+            sub = f'{len(data)} == {data_len}'
             mes = _('The condition "{}" is not observed!').format(sub)
             sh.objs.get_mes(f, mes).show_error()
             return
@@ -1301,7 +1301,7 @@ class Video:
             such characters in their path. We delete '%' instead of replacing
             with '%%' since 'mpv' also seems to have such issues.
         '''
-        title = title.replace('%','')
+        title = title.replace('%', '')
         video.dir_ = objs.get_default().ihome.add_config('Youtube', author)
         video.path = objs.default.ihome.add_config('Youtube', author, title)
         video.pathsh = sh.Text (text = sh.Path(video.path).get_basename()
@@ -1327,7 +1327,7 @@ class Video:
             self.Success = False
             sh.com.rep_empty(f)
             return
-        self.Success = sh.Path(path=video.dir_).create()
+        self.Success = sh.Path(video.dir_).create()
     
     def download(self, callback=None, format_='mp4'):
         f = '[Yatube] logic.Video.download'
@@ -1467,7 +1467,7 @@ class URL:
         self.url = self.url.replace ('watch?feature=player_detailpage&v'
                                     ,'watch?v'
                                     )
-        self.url = re.sub('#t=\d+','',self.url)
+        self.url = re.sub('#t=\d+', '', self.url)
         if 'watch?v' in self.url:
             search = sh.Search (text = self.url
                                ,pattern = '?'
@@ -1510,9 +1510,9 @@ class URL:
 
 class DefaultConfig:
     
-    def __init__(self,product='yatube'):
+    def __init__(self, product='yatube'):
         self.set_values()
-        self.ihome = sh.Home(app_name=product)
+        self.ihome = sh.Home(product)
         self.Success = self.ihome.create_conf()
     
     def set_values(self):

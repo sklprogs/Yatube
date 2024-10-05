@@ -8,14 +8,14 @@ from skl_shared.localize import _
 
 class DB:
     
-    def __init__(self,path):
+    def __init__(self, path):
         self.Success = True
         self.user = ''
         self.path = path
         self.connect()
         self.create_videos()
     
-    def get_search_next(self,pattern,ptime=0,limit=50):
+    def get_search_next(self, pattern, ptime=0, limit=50):
         f = '[Yatube] db.DB.get_search_next'
         if not self.Success:
             sh.com.cancel(f)
