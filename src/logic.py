@@ -1705,7 +1705,7 @@ class ChannelHistory:
         if 0 <= self.no < len(self.authors) and 0 <= self.no < len(self.urls):
             return(self.authors[self.no], self.urls[self.no])
         min_val = min(len(self.authors), len(self.urls))
-        sub = '0 <= {} < {}' % (self.no, min_val)
+        sub = f'0 <= {self.no} < {min_val}'
         mes = _('The condition "{}" is not observed!').format(sub)
         sh.objs.get_mes(f, mes).show_error()
 

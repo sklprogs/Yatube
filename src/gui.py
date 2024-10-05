@@ -800,11 +800,11 @@ class Menu:
                     )
         self.widget.protocol("WM_DELETE_WINDOW",self.close)
     
-    def set_title(self,text=None,selected=0,total=0):
+    def set_title(self, text=None, selected=0, total=0):
         if not text:
-            text = sh.List(lst1=['Yatube',VERSION]).space_items()
+            text = 'Yatube'
             if selected:
-                text += _(' (selected: {}/{})').format(selected,total)
+                text += _(' (selected: {}/{})').format(selected, total)
         self.parent.set_title(text)
     
     def set_gui(self):
@@ -825,9 +825,7 @@ class Menu:
     
     def clear_url(self,event=None):
         self.ent_url.clear_text()
-        self.ent_url.widget.config (fg = 'black'
-                                   ,font = 'Serif 10'
-                                   )
+        self.ent_url.widget.config(fg='black', font='Serif 10')
         self.ent_url.focus()
         
     def paste_url(self,event=None):
@@ -956,9 +954,7 @@ class Video:
         self.set_labels()
         self.set_objects()
         
-    def reset (self,author,title,date
-              ,image=None,no=0
-              ):
+    def reset(self, author, title, date, image=None, no=0):
         self.author = author
         self.title = title
         self.date = date
@@ -970,8 +966,8 @@ class Video:
         if no:
             self.no = no
         '''
-        #NOTE: #TODO: For some reason, using 'widget.config' or 
-        'Label.text' resets config options here.
+        #NOTE: #TODO: For some reason, using 'widget.config' or 'Label.text'
+        resets config options here.
         '''
         self.lbl_vno.text = str(self.no)
         self.lbl_vno.reset()
@@ -997,15 +993,15 @@ class Channel:
         #FIX: seems that another unit type is required
         value = i*112.133333333
         mes = _('Scroll to {}').format(value)
-        sh.objs.get_mes(f,mes,True).show_debug()
+        sh.objs.get_mes(f, mes, True).show_debug()
         self.cvs_prm.scroll(y=value)
         
     def set_values(self):
-        ''' These values set the width and height of the frame that 
-            contains videos and therefore the scrolling region.
-            The default Youtube video picture has the dimensions of
-            120x90, therefore, the channel frame embedding 10 videos
-            will have the height of at least 900.
+        ''' These values set the width and height of the frame that contains
+            videos and therefore the scrolling region.
+            The default Youtube video picture has the dimensions of 120x90;
+            therefore, the channel frame embedding 10 videos will have
+            the height of at least 900.
         '''
         self.max_x = 1024
         self.max_y = 920
@@ -1130,25 +1126,24 @@ class Objects:
     
     def get_def_image(self):
         if self.def_image is None:
-            path = sh.objs.get_pdir().add('..','resources','nopic.png')
+            path = sh.objs.get_pdir().add('..', 'resources', 'nopic.png')
             self.def_image = im.Image().open(path)
         return self.def_image
 
-    def get_channel(self,parent=None):
+    def get_channel(self, parent=None):
         f = '[Yatube] gui.Objects.get_channel'
         if self.channel is None:
             if parent is None:
                 mes = _('Set the default parent.')
-                sh.objs.get_mes(f,mes,True).show_info()
+                sh.objs.get_mes(f, mes, True).show_info()
                 parent = self.menu().framev
             self.channel = Channel(parent)
         return self.channel
         
     def get_parent(self):
         if not self.parent:
-            title = sh.List(lst1=['Yatube',VERSION]).space_items()
             self.parent = sh.Top (icon = ICON
-                                 ,title = title
+                                 ,title = 'Yatube'
                                  )
         return self.parent
     
