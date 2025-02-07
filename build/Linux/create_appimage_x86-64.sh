@@ -5,14 +5,14 @@ productlow='yatube'
 arch="x86_64"
 os="Linux" # Linux or Wine
 oslow="linux"
-glibc="2.31"
+glibc="2.36"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
-venv="$HOME/software/python/3.9.2_yatube_x64"
+venv="$HOME/software/python/3.11.2_yatube"
 pildir="/usr/lib/python3/dist-packages/PIL"
 
 export "ARCH=$arch"
@@ -86,5 +86,5 @@ if [ "$choice" = "n" ] || [ "$choice" = "N" ]; then
     exit;
 fi
 mv -fv "$tmpdir/$product-$arch.AppImage" "$HOME/binaries/$product/$productlow-$oslow-$arch-glibc$glibc.AppImage"
-#rm -rf "$tmpdir"
+rm -rf "$tmpdir"
 deactivate
