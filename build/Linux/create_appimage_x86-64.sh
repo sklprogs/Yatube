@@ -71,7 +71,7 @@ cp -r "$resdir" "$tmpdir/app/usr/bin/"
 cp -r "$resdir/locale" "$tmpdir/app/resources/"
 cp -rn "$pildir"/* "$tmpdir/app/usr/bin/PIL/"
 cd "$builddir"
-pyinstaller "$productlow.py"
+pyinstaller "$productlow.py" --hidden-import='PIL._tkinter_finder'
 # Create AppImage
 mv "$builddir/dist/$productlow"/* "$tmpdir/app/usr/bin"
 cd "$tmpdir/app"
